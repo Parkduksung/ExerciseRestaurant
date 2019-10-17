@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/colorGray"
+    >
+
+
+    <TextView
+        android:id="@+id/loading_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_line"
+        android:gravity="center_horizontal"
+        android:text="운동인들을 위한 세상"
+        android:textSize="40dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="운동맛집"
+        android:textSize="40dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:background="@drawable/bottom_line"
+        >
+
+    </TextView>
+
+
+</LinearLayout>
