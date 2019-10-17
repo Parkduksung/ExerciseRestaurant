@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
+
     override fun onStart() {
         Log.d(fragmentName, "onStart")
         super.onStart()

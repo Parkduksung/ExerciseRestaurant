@@ -33,6 +33,7 @@ class MyPageFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.mypage_fragment, container, false)
     }
+
     override fun onStart() {
         Log.d(fragmentName, "onStart")
         super.onStart()
@@ -67,7 +68,6 @@ class MyPageFragment : Fragment() {
         Log.d(fragmentName, "onDetach")
         super.onDetach()
     }
-
 
 
 }

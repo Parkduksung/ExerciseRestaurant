@@ -24,6 +24,7 @@ class CommunityFragment : Fragment() {
 
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,6 +32,7 @@ class CommunityFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.community_fragment, container, false)
     }
+
     override fun onStart() {
         Log.d(fragmentName, "onStart")
         super.onStart()

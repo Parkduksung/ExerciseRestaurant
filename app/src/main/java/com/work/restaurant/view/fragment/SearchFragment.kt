@@ -24,6 +24,7 @@ class SearchFragment : Fragment() {
 
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,6 +32,7 @@ class SearchFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
+
     override fun onStart() {
         Log.d(fragmentName, "onStart")
         super.onStart()
