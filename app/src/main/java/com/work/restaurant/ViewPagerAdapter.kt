@@ -3,9 +3,13 @@ package com.work.restaurant
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.work.restaurant.view.fragment.CommunityFragment
+import com.work.restaurant.view.fragment.HomeFragment
+import com.work.restaurant.view.fragment.MyPageFragment
+import com.work.restaurant.view.fragment.SearchFragment
 
 
-class MyPagerAdapter(supportFragmentManager: FragmentManager) :
+class ViewPagerAdapter(supportFragmentManager: FragmentManager) :
     FragmentPagerAdapter(supportFragmentManager){
 
     private val fragmentTitleList = arrayOf("홈", "헬스장검색", "커뮤니티","마이페이지")

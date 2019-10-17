@@ -8,12 +8,11 @@
 
 
     <TextView
-        android:id="@+id/loading_text"
+        android:id="@+id/loading_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_line"
         android:gravity="center_horizontal"
-        android:text="운동인들을 위한 세상"
         android:textSize="40dp"
         android:textStyle="bold">
 
