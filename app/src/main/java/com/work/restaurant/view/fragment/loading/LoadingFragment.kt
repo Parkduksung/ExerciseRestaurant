@@ -15,8 +15,6 @@ import java.util.*
 class LoadingFragment : Fragment() {
 
 
-    private val fragmentName = "LoadingFragment"
-
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -96,5 +94,9 @@ class LoadingFragment : Fragment() {
     }
 
 
+    companion object {
+        private const val fragmentName = "LoadingFragment"
+
+    }
 }
 

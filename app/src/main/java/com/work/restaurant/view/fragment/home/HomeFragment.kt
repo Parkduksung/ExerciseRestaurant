@@ -11,8 +11,6 @@ import com.work.restaurant.R
 
 class HomeFragment : Fragment() {
 
-    private val fragmentName = "HomeFragment"
-
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -67,6 +65,10 @@ class HomeFragment : Fragment() {
     override fun onDetach() {
         Log.d(fragmentName, "onDetach")
         super.onDetach()
+    }
+
+    companion object {
+        private const val fragmentName = "HomeFragment"
     }
 
 }

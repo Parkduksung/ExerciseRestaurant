@@ -2,6 +2,7 @@ package com.work.restaurant.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.fragment.community.CommunityFragment
@@ -34,11 +35,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun init() {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(HomeFragment(), "홈")
-        adapter.addFragment(SearchFragment(), "헬스장검색")
-        adapter.addFragment(CommunityFragment(), "커뮤니티")
-        adapter.addFragment(MyPageFragment(), "마이페이지")
+        val fragmentMap: Map<String, Fragment> = mapOf(
+            "홈" to HomeFragment(),
+            "헬스장검색" to SearchFragment(),
+            "커뮤니티" to CommunityFragment(),
+            "마이페이지" to MyPageFragment()
+        )
+        val adapter = ViewPagerAdapter(supportFragmentManager, fragmentMap)
         vp_main.adapter = adapter
         tl_main.setupWithViewPager(vp_main)
 

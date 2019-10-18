@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 
 class MyPageFragment : Fragment() {
-    private val fragmentName = "MyPageFragment"
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -69,5 +68,9 @@ class MyPageFragment : Fragment() {
         super.onDetach()
     }
 
+
+    companion object {
+        private const val fragmentName = "MyPageFragment"
+    }
 
 }

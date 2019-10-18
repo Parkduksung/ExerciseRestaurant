@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 
 class SearchFragment : Fragment() {
-    private val fragmentName = "SearchFragment"
+
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -68,4 +68,7 @@ class SearchFragment : Fragment() {
         super.onDetach()
     }
 
+    companion object {
+        private const val fragmentName = "SearchFragment"
+    }
 }
