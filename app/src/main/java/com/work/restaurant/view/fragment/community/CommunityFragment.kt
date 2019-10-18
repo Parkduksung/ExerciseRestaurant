@@ -1,4 +1,4 @@
-package com.work.restaurant.view.fragment
+package com.work.restaurant.view.fragment.community
 
 import android.content.Context
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 
-class SearchFragment : Fragment() {
-    private val fragmentName = "SearchFragment"
+class CommunityFragment : Fragment() {
+    private val fragmentName = "CommunityFragment"
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
+        return inflater.inflate(R.layout.community_fragment, container, false)
     }
 
     override fun onStart() {

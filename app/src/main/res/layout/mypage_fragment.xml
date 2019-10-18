@@ -2,12 +2,94 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/mypage_container"
+
+    >
 
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="myPageFragment"
-        android:textSize="50dp"></TextView>
+        android:weightSum="40"
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:text="@string/app_version"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                ></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_login"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:background="@drawable/bottom_line_2"
+            >
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:gravity="center"
+                android:layout_weight="6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text=" 로그인"
+                android:textColor="@color/colorMint"
+                android:textSize="45dp"
+                ></TextView>
+
+            <ImageView
+                android:layout_marginRight="30dp"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_login"
+                ></ImageView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+
+            >
+
+            <TextView
+                android:id="@+id/tv_page_late_view"
+                android:background="@drawable/bottom_line_2"
+                android:layout_marginTop="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="  최근 본 헬스장"
+                android:textSize="30dp"
+                ></TextView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
 </FrameLayout>

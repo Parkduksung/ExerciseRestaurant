@@ -1,10 +1,14 @@
-package com.work.restaurant.view.activity
+package com.work.restaurant.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
-import com.work.restaurant.view.fragment.*
+import com.work.restaurant.view.fragment.community.CommunityFragment
+import com.work.restaurant.view.fragment.home.HomeFragment
+import com.work.restaurant.view.fragment.loading.LoadingFragment
+import com.work.restaurant.view.fragment.mypage.MyPageFragment
+import com.work.restaurant.view.fragment.search.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -52,7 +56,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun loading() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.loading_container, LoadingFragment()).commit()
+            .replace(
+                R.id.loading_container,
+                LoadingFragment()
+            ).commit()
     }
 
 

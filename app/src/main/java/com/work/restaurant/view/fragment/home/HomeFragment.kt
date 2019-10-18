@@ -1,4 +1,4 @@
-package com.work.restaurant.view.fragment
+package com.work.restaurant.view.fragment.home
 
 import android.content.Context
 import android.os.Bundle
@@ -17,7 +17,6 @@ class HomeFragment : Fragment() {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onCreate")

@@ -1,4 +1,4 @@
-package com.work.restaurant.view.fragment
+package com.work.restaurant.view.fragment.mypage
 
 import android.content.Context
 import android.os.Bundle

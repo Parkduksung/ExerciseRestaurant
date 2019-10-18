@@ -1,16 +1,21 @@
-package com.work.restaurant.view.fragment
+package com.work.restaurant.view.fragment.loading
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import kotlinx.android.synthetic.main.loading_fragment.*
+import java.util.*
 
-class CommunityFragment : Fragment() {
-    private val fragmentName = "CommunityFragment"
+class LoadingFragment : Fragment() {
+
+
+    private val fragmentName = "LoadingFragment"
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -25,12 +30,34 @@ class CommunityFragment : Fragment() {
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.community_fragment, container, false)
+        return inflater.inflate(R.layout.loading_fragment, container, false)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(fragmentName, "onActivityCreated")
+        super.onActivityCreated(savedInstanceState)
+
+
+        val random = Random().nextInt(resources.getStringArray(R.array.load_string).size)
+        val loadingTextArrayList = resources.getStringArray(R.array.load_string)
+
+        Log.d(fragmentName, loadingTextArrayList[random])
+
+        loading_tv.text = loadingTextArrayList[random]
+
+
+        Handler().postDelayed({
+            requireFragmentManager().beginTransaction().remove(this).commit()
+        }, 3000L)
+
+
     }
 
     override fun onStart() {
@@ -68,4 +95,6 @@ class CommunityFragment : Fragment() {
         super.onDetach()
     }
 
+
 }
+
