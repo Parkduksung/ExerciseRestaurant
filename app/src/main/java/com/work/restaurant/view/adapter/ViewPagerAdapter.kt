@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 @Suppress("DEPRECATION")
 class ViewPagerAdapter(
     supportFragmentManager: FragmentManager,
-    private val fragmentList: Map<String, Fragment>
+    private val fragmentMap: Map<String, Fragment>
 ) :
     FragmentPagerAdapter(supportFragmentManager) {
 
@@ -16,7 +16,8 @@ class ViewPagerAdapter(
     ////    private val fragmentTitleIconList= intArrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
     //
     //    //    private val fragmentTitleList2 : CharSequence = arrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
-    override fun getItem(position: Int): Fragment = fragmentList.map { it.value }[position]
+    override fun getItem(position: Int): Fragment =
+        fragmentMap.map { it.value }[position]
 //        when (position) {
 //            0 -> {
 //
@@ -54,9 +55,11 @@ class ViewPagerAdapter(
 //                return HomeFragment()
 //            }
 
-    override fun getCount(): Int = fragmentList.size
+    override fun getCount(): Int =
+        fragmentMap.size
 
-    override fun getPageTitle(position: Int): CharSequence = fragmentList.map { it.key }[position]
+    override fun getPageTitle(position: Int): CharSequence =
+        fragmentMap.map { it.key }[position]
 
 //    fun getDrawableId(position: Int) : Int{
 //        return fragmentTitleIconList[position]

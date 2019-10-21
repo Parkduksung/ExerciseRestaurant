@@ -21,15 +21,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loading()
-
 //
 //        val fragmentAdapter = ViewPagerAdapter(supportFragmentManager)
 //        vp_main.adapter = fragmentAdapter
 //
 //        tl_main.setupWithViewPager(vp_main)
-
         init()
-
 
     }
 
@@ -41,6 +38,8 @@ class MainActivity : AppCompatActivity() {
             "커뮤니티" to CommunityFragment(),
             "마이페이지" to MyPageFragment()
         )
+
+
         val adapter = ViewPagerAdapter(supportFragmentManager, fragmentMap)
         vp_main.adapter = adapter
         tl_main.setupWithViewPager(vp_main)
