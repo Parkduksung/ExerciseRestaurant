@@ -6,16 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.adapter.ViewPagerAdapter
-import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.android.synthetic.main.search_rank_fragment.*
 
-class SearchFragment : Fragment() {
+class SearchRankFragment : Fragment() {
 
 
-    private lateinit var searchlook: ImageButton
+    private lateinit var searchsettings: ImageView
+
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -34,49 +34,25 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
-
+        return inflater.inflate(R.layout.search_rank_fragment, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        init()
 
-        searchlook = ib_search_look
+        searchsettings = iv_search_settings
 
-        searchlook.setOnClickListener {
+        searchsettings.setOnClickListener {
 
             this.requireFragmentManager().beginTransaction().replace(
                 R.id.search_main_container,
-                SearchLookFragment()
+                SearchSettingFragment()
             ).commit()
 
 
         }
-
-
-    }
-
-    private fun init() {
-        val fragmentMap: Map<String, Fragment> = mapOf(
-            "운동맛집 랭킹" to SearchRankFragment(),
-            "관심맛집" to SearchlikeFragment()
-
-        )
-
-        val adapter = ViewPagerAdapter(this.requireFragmentManager(), fragmentMap)
-        vp_search.adapter = adapter
-        tl_search.setupWithViewPager(vp_search)
-        tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
-        tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
-
-
-//        main_taps.getTabAt(1)?.apply {
-//            icon?.setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-//        }
 
     }
 
@@ -117,6 +93,8 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val fragmentName = "SearchFragment"
+        private const val fragmentName = "SearchRankFragment"
     }
+
+
 }

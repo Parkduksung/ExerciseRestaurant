@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 //        tl_main.setupWithViewPager(vp_main)
         init()
 
+
     }
 
 

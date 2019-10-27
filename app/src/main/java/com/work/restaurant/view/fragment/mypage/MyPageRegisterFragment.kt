@@ -1,4 +1,4 @@
-package com.work.restaurant.view.fragment.search
+package com.work.restaurant.view.fragment.mypage
 
 import android.content.Context
 import android.os.Bundle
@@ -9,13 +9,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.adapter.ViewPagerAdapter
-import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.android.synthetic.main.mypage_register_fragment.*
 
-class SearchFragment : Fragment() {
+class MyPageRegisterFragment : Fragment() {
 
+    private lateinit var registerback: ImageButton
 
-    private lateinit var searchlook: ImageButton
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -34,49 +33,26 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
-
+        return inflater.inflate(R.layout.mypage_register_fragment, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        init()
 
-        searchlook = ib_search_look
+        registerback = ib_register_back
 
-        searchlook.setOnClickListener {
+
+        registerback.setOnClickListener {
 
             this.requireFragmentManager().beginTransaction().replace(
-                R.id.search_main_container,
-                SearchLookFragment()
+                R.id.mypage_main_container,
+                MyPageLoginFragment()
             ).commit()
-
 
         }
 
-
-    }
-
-    private fun init() {
-        val fragmentMap: Map<String, Fragment> = mapOf(
-            "운동맛집 랭킹" to SearchRankFragment(),
-            "관심맛집" to SearchlikeFragment()
-
-        )
-
-        val adapter = ViewPagerAdapter(this.requireFragmentManager(), fragmentMap)
-        vp_search.adapter = adapter
-        tl_search.setupWithViewPager(vp_search)
-        tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
-        tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
-
-
-//        main_taps.getTabAt(1)?.apply {
-//            icon?.setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-//        }
 
     }
 
@@ -117,6 +93,8 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        private const val fragmentName = "SearchFragment"
+        private const val fragmentName = "MyPageRegisterFragment"
     }
+
+
 }

@@ -6,10 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import kotlinx.android.synthetic.main.mypage_fragment.*
 
 class MyPageFragment : Fragment() {
+
+
+    private lateinit var layoutlogin: LinearLayout
+
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -32,6 +38,23 @@ class MyPageFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.mypage_fragment, container, false)
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(fragmentName, "onActivityCreated")
+        super.onActivityCreated(savedInstanceState)
+
+        layoutlogin = login_ll
+
+        layoutlogin.setOnClickListener {
+            this.requireFragmentManager().beginTransaction().replace(
+                R.id.mypage_main_container,
+                MyPageLoginFragment()
+            ).commit()
+
+        }
+
+    }
+
 
     override fun onStart() {
         Log.d(fragmentName, "onStart")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/search_container"
+    android:id="@+id/search_main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,9 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="10"
         android:orientation="vertical"
-        >
+        android:weightSum="10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,17 +20,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:weightSum="10"
                 android:orientation="horizontal"
-                >
+                android:weightSum="10">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    >
+                    android:layout_weight="2">
 
                     <ImageButton
+                        android:id="@+id/ib_search_look"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_search"
@@ -49,251 +47,42 @@
                         android:id="@+id/et_search"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="검색할 헬스장 이름을 입력하세요."
-                        ></EditText>
+                        android:hint="검색할 헬스장 이름을 입력하세요."></EditText>
 
                 </LinearLayout>
-
-
-
-
-
 
 
             </LinearLayout>
 
 
-
-
         </LinearLayout>
 
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/search_sub_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
-            >
+            android:layout_weight="9">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:weightSum="40"
-                >
+                android:weightSum="10">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="4"
-                    >
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tl_search"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:weightSum="20"
-                        android:orientation="horizontal"
-                        >
+                        android:theme="@style/TapTheme">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="10">
 
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2">
-
-                                <ImageView
-                                    android:id="@+id/iv_search_cooking"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    app:srcCompat="@drawable/ic_cooking"
-                                    >
-                                </ImageView>
-
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="8">
-
-                                <TextView
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:text="운동맛집 랭킹"
-                                    android:textSize="25dp"
-                                    android:gravity="center"
-                                    >
-                                </TextView>
-
-
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="10">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2">
-
-                                <ImageView
-                                    android:id="@+id/iv_search_like"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    app:srcCompat="@drawable/ic_like"
-                                    >
-                                </ImageView>
-
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="8">
-
-                                <TextView
-                                    android:textStyle="bold"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:text="관심맛집"
-                                    android:textSize="25dp"
-                                    android:gravity="center"
-                                    >
-                                </TextView>
-
-
-                            </LinearLayout>
-
-
-
-                        </LinearLayout>
-
-
-
-
-
-
-
-
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:weightSum="20"
-                        android:orientation="horizontal"
-                        >
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="7">
-
-                            <Button
-                                android:layout_marginLeft="10dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Top 10"
-                                android:textSize="25dp"
-                                android:background="@drawable/button_background"
-                                android:textColor="@color/colorWhite"
-                                ></Button>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="11">
-                            <TextView
-                                android:id="@+id/tv_search_locate"
-                                android:textStyle="bold"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:textSize="20dp"
-                                android:textColor="@color/colorGray"
-                                android:text="인천시 계양구 효성동">
-                            </TextView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2">
-
-                            <ImageView
-                                android:id="@+id/iv_search_settings"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:srcCompat="@drawable/ic_settings">
-
-                            </ImageView>
-
-
-                        </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    >
-
-                    <TextView
-                        android:gravity="right"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/app_update"
-                        android:textSize="15dp"
-                        ></TextView>
-
+                    </com.google.android.material.tabs.TabLayout>
 
 
                 </LinearLayout>
@@ -301,29 +90,254 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="32"
-                    >
+                    android:layout_weight="9">
 
-                    <TextView
-                        android:gravity="center"
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/vp_search"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="RecyclerView"
-                        android:textSize="50dp"
-                        ></TextView>
+                        android:layout_height="match_parent">
 
+                    </androidx.viewpager.widget.ViewPager>
 
 
                 </LinearLayout>
-
 
 
             </LinearLayout>
 
 
+        </FrameLayout>
 
-        </LinearLayout>
 
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_weight="9">-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:orientation="vertical"-->
+        <!--                android:weightSum="40">-->
+
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="0dp"-->
+        <!--                    android:layout_weight="4">-->
+
+        <!--                    <LinearLayout-->
+        <!--                        android:layout_width="match_parent"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:orientation="horizontal"-->
+        <!--                        android:weightSum="20">-->
+
+        <!--                        <LinearLayout-->
+        <!--                            android:layout_width="0dp"-->
+        <!--                            android:layout_height="match_parent"-->
+        <!--                            android:layout_weight="10">-->
+
+
+        <!--                            <LinearLayout-->
+        <!--                                android:layout_width="0dp"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:layout_weight="2">-->
+
+        <!--                                <ImageView-->
+        <!--                                    android:id="@+id/iv_search_cooking"-->
+        <!--                                    android:layout_width="match_parent"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    app:srcCompat="@drawable/ic_cooking"></ImageView>-->
+
+
+        <!--                            </LinearLayout>-->
+
+        <!--                            <LinearLayout-->
+        <!--                                android:layout_width="0dp"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:layout_weight="8">-->
+
+        <!--                                <TextView-->
+        <!--                                    android:layout_width="match_parent"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    android:gravity="center"-->
+        <!--                                    android:text="운동맛집 랭킹"-->
+        <!--                                    android:textSize="25dp"-->
+        <!--                                    android:textStyle="bold"></TextView>-->
+
+
+        <!--                            </LinearLayout>-->
+
+
+        <!--                        </LinearLayout>-->
+
+        <!--                        <LinearLayout-->
+
+        <!--                            android:layout_width="0dp"-->
+        <!--                            android:layout_height="match_parent"-->
+        <!--                            android:layout_weight="10">-->
+
+        <!--                            <LinearLayout-->
+        <!--                                android:layout_width="0dp"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:layout_weight="2">-->
+
+        <!--                                <ImageView-->
+        <!--                                    android:id="@+id/iv_search_like"-->
+        <!--                                    android:layout_width="match_parent"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    app:srcCompat="@drawable/ic_like"></ImageView>-->
+
+
+        <!--                            </LinearLayout>-->
+
+        <!--                            <LinearLayout-->
+        <!--                                android:layout_width="0dp"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:layout_weight="8">-->
+
+        <!--                                <TextView-->
+        <!--                                    android:layout_width="match_parent"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    android:gravity="center"-->
+        <!--                                    android:text="관심맛집"-->
+        <!--                                    android:textSize="25dp"-->
+        <!--                                    android:textStyle="bold"></TextView>-->
+
+
+        <!--                            </LinearLayout>-->
+
+
+        <!--                        </LinearLayout>-->
+
+
+        <!--                    </LinearLayout>-->
+
+
+        <!--                </LinearLayout>-->
+
+        <!--                <FrameLayout-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="0dp"-->
+        <!--                    android:layout_weight="36"-->
+        <!--                    -->
+        <!--                    >-->
+        <!--                    -->
+        <!--                    <LinearLayout-->
+        <!--                        android:layout_width="match_parent"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:orientation="vertical"-->
+        <!--                        android:weightSum="37">-->
+
+
+        <!--                        <LinearLayout-->
+        <!--                            android:layout_width="match_parent"-->
+        <!--                            android:layout_height="0dp"-->
+        <!--                            android:layout_marginTop="10dp"-->
+        <!--                            android:layout_weight="3">-->
+
+        <!--                            <LinearLayout-->
+        <!--                                android:layout_width="match_parent"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:orientation="horizontal"-->
+        <!--                                android:weightSum="20">-->
+
+        <!--                                <LinearLayout-->
+        <!--                                    android:layout_width="0dp"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    android:layout_weight="7">-->
+
+        <!--                                    <Button-->
+        <!--                                        android:layout_width="match_parent"-->
+        <!--                                        android:layout_height="wrap_content"-->
+        <!--                                        android:layout_marginLeft="10dp"-->
+        <!--                                        android:background="@drawable/button_background"-->
+        <!--                                        android:gravity="center"-->
+        <!--                                        android:text="Top 10"-->
+        <!--                                        android:textColor="@color/colorWhite"-->
+        <!--                                        android:textSize="25dp"></Button>-->
+
+        <!--                                </LinearLayout>-->
+
+        <!--                                <LinearLayout-->
+
+        <!--                                    android:layout_width="0dp"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    android:layout_weight="11">-->
+
+        <!--                                    <TextView-->
+        <!--                                        android:id="@+id/tv_search_locate"-->
+        <!--                                        android:layout_width="match_parent"-->
+        <!--                                        android:layout_height="match_parent"-->
+        <!--                                        android:gravity="center"-->
+        <!--                                        android:text="인천시 계양구 효성동"-->
+        <!--                                        android:textColor="@color/colorGray"-->
+        <!--                                        android:textSize="20dp"-->
+        <!--                                        android:textStyle="bold"></TextView>-->
+
+        <!--                                </LinearLayout>-->
+
+        <!--                                <LinearLayout-->
+
+        <!--                                    android:layout_width="0dp"-->
+        <!--                                    android:layout_height="match_parent"-->
+        <!--                                    android:layout_weight="2">-->
+
+        <!--                                    <ImageView-->
+        <!--                                        android:id="@+id/iv_search_settings"-->
+        <!--                                        android:layout_width="match_parent"-->
+        <!--                                        android:layout_height="match_parent"-->
+        <!--                                        app:srcCompat="@drawable/ic_settings">-->
+
+        <!--                                    </ImageView>-->
+
+
+        <!--                                </LinearLayout>-->
+
+
+        <!--                            </LinearLayout>-->
+
+
+        <!--                        </LinearLayout>-->
+
+        <!--                        <LinearLayout-->
+        <!--                            android:layout_width="match_parent"-->
+        <!--                            android:layout_height="0dp"-->
+        <!--                            android:layout_marginTop="10dp"-->
+        <!--                            android:layout_weight="2">-->
+
+        <!--                            <TextView-->
+        <!--                                android:layout_width="match_parent"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:gravity="right"-->
+        <!--                                android:text="@string/app_update"-->
+        <!--                                android:textSize="15dp"></TextView>-->
+
+
+        <!--                        </LinearLayout>-->
+
+        <!--                        <LinearLayout-->
+        <!--                            android:layout_width="match_parent"-->
+        <!--                            android:layout_height="0dp"-->
+        <!--                            android:layout_weight="32">-->
+
+        <!--                            <TextView-->
+        <!--                                android:layout_width="match_parent"-->
+        <!--                                android:layout_height="match_parent"-->
+        <!--                                android:gravity="center"-->
+        <!--                                android:text="RecyclerView"-->
+        <!--                                android:textSize="50dp"></TextView>-->
+
+
+        <!--                        </LinearLayout>-->
+        <!--                    </LinearLayout>-->
+
+        <!--                </FrameLayout>-->
+
+
+        <!--            </LinearLayout>-->
+
+
+        <!--        </LinearLayout>-->
 
 
     </LinearLayout>
