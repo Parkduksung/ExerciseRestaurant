@@ -20,16 +20,22 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment() {
 
     private lateinit var mapView: MapView
 
-    override fun onMapReady(p0: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
 
-        val SEOUL = LatLng(37.56, 126.97)
-        val markerOptions = MarkerOptions()
-        markerOptions.position(SEOUL)
-        markerOptions.title("서울")
-        markerOptions.snippet("한국의 수도")
-        p0.addMarker(markerOptions)
-        p0.moveCamera(CameraUpdateFactory.newLatLng(SEOUL))
-        p0.animateCamera(CameraUpdateFactory.zoomTo(10f))
+        val seoulPosition = LatLng(37.56, 126.97)
+        val markerOptions = MarkerOptions().apply {
+            position(seoulPosition)
+            title("서울")
+            snippet("한국의 수도")
+        }
+
+        googleMap.apply {
+            addMarker(markerOptions)
+            moveCamera(CameraUpdateFactory.newLatLng(seoulPosition))
+            animateCamera(CameraUpdateFactory.zoomTo(10f))
+        }
+
+
     }
 
 
@@ -66,7 +72,8 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        if (mapView != null)
+
+        if (::mapView.isInitialized)
             mapView.onCreate(savedInstanceState)
 
     }
@@ -105,8 +112,8 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment() {
 
     override fun onDestroy() {
         Log.d(fragmentName, "onDestroy")
-        super.onDestroy()
         mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onDetach() {

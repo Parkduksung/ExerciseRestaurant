@@ -6,18 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 
 class MyPageLoginFragment : Fragment() {
-
-    private lateinit var loginback: ImageButton
-    private lateinit var loginRegister: TextView
-    private lateinit var loginFindPw: TextView
-
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -44,11 +37,9 @@ class MyPageLoginFragment : Fragment() {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        loginback = ib_login_back
-        loginRegister = tv_login_register
-        loginFindPw = tv_login_find
 
-        loginback.setOnClickListener {
+
+        ib_login_back.setOnClickListener {
 
             this.requireFragmentManager().beginTransaction().replace(
                 R.id.mypage_main_container,
@@ -58,7 +49,7 @@ class MyPageLoginFragment : Fragment() {
         }
 
 
-        loginRegister.setOnClickListener {
+        tv_login_register.setOnClickListener {
 
             this.requireFragmentManager().beginTransaction().replace(
                 R.id.mypage_main_container,
@@ -68,7 +59,7 @@ class MyPageLoginFragment : Fragment() {
         }
 
 
-        loginFindPw.setOnClickListener {
+        tv_login_find.setOnClickListener {
 
 
         }

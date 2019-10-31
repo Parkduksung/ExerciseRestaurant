@@ -13,7 +13,6 @@ import com.work.restaurant.view.fragment.search.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +42,14 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = ViewPagerAdapter(supportFragmentManager, fragmentMap)
         vp_main.adapter = adapter
-        tl_main.setupWithViewPager(vp_main)
 
-        tl_main.getTabAt(0)?.setIcon(R.drawable.ic_home)
-        tl_main.getTabAt(1)?.setIcon(R.drawable.ic_search)
-        tl_main.getTabAt(2)?.setIcon(R.drawable.ic_community)
-        tl_main.getTabAt(3)?.setIcon(R.drawable.ic_mypage)
+        tl_main.run {
+            setupWithViewPager(vp_main)
+            getTabAt(0)?.setIcon(R.drawable.ic_home)
+            getTabAt(1)?.setIcon(R.drawable.ic_search)
+            getTabAt(2)?.setIcon(R.drawable.ic_community)
+            getTabAt(3)?.setIcon(R.drawable.ic_mypage)
+        }
 
 
 //        main_taps.getTabAt(1)?.apply {
