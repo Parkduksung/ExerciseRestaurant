@@ -32,6 +32,7 @@
                 android:textStyle="bold"></TextView>
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/login_ll"
             android:layout_width="match_parent"
@@ -42,25 +43,50 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="10"
-
             >
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text=" 로그인"
-                android:textColor="@color/colorMint"
-                android:textSize="45dp"></TextView>
+            <FrameLayout
+                android:id="@+id/login_state_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="30dp"
-                android:layout_weight="4"
-                app:srcCompat="@drawable/ic_login"></ImageView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_login_id"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:layout_weight="6"
+                            android:gravity="center"
+                            android:text=" 로그인"
+                            android:textColor="@color/colorMint"
+                            android:textSize="45dp"></TextView>
+
+                        <ImageView
+                            android:visibility="visible"
+                            android:id="@+id/iv_login"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="30dp"
+                            android:layout_weight="4"
+                            app:srcCompat="@drawable/ic_login"></ImageView>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </FrameLayout>
+
 
         </LinearLayout>
 
@@ -81,11 +107,12 @@
 
 
             <LinearLayout
-                android:visibility="invisible"
+                android:id="@+id/login_ok_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical"
+                android:visibility="invisible"
                 android:weightSum="40">
 
                 <LinearLayout
@@ -121,9 +148,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="30dp"
+
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="30dp"
                     android:layout_weight="10">
 
                     <TextView
@@ -139,15 +167,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:gravity="right"
-                    android:layout_weight="10">
+                    android:layout_weight="10"
+                    android:gravity="right">
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/tv_page_withdrawal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
                         android:background="@drawable/bottom_line_2"
                         android:text="회원탈퇴"
                         android:textSize="15dp"></TextView>

@@ -1,16 +1,19 @@
 package com.work.restaurant.view.fragment.mypage
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.GsonBuilder
 import com.work.restaurant.R
 import com.work.restaurant.login.ResultModel
 import com.work.restaurant.login.UserApi
+import com.work.restaurant.view.fragment.mypage.MyPageFragment.Companion.loginState
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +21,146 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MyPageLoginFragment : Fragment() {
+class MyPageLoginFragment : Fragment(), View.OnClickListener {
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_login -> {
+
+                val alertDialog =
+                    AlertDialog.Builder(
+                        ContextThemeWrapper(
+                            activity,
+                            R.style.Theme_AppCompat_Light_Dialog
+                        )
+                    )
+
+
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+
+                Log.d("1111", "$retrofit")
+
+                val userApi = retrofit.create(UserApi::class.java)
+
+                Log.d("1111", "$userApi")
+
+
+                userApi.login(
+                    et_email.text.toString(),
+                    et_pass.text.toString()
+                )?.enqueue(object : Callback<ResultModel> {
+
+                    override fun onResponse(
+                        call: Call<ResultModel>?,
+                        response: Response<ResultModel>?
+                    ) {
+
+                        val resultModel = response?.body()
+                        Log.d("1111", "${resultModel?.result}")
+                        Log.d("1111", "${resultModel?.resultNickname}")
+
+                        if (resultModel?.result.equals("ok")) {
+
+
+                            alertDialog.setTitle("로그인 성공")
+                            alertDialog.setMessage(et_email.text.toString() + "님 환영합니다!")
+                            alertDialog.setPositiveButton(
+                                "확인",
+                                object : DialogInterface.OnClickListener {
+                                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                                        this@MyPageLoginFragment.requireFragmentManager()
+                                            .beginTransaction()
+                                            .replace(
+                                                R.id.mypage_main_container,
+                                                MyPageFragment()
+                                            ).commit().also {
+                                                loginState = true
+                                                userId = et_email.text.toString()
+                                                userNickname =
+                                                    resultModel?.resultNickname.toString()
+
+                                            }
+                                    }
+                                })
+                            alertDialog.show()
+
+
+//                            this@MyPageLoginFragment.requireFragmentManager().beginTransaction()
+//                                .replace(
+//                                    R.id.mypage_main_container,
+//                                    MyPageFragment()
+//                                ).commit().also {
+//                                    loginState = true
+//                                    userId = et_email.text.toString()
+//                                }
+
+                        } else {
+
+
+                            alertDialog.setTitle("로그인 실패")
+                            alertDialog.setMessage("입력한 정보를 확인바랍니다.")
+                            alertDialog.setPositiveButton(
+                                "확인",
+                                object : DialogInterface.OnClickListener {
+                                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                                        Log.d("1111", "실패")
+                                    }
+                                })
+                            alertDialog.show()
+
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<ResultModel>?, t: Throwable?) {
+
+                        alertDialog.setTitle("로그인 실패")
+                        alertDialog.setMessage("네트워크를 확인바랍니다.")
+                        alertDialog.setPositiveButton(
+                            "확인",
+                            object : DialogInterface.OnClickListener {
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    Log.d("1111", "네트워크문제!!")
+                                    Log.d("1111", "$call")
+                                    Log.d("1111", "$t")
+                                }
+                            })
+                        alertDialog.show()
+
+                    }
+
+
+                })
+
+
+            }
+
+            R.id.ib_login_back -> {
+                this.requireFragmentManager().beginTransaction().replace(
+                    R.id.mypage_main_container,
+                    MyPageFragment()
+                ).commit()
+            }
+
+            R.id.tv_login_register -> {
+                this.requireFragmentManager().beginTransaction().replace(
+                    R.id.mypage_main_container,
+                    MyPageRegisterFragment()
+                ).commit()
+            }
+
+            R.id.tv_login_find -> {
+                this.requireFragmentManager().beginTransaction().replace(
+                    R.id.loading_container,
+                    MyPageFindFragment()
+                ).commit()
+            }
+
+
+        }
+    }
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -45,93 +187,25 @@ class MyPageLoginFragment : Fragment() {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
-        val gson = GsonBuilder().setLenient().create()
-
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-        Log.d("1111","$retrofit")
-
-        val userApi = retrofit.create(UserApi::class.java)
-
-        Log.d("1111","$userApi")
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(url)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        Log.d("1111", "$retrofit")
+//
+//        val userApi = retrofit.create(UserApi::class.java)
+//
+//        Log.d("1111", "$userApi")
 
 
-        btn_login.setOnClickListener {
-            userApi.login(
-                et_email.text.toString(),
-                et_pass.text.toString()
-            )?.enqueue(object : Callback<ResultModel> {
-
-                override fun onResponse(call: Call<ResultModel>, response: Response<ResultModel>) {
-
-                    this@MyPageLoginFragment.requireFragmentManager().beginTransaction().replace(
-                        R.id.mypage_main_container,
-                        MyPageFragment()
-                    ).commit()
-
-                    Log.d("1111","$call")
-                    Log.d("1111","$response")
-                    Log.d("1111","연결 성공")
-
-                    val result = response.body()
-
-                    Log.d("1111","$result")
-
-                    if(result!!.equals("ok")){
-                        Log.d("1111","ok성공")
-                    }else{
-                        Log.d("1111","ok실패")
-                    }
-                }
-
-                override fun onFailure(call: Call<ResultModel>, t: Throwable) {
-
-                    Log.d("1111",""+et_email.text.toString())
-                    Log.d("1111",""+et_pass.text.toString())
-                    Log.d("1111",""+t)
-                    Log.d("1111",""+call)
-                    Log.d("1111","연결 실패")
-
-                }
-
-
-            })
-        }
-
-        ib_login_back.setOnClickListener {
-
-            this.requireFragmentManager().beginTransaction().replace(
-                R.id.mypage_main_container,
-                MyPageFragment()
-            ).commit()
-
-        }
-
-
-        tv_login_register.setOnClickListener {
-
-            this.requireFragmentManager().beginTransaction().replace(
-                R.id.mypage_main_container,
-                MyPageRegisterFragment()
-            ).commit()
-
-        }
-
-
-        tv_login_find.setOnClickListener {
-
-
-        }
+        btn_login.setOnClickListener(this)
+        ib_login_back.setOnClickListener(this)
+        tv_login_register.setOnClickListener(this)
+        tv_login_find.setOnClickListener(this)
 
 
     }
-
-
 
 
     override fun onStart() {
@@ -170,9 +244,12 @@ class MyPageLoginFragment : Fragment() {
     }
 
     companion object {
+        var userId = ""
+        var userNickname = ""
         private const val fragmentName = "MyPageLoginFragment"
-        private const val url = "http://duksung12.cafe24.com/"
+        private const val url = "https://duksung12.cafe24.com"
     }
 
 
 }
+
