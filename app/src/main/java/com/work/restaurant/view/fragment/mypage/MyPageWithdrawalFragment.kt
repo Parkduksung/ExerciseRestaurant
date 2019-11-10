@@ -115,7 +115,6 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener {
                                     R.style.Theme_AppCompat_Light_Dialog
                                 )
                             )
-
                             alertDialog.setTitle("실패")
                             alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
                             alertDialog.setPositiveButton("확인",
