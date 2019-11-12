@@ -13,11 +13,13 @@ class ViewPagerAdapter(
     FragmentPagerAdapter(supportFragmentManager) {
 
 
-    ////    private val fragmentTitleIconList= intArrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
-    //
-    //    //    private val fragmentTitleList2 : CharSequence = arrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
+    //    private val fragmentTitleIconList= intArrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
+
+    //    private val fragmentTitleList2 : CharSequence = arrayOf(R.drawable.ic_home,R.drawable.ic_search,R.drawable.ic_community,R.drawable.ic_mypage)
     override fun getItem(position: Int): Fragment =
         fragmentMap.map { it.value }[position]
+
+
 //        when (position) {
 //            0 -> {
 //

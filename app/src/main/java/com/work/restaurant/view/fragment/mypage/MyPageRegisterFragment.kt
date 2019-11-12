@@ -22,6 +22,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MyPageRegisterFragment : Fragment(), View.OnClickListener {
+
+    private var emailState = false
+    private var nicknameState = false
+    private var passState = false
+    private var passSameState = false
+
+
     override fun onClick(v: View?) {
         val alertDialog =
             AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
@@ -38,35 +45,17 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
 
             R.id.btn_register -> {
 
-                var emailState = false
-                var nicknameState = false
-                var passState = false
-                var passSameState = false
-
-                if (et_register_nickname.text.toString() != "") {
-                    nicknameState = true
-                }
-                if (et_register_email.text.toString() != "") {
-                    emailState = true
-                }
-                if (et_register_pass.text.toString() != "") {
-                    passState = true
-                }
-                if (et_register_pass == et_register_pass_ok) {
-                    passSameState = true
-                }
-
+                inputState()
 
                 val retrofit = Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
-
                 val userApi = retrofit.create(UserApi::class.java)
 
 
-                if (nicknameState || emailState || passState || passSameState) {
+                if (nicknameState && emailState && passState && passSameState) {
 
                     userApi.register(
                         et_register_nickname.text.toString(),
@@ -150,6 +139,42 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun inputState() {
+        if (et_register_nickname.text.toString() != "") {
+            nicknameState = true
+            iv_nickname_state.setImageResource(R.drawable.ic_ok)
+        } else {
+            nicknameState = false
+            iv_nickname_state.setImageResource(R.drawable.ic_no)
+        }
+
+        if (et_register_email.text.toString() != "") {
+            emailState = true
+            iv_email_state.setImageResource(R.drawable.ic_ok)
+        } else {
+            emailState = false
+            iv_email_state.setImageResource(R.drawable.ic_no)
+        }
+
+        if (et_register_pass.text.toString() != "") {
+            passState = true
+            iv_pass_state.setImageResource(R.drawable.ic_ok)
+        } else {
+            passState = false
+            iv_pass_state.setImageResource(R.drawable.ic_no)
+
+        }
+
+        if (et_register_pass == et_register_pass_ok) {
+            passSameState = true
+            iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
+        } else {
+            passSameState = false
+            iv_pass_ok_state.setImageResource(R.drawable.ic_no)
+        }
+    }
+
+
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -177,13 +202,6 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
 
 
         ib_register_back.setOnClickListener(this)
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//        val userApi = retrofit.create(UserApi::class.java)
 
         btn_register.setOnClickListener(this)
 

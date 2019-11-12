@@ -64,9 +64,7 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
         vp_address.adapter = adapter
         tl_address.setupWithViewPager(vp_address)
 
-//        main_taps.getTabAt(1)?.apply {
-//            icon?.setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-//        }
+
 
     }
 
@@ -107,6 +105,7 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+        var addressClick = ""
         private const val fragmentName = "HomeAddressFragment"
     }
 }

@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.view.adapter.AddressAdapter
+import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
 class HomeAddressSelect1Fragment : Fragment() {
 
+    private lateinit var addressAdapter: AddressAdapter
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -30,7 +34,9 @@ class HomeAddressSelect1Fragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_select1_fragment, container, false)
+        return inflater.inflate(R.layout.home_address_select_fragment, container, false).also {
+            addressAdapter = AddressAdapter()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -38,6 +44,23 @@ class HomeAddressSelect1Fragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
+        startView()
+
+
+    }
+
+    private fun startView(){
+
+        val loadingTextArrayList  = resources.getStringArray(R.array.select)
+
+        recyclerview_address.run{
+            this.adapter = addressAdapter
+
+            loadingTextArrayList.forEach {
+                addressAdapter.addData(it)
+            }
+            layoutManager = GridLayoutManager(this.context,3)
+        }
     }
 
 
