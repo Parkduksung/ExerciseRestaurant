@@ -1,4 +1,4 @@
-package com.work.restaurant.view.fragment.home
+package com.work.restaurant.view.fragment.community
 
 import android.content.Context
 import android.os.Bundle
@@ -7,30 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.work.restaurant.GoogleMapFragment
 import com.work.restaurant.R
-import kotlinx.android.synthetic.main.home_fragment.*
 
+class CommunityGymListFragment : Fragment() {
 
-class HomeFragment : Fragment(), View.OnClickListener {
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
-            R.id.et_home -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.loading_container, HomeAddressFragment()
-                ).commit()
-
-            }
-
-        }
-    }
 
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onCreate")
@@ -39,61 +26,41 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
-
+        return inflater.inflate(R.layout.community_gym_list_fragment, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onActivityCreated")
-
         super.onActivityCreated(savedInstanceState)
 
 
-        et_home.setOnClickListener(this)
-
-
-        startGoogleMaps()
-
     }
 
-    private fun startGoogleMaps() {
-
-        val fragmentManager = fragmentManager
-        val fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.add(R.id.google_maps, GoogleMapFragment()).commit()
-
-    }
 
 
     override fun onStart() {
         Log.d(fragmentName, "onStart")
         super.onStart()
-
     }
 
     override fun onResume() {
         Log.d(fragmentName, "onResume")
         super.onResume()
-
     }
 
     override fun onPause() {
         Log.d(fragmentName, "onPause")
         super.onPause()
-
     }
 
     override fun onStop() {
         Log.d(fragmentName, "onStop")
         super.onStop()
-
     }
 
     override fun onDestroyView() {
@@ -104,7 +71,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onDestroy() {
         Log.d(fragmentName, "onDestroy")
         super.onDestroy()
-
     }
 
     override fun onDetach() {
@@ -113,7 +79,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private const val fragmentName = "HomeFragment"
+        private const val fragmentName = "CommunityGymListFragment"
     }
 
 }

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.adapter.ViewPagerAdapter
+import kotlinx.android.synthetic.main.community_fragment.*
 
 class CommunityFragment : Fragment() {
 
@@ -32,6 +34,39 @@ class CommunityFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.community_fragment, container, false)
     }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(fragmentName, "onActivityCreated")
+        super.onActivityCreated(savedInstanceState)
+
+        init()
+
+    }
+
+
+    private fun init() {
+        val fragmentMap: Map<String, Fragment> = mapOf(
+            "헬스장리뷰" to CommunityGymListFragment(),
+            "운동일지" to CommunityExerciseListFragment(),
+            "영양일지" to CommunityNutritionListFragment()
+        )
+
+        val adapter = ViewPagerAdapter(this.requireFragmentManager(), fragmentMap)
+        vp_community.adapter = adapter
+//        tl_community.setupWithViewPager(vp_community)
+
+        tl_community.run {
+            setupWithViewPager(vp_community)
+            getTabAt(0)?.setIcon(R.drawable.dumbell)
+            getTabAt(1)?.setIcon(R.drawable.dumbell)
+            getTabAt(2)?.setIcon(R.drawable.dumbell)
+
+        }
+
+    }
+
+
 
     override fun onStart() {
         Log.d(fragmentName, "onStart")

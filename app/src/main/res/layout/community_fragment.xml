@@ -1,15 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/community_container"
-    >
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="communityFragment"
-        android:textSize="50dp"></TextView>
+        android:orientation="vertical"
+        android:weightSum="40">
 
-</FrameLayout>
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+
+                    <Button
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/button_background"
+                        android:gravity="center"
+                        android:text="카테고리"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="25dp"></Button>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center">
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_weight="4">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="15">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="5">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/dumbell"></ImageView>-->
+
+<!--                </LinearLayout>-->
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="5">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/exercise"></ImageView>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="5">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/eat"></ImageView>-->
+
+<!--                </LinearLayout>-->
+
+
+<!--            </LinearLayout>-->
+
+
+<!--        </LinearLayout>-->
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_community"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TapTheme"
+                app:tabMode="fixed">
+
+
+
+<!--                <com.google.android.material.tabs.TabItem-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/eat"></ImageView>-->
+
+
+<!--                </com.google.android.material.tabs.TabItem>-->
+<!--                <TableRow>-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/eat"></ImageView>-->
+<!--                </TableRow>-->
+
+<!--                <TableRow>-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/eat"></ImageView>-->
+<!--                </TableRow>-->
+<!--                <TableRow>-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="11"-->
+<!--                        android:src="@drawable/eat"></ImageView>-->
+<!--                </TableRow>-->
+
+
+            </com.google.android.material.tabs.TabLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="20"></LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="29">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_community"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/home_address_container"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_weight="37">-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:orientation="vertical"-->
+        <!--                android:weightSum="10">-->
+
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="0dp"-->
+        <!--                    android:layout_weight="1"-->
+        <!--                    android:orientation="horizontal">-->
+
+        <!--                    <com.google.android.material.tabs.TabLayout-->
+        <!--                        android:id="@+id/tl_address"-->
+        <!--                        android:layout_width="match_parent"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:theme="@style/TapTheme"-->
+        <!--                        app:tabMode="fixed">-->
+
+
+        <!--                    </com.google.android.material.tabs.TabLayout>-->
+
+
+        <!--                </LinearLayout>-->
+
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="0dp"-->
+        <!--                    android:layout_weight="9">-->
+
+        <!--                    <androidx.viewpager.widget.ViewPager-->
+        <!--                        android:id="@+id/vp_address"-->
+        <!--                        android:layout_width="match_parent"-->
+        <!--                        android:layout_height="match_parent">-->
+
+        <!--                    </androidx.viewpager.widget.ViewPager>-->
+
+
+        <!--                </LinearLayout>-->
+
+
+        <!--            </LinearLayout>-->
+
+
+        <!--        </FrameLayout>-->
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
