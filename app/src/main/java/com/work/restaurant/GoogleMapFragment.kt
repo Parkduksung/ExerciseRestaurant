@@ -1,70 +1,45 @@
+@file:Suppress("DEPRECATION")
+
 package com.work.restaurant
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
 import java.util.*
 
 
-class GoogleMapFragment : OnMapReadyCallback, Fragment(),
-    ActivityCompat.OnRequestPermissionsResultCallback {
+@Suppress("DEPRECATION")
+class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClickListener {
+    override fun onMarkerClick(p0: Marker?) = false
 
 
-    private var map: GoogleMap? = null
-    private var currentMarker: Marker? = null
-    var currentLocation: Location? = null
-    lateinit var currentPosition: LatLng
-
+    private lateinit var mMap: GoogleMap
     private lateinit var mapView: MapView
-
-    private var fusedLocationClient: FusedLocationProviderClient? = null
-    private var locationRequest: LocationRequest? = null
-    private var location: Location? = null
-
-
-    private var locationCallback: LocationCallback = object : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult?) {
-            super.onLocationResult(p0)
-
-            val locationList = p0?.locations
-
-            if (locationList?.size!! > 0) {
-                location = locationList[locationList.size - 1]
-
-                currentPosition = LatLng(location!!.latitude, location!!.longitude)
-
-                val markerTitle = getCurrentAddress(currentPosition)
-                val markerSnippet = ("위도:" + location!!.latitude.toString()
-                        + " 경도:" + location!!.longitude.toString())
-
-                setCurrentLocation(location, markerTitle, markerSnippet)
-                currentLocation = location
-
-
-            }
-        }
-    }
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
 
     override fun onMapReady(googleMap: GoogleMap) {
 
+        mMap = googleMap
 //        val seoulPosition = LatLng(37.56, 126.97)
 //        val markerOptions = MarkerOptions().apply {
 //            position(seoulPosition)
@@ -77,20 +52,14 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(),
 //            moveCamera(CameraUpdateFactory.newLatLng(seoulPosition))
 //            animateCamera(CameraUpdateFactory.zoomTo(10f))
 //        }
+//        val sydney = LatLng(-34.0, 151.0)
+//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
-        map = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.setOnMarkerClickListener(this)
 
-        setDefaultLocation()
-        startLocationUpdates()
-
-        map?.run {
-//            isMyLocationEnabled = true
-            uiSettings.isMyLocationButtonEnabled = true
-        }
-
-//        btn.setOnClickListener {
-//            searchLocation()
-//        }
+        setUpMap()
 
     }
 
@@ -115,8 +84,11 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(),
     ): View? {
 
         val rootView = inflater.inflate(R.layout.google_maps, container, false)
+
         mapView = rootView.findViewById(R.id.map)
         mapView.getMapAsync(this)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(this.requireActivity())
 
         return rootView
     }
@@ -126,83 +98,81 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(),
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
-        mapView.run{
-            onCreate(savedInstanceState)
-            onResume()
-            getMapAsync(this@GoogleMapFragment)
+        if (::mapView.isInitialized) {
+            mapView.onCreate(savedInstanceState)
 
         }
-//        if (::mapView.isInitialized)
-//            mapView.onCreate(savedInstanceState)
-
-
-        locationRequest = LocationRequest()
-            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY) //정확한 위치 요청
-            .setInterval(1000.toLong()) //활성 위치 업데이트 간격
-            .setFastestInterval(500.toLong()) //위치 업데이트 간격
-
-        LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@GoogleMapFragment.context!!)
-
-
 
 
     }
 
-    fun getCurrentAddress(latLng: LatLng): String {
-        val geoCoder = Geocoder(this@GoogleMapFragment.context, Locale.getDefault())
-        val addresses = geoCoder.getFromLocation(
-            latLng.latitude,
-            latLng.longitude,
-            1
-        )
-        return addresses[0].getAddressLine(0).toString()
-    }
-
-    fun setCurrentLocation(location: Location?, markerTitle: String, markerSnippet: String) {
-        currentMarker?.remove()
-
-        val currentLatLng = LatLng(location!!.latitude, location.longitude)
-
-        val markerOptions = MarkerOptions().apply {
-            position(currentLatLng)
-            title(markerTitle)
-            snippet(markerSnippet)
-            draggable(true)
+    private fun setUpMap() {
+        if (ActivityCompat.checkSelfPermission(
+                this.context!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
         }
 
-        currentMarker = map?.addMarker(markerOptions)
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+        mMap.isMyLocationEnabled = true
 
+        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                placeMarkerOnMap(currentLatLng)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
+        }
     }
 
-    private fun setDefaultLocation() {
-        val defaultLocation = LatLng(37.56, 126.97)
-        val markerTitle = "서울"
-        val markerSnippet = "한국의 수도"
+    private fun placeMarkerOnMap(location: LatLng) {
 
-        currentMarker?.remove()
+        val markerOptions = MarkerOptions().position(location)
 
-        val markerOptions = MarkerOptions().apply {
-            position(defaultLocation)
-            title(markerTitle)
-            snippet(markerSnippet)
-            draggable(true)
-            icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        val titleStr = getAddress(location)  // add these two lines
+        markerOptions.title(titleStr)
+
+        mMap.addMarker(markerOptions)
+    }
+
+    private fun getAddress(latLng: LatLng): String {
+
+        val geoCoder = Geocoder(this.context, Locale.getDefault())
+        val addresses: List<Address>
+
+        var array: List<String>
+
+        try {
+
+            addresses = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            Log.d("sssssssssssssssssssssss", addresses[0].toString())
+            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
+            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
+
+            array = addresses[0].getAddressLine(0).split(" ")
+
+            for (i in 0 until array.size) {
+                Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
+            }
+
+            address1 = array[1].substring(0, 2)
+            address2 = array[2]
+            address3 = array[3]
+
+            addressAll = "$address1 $address2 $address3"
+
+        } catch (e: IOException) {
+            Log.e("MapsActivity", e?.localizedMessage)
         }
 
-        currentMarker = map?.addMarker(markerOptions)
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
-
-    }
-
-    private fun startLocationUpdates() {
-        fusedLocationClient?.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.myLooper()
-        )
+        return addressAll
     }
 
 
@@ -250,5 +220,13 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(),
 
     companion object {
         private const val fragmentName = "GoogleMapFragment"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+
+
+        // 주소 변경 할때 사용용도 및 현재 주소 표현
+        lateinit var address1: String
+        lateinit var address2: String
+        lateinit var address3: String
+        lateinit var addressAll: String
     }
 }
