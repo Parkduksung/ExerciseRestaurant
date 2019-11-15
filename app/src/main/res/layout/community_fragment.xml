@@ -40,7 +40,7 @@
                         android:gravity="center"
                         android:text="카테고리"
                         android:textColor="@color/colorWhite"
-                        android:textSize="25dp"></Button>
+                        android:textSize="20dp"></Button>
 
                 </LinearLayout>
 
@@ -60,64 +60,63 @@
         </LinearLayout>
 
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:layout_weight="4">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_weight="4">-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:weightSum="15">-->
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:orientation="horizontal"-->
+        <!--                android:weightSum="15">-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="5">-->
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="0dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:layout_weight="5">-->
 
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/dumbell"></ImageView>-->
+        <!--                    <ImageView-->
+        <!--                        android:layout_width="0dp"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:layout_weight="11"-->
+        <!--                        android:src="@drawable/dumbell"></ImageView>-->
 
-<!--                </LinearLayout>-->
-
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="5">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/exercise"></ImageView>-->
-
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="5">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/eat"></ImageView>-->
-
-<!--                </LinearLayout>-->
+        <!--                </LinearLayout>-->
 
 
-<!--            </LinearLayout>-->
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="0dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:layout_weight="5">-->
+
+        <!--                    <ImageView-->
+        <!--                        android:layout_width="0dp"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:layout_weight="11"-->
+        <!--                        android:src="@drawable/exercise"></ImageView>-->
+
+        <!--                </LinearLayout>-->
+
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="0dp"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:layout_weight="5">-->
+
+        <!--                    <ImageView-->
+        <!--                        android:layout_width="0dp"-->
+        <!--                        android:layout_height="match_parent"-->
+        <!--                        android:layout_weight="11"-->
+        <!--                        android:src="@drawable/eat"></ImageView>-->
+
+        <!--                </LinearLayout>-->
 
 
-<!--        </LinearLayout>-->
+        <!--            </LinearLayout>-->
 
+
+        <!--        </LinearLayout>-->
 
 
         <LinearLayout
@@ -133,43 +132,42 @@
                 app:tabMode="fixed">
 
 
+                <!--                <com.google.android.material.tabs.TabItem-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content">-->
 
-<!--                <com.google.android.material.tabs.TabItem-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/eat"></ImageView>-->
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="11"-->
+                <!--                        android:src="@drawable/eat"></ImageView>-->
 
 
-<!--                </com.google.android.material.tabs.TabItem>-->
-<!--                <TableRow>-->
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/eat"></ImageView>-->
-<!--                </TableRow>-->
+                <!--                </com.google.android.material.tabs.TabItem>-->
+                <!--                <TableRow>-->
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="11"-->
+                <!--                        android:src="@drawable/eat"></ImageView>-->
+                <!--                </TableRow>-->
 
-<!--                <TableRow>-->
+                <!--                <TableRow>-->
 
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/eat"></ImageView>-->
-<!--                </TableRow>-->
-<!--                <TableRow>-->
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="11"-->
+                <!--                        android:src="@drawable/eat"></ImageView>-->
+                <!--                </TableRow>-->
+                <!--                <TableRow>-->
 
-<!--                    <ImageView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="11"-->
-<!--                        android:src="@drawable/eat"></ImageView>-->
-<!--                </TableRow>-->
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="11"-->
+                <!--                        android:src="@drawable/eat"></ImageView>-->
+                <!--                </TableRow>-->
 
 
             </com.google.android.material.tabs.TabLayout>
@@ -180,13 +178,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="3">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="20"></LinearLayout>
+                android:weightSum="20">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_search"></ImageButton>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="11">
+
+                    <EditText
+                        android:id="@+id/et_community_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusableInTouchMode="false"
+                        android:hint="내용을 입력해 주십시요"></EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3">
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                    </Spinner>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_write"></ImageView>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
 
         </LinearLayout>

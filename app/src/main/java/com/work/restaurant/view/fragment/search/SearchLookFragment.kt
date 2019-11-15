@@ -8,8 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import kotlinx.android.synthetic.main.search_look_fragment.*
 
-class SearchLookFragment : Fragment() {
+class SearchLookFragment : Fragment(), View.OnClickListener {
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.ib_search_look_back -> {
+                requireFragmentManager().beginTransaction().remove(this).commit()
+            }
+        }
+    }
 
 
     override fun onAttach(context: Context) {
@@ -36,6 +45,8 @@ class SearchLookFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
+
+        ib_search_look_back.setOnClickListener(this)
 
 
     }

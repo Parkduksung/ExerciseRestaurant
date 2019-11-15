@@ -6,16 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import kotlinx.android.synthetic.main.search_fragment.*
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), View.OnClickListener {
+    override fun onClick(v: View?) {
+        when (v?.id) {
+
+            R.id.et_search_look -> {
+                this.requireFragmentManager().beginTransaction().replace(
+                    R.id.search_main_container,
+                    SearchLookFragment()
+                ).commit()
+            }
+        }
+    }
 
 
-    private lateinit var searchlook: ImageButton
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
         super.onAttach(context)
@@ -45,17 +54,7 @@ class SearchFragment : Fragment() {
 
         init()
 
-        searchlook = ib_search_look
-
-        searchlook.setOnClickListener {
-
-            this.requireFragmentManager().beginTransaction().replace(
-                R.id.search_main_container,
-                SearchLookFragment()
-            ).commit()
-
-
-        }
+        et_search_look.setOnClickListener(this)
 
 
     }

@@ -9,12 +9,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
+import com.work.restaurant.view.fragment.home.HomeAddressSelect3Fragment.Companion.toggleInput
 import kotlinx.android.synthetic.main.home_address_fragment.*
 
 class HomeAddressFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
+
+
             R.id.ib_home_address_back -> {
+
+                if (toggleInput) {
+                    this.requireFragmentManager().beginTransaction().remove(
+                        this
+                    ).commit().apply {
+
+                    }
+                }
+
                 this.requireFragmentManager().beginTransaction().remove(
                     this
                 ).commit()
@@ -65,7 +77,6 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
         tl_address.setupWithViewPager(vp_address)
 
 
-
     }
 
 
@@ -106,6 +117,9 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
 
     companion object {
         var addressClick = ""
+        lateinit var selectAddress1: String
+        lateinit var selectAddress2: String
+        lateinit var selectAddress3: String
         private const val fragmentName = "HomeAddressFragment"
     }
 }

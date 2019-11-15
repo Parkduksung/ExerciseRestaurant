@@ -6,15 +6,33 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.fragment.home.HomeAddressFragment
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
+import com.work.restaurant.view.fragment.home.HomeAddressSelect3Fragment.Companion.toggleInput
 import kotlinx.android.synthetic.main.search_rank_fragment.*
 
-class SearchRankFragment : Fragment() {
+class SearchRankFragment : Fragment(), View.OnClickListener {
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+
+            R.id.iv_search_settings -> {
+
+                this.requireFragmentManager().beginTransaction().replace(
+                    R.id.loading_container,
+                    HomeAddressFragment()
+                ).commit()
 
 
-    private lateinit var searchsettings: ImageView
+            }
+
+
+        }
+    }
 
     override fun onAttach(context: Context) {
         Log.d(fragmentName, "onAttach")
@@ -42,16 +60,10 @@ class SearchRankFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        searchsettings = iv_search_settings
+        iv_search_settings.setOnClickListener(this)
 
-        searchsettings.setOnClickListener {
-
-            this.requireFragmentManager().beginTransaction().replace(
-                R.id.search_main_container,
-                SearchSettingFragment()
-            ).commit()
-
-
+        if (toggleInput) {
+            tv_search_locate.text = "$selectAddress1 $selectAddress2 $selectAddress3"
         }
 
     }

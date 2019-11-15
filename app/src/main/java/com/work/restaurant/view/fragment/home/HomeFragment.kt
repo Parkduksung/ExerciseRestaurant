@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.work.restaurant.GoogleMapFragment
 import com.work.restaurant.R
+import com.work.restaurant.view.fragment.googlemap.GoogleMapFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
@@ -58,7 +58,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         et_home.setOnClickListener(this)
 
-
         startGoogleMaps()
 
     }
@@ -67,7 +66,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         val fragmentManager = fragmentManager
         val fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.add(R.id.google_maps, GoogleMapFragment()).commit()
+        fragmentTransaction.add(
+            R.id.google_maps,
+            GoogleMapFragment()
+        ).commit()
 
     }
 
@@ -113,6 +115,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+        var togglesetting = false
         private const val fragmentName = "HomeFragment"
     }
 

@@ -59,13 +59,12 @@ class CommunityFragment : Fragment() {
         tl_community.run {
             setupWithViewPager(vp_community)
             getTabAt(0)?.setIcon(R.drawable.dumbell)
-            getTabAt(1)?.setIcon(R.drawable.dumbell)
-            getTabAt(2)?.setIcon(R.drawable.dumbell)
+            getTabAt(1)?.setIcon(R.drawable.exercise)
+            getTabAt(2)?.setIcon(R.drawable.eat)
 
         }
 
     }
-
 
 
     override fun onStart() {

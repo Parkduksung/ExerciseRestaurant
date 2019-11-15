@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.address_item.view.*
 class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     private val addressArr = ArrayList<String>()
+    var item = ""
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

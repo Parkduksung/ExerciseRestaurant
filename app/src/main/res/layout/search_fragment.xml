@@ -4,6 +4,7 @@
     android:id="@+id/search_main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,12 +30,10 @@
                     android:layout_weight="2">
 
                     <ImageButton
-                        android:id="@+id/ib_search_look"
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_search"
-
-                        ></ImageButton>
+                        app:srcCompat="@drawable/ic_search"></ImageButton>
 
                 </LinearLayout>
 
@@ -44,9 +43,10 @@
                     android:layout_weight="8">
 
                     <EditText
-                        android:id="@+id/et_search"
+                        android:id="@+id/et_search_look"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:focusableInTouchMode="false"
                         android:hint="검색할 헬스장 이름을 입력하세요."></EditText>
 
                 </LinearLayout>

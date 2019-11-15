@@ -40,7 +40,6 @@
                         android:background="@color/colorWhite"
                         app:srcCompat="@drawable/ic_back"></ImageButton>
 
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -49,18 +48,18 @@
                     android:layout_weight="8"
                     android:gravity="center">
 
-                    <Button
+                    <EditText
+                        android:id="@+id/et_search_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/button_round"
+                        android:gravity="center"
                         android:text="오늘은 어디에서?"
                         android:textColor="@color/colorWhite"
-                        android:textSize="35dp"></Button>
-
+                        android:textSize="35dp"></EditText>
 
                 </LinearLayout>
-
 
             </LinearLayout>
 

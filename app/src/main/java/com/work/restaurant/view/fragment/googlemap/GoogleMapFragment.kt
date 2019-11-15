@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.work.restaurant
+package com.work.restaurant.view.fragment.googlemap
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.work.restaurant.R
 import java.io.IOException
 import java.util.*
 

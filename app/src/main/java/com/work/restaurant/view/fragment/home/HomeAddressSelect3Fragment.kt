@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
 class HomeAddressSelect3Fragment : Fragment() {
@@ -28,7 +30,6 @@ class HomeAddressSelect3Fragment : Fragment() {
         Log.d(fragmentName, "onCreate")
         super.onCreate(savedInstanceState)
 
-
     }
 
     override fun onCreateView(
@@ -45,21 +46,30 @@ class HomeAddressSelect3Fragment : Fragment() {
         Log.d(fragmentName, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
         startView()
+
+//        if (selectAddress3.isEmpty()) {
+//            toggleInput = false
+//        } else {
+//            toggleInput = true
+//        }
+
+
     }
 
-    private fun startView(){
+    private fun startView() {
 
-        val loadingTextArrayList  = resources.getStringArray(R.array.계양구)
+        val loadingTextArrayList = resources.getStringArray(R.array.계양구)
 
-        recyclerview_address.run{
+        recyclerview_address.run {
             this.adapter = addressAdapter
 
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
-            layoutManager = GridLayoutManager(this.context,3)
+            layoutManager = GridLayoutManager(this.context, 3)
+
+            selectAddress3 = addressClick
         }
     }
 
@@ -100,6 +110,7 @@ class HomeAddressSelect3Fragment : Fragment() {
     }
 
     companion object {
+        var toggleInput = false
         private const val fragmentName = "HomeAddressSelect3Fragment"
     }
 
