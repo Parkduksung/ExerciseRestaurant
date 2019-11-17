@@ -21,11 +21,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loading()
-//
-//        val fragmentAdapter = ViewPagerAdapter(supportFragmentManager)
-//        vp_main.adapter = fragmentAdapter
-//
-//        tl_main.setupWithViewPager(vp_main)
         init()
 
 
@@ -33,11 +28,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun init() {
+
         val fragmentMap: Map<String, Fragment> = mapOf(
-            "홈" to HomeFragment(),
-            "헬스장검색" to SearchFragment(),
-            "커뮤니티" to CommunityFragment(),
-            "마이페이지" to MyPageFragment()
+            resources.getStringArray(R.array.tab_main)[0] to HomeFragment(),
+            resources.getStringArray(R.array.tab_main)[1] to SearchFragment(),
+            resources.getStringArray(R.array.tab_main)[2] to CommunityFragment(),
+            resources.getStringArray(R.array.tab_main)[3] to MyPageFragment()
         )
 
 
@@ -52,11 +48,6 @@ class MainActivity : AppCompatActivity() {
             getTabAt(3)?.setIcon(R.drawable.ic_mypage)
         }
 
-
-//        main_taps.getTabAt(1)?.apply {
-//            icon?.setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_IN);
-//        }
-
     }
 
     private fun loading() {
@@ -66,7 +57,6 @@ class MainActivity : AppCompatActivity() {
                 LoadingFragment()
             ).commit()
     }
-
 
 
 }

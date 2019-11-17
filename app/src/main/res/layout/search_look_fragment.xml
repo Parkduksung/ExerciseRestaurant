@@ -55,7 +55,7 @@
                         android:layout_marginRight="5dp"
                         android:background="@drawable/button_round"
                         android:gravity="center"
-                        android:text="오늘은 어디에서?"
+                        android:hint="오늘은 어디에서?"
                         android:textColor="@color/colorWhite"
                         android:textSize="35dp"></EditText>
 

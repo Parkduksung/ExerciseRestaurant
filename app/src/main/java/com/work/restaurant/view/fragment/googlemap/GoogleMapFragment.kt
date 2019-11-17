@@ -66,13 +66,13 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
 
     override fun onAttach(context: Context) {
-        Log.d(fragmentName, "onAttach")
+        Log.d(TAG, "onAttach")
         super.onAttach(context)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(fragmentName, "onCreate")
+        Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
 
@@ -96,7 +96,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(fragmentName, "onActivityCreated")
+        Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
         if (::mapView.isInitialized) {
@@ -109,7 +109,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(
-                this.context!!,
+                this.requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -178,49 +178,49 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
 
     override fun onStart() {
-        Log.d(fragmentName, "onStart")
+        Log.d(TAG, "onStart")
         super.onStart()
         mapView.onStart()
     }
 
     override fun onResume() {
-        Log.d(fragmentName, "onResume")
+        Log.d(TAG, "onResume")
         super.onResume()
         mapView.onResume()
     }
 
     override fun onPause() {
-        Log.d(fragmentName, "onPause")
+        Log.d(TAG, "onPause")
         super.onPause()
         mapView.onPause()
     }
 
     override fun onStop() {
-        Log.d(fragmentName, "onStop")
+        Log.d(TAG, "onStop")
         super.onStop()
         mapView.onStop()
     }
 
     override fun onDestroyView() {
-        Log.d(fragmentName, "onDestroyView")
+        Log.d(TAG, "onDestroyView")
         super.onDestroyView()
 
 
     }
 
     override fun onDestroy() {
-        Log.d(fragmentName, "onDestroy")
+        Log.d(TAG, "onDestroy")
         mapView.onDestroy()
         super.onDestroy()
     }
 
     override fun onDetach() {
-        Log.d(fragmentName, "onDetach")
+        Log.d(TAG, "onDetach")
         super.onDetach()
     }
 
     companion object {
-        private const val fragmentName = "GoogleMapFragment"
+        private const val TAG = "GoogleMapFragment"
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
 
 

@@ -21,13 +21,13 @@ class HomeAddressSelect2Fragment : Fragment() {
 
 
     override fun onAttach(context: Context) {
-        Log.d(fragmentName, "onAttach")
+        Log.d(TAG, "onAttach")
         super.onAttach(context)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(fragmentName, "onCreate")
+        Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
 
@@ -44,7 +44,7 @@ class HomeAddressSelect2Fragment : Fragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(fragmentName, "onActivityCreated")
+        Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
 
@@ -71,42 +71,42 @@ class HomeAddressSelect2Fragment : Fragment() {
     }
 
     override fun onStart() {
-        Log.d(fragmentName, "onStart")
+        Log.d(TAG, "onStart")
         super.onStart()
     }
 
     override fun onResume() {
-        Log.d(fragmentName, "onResume")
+        Log.d(TAG, "onResume")
         super.onResume()
     }
 
     override fun onPause() {
-        Log.d(fragmentName, "onPause")
+        Log.d(TAG, "onPause")
         super.onPause()
     }
 
     override fun onStop() {
-        Log.d(fragmentName, "onStop")
+        Log.d(TAG, "onStop")
         super.onStop()
     }
 
     override fun onDestroyView() {
-        Log.d(fragmentName, "onDestroyView")
+        Log.d(TAG, "onDestroyView")
         super.onDestroyView()
     }
 
     override fun onDestroy() {
-        Log.d(fragmentName, "onDestroy")
+        Log.d(TAG, "onDestroy")
         super.onDestroy()
     }
 
     override fun onDetach() {
-        Log.d(fragmentName, "onDetach")
+        Log.d(TAG, "onDetach")
         super.onDetach()
     }
 
     companion object {
-        private const val fragmentName = "HomeAddressSelect2Fragment"
+        private const val TAG = "HomeAddressSelect2Fragment"
     }
 
 }
