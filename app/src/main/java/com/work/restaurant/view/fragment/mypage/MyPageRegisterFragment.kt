@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.login.ResultModel
 import com.work.restaurant.login.UserApi
-import com.work.restaurant.view.fragment.mypage.MyPageLoginFragment.Companion.userId
+import com.work.restaurant.view.fragment.mypage.MyPageLoginFragment.Companion.userNickname
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -88,7 +88,6 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
                             if (result.equals("ok")) {
                                 Log.d("1111111", "성공")
 
-
                                 this@MyPageRegisterFragment.requireFragmentManager()
                                     .beginTransaction()
                                     .replace(
@@ -96,9 +95,8 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
                                         MyPageRegisterOkFragment()
                                     ).commit().also {
                                         MyPageFragment.loginState = true
-                                        userId = et_register_email.text.toString()
+                                        userNickname = et_register_email.text.toString()
                                     }
-
                             } else {
                                 alertDialog.setTitle("회웝가입 실패")
                                 alertDialog.setMessage("회원 가입을 실패하였습니다.")
@@ -143,34 +141,54 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
         if (et_register_nickname.text.toString() != "") {
             nicknameState = true
             iv_nickname_state.setImageResource(R.drawable.ic_ok)
+            Log.d("ddddddddddddddddd", "$nicknameState")
         } else {
             nicknameState = false
             iv_nickname_state.setImageResource(R.drawable.ic_no)
+            Log.d("ddddddddddddddddd", "$nicknameState")
         }
 
         if (et_register_email.text.toString() != "") {
             emailState = true
             iv_email_state.setImageResource(R.drawable.ic_ok)
+            Log.d("ddddddddddddddddd", "$emailState")
         } else {
             emailState = false
             iv_email_state.setImageResource(R.drawable.ic_no)
+            Log.d("ddddddddddddddddd", "$emailState")
         }
 
         if (et_register_pass.text.toString() != "") {
             passState = true
             iv_pass_state.setImageResource(R.drawable.ic_ok)
+            Log.d("ddddddddddddddddd", "$passState")
+
+//            if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
+//                passSameState = true
+//                iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
+//                Log.d("ddddddddddddddddd","$passSameState")
+//            } else {
+//                passSameState = false
+//                iv_pass_ok_state.setImageResource(R.drawable.ic_no)
+//                Log.d("ddddddddddddddddd","$passSameState")
+//            }
+
+
         } else {
             passState = false
             iv_pass_state.setImageResource(R.drawable.ic_no)
+            Log.d("ddddddddddddddddd", "$passState")
 
         }
 
-        if (et_register_pass == et_register_pass_ok) {
+        if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
             passSameState = true
             iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
+            Log.d("ddddddddddddddddd", "$passSameState")
         } else {
             passSameState = false
             iv_pass_ok_state.setImageResource(R.drawable.ic_no)
+            Log.d("ddddddddddddddddd", "$passSameState")
         }
     }
 

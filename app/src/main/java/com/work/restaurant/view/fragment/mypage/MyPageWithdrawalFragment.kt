@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.login.ResultModel
 import com.work.restaurant.login.UserApi
+import com.work.restaurant.view.fragment.mypage.MyPageLoginFragment.Companion.userNickname
 import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,9 +46,9 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener {
                 val userApi = retrofit.create(UserApi::class.java)
 
 
-                Log.d("ttt", "${MyPageLoginFragment.userId}")
+                Log.d("ttt", "$userNickname")
                 userApi.delete(
-                    MyPageLoginFragment.userId
+                    userNickname
                 ).enqueue(object : Callback<ResultModel> {
                     override fun onFailure(call: Call<ResultModel>?, t: Throwable?) {
                         Log.d("ttt", "네트워크연결실패")
