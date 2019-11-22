@@ -38,7 +38,7 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener {
             R.id.btn_withdraw_ok -> {
 
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -179,7 +179,7 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener {
 //
 //
 //        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
+//            .baseUrl(URL)
 //            .addConverterFactory(GsonConverterFactory.create())
 //            .build()
 //
@@ -241,7 +241,7 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private const val url = "https://duksung12.cafe24.com"
+        private const val URL = "https://duksung12.cafe24.com"
         private const val TAG = "MyPageWithdrawalFragment"
     }
 

@@ -62,7 +62,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
     private fun init() {
         val fragmentMap: Map<String, Fragment> = mapOf(
             resources.getStringArray(R.array.tab_search)[0] to SearchRankFragment(),
-            resources.getStringArray(R.array.tab_search)[1] to SearchlikeFragment()
+            resources.getStringArray(R.array.tab_search)[1] to SearchLikeFragment()
         )
 
         val adapter = ViewPagerAdapter(this.requireFragmentManager(), fragmentMap)

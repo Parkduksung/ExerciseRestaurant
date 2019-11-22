@@ -29,7 +29,7 @@ class MyPageFindFragment : Fragment(), View.OnClickListener {
             R.id.btn_request_change_pass -> {
 
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -112,7 +112,7 @@ class MyPageFindFragment : Fragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
 
 //        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
+//            .baseUrl(URL)
 //            .addConverterFactory(GsonConverterFactory.create())
 //            .build()
 //
@@ -166,7 +166,7 @@ class MyPageFindFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private const val url = "https://duksung12.cafe24.com"
+        private const val URL = "https://duksung12.cafe24.com"
         var inputEmail = ""
         private const val TAG = "MyPageFindFragment"
     }

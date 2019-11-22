@@ -9,7 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 
-class SearchlikeFragment : Fragment() {
+class SearchLikeFragment : Fragment(), View.OnClickListener {
+
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+
+        }
+    }
 
 
     override fun onAttach(context: Context) {
@@ -38,10 +45,7 @@ class SearchlikeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-
     }
-
-
 
 
     override fun onStart() {
@@ -81,6 +85,7 @@ class SearchlikeFragment : Fragment() {
 
     companion object {
         private const val TAG = "SearchLikeFragment"
+        private const val URL = "https://duksung12.cafe24.com"
     }
 
 

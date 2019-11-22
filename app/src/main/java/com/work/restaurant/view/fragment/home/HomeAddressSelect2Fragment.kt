@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
@@ -64,8 +63,7 @@ class HomeAddressSelect2Fragment : Fragment() {
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
-            layoutManager = GridLayoutManager(this.context, 3) as RecyclerView.LayoutManager?
-
+            layoutManager = GridLayoutManager(this.context, 3)
             selectAddress2 = addressClick
         }
     }

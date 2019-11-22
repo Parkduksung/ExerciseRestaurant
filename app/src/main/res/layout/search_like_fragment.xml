@@ -59,7 +59,7 @@
             android:layout_weight="34">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_like"
+                android:id="@+id/recyclerview_bookmark"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

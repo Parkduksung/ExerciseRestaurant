@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.data.model.ExerciseRank
-import com.work.restaurant.ext.ExerciseApi
-import com.work.restaurant.view.adapter.ExerciseRankAdapter
+import com.work.restaurant.data.model.FitnessCenterItem
+import com.work.restaurant.ext.FitnessCenterApi
+import com.work.restaurant.view.adapter.FitnessRankAdapter
 import com.work.restaurant.view.fragment.home.HomeAddressFragment
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
@@ -26,7 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchRankFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var exerciseRankAdapter: ExerciseRankAdapter
+    private lateinit var fitnessRankAdapter: FitnessRankAdapter
+
 
     override fun onClick(v: View?) {
 
@@ -39,9 +40,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
                     HomeAddressFragment()
                 ).commit()
 
-
             }
-
 
         }
     }
@@ -65,7 +64,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.search_rank_fragment, container, false).also {
-            exerciseRankAdapter = ExerciseRankAdapter()
+            fitnessRankAdapter = FitnessRankAdapter()
         }
     }
 
@@ -86,45 +85,43 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
     }
 
-
     private fun load() {
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(url)
+            .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
 
-        val exerciseApi = retrofit.create(ExerciseApi::class.java)
+        val fitnessApi = retrofit.create(FitnessCenterApi::class.java)
 
 
-        exerciseApi.exerciseAllItem().enqueue(object : Callback<List<ExerciseRank>> {
-            override fun onFailure(call: Call<List<ExerciseRank>>?, t: Throwable?) {
+        fitnessApi.FitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItem>> {
+
+            override fun onFailure(call: Call<List<FitnessCenterItem>>?, t: Throwable?) {
                 Log.d("cccccccccccccccccccccccccccc", "$t")
             }
 
             override fun onResponse(
-                call: Call<List<ExerciseRank>>?,
-                response: Response<List<ExerciseRank>>?
+                call: Call<List<FitnessCenterItem>>?,
+                response: Response<List<FitnessCenterItem>>?
             ) {
                 recyclerview_rank.run {
 
-                    this.adapter = exerciseRankAdapter
+                    this.adapter = fitnessRankAdapter
 
                     val result = response!!.body()
 
                     Log.d("cccccccccccccccccccccccccccc", "$result")
 
-                    response!!.body().let {
-                        exerciseRankAdapter.addData(it)
+                    response?.body()?.let {
+                        fitnessRankAdapter.addData(it)
                     }
 
                     layoutManager = LinearLayoutManager(this.context)
 
                 }
             }
-
-
         })
 
 
@@ -168,7 +165,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private const val TAG = "SearchRankFragment"
-        private const val url = "https://duksung12.cafe24.com"
+        private const val URL = "https://duksung12.cafe24.com"
     }
 
 

@@ -22,7 +22,6 @@ class CommunityNutritionListFragment : Fragment() {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
-
     }
 
     override fun onCreateView(

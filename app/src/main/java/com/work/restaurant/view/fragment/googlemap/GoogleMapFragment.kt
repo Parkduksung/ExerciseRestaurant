@@ -170,7 +170,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             addressAll = "$address1 $address2 $address3"
 
         } catch (e: IOException) {
-            Log.e("MapsActivity", e?.localizedMessage)
+            Log.e("MapsActivity", e!!.localizedMessage)
         }
 
         return addressAll

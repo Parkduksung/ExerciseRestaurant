@@ -48,7 +48,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
                 inputState()
 
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -264,7 +264,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private const val TAG = "MyPageRegisterFragment"
-        private const val url = "https://duksung12.cafe24.com"
+        private const val URL = "https://duksung12.cafe24.com"
     }
 
 

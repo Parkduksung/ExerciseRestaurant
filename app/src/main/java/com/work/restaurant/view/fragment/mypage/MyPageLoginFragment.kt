@@ -36,7 +36,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
 
 
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -188,7 +188,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
 
 //        val retrofit = Retrofit.Builder()
-//            .baseUrl(url)
+//            .baseUrl(URL)
 //            .addConverterFactory(GsonConverterFactory.create())
 //            .build()
 //
@@ -247,7 +247,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
         var userId = ""
         var userNickname = ""
         private const val TAG = "MyPageLoginFragment"
-        private const val url = "https://duksung12.cafe24.com"
+        private const val URL = "https://duksung12.cafe24.com"
     }
 
 
