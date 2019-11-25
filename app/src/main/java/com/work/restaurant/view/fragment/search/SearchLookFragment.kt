@@ -20,17 +20,14 @@ class SearchLookFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-
 
     }
 

@@ -60,6 +60,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         startGoogleMaps()
 
+
     }
 
     private fun startGoogleMaps() {
@@ -72,6 +73,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         ).commit()
 
     }
+
+
 
 
     override fun onStart() {

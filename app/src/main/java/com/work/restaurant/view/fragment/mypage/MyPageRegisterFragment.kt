@@ -267,5 +267,4 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
         private const val URL = "https://duksung12.cafe24.com"
     }
 
-
 }

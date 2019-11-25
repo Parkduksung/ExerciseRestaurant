@@ -7,10 +7,11 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
 import kotlinx.android.synthetic.main.address_item.view.*
 
 class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
+
+    private var addressDataListener : AddressDataListener?= null
 
     private val addressArr = ArrayList<String>()
 
@@ -32,7 +33,8 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         holder.addressItem.setOnClickListener {
             val context = it.context
             Toast.makeText(context, addressArr[position], Toast.LENGTH_LONG).show()
-            addressClick = addressArr[position]
+            addressDataListener?.getAddressData(addressArr[position])
+
         }
 
         holder.run {
@@ -49,5 +51,9 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         addressArr.add(item)
     }
 
+
+    fun setItemClickListener(listener: AddressDataListener){
+        addressDataListener = listener
+    }
 
 }

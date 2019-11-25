@@ -6,14 +6,25 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.fragment.community.CommunityFragment
+import com.work.restaurant.view.fragment.home.HomeAddressSelect1Fragment
 import com.work.restaurant.view.fragment.home.HomeFragment
 import com.work.restaurant.view.fragment.loading.LoadingFragment
 import com.work.restaurant.view.fragment.mypage.MyPageFragment
 import com.work.restaurant.view.fragment.search.SearchFragment
+import com.work.restaurant.view.fragment.search.SearchRankFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , HomeAddressSelect1Fragment.OnFragmentInteractionListener {
+
+
+    override fun getData(data: String) {
+
+
+        val searchRankFragment  = SearchRankFragment()
+        searchRankFragment.setTextView(data)
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                 LoadingFragment()
             ).commit()
     }
+
 
 
 }

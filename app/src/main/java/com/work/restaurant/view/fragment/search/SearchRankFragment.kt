@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.FitnessCenterItem
 import com.work.restaurant.ext.FitnessCenterApi
 import com.work.restaurant.view.adapter.FitnessRankAdapter
 import com.work.restaurant.view.fragment.home.HomeAddressFragment
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
-import com.work.restaurant.view.fragment.home.HomeAddressSelect3Fragment.Companion.toggleInput
 import kotlinx.android.synthetic.main.search_rank_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,10 +21,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+
+
 class SearchRankFragment : Fragment(), View.OnClickListener {
 
     private lateinit var fitnessRankAdapter: FitnessRankAdapter
-
 
     override fun onClick(v: View?) {
 
@@ -63,7 +62,8 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_rank_fragment, container, false).also {
+        val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
+        return view.also {
             fitnessRankAdapter = FitnessRankAdapter()
         }
     }
@@ -72,16 +72,18 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
         iv_search_settings.setOnClickListener(this)
-
-
-        if (toggleInput) {
-            tv_search_locate.text = "$selectAddress1 $selectAddress2 $selectAddress3"
-        }
 
         load()
 
+
+        if(!item.equals("")){
+
+            tv_search_locate.text = item
+            val ft : FragmentTransaction = fragmentManager!!.beginTransaction()
+            ft.detach(this).attach(this).commit()
+
+        }
 
     }
 
@@ -128,9 +130,27 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
     }
 
 
+
+    fun setTextView(text: String) {
+        Log.d("zzzzzzzzzzzzzzzzzzzzzzz", "$text")
+        item = text
+        Log.d("zzzzzzzzzzzzzzzzzzzzzzz1", "$item")
+
+    }
+
+    fun set(){
+        Log.d("zzzzzzzzzzzzzzzzzzzzzzz2", "$item")
+        tv_search_locate.text  = item
+    }
+
+
+
+
+
     override fun onStart() {
         Log.d(TAG, "onStart")
         super.onStart()
+
     }
 
     override fun onResume() {
@@ -164,6 +184,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+        var item = ""
         private const val TAG = "SearchRankFragment"
         private const val URL = "https://duksung12.cafe24.com"
     }

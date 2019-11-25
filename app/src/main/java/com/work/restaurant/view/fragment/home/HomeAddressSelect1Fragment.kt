@@ -10,19 +10,50 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
-class HomeAddressSelect1Fragment : Fragment() {
+
+
+
+class HomeAddressSelect1Fragment : Fragment(),
+    AddressDataListener {
+
+
+    private var onFragmentInteractionListener : OnFragmentInteractionListener ?= null
+
+
+
+    interface OnFragmentInteractionListener {
+        fun getData(data: String)
+    }
+
+
+    override fun getAddressData(data: String) {
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
+        addressClick += data
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
+
+        onFragmentInteractionListener?.getData(data)
+
+    }
+
 
     private lateinit var addressAdapter: AddressAdapter
+
 
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
-    }
 
+        if (context is OnFragmentInteractionListener) {
+            onFragmentInteractionListener = context
+        } else {
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
@@ -38,6 +69,7 @@ class HomeAddressSelect1Fragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.home_address_select_fragment, container, false).also {
             addressAdapter = AddressAdapter()
+
         }
     }
 
@@ -46,7 +78,11 @@ class HomeAddressSelect1Fragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
+        addressAdapter.setItemClickListener(this)
         startView()
+
+
+
 
 
     }
@@ -63,7 +99,6 @@ class HomeAddressSelect1Fragment : Fragment() {
             }
             layoutManager = GridLayoutManager(this.context, 3)
 
-            selectAddress1 = addressClick
 
         }
     }
@@ -77,6 +112,7 @@ class HomeAddressSelect1Fragment : Fragment() {
     override fun onResume() {
         Log.d(TAG, "onResume")
         super.onResume()
+
     }
 
     override fun onPause() {
@@ -102,6 +138,7 @@ class HomeAddressSelect1Fragment : Fragment() {
     override fun onDetach() {
         Log.d(TAG, "onDetach")
         super.onDetach()
+        onFragmentInteractionListener = null
     }
 
     companion object {

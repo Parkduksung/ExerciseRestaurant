@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.work.restaurant.R
 import java.io.IOException
-import java.util.*
 
 
 @Suppress("DEPRECATION")
@@ -105,6 +104,9 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         }
 
 
+
+
+
     }
 
     private fun setUpMap() {
@@ -128,7 +130,16 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 placeMarkerOnMap(currentLatLng)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+
+                val getLatitude = getAddress1("인천시서구검암동")[0]
+                val getLongitude = getAddress1("인천시서구검암동")[1]
+
+                val getLatLng = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
+
+                placeMarkerOnMap(getLatLng)
+
+                //new이 안에 1번째가 켜질때 그 위치로 이동되는거임.
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getLatLng, 16f))
             }
         }
     }
@@ -145,17 +156,20 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
     private fun getAddress(latLng: LatLng): String {
 
-        val geoCoder = Geocoder(this.context, Locale.getDefault())
+        val geoCoder = Geocoder(this.context)
         val addresses: List<Address>
 
+//        val addresses1: List<Address>
         var array: List<String>
+
+//        val addName = "구월동"
 
         try {
 
             addresses = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            Log.d("sssssssssssssssssssssss", addresses[0].toString())
-            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
-            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
+//            Log.d("sssssssssssssssssssssss", addresses[0].toString())
+//            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
+//            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
 
             array = addresses[0].getAddressLine(0).split(" ")
 
@@ -174,6 +188,42 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         }
 
         return addressAll
+    }
+
+    private fun getAddress1(addressName: String): List<String> {
+
+        val geoCoder = Geocoder(this.context)
+        val addresses: List<Address>
+
+        var list = mutableListOf<String>()
+
+        try {
+
+            addresses = geoCoder.getFromLocationName(addressName, addressName.length)
+
+
+            list.add(0, addresses[0].latitude.toString())
+            list.add(1, addresses[0].longitude.toString())
+
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", list[0])
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", list[1])
+
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].toString())
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].longitude.toString())
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].latitude.toString())
+
+
+//            for (i in 0 until array1!!.size) {
+//                Log.e("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", array1[i])
+//
+//            }
+
+
+        } catch (e: IOException) {
+            Log.e("MapsActivity", e!!.localizedMessage)
+        }
+
+        return list
     }
 
 

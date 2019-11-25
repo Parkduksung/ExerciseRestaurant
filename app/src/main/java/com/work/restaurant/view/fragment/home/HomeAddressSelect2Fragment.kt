@@ -10,11 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
-import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
-class HomeAddressSelect2Fragment : Fragment() {
+class HomeAddressSelect2Fragment : Fragment() , AddressDataListener {
+    override fun getAddressData(data: String) {
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",addressClick)
+
+        addressClick  += data
+
+
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1",addressClick)
+    }
+
 
     private lateinit var addressAdapter: AddressAdapter
 
@@ -46,16 +55,14 @@ class HomeAddressSelect2Fragment : Fragment() {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
+        addressAdapter.setItemClickListener(this)
         startView()
-
 
     }
 
     private fun startView() {
 
         val loadingTextArrayList = resources.getStringArray(R.array.인천)
-
 
         recyclerview_address.run {
             this.adapter = addressAdapter
@@ -64,7 +71,6 @@ class HomeAddressSelect2Fragment : Fragment() {
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
-            selectAddress2 = addressClick
         }
     }
 

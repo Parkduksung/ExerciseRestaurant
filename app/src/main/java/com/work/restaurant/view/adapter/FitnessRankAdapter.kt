@@ -32,6 +32,7 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+
         val fitnessCenterItem: FitnessCenterItem = fitnessArr[position]
 
         holder.run {

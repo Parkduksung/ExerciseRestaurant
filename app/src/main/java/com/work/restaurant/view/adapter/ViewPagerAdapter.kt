@@ -16,7 +16,6 @@ class ViewPagerAdapter(
     override fun getItem(position: Int): Fragment =
         fragmentMap.map { it.value }[position]
 
-
     override fun getCount(): Int =
         fragmentMap.size
 
