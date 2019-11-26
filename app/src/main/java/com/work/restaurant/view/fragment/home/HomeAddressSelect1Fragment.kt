@@ -12,17 +12,15 @@ import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
-
-
 
 
 class HomeAddressSelect1Fragment : Fragment(),
     AddressDataListener {
 
 
-    private var onFragmentInteractionListener : OnFragmentInteractionListener ?= null
-
+    private var onFragmentInteractionListener: OnFragmentInteractionListener? = null
 
 
     interface OnFragmentInteractionListener {
@@ -32,10 +30,15 @@ class HomeAddressSelect1Fragment : Fragment(),
 
     override fun getAddressData(data: String) {
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
+        selectAddress1 = data
         addressClick += data
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
 
-        onFragmentInteractionListener?.getData(data)
+//        this.requireFragmentManager().beginTransaction().replace(R.id.home_address_main_container
+//            ,MyPageWithdrawalFragment()
+//        ).commit()
+//
+//        onFragmentInteractionListener?.getData(data)
 
     }
 
@@ -80,9 +83,6 @@ class HomeAddressSelect1Fragment : Fragment(),
 
         addressAdapter.setItemClickListener(this)
         startView()
-
-
-
 
 
     }
@@ -140,6 +140,7 @@ class HomeAddressSelect1Fragment : Fragment(),
         super.onDetach()
         onFragmentInteractionListener = null
     }
+
 
     companion object {
         private const val TAG = "HomeAddressSelect1Fragment"

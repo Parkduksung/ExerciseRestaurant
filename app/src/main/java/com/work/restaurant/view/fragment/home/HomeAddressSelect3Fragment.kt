@@ -12,21 +12,29 @@ import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
 
-
-
-class HomeAddressSelect3Fragment : Fragment() , AddressDataListener {
+class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
     override fun getAddressData(data: String) {
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",addressClick)
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
 
-        addressClick  += data
+        addressClick += data
 
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1",addressClick)
+        selectAddress3 = data
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
+
+
+
+        this.requireFragmentManager().beginTransaction().replace(
+            R.id.home_address_main_container
+            , HomeAddressSelectAllFragment()
+        ).commit()
 
 
     }
+
     private lateinit var addressAdapter: AddressAdapter
 
 

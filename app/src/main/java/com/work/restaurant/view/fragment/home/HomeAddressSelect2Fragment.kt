@@ -12,16 +12,19 @@ import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
 import kotlinx.android.synthetic.main.home_address_select_fragment.*
 
-class HomeAddressSelect2Fragment : Fragment() , AddressDataListener {
+class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
     override fun getAddressData(data: String) {
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",addressClick)
-
-        addressClick  += data
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
 
 
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1",addressClick)
+        selectAddress2 = data
+        addressClick += data
+
+
+        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
     }
 
 

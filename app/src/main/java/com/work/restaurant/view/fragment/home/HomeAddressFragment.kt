@@ -18,7 +18,6 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
 
             R.id.ib_home_address_back -> {
 
-
                 this.requireFragmentManager().beginTransaction().remove(
                     this
                 ).commit()
@@ -75,17 +74,15 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
         tl_address.setupWithViewPager(vp_address)
 
 
-
-
-        selectPage(2)
+//
+//        selectPage(2)
 
     }
 
 
-
     fun selectPage(pageIndex: Int) {
         tl_address.setScrollPosition(pageIndex, 0f, true)
-        vp_address.setCurrentItem(pageIndex)
+        vp_address.currentItem = pageIndex
     }
 
 
@@ -126,7 +123,14 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+
+        var ok = false
+
         var addressClick = ""
+        var selectAddress1 = ""
+        var selectAddress2 = ""
+        var selectAddress3 = ""
+
         private const val TAG = "HomeAddressFragment"
     }
 }

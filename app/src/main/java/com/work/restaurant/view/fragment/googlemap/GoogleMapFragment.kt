@@ -104,9 +104,6 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         }
 
 
-
-
-
     }
 
     private fun setUpMap() {
@@ -122,7 +119,6 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             )
             return
         }
-
         mMap.isMyLocationEnabled = true
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
@@ -131,12 +127,14 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 placeMarkerOnMap(currentLatLng)
 
-                val getLatitude = getAddress1("인천시서구검암동")[0]
-                val getLongitude = getAddress1("인천시서구검암동")[1]
+
+                val getLatitude = getAddress1("효성동")[0]
+                val getLongitude = getAddress1("효성동")[1]
 
                 val getLatLng = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
 
                 placeMarkerOnMap(getLatLng)
+
 
                 //new이 안에 1번째가 켜질때 그 위치로 이동되는거임.
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getLatLng, 16f))
