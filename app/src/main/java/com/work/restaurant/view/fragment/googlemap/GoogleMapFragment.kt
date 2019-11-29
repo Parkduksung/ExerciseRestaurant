@@ -211,11 +211,6 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].latitude.toString())
 
 
-//            for (i in 0 until array1!!.size) {
-//                Log.e("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", array1[i])
-//
-//            }
-
 
         } catch (e: IOException) {
             Log.e("MapsActivity", e!!.localizedMessage)

@@ -1,6 +1,8 @@
 package com.work.restaurant.view.fragment.home
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,16 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress2
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
 import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
+
 class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
-//        val alertDialog =
-//            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-
 
         when (v?.id) {
             R.id.btn_address_change_no -> {
@@ -25,6 +26,20 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.btn_address_change_ok -> {
+
+
+                var address = addressClick
+                Log.d("mmmmmmmmmmmmmmmmmmmm", "asdfasdfasdf")
+                Log.d("mmmmmmmmmmmmmmmmmmmm", "$addressClick")
+
+                val data = Intent()
+                data.putExtra("address", address)
+                targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
+                this.requireFragmentManager().beginTransaction().remove(this).commit()
+
+
+
+
 
 
             }
@@ -50,27 +65,13 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false).also {
-
-        }
+        return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-//
-//        val alertDialog =
-//            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-//
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//        val userApi = retrofit.create(UserApi::class.java)
 
 
         btn_address_change_no.setOnClickListener(this)
@@ -79,21 +80,6 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
 
         tv_address_select.text = "$selectAddress1 $selectAddress2 $selectAddress3"
 
-
-//        selectAddress1
-//        selectAddress2
-//        selectAddress3
-
-//
-//
-//            this.requireFragmentManager().beginTransaction().remove(
-//                this@MyPageWithdrawalFragment
-//            ).replace(
-//                R.id.mypage_main_container,
-//                MyPageFragment()
-//            ).commit().also {
-//                MyPageFragment.loginState = false
-//            }
 
     }
 
@@ -134,7 +120,6 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private const val URL = "https://duksung12.cafe24.com"
         private const val TAG = "MyPageWithdrawalFragment"
     }
 

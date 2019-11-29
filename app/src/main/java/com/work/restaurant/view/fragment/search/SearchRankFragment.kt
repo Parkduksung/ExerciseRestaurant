@@ -1,13 +1,15 @@
 package com.work.restaurant.view.fragment.search
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.FitnessCenterItem
@@ -22,11 +24,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-
-
 class SearchRankFragment : Fragment(), View.OnClickListener {
 
     private lateinit var fitnessRankAdapter: FitnessRankAdapter
+
 
     override fun onClick(v: View?) {
 
@@ -34,14 +35,31 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
             R.id.iv_search_settings -> {
 
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.loading_container,
-                    HomeAddressFragment()
-                ).commit()
 
+                val homeAddressFragment = HomeAddressFragment()
+                homeAddressFragment.setTargetFragment(this, REQUEST_CODE)
+                this.requireFragmentManager().beginTransaction()
+                    .replace(R.id.search_main_container, homeAddressFragment)
+                    .commit()
             }
 
+
         }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val address = data?.extras?.getString("address")
+                tv_search_locate.text = address
+                Toast.makeText(this.context, "$address", Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -76,15 +94,6 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
         load()
 
-
-        if(!item.equals("")){
-
-            tv_search_locate.text = item
-            val ft : FragmentTransaction = fragmentManager!!.beginTransaction()
-            ft.detach(this).attach(this).commit()
-
-        }
-
     }
 
     private fun load() {
@@ -116,7 +125,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
                     Log.d("cccccccccccccccccccccccccccc", "$result")
 
-                    response?.body()?.let {
+                    response.body()?.let {
                         fitnessRankAdapter.addData(it)
                     }
 
@@ -128,23 +137,6 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
 
     }
-
-
-
-    fun setTextView(text: String) {
-        Log.d("zzzzzzzzzzzzzzzzzzzzzzz", "$text")
-        item = text
-        Log.d("zzzzzzzzzzzzzzzzzzzzzzz1", "$item")
-
-    }
-
-    fun set(){
-        Log.d("zzzzzzzzzzzzzzzzzzzzzzz2", "$item")
-        tv_search_locate.text  = item
-    }
-
-
-
 
 
     override fun onStart() {
@@ -184,9 +176,9 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        var item = ""
         private const val TAG = "SearchRankFragment"
         private const val URL = "https://duksung12.cafe24.com"
+        private const val REQUEST_CODE = 1
     }
 
 

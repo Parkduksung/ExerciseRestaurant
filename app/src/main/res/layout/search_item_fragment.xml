@@ -54,8 +54,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:background="@color/colorGray"
-                        android:src="@drawable/ic_book_mark_check_no">
-                    </ImageButton>
+                        android:src="@drawable/ic_book_mark_check_no"></ImageButton>
                 </LinearLayout>
 
 
@@ -127,6 +126,7 @@
                     android:layout_weight="10">
 
                     <TextView
+                        android:id="@+id/search_item_pay_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -191,6 +191,7 @@
                     android:layout_weight="10">
 
                     <TextView
+                        android:id="@+id/search_item_time_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -255,6 +256,7 @@
                     android:layout_weight="10">
 
                     <TextView
+                        android:id="@+id/search_item_best_part_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -304,6 +306,7 @@
                     android:layout_weight="5">
 
                     <TextView
+                        android:id="@+id/search_item_like_count_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -333,15 +336,14 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="9">
-
                     <TextView
+                        android:id="@+id/search_item_parking_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="2시간 무료"
                         android:textColor="@color/colorBlack"
                         android:textSize="20dp"></TextView>
-
 
                 </LinearLayout>
 

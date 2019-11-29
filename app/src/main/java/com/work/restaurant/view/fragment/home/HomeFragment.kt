@@ -21,6 +21,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     R.id.loading_container, HomeAddressFragment()
                 ).commit()
 
+
+
             }
 
         }
@@ -67,14 +69,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         val fragmentManager = fragmentManager
         val fragmentTransaction = fragmentManager!!.beginTransaction()
+
+
         fragmentTransaction.add(
             R.id.google_maps,
             GoogleMapFragment()
         ).commit()
 
     }
-
-
 
 
     override fun onStart() {

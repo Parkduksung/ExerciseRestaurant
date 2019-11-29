@@ -17,7 +17,7 @@ class SearchFragment : Fragment(), View.OnClickListener {
 
             R.id.et_search_look -> {
                 this.requireFragmentManager().beginTransaction().replace(
-                    R.id.search_main_container,
+                    R.id.loading_container,
                     SearchLookFragment()
                 ).commit()
             }

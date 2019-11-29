@@ -13,7 +13,7 @@ import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress3
-import kotlinx.android.synthetic.main.home_address_select_fragment.*
+import kotlinx.android.synthetic.main.home_address_select3_fragment.*
 
 
 class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
@@ -21,11 +21,8 @@ class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
 
         addressClick += data
-
         selectAddress3 = data
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
-
-
 
         this.requireFragmentManager().beginTransaction().replace(
             R.id.home_address_main_container
@@ -55,7 +52,7 @@ class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_select_fragment, container, false).also {
+        return inflater.inflate(R.layout.home_address_select3_fragment, container, false).also {
             addressAdapter = AddressAdapter()
         }
     }
@@ -75,7 +72,7 @@ class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
 
         val loadingTextArrayList = resources.getStringArray(R.array.계양구)
 
-        recyclerview_address.run {
+        recyclerview_address3.run {
             this.adapter = addressAdapter
 
             loadingTextArrayList.forEach {

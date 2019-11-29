@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.address_item.view.*
 
 class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
-    private var addressDataListener : AddressDataListener?= null
+    private var addressDataListener: AddressDataListener? = null
 
     private val addressArr = ArrayList<String>()
 
@@ -52,7 +52,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listener: AddressDataListener){
+    fun setItemClickListener(listener: AddressDataListener) {
         addressDataListener = listener
     }
 

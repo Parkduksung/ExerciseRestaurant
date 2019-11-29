@@ -1,6 +1,8 @@
 package com.work.restaurant.view.fragment.home
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,55 +15,35 @@ import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.adapter.AddressDataListener
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.fragment.home.HomeAddressFragment.Companion.selectAddress1
-import kotlinx.android.synthetic.main.home_address_select_fragment.*
+import kotlinx.android.synthetic.main.home_address_select1_fragment.*
 
 
 class HomeAddressSelect1Fragment : Fragment(),
     AddressDataListener {
 
 
-    private var onFragmentInteractionListener: OnFragmentInteractionListener? = null
-
-
-    interface OnFragmentInteractionListener {
-        fun getData(data: String)
-    }
-
-
     override fun getAddressData(data: String) {
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
         selectAddress1 = data
         addressClick += data
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
 
-//        this.requireFragmentManager().beginTransaction().replace(R.id.home_address_main_container
-//            ,MyPageWithdrawalFragment()
-//        ).commit()
-//
-//        onFragmentInteractionListener?.getData(data)
+        val dataIntent = Intent()
+        dataIntent.putExtra("address1", data)
+        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, dataIntent)
+        this.requireFragmentManager().beginTransaction().commit()
 
     }
 
-
     private lateinit var addressAdapter: AddressAdapter
-
 
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
-
-        if (context is OnFragmentInteractionListener) {
-            onFragmentInteractionListener = context
-        } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
-        }
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -70,9 +52,8 @@ class HomeAddressSelect1Fragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_select_fragment, container, false).also {
+        return inflater.inflate(R.layout.home_address_select1_fragment, container, false).also {
             addressAdapter = AddressAdapter()
-
         }
     }
 
@@ -80,10 +61,8 @@ class HomeAddressSelect1Fragment : Fragment(),
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
         addressAdapter.setItemClickListener(this)
         startView()
-
 
     }
 
@@ -91,14 +70,13 @@ class HomeAddressSelect1Fragment : Fragment(),
 
         val loadingTextArrayList = resources.getStringArray(R.array.select)
 
-        recyclerview_address.run {
+        recyclerview_address1.run {
             this.adapter = addressAdapter
 
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
-
 
         }
     }
@@ -138,11 +116,11 @@ class HomeAddressSelect1Fragment : Fragment(),
     override fun onDetach() {
         Log.d(TAG, "onDetach")
         super.onDetach()
-        onFragmentInteractionListener = null
     }
 
 
     companion object {
+        private const val REQUEST_CODE = 2
         private const val TAG = "HomeAddressSelect1Fragment"
     }
 
