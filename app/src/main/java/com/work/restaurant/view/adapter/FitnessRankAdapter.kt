@@ -44,6 +44,7 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
                 .override(100, 100)
                 .into(holder.fitnessImage)
 
+
         }
     }
 

@@ -37,6 +37,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         holder.bookmarkCancel.setOnClickListener {
             bookmarkList.removeAt(position)
             notifyDataSetChanged()
+
         }
 
 
@@ -49,6 +50,8 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
                 .load(fitnessCenterItem.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.bookmarkImage)
+
+
 
         }
 
