@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import kotlinx.android.synthetic.main.loading_fragment.*
 
-class LoadingFragment : Fragment() , LoadingContract.View {
-
+class LoadingFragment : Fragment(), LoadingContract.View {
 
 
     private lateinit var presenter: LoadingContract.Presenter
@@ -43,24 +42,28 @@ class LoadingFragment : Fragment() , LoadingContract.View {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = LoadingPresenter()
+        presenter = LoadingPresenter(this)
 
-
-        showStart()
-        showDelay()
+        start()
 
     }
 
-    override fun showStart() {
-        loading_tv.text = presenter.randomText(resources.getStringArray(R.array.load_string))
+    private fun start() {
+
+        presenter.randomText(resources.getStringArray(R.array.load_string))
+        presenter.delayTime()
+
+    }
+
+
+    override fun showStartText(text: String) {
+        loading_tv.text = text
     }
 
     override fun showDelay() {
-
         Handler().postDelayed({
             requireFragmentManager().beginTransaction().remove(this).commit()
-        }, presenter.delayTime())
-
+        }, 3000L)
     }
 
 

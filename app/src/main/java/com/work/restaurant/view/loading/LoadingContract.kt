@@ -2,20 +2,17 @@ package com.work.restaurant.view.loading
 
 interface LoadingContract {
 
-    interface View{
+    interface View {
 
-
-        fun showStart()
-
+        fun showStartText(text: String)
         fun showDelay()
 
     }
 
-    interface Presenter{
+    interface Presenter {
 
-        fun randomText(loadingTextArrayList : Array<String>) : String
-
-        fun delayTime() : Long
+        fun randomText(loadingTextArrayList: Array<String>)
+        fun delayTime()
 
     }
 

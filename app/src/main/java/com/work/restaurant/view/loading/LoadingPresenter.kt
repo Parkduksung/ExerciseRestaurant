@@ -2,18 +2,15 @@ package com.work.restaurant.view.loading
 
 import kotlin.random.Random
 
-class LoadingPresenter  : LoadingContract.Presenter {
+class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingContract.Presenter {
     override fun delayTime() =
-        3000L
+        loadingView.showDelay()
 
 
-    override fun randomText(loadingTextArrayList: Array<String>): String {
-
+    override fun randomText(loadingTextArrayList: Array<String>) {
 
         val random = Random.nextInt(loadingTextArrayList.size)
-
-        return loadingTextArrayList[random]
-
+        loadingView.showStartText(loadingTextArrayList[random])
     }
 
 }

@@ -24,12 +24,16 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = ExerciseRestaurantPresenter()
+        presenter = ExerciseRestaurantPresenter(this)
 
-        showLoading()
-        showMain()
+        start()
 
     }
+
+    private fun start() {
+        presenter.start()
+    }
+
 
 //    private fun init() {
 
@@ -111,7 +115,19 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
 
     override fun showMain() {
         val adapter = viewPagerAdapter
-        presenter.setting(tl_main, vp_main, adapter)
+//        presenter.setting(tl_main, vp_main, adapter)
+
+        vp_main.adapter = adapter
+
+        tl_main.run {
+            setupWithViewPager(vp_main)
+            getTabAt(0)?.setIcon(R.drawable.ic_home)
+            getTabAt(1)?.setIcon(R.drawable.ic_search)
+            getTabAt(2)?.setIcon(R.drawable.ic_community)
+            getTabAt(3)?.setIcon(R.drawable.ic_mypage)
+        }
+
+
     }
 
 
