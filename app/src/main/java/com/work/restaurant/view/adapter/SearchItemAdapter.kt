@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.search_look_item.view.*
 
 class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
-    private val searchLookArr = ArrayList<FitnessCenterItem>()
+    private val searchLookList = ArrayList<FitnessCenterItem>()
 
     private var searchItemDataListener: SearchItemDataListener? = null
 
@@ -28,7 +28,7 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
 
     override fun getItemCount(): Int =
-        searchLookArr.size
+        searchLookList.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -36,11 +36,11 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
         holder.searchLookName.setOnClickListener {
 
-            searchItemDataListener?.getSearchItemData(searchLookArr[position].fitnessCenterName)
+            searchItemDataListener?.getSearchItemData(searchLookList[position].fitnessCenterName)
 
         }
 
-        val fitnessCenterItem: FitnessCenterItem = searchLookArr[position]
+        val fitnessCenterItem: FitnessCenterItem = searchLookList[position]
 
         holder.run {
             searchLookName.text = fitnessCenterItem.fitnessCenterName
@@ -64,15 +64,15 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
     }
 
     fun addAllData(fitnessCenterItem: List<FitnessCenterItem>) =
-        searchLookArr.addAll(fitnessCenterItem)
+        searchLookList.addAll(fitnessCenterItem)
 
 
     fun addData(fitnessCenterItem: FitnessCenterItem) {
-        searchLookArr.add(fitnessCenterItem)
+        searchLookList.add(fitnessCenterItem)
     }
 
     fun clearListData() {
-        searchLookArr.clear()
+        searchLookList.clear()
         notifyDataSetChanged()
     }
 

@@ -50,8 +50,6 @@ class SearchItemFragment : Fragment(), View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
 
 
-
-
     }
 
 
@@ -78,15 +76,12 @@ class SearchItemFragment : Fragment(), View.OnClickListener {
                 response: Response<List<FitnessCenterItem>>?
             ) {
 
-                val result = response!!.body()
 
-                Log.d("cccccccccccccccccccccccccccc", "$result")
-
-                response.body()?.let {
+                response?.body()?.let {
 
                     it.forEach {
 
-                        if(it.fitnessCenterName == data){
+                        if (it.fitnessCenterName == data) {
                             search_item_name_tv.text = it.fitnessCenterName
                             search_item_best_part_tv.text = it.fitnessCenterBestPart
                             search_item_like_count_tv.text = it.fitnessCenterLikeCount.toString()

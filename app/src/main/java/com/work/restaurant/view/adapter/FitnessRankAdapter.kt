@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fitness_rank_item.view.*
 
 class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>() {
 
-    private val fitnessArr = ArrayList<FitnessCenterItem>()
+    private val fitnessList = ArrayList<FitnessCenterItem>()
 
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
@@ -27,13 +27,13 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
 
 
     override fun getItemCount(): Int =
-        fitnessArr.size
+        fitnessList.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
-        val fitnessCenterItem: FitnessCenterItem = fitnessArr[position]
+        val fitnessCenterItem: FitnessCenterItem = fitnessList[position]
 
         holder.run {
             fitnessNo.text = fitnessCenterItem.fitnessCenterNo.toString()
@@ -56,11 +56,11 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
     }
 
     fun addData(fitnessCenterItem: List<FitnessCenterItem>) =
-        fitnessArr.addAll(fitnessCenterItem)
+        fitnessList.addAll(fitnessCenterItem)
 
 
     fun clearListData() {
-        fitnessArr.clear()
+        fitnessList.clear()
         notifyDataSetChanged()
     }
 

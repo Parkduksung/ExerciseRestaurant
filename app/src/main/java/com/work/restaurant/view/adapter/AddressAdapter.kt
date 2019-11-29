@@ -13,7 +13,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     private var addressDataListener: AddressDataListener? = null
 
-    private val addressArr = ArrayList<String>()
+    private val addressList = ArrayList<String>()
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -25,20 +25,20 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         )
 
     override fun getItemCount(): Int =
-        addressArr.size
+        addressList.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.addressItem.setOnClickListener {
             val context = it.context
-            Toast.makeText(context, addressArr[position], Toast.LENGTH_LONG).show()
-            addressDataListener?.getAddressData(addressArr[position])
+            Toast.makeText(context, addressList[position], Toast.LENGTH_LONG).show()
+            addressDataListener?.getAddressData(addressList[position])
 
         }
 
         holder.run {
-            addressItem.text = addressArr[position]
+            addressItem.text = addressList[position]
         }
     }
 
@@ -48,7 +48,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     }
 
     fun addData(item: String) {
-        addressArr.add(item)
+        addressList.add(item)
     }
 
 

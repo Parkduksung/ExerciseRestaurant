@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.bookmark_item.view.*
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
-    private val bookmarkArr = ArrayList<FitnessCenterItem>()
+    private val bookmarkList = ArrayList<FitnessCenterItem>()
 
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
@@ -28,19 +28,19 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
 
     override fun getItemCount(): Int =
-        bookmarkArr.size
+        bookmarkList.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
         holder.bookmarkCancel.setOnClickListener {
-            bookmarkArr.removeAt(position)
+            bookmarkList.removeAt(position)
             notifyDataSetChanged()
         }
 
 
-        val fitnessCenterItem: FitnessCenterItem = bookmarkArr[position]
+        val fitnessCenterItem: FitnessCenterItem = bookmarkList[position]
 
         holder.run {
             bookmarkName.text = fitnessCenterItem.fitnessCenterName
@@ -65,14 +65,14 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
     }
 
     fun addAllData(fitnessCenterItem: List<FitnessCenterItem>) =
-        bookmarkArr.addAll(fitnessCenterItem)
+        bookmarkList.addAll(fitnessCenterItem)
 
 
     fun addData(fitnessCenterItem: FitnessCenterItem) =
-        bookmarkArr.add(fitnessCenterItem)
+        bookmarkList.add(fitnessCenterItem)
 
     fun clearListData() {
-        bookmarkArr.clear()
+        bookmarkList.clear()
         notifyDataSetChanged()
     }
 

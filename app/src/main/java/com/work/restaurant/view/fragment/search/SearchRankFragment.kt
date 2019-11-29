@@ -121,11 +121,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener {
 
                     this.adapter = fitnessRankAdapter
 
-                    val result = response!!.body()
-
-                    Log.d("cccccccccccccccccccccccccccc", "$result")
-
-                    response.body()?.let {
+                    response?.body()?.let {
                         fitnessRankAdapter.addData(it)
                     }
 

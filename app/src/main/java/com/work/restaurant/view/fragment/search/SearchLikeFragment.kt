@@ -50,7 +50,7 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_like_fragment, container, false).also{
+        return inflater.inflate(R.layout.search_like_fragment, container, false).also {
             bookMarkAdapter = BookMarkAdapter()
         }
     }
@@ -88,14 +88,10 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
 
                     this.adapter = bookMarkAdapter
 
-                    val result = response!!.body()
-
-                    Log.d("cccccccccccccccccccccccccccc", "$result")
-
 
                     response?.body()?.let {
-                        it.forEach { fitnessCenterItem->
-                            if(fitnessCenterItem.fitnessCenterLikeCount >=90){
+                        it.forEach { fitnessCenterItem ->
+                            if (fitnessCenterItem.fitnessCenterLikeCount >= 90) {
                                 bookMarkAdapter.addData(fitnessCenterItem)
                             }
                         }
