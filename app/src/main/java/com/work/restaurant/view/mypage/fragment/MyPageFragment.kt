@@ -10,26 +10,30 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.mypage.contract.MyPageContract
 import com.work.restaurant.view.mypage.fragment.MyPageLoginFragment.Companion.userNickname
+import com.work.restaurant.view.mypage.presenter.MyPagePresenter
 import kotlinx.android.synthetic.main.mypage_fragment.*
 
-class MyPageFragment : Fragment(), View.OnClickListener, MyPageContract.View {
+class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
+
+    private lateinit var presenter: MyPageContract.Presenter
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.login_ll -> {
-                logIn()
+                presenter.logIn()
             }
 
             R.id.tv_page_late_view -> {
-                lateView()
+                presenter.lateView()
             }
 
             R.id.tv_page_logout -> {
-                logOut()
+                presenter.logOut()
             }
 
             R.id.tv_page_withdrawal -> {
-                withDrawal()
+                presenter.withDraw()
             }
         }
     }
@@ -40,7 +44,9 @@ class MyPageFragment : Fragment(), View.OnClickListener, MyPageContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.mypage_fragment, container, false)
+        return inflater.inflate(R.layout.mypage_fragment, container, false).also {
+            presenter = MyPagePresenter(this)
+        }
 
     }
 
@@ -48,9 +54,6 @@ class MyPageFragment : Fragment(), View.OnClickListener, MyPageContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
-
-
-
 
 
         if (loginState) {
@@ -63,49 +66,46 @@ class MyPageFragment : Fragment(), View.OnClickListener, MyPageContract.View {
             login_ok_ll.visibility = View.INVISIBLE
         }
 
-
-
-
-
-        login_ll.setOnClickListener(this)
-        tv_page_logout.setOnClickListener(this)
-        tv_page_withdrawal.setOnClickListener(this)
-        tv_page_late_view.setOnClickListener(this)
+        setListener()
 
 
     }
 
 
-    override fun logIn() {
+    private fun setListener() {
+        login_ll.setOnClickListener(this)
+        tv_page_logout.setOnClickListener(this)
+        tv_page_withdrawal.setOnClickListener(this)
+        tv_page_late_view.setOnClickListener(this)
+    }
+
+
+    override fun showLogIn() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.mypage_main_container,
             MyPageLoginFragment()
         ).commit()
     }
 
-    override fun logOut() {
+    override fun showLogOut() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.loading_container,
             MyPageLogoutFragment()
         ).commit()
     }
 
-    override fun withDrawal() {
+    override fun showWithDraw() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.loading_container,
             MyPageWithdrawalFragment()
         ).commit()
     }
 
-    override fun lateView() {
+    override fun showLateView() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.loading_container,
             MyPageWithdrawalFragment()
         ).commit()
-    }
-
-    override fun showLoginState() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 

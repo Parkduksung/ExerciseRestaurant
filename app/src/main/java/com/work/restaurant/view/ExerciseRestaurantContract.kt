@@ -5,14 +5,15 @@ import androidx.fragment.app.Fragment
 interface ExerciseRestaurantContract {
 
     interface View {
-        fun showMain()
+        fun showInit()
         fun showLoading()
     }
 
 
     interface Presenter {
         fun setFragmentMap(): Map<String, Fragment>
-        fun start()
+        fun init()
+        fun loading()
     }
 
 

@@ -1,4 +1,4 @@
-package com.work.restaurant.data.model
+package com.work.restaurant.network.model
 
 data class ResultModel(
     var result: String,

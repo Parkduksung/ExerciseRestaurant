@@ -8,13 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.FitnessCenterItem
+import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.view.GlideApp
 import kotlinx.android.synthetic.main.bookmark_item.view.*
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
-    private val bookmarkList = ArrayList<FitnessCenterItem>()
+    private val bookmarkList = ArrayList<FitnessCenterItemModel>()
 
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
@@ -41,13 +41,13 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         }
 
 
-        val fitnessCenterItem: FitnessCenterItem = bookmarkList[position]
+        val fitnessCenterItemModel: FitnessCenterItemModel = bookmarkList[position]
 
         holder.run {
-            bookmarkName.text = fitnessCenterItem.fitnessCenterName
+            bookmarkName.text = fitnessCenterItemModel.fitnessCenterName
 
             GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItem.fitnessCenterImage)
+                .load(fitnessCenterItemModel.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.bookmarkImage)
 
@@ -67,12 +67,12 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
     }
 
-    fun addAllData(fitnessCenterItem: List<FitnessCenterItem>) =
-        bookmarkList.addAll(fitnessCenterItem)
+    fun addAllData(fitnessCenterItemModel: List<FitnessCenterItemModel>) =
+        bookmarkList.addAll(fitnessCenterItemModel)
 
 
-    fun addData(fitnessCenterItem: FitnessCenterItem) =
-        bookmarkList.add(fitnessCenterItem)
+    fun addData(fitnessCenterItemModel: FitnessCenterItemModel) =
+        bookmarkList.add(fitnessCenterItemModel)
 
     fun clearListData() {
         bookmarkList.clear()

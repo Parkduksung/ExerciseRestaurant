@@ -31,9 +31,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
     }
 
     private fun start() {
-        presenter.start()
+        presenter.init()
     }
-
 
 //    private fun init() {
 
@@ -79,7 +78,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
 //            ).commit()
 //    }
 //
-//    override fun showMain() {
+//    override fun showInit() {
 //
 //        val adapter = viewPagerAdapter
 //
@@ -113,9 +112,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
             ).commit()
     }
 
-    override fun showMain() {
+    override fun showInit() {
         val adapter = viewPagerAdapter
-//        presenter.setting(tl_main, vp_main, adapter)
 
         vp_main.adapter = adapter
 

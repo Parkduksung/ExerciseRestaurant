@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.data.model.FitnessCenterItem
-import com.work.restaurant.ext.FitnessCenterApi
+import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.api.FitnessCenterApi
 import com.work.restaurant.view.adapter.BookMarkAdapter
 import kotlinx.android.synthetic.main.search_like_fragment.*
 import retrofit2.Call
@@ -74,15 +74,15 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
         val fitnessApi = retrofit.create(FitnessCenterApi::class.java)
 
 
-        fitnessApi.FitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItem>> {
+        fitnessApi.FitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItemModel>> {
 
-            override fun onFailure(call: Call<List<FitnessCenterItem>>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<FitnessCenterItemModel>>?, t: Throwable?) {
                 Log.d("cccccccccccccccccccccccccccc", "$t")
             }
 
             override fun onResponse(
-                call: Call<List<FitnessCenterItem>>?,
-                response: Response<List<FitnessCenterItem>>?
+                call: Call<List<FitnessCenterItemModel>>?,
+                response: Response<List<FitnessCenterItemModel>>?
             ) {
                 recyclerview_bookmark.run {
 

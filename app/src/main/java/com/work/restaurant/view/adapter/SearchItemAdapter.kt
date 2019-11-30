@@ -7,13 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.FitnessCenterItem
+import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.view.GlideApp
 import kotlinx.android.synthetic.main.search_look_item.view.*
 
 class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
-    private val searchLookList = ArrayList<FitnessCenterItem>()
+    private val searchLookList = ArrayList<FitnessCenterItemModel>()
 
     private var searchItemDataListener: SearchItemDataListener? = null
 
@@ -40,13 +40,13 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
         }
 
-        val fitnessCenterItem: FitnessCenterItem = searchLookList[position]
+        val fitnessCenterItemModel: FitnessCenterItemModel = searchLookList[position]
 
         holder.run {
-            searchLookName.text = fitnessCenterItem.fitnessCenterName
+            searchLookName.text = fitnessCenterItemModel.fitnessCenterName
 
             GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItem.fitnessCenterImage)
+                .load(fitnessCenterItemModel.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.searchLookImage)
 
@@ -63,12 +63,12 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
     }
 
-    fun addAllData(fitnessCenterItem: List<FitnessCenterItem>) =
-        searchLookList.addAll(fitnessCenterItem)
+    fun addAllData(fitnessCenterItemModel: List<FitnessCenterItemModel>) =
+        searchLookList.addAll(fitnessCenterItemModel)
 
 
-    fun addData(fitnessCenterItem: FitnessCenterItem) {
-        searchLookList.add(fitnessCenterItem)
+    fun addData(fitnessCenterItemModel: FitnessCenterItemModel) {
+        searchLookList.add(fitnessCenterItemModel)
     }
 
     fun clearListData() {

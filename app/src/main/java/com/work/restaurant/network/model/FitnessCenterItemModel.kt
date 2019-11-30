@@ -1,8 +1,8 @@
-package com.work.restaurant.data.model
+package com.work.restaurant.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class FitnessCenterItem(
+data class FitnessCenterItemModel(
     @SerializedName("fc_no")
     val fitnessCenterNo: Int,
     @SerializedName("fc_name")

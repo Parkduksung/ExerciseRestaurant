@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.mypage.fragment.MyPageFindFragment.Companion.inputEmail
+import com.work.restaurant.view.mypage.fragment.MyPageFindFragPassment.Companion.inputEmail
 import kotlinx.android.synthetic.main.mypage_find_ok_fragment.*
 
 class MyPageFindOkFragment : Fragment(), View.OnClickListener {

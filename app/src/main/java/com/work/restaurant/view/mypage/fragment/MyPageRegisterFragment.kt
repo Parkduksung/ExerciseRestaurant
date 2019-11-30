@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.data.model.ResultModel
-import com.work.restaurant.login.UserApi
+import com.work.restaurant.network.api.UserApi
+import com.work.restaurant.network.model.ResultModel
 import com.work.restaurant.view.mypage.fragment.MyPageLoginFragment.Companion.userNickname
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
 import retrofit2.Call

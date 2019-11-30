@@ -11,153 +11,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.data.model.ResultModel
-import com.work.restaurant.login.UserApi
+import com.work.restaurant.view.mypage.contract.MyPageLoginContract
 import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.loginState
+import com.work.restaurant.view.mypage.presenter.MyPageLoginPresenter
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class MyPageLoginFragment : Fragment(), View.OnClickListener {
+class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContract.View {
+
+
+    private lateinit var presenter: MyPageLoginContract.Presenter
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_login -> {
-
-                val alertDialog =
-                    AlertDialog.Builder(
-                        ContextThemeWrapper(
-                            activity,
-                            R.style.Theme_AppCompat_Light_Dialog
-                        )
-                    )
-
-
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-
-                Log.d("1111", "$retrofit")
-
-                val userApi = retrofit.create(UserApi::class.java)
-
-                Log.d("1111", "$userApi")
-
-
-                userApi.login(
-                    et_email.text.toString(),
-                    et_pass.text.toString()
-                )?.enqueue(object : Callback<ResultModel> {
-
-                    override fun onResponse(
-                        call: Call<ResultModel>?,
-                        response: Response<ResultModel>?
-                    ) {
-
-                        val resultModel = response?.body()
-                        Log.d("1111", "${resultModel?.result}")
-                        Log.d("1111", "${resultModel?.resultNickname}")
-
-                        if (resultModel?.result.equals("ok")) {
-
-
-                            alertDialog.setTitle("로그인 성공")
-                            alertDialog.setMessage(et_email.text.toString() + "님 환영합니다!")
-                            alertDialog.setPositiveButton(
-                                "확인",
-                                object : DialogInterface.OnClickListener {
-                                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                                        this@MyPageLoginFragment.requireFragmentManager()
-                                            .beginTransaction()
-                                            .replace(
-                                                R.id.mypage_main_container,
-                                                MyPageFragment()
-                                            ).commit().also {
-                                                loginState = true
-                                                userId = et_email.text.toString()
-                                                userNickname =
-                                                    resultModel?.resultNickname.toString()
-
-                                            }
-                                    }
-                                })
-                            alertDialog.show()
-
-
-//                            this@MyPageLoginFragment.requireFragmentManager().beginTransaction()
-//                                .replace(
-//                                    R.id.mypage_main_container,
-//                                    MyPageFragment()
-//                                ).commit().also {
-//                                    loginState = true
-//                                    userId = et_email.text.toString()
-//                                }
-
-                        } else {
-
-
-                            alertDialog.setTitle("로그인 실패")
-                            alertDialog.setMessage("입력한 정보를 확인바랍니다.")
-                            alertDialog.setPositiveButton(
-                                "확인",
-                                object : DialogInterface.OnClickListener {
-                                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                                        Log.d("1111", "실패")
-                                    }
-                                })
-                            alertDialog.show()
-
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<ResultModel>?, t: Throwable?) {
-
-                        alertDialog.setTitle("로그인 실패")
-                        alertDialog.setMessage("네트워크를 확인바랍니다.")
-                        alertDialog.setPositiveButton(
-                            "확인",
-                            object : DialogInterface.OnClickListener {
-                                override fun onClick(dialog: DialogInterface?, which: Int) {
-                                    Log.d("1111", "네트워크문제!!")
-                                    Log.d("1111", "$call")
-                                    Log.d("1111", "$t")
-                                }
-                            })
-                        alertDialog.show()
-
-                    }
-
-
-                })
-
-
+                presenter.login(et_email.text.toString(), et_pass.text.toString())
             }
 
             R.id.ib_login_back -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.mypage_main_container,
-                    MyPageFragment()
-                ).commit()
+                presenter.logout()
             }
 
             R.id.tv_login_register -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.mypage_main_container,
-                    MyPageRegisterFragment()
-                ).commit()
+                presenter.registerPage()
             }
 
             R.id.tv_login_find -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.loading_container,
-                    MyPageFindFragment()
-                ).commit()
+                presenter.findPass()
             }
-
 
         }
     }
@@ -180,23 +60,14 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.mypage_login_fragment, container, false)
+        return inflater.inflate(R.layout.mypage_login_fragment, container, false).also {
+            presenter = MyPageLoginPresenter(this)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
-
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        Log.d("1111", "$retrofit")
-//
-//        val userApi = retrofit.create(UserApi::class.java)
-//
-//        Log.d("1111", "$userApi")
 
 
         btn_login.setOnClickListener(this)
@@ -207,6 +78,86 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
 
     }
 
+
+    override fun showLoginNo() {
+        val alertDialog =
+            AlertDialog.Builder(
+                ContextThemeWrapper(
+                    activity,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
+
+        alertDialog.setTitle("로그인 실패")
+        alertDialog.setMessage("입력한 정보를 확인바랍니다.")
+        alertDialog.setPositiveButton(
+            "확인",
+            object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    Log.d("1111", "실패")
+                }
+            })
+        alertDialog.show()
+
+    }
+
+    override fun showLoginOk(nickName: String) {
+
+        val alertDialog =
+            AlertDialog.Builder(
+                ContextThemeWrapper(
+                    activity,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
+
+        alertDialog.setTitle("로그인 성공")
+        alertDialog.setMessage(et_email.text.toString() + "님 환영합니다!")
+        alertDialog.setPositiveButton(
+            "확인",
+            object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    this@MyPageLoginFragment.requireFragmentManager()
+                        .beginTransaction()
+                        .replace(
+                            R.id.mypage_main_container,
+                            MyPageFragment()
+                        ).commit().also {
+                            loginState = true
+                            userId = et_email.text.toString()
+                            userNickname = nickName
+                        }
+                }
+            })
+        alertDialog.show()
+
+    }
+
+
+    override fun showLogout() {
+//        this.requireFragmentManager().beginTransaction().replace(
+//            R.id.mypage_main_container,
+//            MyPageFragment()
+//        ).commit()
+
+        this.requireFragmentManager().beginTransaction().remove(
+            this
+        ).commit()
+    }
+
+    override fun showRegisterPage() {
+        this.requireFragmentManager().beginTransaction().replace(
+            R.id.mypage_main_container,
+            MyPageRegisterFragment()
+        ).commit()
+    }
+
+    override fun showFindPassPage() {
+        this.requireFragmentManager().beginTransaction().replace(
+            R.id.loading_container,
+            MyPageFindFragPassment()
+        ).commit()
+    }
 
     override fun onStart() {
         Log.d(TAG, "onStart")
@@ -247,7 +198,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener {
         var userId = ""
         var userNickname = ""
         private const val TAG = "MyPageLoginFragment"
-        private const val URL = "https://duksung12.cafe24.com"
+        const val URL = "https://duksung12.cafe24.com"
     }
 
 

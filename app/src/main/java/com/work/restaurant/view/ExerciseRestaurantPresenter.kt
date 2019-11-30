@@ -8,10 +8,14 @@ import com.work.restaurant.view.search.fragment.SearchFragment
 
 class ExerciseRestaurantPresenter(private val exerciseRestaurantView: ExerciseRestaurantContract.View) :
     ExerciseRestaurantContract.Presenter {
-    override fun start() {
+    override fun loading() {
         exerciseRestaurantView.showLoading()
-        exerciseRestaurantView.showMain()
     }
+
+    override fun init() {
+        exerciseRestaurantView.showInit()
+    }
+
 
     override fun setFragmentMap(): Map<String, Fragment> =
         mapOf(
