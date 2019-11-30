@@ -91,10 +91,17 @@
                             android:id="@+id/et_register_nickname"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="15">
+                            android:layout_weight="13">
 
 
                         </EditText>
+
+                        <ImageView
+                            android:id="@+id/iv_nickname_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            ></ImageView>
 
 
                     </LinearLayout>
@@ -160,10 +167,17 @@
                             android:id="@+id/et_register_email"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="15">
+                            android:layout_weight="13">
 
 
                         </EditText>
+
+                        <ImageView
+                            android:id="@+id/iv_email_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            ></ImageView>
 
 
                     </LinearLayout>
@@ -229,10 +243,17 @@
                             android:id="@+id/et_register_pass"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="15">
+                            android:layout_weight="13">
 
 
                         </EditText>
+
+                        <ImageView
+                            android:id="@+id/iv_pass_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            ></ImageView>
 
 
                     </LinearLayout>
@@ -298,11 +319,17 @@
                             android:background="@android:color/transparent"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="15">
+                            android:layout_weight="13">
 
 
                         </EditText>
 
+                        <ImageView
+                            android:id="@+id/iv_pass_ok_state"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            ></ImageView>
 
                     </LinearLayout>
 

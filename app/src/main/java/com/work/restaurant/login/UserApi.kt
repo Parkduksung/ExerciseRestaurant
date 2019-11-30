@@ -1,5 +1,6 @@
 package com.work.restaurant.login
 
+import com.work.restaurant.data.model.ResultModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
 
@@ -68,9 +69,9 @@
 
                     <ImageView
                         android:id="@+id/iv_search_settings"
-                        app:srcCompat="@drawable/ic_settings"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_settings">
 
                     </ImageView>
 
@@ -105,10 +106,9 @@
             android:layout_weight="32">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_rankt"
+                android:id="@+id/recyclerview_rank"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
 
         </LinearLayout>
     </LinearLayout>
