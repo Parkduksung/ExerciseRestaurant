@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.network.api.FitnessCenterApi
+import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.view.adapter.BookMarkAdapter
 import kotlinx.android.synthetic.main.search_like_fragment.*
 import retrofit2.Call
@@ -74,7 +74,7 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
         val fitnessApi = retrofit.create(FitnessCenterApi::class.java)
 
 
-        fitnessApi.FitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItemModel>> {
+        fitnessApi.fitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItemModel>> {
 
             override fun onFailure(call: Call<List<FitnessCenterItemModel>>?, t: Throwable?) {
                 Log.d("cccccccccccccccccccccccccccc", "$t")
@@ -106,41 +106,6 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
 
     }
 
-
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
-    }
 
     companion object {
         private const val TAG = "SearchLikeFragment"

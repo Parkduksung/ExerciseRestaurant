@@ -1,6 +1,8 @@
 package com.work.restaurant.view.home.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,35 +12,38 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
-import com.work.restaurant.view.adapter.AddressDataListener
+import com.work.restaurant.view.adapter.AddressAdapterDataListener
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.addressClick
-import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.selectAddress2
-import kotlinx.android.synthetic.main.home_address_select2_fragment.*
+import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.selectAddress1
+import kotlinx.android.synthetic.main.home_address_select1_fragment.*
 
-class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
+
+class HomeAddressAdapterSelect1Fragment : Fragment(),
+    AddressAdapterDataListener {
+
+
     override fun getAddressData(data: String) {
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
-
-        selectAddress2 = data
+        selectAddress1 = data
         addressClick += data
 
-        Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk1", addressClick)
+        val dataIntent = Intent()
+        dataIntent.putExtra("address1", data)
+        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, dataIntent)
+        this.requireFragmentManager().beginTransaction().commit()
+
     }
 
-
     private lateinit var addressAdapter: AddressAdapter
-
 
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
-    }
 
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -47,7 +52,7 @@ class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_select2_fragment, container, false).also {
+        return inflater.inflate(R.layout.home_address_select1_fragment, container, false).also {
             addressAdapter = AddressAdapter()
         }
     }
@@ -63,17 +68,19 @@ class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
 
     private fun startView() {
 
-        val loadingTextArrayList = resources.getStringArray(R.array.인천)
+        val loadingTextArrayList = resources.getStringArray(R.array.select)
 
-        recyclerview_address2.run {
+        recyclerview_address1.run {
             this.adapter = addressAdapter
 
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
+
         }
     }
+
 
     override fun onStart() {
         Log.d(TAG, "onStart")
@@ -83,6 +90,7 @@ class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
     override fun onResume() {
         Log.d(TAG, "onResume")
         super.onResume()
+
     }
 
     override fun onPause() {
@@ -110,8 +118,10 @@ class HomeAddressSelect2Fragment : Fragment(), AddressDataListener {
         super.onDetach()
     }
 
+
     companion object {
-        private const val TAG = "HomeAddressSelect2Fragment"
+        private const val REQUEST_CODE = 2
+        private const val TAG = "HomeAddressSelect1Fragment"
     }
 
 }

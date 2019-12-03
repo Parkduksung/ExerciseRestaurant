@@ -1,5 +1,5 @@
 package com.work.restaurant.view.adapter
 
-interface AddressDataListener {
+interface AddressAdapterDataListener {
     fun getAddressData(data: String)
 }

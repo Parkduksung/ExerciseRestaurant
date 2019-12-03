@@ -6,5 +6,6 @@ import retrofit2.http.GET
 
 interface FitnessCenterApi {
     @GET("/FitnessCenter.php")
-    fun FitnessCenterAllItem(): Call<List<FitnessCenterItemModel>>
+    fun fitnessCenterAllItem(): Call<List<FitnessCenterItemModel>>
+
 }

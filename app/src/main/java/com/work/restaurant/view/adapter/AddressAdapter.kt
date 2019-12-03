@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.address_item.view.*
 
 class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
-    private var addressDataListener: AddressDataListener? = null
+    private var addressAdapterDataListener: AddressAdapterDataListener? = null
 
     private val addressList = ArrayList<String>()
 
@@ -33,7 +33,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         holder.addressItem.setOnClickListener {
             val context = it.context
             Toast.makeText(context, addressList[position], Toast.LENGTH_LONG).show()
-            addressDataListener?.getAddressData(addressList[position])
+            addressAdapterDataListener?.getAddressData(addressList[position])
 
         }
 
@@ -52,8 +52,8 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listener: AddressDataListener) {
-        addressDataListener = listener
+    fun setItemClickListener(listenerAdapter: AddressAdapterDataListener) {
+        addressAdapterDataListener = listenerAdapter
     }
 
 }

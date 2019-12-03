@@ -15,7 +15,7 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
     private val searchLookList = ArrayList<FitnessCenterItemModel>()
 
-    private var searchItemDataListener: SearchItemDataListener? = null
+    private var searchItemAdapterDataListener: SearchItemAdapterDataListener? = null
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -36,7 +36,7 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
         holder.searchLookName.setOnClickListener {
 
-            searchItemDataListener?.getSearchItemData(searchLookList[position].fitnessCenterName)
+            searchItemAdapterDataListener?.getSearchItemData(searchLookList[position].fitnessCenterName)
 
         }
 
@@ -76,8 +76,8 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listener: SearchItemDataListener) {
-        searchItemDataListener = listener
+    fun setItemClickListener(listenerAdapter: SearchItemAdapterDataListener) {
+        searchItemAdapterDataListener = listenerAdapter
     }
 
 }

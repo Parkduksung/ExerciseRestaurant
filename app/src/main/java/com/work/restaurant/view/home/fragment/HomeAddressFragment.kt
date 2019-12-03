@@ -75,9 +75,9 @@ class HomeAddressFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         val fragmentMap: Map<String, Fragment> = mapOf(
-            "광역시/도" to HomeAddressSelect1Fragment(),
-            "시/군/구" to HomeAddressSelect2Fragment(),
-            "읍/면/동" to HomeAddressSelect3Fragment()
+            "광역시/도" to HomeAddressAdapterSelect1Fragment(),
+            "시/군/구" to HomeAddressAdapterSelect2Fragment(),
+            "읍/면/동" to HomeAddressAdapterSelect3Fragment()
         )
 
 

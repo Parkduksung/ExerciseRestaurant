@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AddressAdapter
-import com.work.restaurant.view.adapter.AddressDataListener
+import com.work.restaurant.view.adapter.AddressAdapterDataListener
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.selectAddress3
 import kotlinx.android.synthetic.main.home_address_select3_fragment.*
 
 
-class HomeAddressSelect3Fragment : Fragment(), AddressDataListener {
+class HomeAddressAdapterSelect3Fragment : Fragment(), AddressAdapterDataListener {
     override fun getAddressData(data: String) {
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
 

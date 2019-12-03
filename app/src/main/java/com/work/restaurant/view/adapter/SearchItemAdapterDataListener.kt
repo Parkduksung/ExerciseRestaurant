@@ -1,5 +1,5 @@
 package com.work.restaurant.view.adapter
 
-interface SearchItemDataListener {
+interface SearchItemAdapterDataListener {
     fun getSearchItemData(data: String)
 }
