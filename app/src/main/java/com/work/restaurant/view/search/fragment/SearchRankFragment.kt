@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.network.api.FitnessCenterApi
+import com.work.restaurant.network.model.FitnessCenterItemModel
 import com.work.restaurant.view.adapter.FitnessRankAdapter
 import com.work.restaurant.view.home.fragment.HomeAddressFragment
 import kotlinx.android.synthetic.main.search_rank_fragment.*

@@ -4,7 +4,6 @@ interface MyPageContract {
 
     interface View {
 
-
         fun showLogIn()
 
         fun showLogOut()

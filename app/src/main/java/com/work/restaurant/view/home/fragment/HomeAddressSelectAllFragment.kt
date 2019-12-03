@@ -38,10 +38,6 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
                 this.requireFragmentManager().beginTransaction().remove(this).commit()
 
 
-
-
-
-
             }
         }
     }

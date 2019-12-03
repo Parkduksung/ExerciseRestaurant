@@ -17,7 +17,7 @@ interface UserApi {
 
     @POST("/insert.php")
     fun register(
-        @Query("user_nickname") user_nickname:String,
+        @Query("user_nickname") user_nickname: String,
         @Query("user_email") user_email: String,
         @Query("user_pass") user_pass: String
     ): Call<ResultModel>

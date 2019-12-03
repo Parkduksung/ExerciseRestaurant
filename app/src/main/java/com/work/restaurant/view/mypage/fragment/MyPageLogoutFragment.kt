@@ -1,6 +1,8 @@
 package com.work.restaurant.view.mypage.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,28 +10,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.loginState
+import com.work.restaurant.view.mypage.contract.MyPageLogoutContract
+import com.work.restaurant.view.mypage.presenter.MyPageLogoutPresenter
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 
-class MyPageLogoutFragment : Fragment(), View.OnClickListener {
+class MyPageLogoutFragment : Fragment(), View.OnClickListener, MyPageLogoutContract.View {
+
+    private lateinit var presenter: MyPageLogoutContract.Presenter
+
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_logout_cancel -> {
-                this.requireFragmentManager().beginTransaction().remove(
-                    this@MyPageLogoutFragment
-                ).commit()
+                presenter.logoutCancel()
             }
 
             R.id.btn_logout_ok -> {
-                this.requireFragmentManager().beginTransaction().remove(
-                    this@MyPageLogoutFragment
-                ).replace(
-                    R.id.mypage_main_container,
-                    MyPageFragment()
-                ).commit().also {
-                    loginState = false
-                }
-
+                presenter.logoutOk()
             }
 
         }
@@ -54,7 +51,9 @@ class MyPageLogoutFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.mypage_logout_fragment, container, false)
+        return inflater.inflate(R.layout.mypage_logout_fragment, container, false).also {
+            presenter = MyPageLogoutPresenter(this)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -63,6 +62,33 @@ class MyPageLogoutFragment : Fragment(), View.OnClickListener {
 
         btn_logout_cancel.setOnClickListener(this)
         btn_logout_ok.setOnClickListener(this)
+
+
+    }
+
+    override fun showLogoutCancel() {
+        this.requireFragmentManager().beginTransaction().remove(
+            this@MyPageLogoutFragment
+        ).commit()
+    }
+
+    override fun showLogoutOk() {
+
+        this.requireFragmentManager().beginTransaction().remove(
+            this@MyPageLogoutFragment
+        ).replace(
+            R.id.mypage_main_container,
+            MyPageFragment()
+        ).commit().also {
+            val data = Intent()
+            data.putExtra("id", "")
+            data.putExtra("nickname", "")
+            targetFragment?.onActivityResult(
+                targetRequestCode,
+                Activity.RESULT_OK,
+                data
+            )
+        }
 
 
     }

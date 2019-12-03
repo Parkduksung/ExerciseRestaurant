@@ -8,7 +8,7 @@ interface MyPageLoginContract {
 
         fun showLoginNo()
 
-        fun showLogout()
+        fun showBackPage()
 
         fun showRegisterPage()
 
@@ -21,7 +21,7 @@ interface MyPageLoginContract {
 
         fun login(email: String, pass: String)
 
-        fun logout()
+        fun backPage()
 
         fun registerPage()
 

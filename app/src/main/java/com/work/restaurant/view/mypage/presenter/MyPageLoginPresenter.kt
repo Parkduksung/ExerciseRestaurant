@@ -7,8 +7,8 @@ import com.work.restaurant.view.mypage.contract.MyPageLoginContract
 
 class MyPageLoginPresenter(private val myPageLoginView: MyPageLoginContract.View) :
     MyPageLoginContract.Presenter {
-    override fun logout() {
-        myPageLoginView.showLogout()
+    override fun backPage() {
+        myPageLoginView.showBackPage()
     }
 
     override fun registerPage() {
@@ -21,13 +21,11 @@ class MyPageLoginPresenter(private val myPageLoginView: MyPageLoginContract.View
 
     override fun login(email: String, pass: String) {
 
-
         MyPageLoginRepositoryImpl.getInstance(
             MyPageLoginDataImpl.getInstance()
         ).loginResult(email, pass, object : MyPageLoginRepositoryCallback {
 
             override fun onSuccess(resultNickname: String) {
-
                 myPageLoginView.showLoginOk(resultNickname)
             }
 
@@ -37,6 +35,8 @@ class MyPageLoginPresenter(private val myPageLoginView: MyPageLoginContract.View
         })
 
     }
+
+
 
 
 }

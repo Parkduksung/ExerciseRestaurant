@@ -1,8 +1,9 @@
 package com.work.restaurant.view.mypage.fragment
 
+import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -12,12 +13,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.mypage.contract.MyPageLoginContract
-import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.loginState
 import com.work.restaurant.view.mypage.presenter.MyPageLoginPresenter
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 
 class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContract.View {
-
 
     private lateinit var presenter: MyPageLoginContract.Presenter
 
@@ -28,7 +27,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
             }
 
             R.id.ib_login_back -> {
-                presenter.logout()
+                presenter.backPage()
             }
 
             R.id.tv_login_register -> {
@@ -42,18 +41,6 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
         }
     }
 
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,12 +57,16 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
         super.onActivityCreated(savedInstanceState)
 
 
+        setListener()
+
+
+    }
+
+    private fun setListener() {
         btn_login.setOnClickListener(this)
         ib_login_back.setOnClickListener(this)
         tv_login_register.setOnClickListener(this)
         tv_login_find.setOnClickListener(this)
-
-
     }
 
 
@@ -117,15 +108,22 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
             "확인",
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
+
                     this@MyPageLoginFragment.requireFragmentManager()
                         .beginTransaction()
                         .replace(
                             R.id.mypage_main_container,
                             MyPageFragment()
                         ).commit().also {
-                            loginState = true
-                            userId = et_email.text.toString()
-                            userNickname = nickName
+                            val data = Intent()
+                            data.putExtra("id", et_email.text.toString())
+                            data.putExtra("nickname", nickName)
+                            targetFragment?.onActivityResult(
+                                targetRequestCode,
+                                Activity.RESULT_OK,
+                                data
+                            )
+
                         }
                 }
             })
@@ -134,18 +132,14 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
     }
 
 
-    override fun showLogout() {
-//        this.requireFragmentManager().beginTransaction().replace(
-//            R.id.mypage_main_container,
-//            MyPageFragment()
-//        ).commit()
-
+    override fun showBackPage() {
         this.requireFragmentManager().beginTransaction().remove(
             this
         ).commit()
     }
 
     override fun showRegisterPage() {
+
         this.requireFragmentManager().beginTransaction().replace(
             R.id.mypage_main_container,
             MyPageRegisterFragment()
@@ -195,10 +189,9 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
     }
 
     companion object {
-        var userId = ""
-        var userNickname = ""
         private const val TAG = "MyPageLoginFragment"
         const val URL = "https://duksung12.cafe24.com"
+        private const val Register = 4
     }
 
 

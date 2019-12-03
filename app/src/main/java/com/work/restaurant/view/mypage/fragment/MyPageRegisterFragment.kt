@@ -1,7 +1,6 @@
 package com.work.restaurant.view.mypage.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -11,18 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.network.api.UserApi
-import com.work.restaurant.network.model.ResultModel
-import com.work.restaurant.view.mypage.fragment.MyPageLoginFragment.Companion.userNickname
+import com.work.restaurant.view.mypage.contract.MyPageRegisterContract
+import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.loginState
+import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.userId
+import com.work.restaurant.view.mypage.fragment.MyPageFragment.Companion.userNickname
+import com.work.restaurant.view.mypage.presenter.MyPageRegisterPresenter
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class MyPageRegisterFragment : Fragment(), View.OnClickListener {
+class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterContract.View {
 
+    private lateinit var presenter: MyPageRegisterContract.Presenter
     private var emailState = false
     private var nicknameState = false
     private var passState = false
@@ -30,114 +27,21 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
 
 
     override fun onClick(v: View?) {
-        val alertDialog =
-            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-
 
 
         when (v?.id) {
             R.id.ib_register_back -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.mypage_main_container,
-                    MyPageLoginFragment()
-                ).commit()
+                presenter.backPage()
             }
 
             R.id.btn_register -> {
-
-                inputState()
-
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-
-                val userApi = retrofit.create(UserApi::class.java)
-
-
-                if (nicknameState && emailState && passState && passSameState) {
-
-                    userApi.register(
-                        et_register_nickname.text.toString(),
-                        et_register_email.text.toString(),
-                        et_register_pass.text.toString()
-                    ).enqueue(object : Callback<ResultModel> {
-                        override fun onFailure(call: Call<ResultModel>?, t: Throwable?) {
-
-                            alertDialog.setTitle("회원가입 실패")
-                            alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
-                            alertDialog.setPositiveButton("확인",
-                                object : DialogInterface.OnClickListener {
-                                    override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                                        Log.d("1111111", "실패")
-                                    }
-
-                                })
-                            alertDialog.show()
-
-                            Log.d("1111111", "네트워크 실패")
-                        }
-
-                        override fun onResponse(
-                            call: Call<ResultModel>?,
-                            response: Response<ResultModel>?
-                        ) {
-                            val result = response?.body()?.result
-
-                            if (result.equals("ok")) {
-                                Log.d("1111111", "성공")
-
-                                this@MyPageRegisterFragment.requireFragmentManager()
-                                    .beginTransaction()
-                                    .replace(
-                                        R.id.mypage_main_container,
-                                        MyPageRegisterOkFragment()
-                                    ).commit().also {
-                                        MyPageFragment.loginState = true
-                                        userNickname = et_register_email.text.toString()
-                                    }
-                            } else {
-                                alertDialog.setTitle("회웝가입 실패")
-                                alertDialog.setMessage("회원 가입을 실패하였습니다.")
-                                alertDialog.setPositiveButton("확인",
-                                    object : DialogInterface.OnClickListener {
-                                        override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                                            Log.d("1111111", "실패")
-                                        }
-
-                                    })
-                                alertDialog.show()
-
-                            }
-
-                        }
-
-                    })
-
-                } else {
-
-                    alertDialog.setTitle("실패")
-                    alertDialog.setMessage("정보 입력란을 확인하세요.")
-                    alertDialog.setPositiveButton("확인",
-                        object : DialogInterface.OnClickListener {
-                            override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                            }
-                        })
-                    alertDialog.show()
-
-
-                }
-
-
+                registerState()
             }
 
         }
     }
 
-    private fun inputState() {
+    private fun registerState() {
         if (et_register_nickname.text.toString() != "") {
             nicknameState = true
             iv_nickname_state.setImageResource(R.drawable.ic_ok)
@@ -163,17 +67,6 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
             iv_pass_state.setImageResource(R.drawable.ic_ok)
             Log.d("ddddddddddddddddd", "$passState")
 
-//            if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
-//                passSameState = true
-//                iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
-//                Log.d("ddddddddddddddddd","$passSameState")
-//            } else {
-//                passSameState = false
-//                iv_pass_ok_state.setImageResource(R.drawable.ic_no)
-//                Log.d("ddddddddddddddddd","$passSameState")
-//            }
-
-
         } else {
             passState = false
             iv_pass_state.setImageResource(R.drawable.ic_no)
@@ -190,28 +83,45 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
             iv_pass_ok_state.setImageResource(R.drawable.ic_no)
             Log.d("ddddddddddddddddd", "$passSameState")
         }
+
+
+        if (nicknameState && emailState && passState && passSameState) {
+            presenter.register(
+                et_register_nickname.text.toString(),
+                et_register_email.text.toString(),
+                et_register_pass.text.toString()
+            )
+        } else {
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("실패")
+            alertDialog.setMessage("정보 입력란을 확인하세요.")
+            alertDialog.setPositiveButton("확인",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                    }
+                })
+            alertDialog.show()
+        }
+
     }
 
-
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.mypage_register_fragment, container, false)
+        return inflater.inflate(R.layout.mypage_register_fragment, container, false).also {
+            presenter = MyPageRegisterPresenter(this)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -223,48 +133,57 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener {
 
         btn_register.setOnClickListener(this)
 
-
     }
 
+    override fun showRegisterOk() {
 
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
+        this@MyPageRegisterFragment.requireFragmentManager()
+            .beginTransaction()
+            .replace(
+                R.id.mypage_main_container,
+                MyPageRegisterOkFragment()
+            ).commit().also {
+                //                val data = Intent()
+//                data.putExtra("id", et_register_email.text.toString())
+//                data.putExtra("nickname", et_register_nickname.text.toString())
+//                targetFragment?.onActivityResult(
+//                    targetRequestCode,
+//                    Activity.RESULT_OK,
+//                    data
+//                )
+                userId = et_register_email.text.toString()
+                userNickname = et_register_nickname.text.toString()
+                loginState = true
+
+            }
     }
 
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
+    override fun showRegisterNo() {
+
+        val alertDialog =
+            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
+
+        alertDialog.setTitle("회원가입 실패")
+        alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
+        alertDialog.setPositiveButton("확인",
+            object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                }
+
+            })
+        alertDialog.show()
     }
 
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
+    override fun showBackPage() {
+        this.requireFragmentManager().beginTransaction().remove(
+            this
+        ).commit()
     }
 
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
-    }
 
     companion object {
         private const val TAG = "MyPageRegisterFragment"
-        private const val URL = "https://duksung12.cafe24.com"
+
     }
 
 }
