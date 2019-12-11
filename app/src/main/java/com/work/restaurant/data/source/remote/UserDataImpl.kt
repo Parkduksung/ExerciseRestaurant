@@ -11,7 +11,6 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
 
     override fun login(email: String, pass: String, callback: UserDataCallback) {
 
-
         userApi.login(email, pass).enqueue(object :
             Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
@@ -22,7 +21,6 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
                 call: Call<ResultResponse>?,
                 response: Response<ResultResponse>?
             ) {
-
 
                 val result = response?.body()?.result
 
@@ -49,7 +47,6 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
         pass: String,
         callback: UserDataCallback
     ) {
-
 
         userApi.register(
             nickName,
