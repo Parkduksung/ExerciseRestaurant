@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import kotlinx.android.synthetic.main.mypage_find_fragment.*
 
-class MyPageFindFragPassment : Fragment(), View.OnClickListener {
+class MyPageFindPassFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_find_back -> {

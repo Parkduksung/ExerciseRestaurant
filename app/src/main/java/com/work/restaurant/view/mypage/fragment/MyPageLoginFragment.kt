@@ -149,7 +149,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
     override fun showFindPassPage() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.main_container,
-            MyPageFindFragPassment()
+            MyPageFindPassFragment()
         ).commit()
     }
 
