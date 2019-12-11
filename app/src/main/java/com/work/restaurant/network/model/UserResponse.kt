@@ -1,8 +1,9 @@
 package com.work.restaurant.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.work.restaurant.data.model.UserModel
 
-data class UserModel(
+data class UserResponse(
     @SerializedName("user_no")
     val userNo: Int,
     @SerializedName("user_nickname")
@@ -10,5 +11,14 @@ data class UserModel(
     @SerializedName("user_email")
     val userEmail: String,
     @SerializedName("user_pass")
-    val userPass: String
-)
+    val userPass: String,
+
+    val result: Boolean
+
+) {
+    fun toUser(): UserModel {
+        return UserModel(userNickName + "님", userEmail)
+    }
+
+
+}

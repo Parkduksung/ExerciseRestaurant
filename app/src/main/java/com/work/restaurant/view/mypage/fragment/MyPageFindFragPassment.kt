@@ -8,14 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.network.api.UserApi
-import com.work.restaurant.network.model.ResultModel
 import kotlinx.android.synthetic.main.mypage_find_fragment.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MyPageFindFragPassment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
@@ -28,56 +21,9 @@ class MyPageFindFragPassment : Fragment(), View.OnClickListener {
 
             R.id.btn_request_change_pass -> {
 
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-
-
-                val userApi = retrofit.create(UserApi::class.java)
-
-
-                inputEmail = et_change_pass.text.toString()
-
-                userApi.find(
-                    inputEmail
-                ).enqueue(object : Callback<ResultModel> {
-                    override fun onFailure(call: Call<ResultModel>?, t: Throwable?) {
-                        Log.d("ccccc", "네트워크 연결 실패")
-                    }
-
-                    override fun onResponse(
-                        call: Call<ResultModel>?,
-                        response: Response<ResultModel>?
-                    ) {
-
-                        val result = response?.body()?.result
-
-
-                        if (result.equals("ok")) {
-                            Log.d("ttt", "성공")
-
-
-                            this@MyPageFindFragPassment.requireFragmentManager().beginTransaction()
-                                .replace(
-                                    R.id.loading_container,
-                                    MyPageFindOkFragment()
-                                ).commit()
-
-
-                        } else {
-                            Log.d("ttt", "실패")
-                        }
-
-
-                        Log.d("ccccc", "네트워크 연결 실패")
-
-                    }
-                })
-
 
                 this.requireFragmentManager().beginTransaction().replace(
-                    R.id.loading_container,
+                    R.id.main_container,
                     MyPageFindOkFragment()
                 ).commit()
 
@@ -111,18 +57,8 @@ class MyPageFindFragPassment : Fragment(), View.OnClickListener {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//        val userApi = retrofit.create(UserApi::class.java)
-//
 
         ib_find_back.setOnClickListener(this)
-
-
 
         btn_request_change_pass.setOnClickListener(this)
 

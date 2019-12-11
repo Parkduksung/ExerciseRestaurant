@@ -3,7 +3,6 @@ package com.work.restaurant.view.loading
 interface LoadingContract {
 
     interface View {
-
         fun showStartText(text: String)
         fun showDelay()
 

@@ -1,8 +1,7 @@
 package com.work.restaurant.data.repository.mypage
 
-interface MyPageWithdrawRepositoryCallback {
+interface UserRepositoryCallback {
 
-    fun onSuccess()
+    fun onSuccess(resultNickname: String)
     fun onFailure(message: String)
-
 }

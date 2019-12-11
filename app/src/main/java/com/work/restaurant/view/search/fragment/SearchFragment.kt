@@ -13,6 +13,9 @@ import com.work.restaurant.view.search.presenter.SearchPresenter
 import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+    }
 
     private lateinit var presenter: SearchPresenter
 
@@ -25,6 +28,9 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
         }
     }
 
+    fun logged() {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,8 +60,10 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
 
 
     override fun showInit() {
+        val searchRankFragment = SearchRankFragment()
+        searchRankFragment.setTargetFragment(this, 12343)
         val fragmentMap: Map<String, Fragment> = mapOf(
-            resources.getStringArray(R.array.tab_search)[0] to SearchRankFragment(),
+            resources.getStringArray(R.array.tab_search)[0] to searchRankFragment,
             resources.getStringArray(R.array.tab_search)[1] to SearchLikeFragment()
         )
 
@@ -68,7 +76,7 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
 
     override fun showSearch() {
         this.requireFragmentManager().beginTransaction().replace(
-            R.id.loading_container,
+            R.id.main_container,
             SearchLookFragment()
         ).commit()
     }
@@ -76,5 +84,6 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
 
     companion object {
         private const val TAG = "SearchFragment"
+        const val URL = "https://duksung12.cafe24.com"
     }
 }

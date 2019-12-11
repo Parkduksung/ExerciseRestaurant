@@ -57,16 +57,6 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
         super.onActivityCreated(savedInstanceState)
 
 
-//        if (loginState) {
-//            iv_login.visibility = View.INVISIBLE
-//            login_ok_ll.visibility = View.VISIBLE
-//            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25F)
-////            tv_login_id.text = userId + " 님 환영합니다"
-//            tv_login_id.text = userNickname + " 님\n 환영합니다."
-//        } else {
-//            login_ok_ll.visibility = View.INVISIBLE
-//        }
-
         loginState()
 
         setListener()
@@ -97,13 +87,11 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Login) {
+        if (requestCode == LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
                 val loginEmail = data?.extras?.getString("id")
                 val loginNickname = data?.extras?.getString("nickname")
 
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", loginEmail)
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", loginNickname)
 
                 userId = loginEmail.toString()
                 userNickname = loginNickname.toString()
@@ -111,13 +99,11 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
             }
         }
 
-        if (requestCode == Logout) {
+        if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
                 val loginEmail = data?.extras?.getString("id")
                 val loginNickname = data?.extras?.getString("nickname")
 
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
 
                 userId = loginEmail.toString()
                 userNickname = loginNickname.toString()
@@ -125,13 +111,11 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
             }
         }
 
-        if (requestCode == Withdraw) {
+        if (requestCode == WITHDRAW) {
             if (resultCode == Activity.RESULT_OK) {
                 val loginEmail = data?.extras?.getString("id")
                 val loginNickname = data?.extras?.getString("nickname")
 
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
-                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
 
                 userId = loginEmail.toString()
                 userNickname = loginNickname.toString()
@@ -140,7 +124,7 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
 
         }
 
-//        if (requestCode == Register) {
+//        if (requestCode == REGISTER) {
 //            if (resultCode == Activity.RESULT_OK) {
 //                val loginEmail = data?.extras?.getString("id")
 //                val loginNickname = data?.extras?.getString("nickname")
@@ -161,7 +145,7 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
     override fun showLogIn() {
 
         val myPageLoginFragment = MyPageLoginFragment()
-        myPageLoginFragment.setTargetFragment(this, Login)
+        myPageLoginFragment.setTargetFragment(this, LOGIN)
 
 
         this.requireFragmentManager().beginTransaction().replace(
@@ -174,27 +158,27 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
 
         val myPageLogoutFragment = MyPageLogoutFragment()
 
-        myPageLogoutFragment.setTargetFragment(this, Logout)
+        myPageLogoutFragment.setTargetFragment(this, LOGOUT)
 
         this.requireFragmentManager().beginTransaction().replace(
-            R.id.loading_container,
+            R.id.main_container,
             myPageLogoutFragment
         ).commit()
     }
 
     override fun showWithDraw() {
         val myPageWithdrawalFragment = MyPageWithdrawalFragment()
-        myPageWithdrawalFragment.setTargetFragment(this, Withdraw)
+        myPageWithdrawalFragment.setTargetFragment(this, WITHDRAW)
 
         this.requireFragmentManager().beginTransaction().replace(
-            R.id.loading_container,
+            R.id.main_container,
             myPageWithdrawalFragment
         ).commit()
     }
 
     override fun showLateView() {
         this.requireFragmentManager().beginTransaction().replace(
-            R.id.loading_container,
+            R.id.main_container,
             MyPageWithdrawalFragment()
         ).commit()
     }
@@ -205,10 +189,10 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
         var userId = ""
         var userNickname = ""
         private const val TAG = "MyPageFragment"
-        private const val Login = 1
-        private const val Logout = 2
-        private const val Withdraw = 3
-        private const val Register = 4
+        private const val LOGIN = 1
+        private const val LOGOUT = 2
+        private const val WITHDRAW = 3
+        private const val REGISTER = 4
     }
 
 }

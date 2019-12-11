@@ -44,13 +44,13 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
         ).commit()
     }
 
-    override fun showWithdrawOk() {
+    override fun showWithdrawOk(userNickname: String) {
         val alertDialog =
             AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
 
 
         alertDialog.setTitle("성공")
-        alertDialog.setMessage("정상적으로 탈퇴 되었습니다.")
+        alertDialog.setMessage(userNickname + "님이 정상적으로 탈퇴 되었습니다.")
         alertDialog.setPositiveButton(
             "확인",
             object : DialogInterface.OnClickListener {

@@ -2,7 +2,7 @@ package com.work.restaurant.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class FitnessCenterItemModel(
+data class FitnessCenterItemResponse(
     @SerializedName("fc_no")
     val fitnessCenterNo: Int,
     @SerializedName("fc_name")

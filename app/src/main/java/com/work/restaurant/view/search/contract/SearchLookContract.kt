@@ -1,13 +1,13 @@
 package com.work.restaurant.view.search.contract
 
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 
 interface SearchLookContract {
 
     interface View {
 
 
-        fun showSearchLook(fitnessList: MutableList<FitnessCenterItemModel>)
+        fun showSearchLook(fitnessList: MutableList<FitnessCenterItemResponse>)
 
         fun showSearchNoFind()
 

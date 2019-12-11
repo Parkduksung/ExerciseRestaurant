@@ -5,15 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.GlideApp
 import kotlinx.android.synthetic.main.fitness_rank_item.view.*
 
 class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>() {
 
-    private val fitnessList = ArrayList<FitnessCenterItemModel>()
+    private val fitnessList = ArrayList<FitnessCenterItemResponse>()
+
+    private var adapterListener: AdapterDataListener? = null
 
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
@@ -33,14 +36,23 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
-        val fitnessCenterItemModel: FitnessCenterItemModel = fitnessList[position]
+        val fitnessCenterItemResponse: FitnessCenterItemResponse = fitnessList[position]
+
+
+        holder.itemView.setOnClickListener {
+            val context = it.context
+            Toast.makeText(context, fitnessCenterItemResponse.fitnessCenterName, Toast.LENGTH_LONG)
+                .show()
+            adapterListener?.getData(fitnessList[position].fitnessCenterName)
+        }
+
 
         holder.run {
-            fitnessNo.text = fitnessCenterItemModel.fitnessCenterNo.toString()
-            fitnessName.text = fitnessCenterItemModel.fitnessCenterName
+            fitnessNo.text = fitnessCenterItemResponse.fitnessCenterNo.toString()
+            fitnessName.text = fitnessCenterItemResponse.fitnessCenterName
 
             GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItemModel.fitnessCenterImage)
+                .load(fitnessCenterItemResponse.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.fitnessImage)
 
@@ -56,8 +68,8 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
 
     }
 
-    fun addData(fitnessCenterItemModel: List<FitnessCenterItemModel>) =
-        fitnessList.addAll(fitnessCenterItemModel)
+    fun addData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
+        fitnessList.addAll(fitnessCenterItemResponse)
 
 
     fun clearListData() {
@@ -65,4 +77,8 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
         notifyDataSetChanged()
     }
 
+
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+        adapterListener = listenerAdapterAdapter
+    }
 }

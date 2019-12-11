@@ -6,7 +6,7 @@ interface MyPageWithdrawalContract {
 
         fun showWithdrawCancel()
 
-        fun showWithdrawOk()
+        fun showWithdrawOk(userNickname: String)
 
         fun showWithdrawNo()
     }

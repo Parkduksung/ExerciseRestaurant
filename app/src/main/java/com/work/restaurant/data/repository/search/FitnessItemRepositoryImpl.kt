@@ -2,7 +2,7 @@ package com.work.restaurant.data.repository.search
 
 import com.work.restaurant.data.source.remote.FitnessCenterData
 import com.work.restaurant.data.source.remote.FitnessCenterDataCallback
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 
 class FitnessItemRepositoryImpl private constructor(
     private val fitnessCenterData: FitnessCenterData
@@ -10,7 +10,7 @@ class FitnessItemRepositoryImpl private constructor(
     override fun getFitnessResult(callback: FitnessItemRepositoryCallback) {
 
         fitnessCenterData.getFitnessCenterData(object : FitnessCenterDataCallback {
-            override fun onSuccess(fitnessList: List<FitnessCenterItemModel>) {
+            override fun onSuccess(fitnessList: List<FitnessCenterItemResponse>) {
                 callback.onSuccess(fitnessList)
             }
 

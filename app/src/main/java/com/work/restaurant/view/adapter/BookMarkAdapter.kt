@@ -6,15 +6,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.GlideApp
 import kotlinx.android.synthetic.main.bookmark_item.view.*
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
-    private val bookmarkList = ArrayList<FitnessCenterItemModel>()
+    private val bookmarkList = ArrayList<FitnessCenterItemResponse>()
+
+
+    private var adapterListener: AdapterDataListener? = null
 
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
@@ -34,6 +38,16 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
+        holder.bookmarkName.setOnClickListener {
+            val context = it.context
+            Toast.makeText(context, bookmarkList[position].fitnessCenterName, Toast.LENGTH_LONG)
+                .show()
+
+            adapterListener?.getData(bookmarkList[position].fitnessCenterName)
+
+        }
+
+
         holder.bookmarkCancel.setOnClickListener {
             bookmarkList.removeAt(position)
             notifyDataSetChanged()
@@ -41,17 +55,15 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         }
 
 
-        val fitnessCenterItemModel: FitnessCenterItemModel = bookmarkList[position]
+        val fitnessCenterItemResponse: FitnessCenterItemResponse = bookmarkList[position]
 
         holder.run {
-            bookmarkName.text = fitnessCenterItemModel.fitnessCenterName
+            bookmarkName.text = fitnessCenterItemResponse.fitnessCenterName
 
             GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItemModel.fitnessCenterImage)
+                .load(fitnessCenterItemResponse.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.bookmarkImage)
-
-
 
         }
 
@@ -60,23 +72,27 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
         val bookmarkName: TextView = itemView.tv_bookmark_name
         val bookmarkImage: ImageView = itemView.iv_bookmark_image
         val bookmarkCancel: ImageButton = itemView.ib_bookmark_cancel
 
     }
 
-    fun addAllData(fitnessCenterItemModel: List<FitnessCenterItemModel>) =
-        bookmarkList.addAll(fitnessCenterItemModel)
+    fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
+        bookmarkList.addAll(fitnessCenterItemResponse)
 
 
-    fun addData(fitnessCenterItemModel: FitnessCenterItemModel) =
-        bookmarkList.add(fitnessCenterItemModel)
+    fun addData(fitnessCenterItemResponse: FitnessCenterItemResponse) =
+        bookmarkList.add(fitnessCenterItemResponse)
 
     fun clearListData() {
         bookmarkList.clear()
         notifyDataSetChanged()
     }
+
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+        adapterListener = listenerAdapterAdapter
+    }
+
 
 }

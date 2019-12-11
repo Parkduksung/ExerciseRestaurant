@@ -27,7 +27,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
-
                     >
 
                     <TextView
@@ -37,7 +36,6 @@
                         android:gravity="center"
                         android:text="xxxx 피트니스"
                         android:textSize="40dp">
-
                     </TextView>
 
 
@@ -354,6 +352,7 @@
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/search_item_calling"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_calling"></ImageView>
@@ -374,6 +373,7 @@
 
 
             <LinearLayout
+                android:id="@+id/review_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"

@@ -1,8 +1,6 @@
 package com.work.restaurant.view.home.fragment
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,27 +9,32 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
-import com.work.restaurant.view.adapter.AddressAdapterDataListener
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.selectAddress1
 import kotlinx.android.synthetic.main.home_address_select1_fragment.*
 
 
 class HomeAddressAdapterSelect1Fragment : Fragment(),
-    AddressAdapterDataListener {
-
-
-    override fun getAddressData(data: String) {
+    AdapterDataListener {
+    override fun getData(data: String) {
         selectAddress1 = data
         addressClick += data
 
-        val dataIntent = Intent()
-        dataIntent.putExtra("address1", data)
-        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, dataIntent)
-        this.requireFragmentManager().beginTransaction().commit()
+
+
+//
+//        val dataIntent = Intent()
+//        dataIntent.putExtra("address1", data)
+//        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, dataIntent)
+//        this.requireFragmentManager().beginTransaction().commit()
+
+
+
 
     }
+
 
     private lateinit var addressAdapter: AddressAdapter
 

@@ -135,7 +135,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
 
     }
 
-    override fun showRegisterOk() {
+    override fun showRegisterOk(nickName: String) {
 
         this@MyPageRegisterFragment.requireFragmentManager()
             .beginTransaction()
@@ -152,7 +152,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
 //                    data
 //                )
                 userId = et_register_email.text.toString()
-                userNickname = et_register_nickname.text.toString()
+                userNickname = nickName
                 loginState = true
 
             }

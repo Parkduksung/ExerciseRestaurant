@@ -77,6 +77,7 @@ class CommunityExerciseListFragment : Fragment() {
     }
 
     companion object {
+        var ttttttt = "cccccccccccccc"
         private const val TAG = "CommunityExerciseListFragment"
     }
 

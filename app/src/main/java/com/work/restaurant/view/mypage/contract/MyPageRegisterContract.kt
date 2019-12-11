@@ -4,7 +4,7 @@ interface MyPageRegisterContract {
 
     interface View {
 
-        fun showRegisterOk()
+        fun showRegisterOk(nickName: String)
 
         fun showRegisterNo()
 

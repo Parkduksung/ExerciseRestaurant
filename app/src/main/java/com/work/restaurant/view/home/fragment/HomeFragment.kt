@@ -1,6 +1,7 @@
 package com.work.restaurant.view.home.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.googlemap.GoogleMapFragment
+import com.work.restaurant.view.home.HomeAddressActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
@@ -17,15 +19,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
 
             R.id.et_home -> {
-                this.requireFragmentManager().beginTransaction().replace(
-                    R.id.loading_container,
-                    HomeAddressFragment()
-                ).commit()
 
-
-
+                val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
+                startActivity(homeAddressActivity)
             }
-
         }
     }
 
@@ -70,7 +67,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         val fragmentManager = fragmentManager
         val fragmentTransaction = fragmentManager!!.beginTransaction()
-
 
         fragmentTransaction.add(
             R.id.google_maps,

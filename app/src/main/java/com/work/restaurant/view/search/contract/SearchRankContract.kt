@@ -1,6 +1,6 @@
 package com.work.restaurant.view.search.contract
 
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 
 interface SearchRankContract {
 
@@ -8,7 +8,7 @@ interface SearchRankContract {
 
         fun showSettings()
 
-        fun showFitnessList(fitnessList: List<FitnessCenterItemModel>)
+        fun showFitnessList(fitnessList: List<FitnessCenterItemResponse>)
 
 
     }

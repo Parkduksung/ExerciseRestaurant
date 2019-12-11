@@ -7,15 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.GlideApp
 import kotlinx.android.synthetic.main.search_look_item.view.*
 
 class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
-    private val searchLookList = ArrayList<FitnessCenterItemModel>()
+    private val searchLookList = ArrayList<FitnessCenterItemResponse>()
 
-    private var searchItemAdapterDataListener: SearchItemAdapterDataListener? = null
+    private var adapterListener: AdapterDataListener? = null
 
     override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -36,17 +36,17 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
         holder.searchLookName.setOnClickListener {
 
-            searchItemAdapterDataListener?.getSearchItemData(searchLookList[position].fitnessCenterName)
+            adapterListener?.getData(searchLookList[position].fitnessCenterName)
 
         }
 
-        val fitnessCenterItemModel: FitnessCenterItemModel = searchLookList[position]
+        val fitnessCenterItemResponse: FitnessCenterItemResponse = searchLookList[position]
 
         holder.run {
-            searchLookName.text = fitnessCenterItemModel.fitnessCenterName
+            searchLookName.text = fitnessCenterItemResponse.fitnessCenterName
 
             GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItemModel.fitnessCenterImage)
+                .load(fitnessCenterItemResponse.fitnessCenterImage)
                 .override(100, 100)
                 .into(holder.searchLookImage)
 
@@ -63,12 +63,12 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
     }
 
-    fun addAllData(fitnessCenterItemModel: List<FitnessCenterItemModel>) =
-        searchLookList.addAll(fitnessCenterItemModel)
+    fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
+        searchLookList.addAll(fitnessCenterItemResponse)
 
 
-    fun addData(fitnessCenterItemModel: FitnessCenterItemModel) {
-        searchLookList.add(fitnessCenterItemModel)
+    fun addData(fitnessCenterItemResponse: FitnessCenterItemResponse) {
+        searchLookList.add(fitnessCenterItemResponse)
     }
 
     fun clearListData() {
@@ -76,8 +76,8 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listenerAdapter: SearchItemAdapterDataListener) {
-        searchItemAdapterDataListener = listenerAdapter
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+        adapterListener = listenerAdapterAdapter
     }
 
 }

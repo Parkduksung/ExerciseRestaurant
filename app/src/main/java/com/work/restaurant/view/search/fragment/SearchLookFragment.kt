@@ -12,15 +12,22 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.SearchItemAdapter
-import com.work.restaurant.view.adapter.SearchItemAdapterDataListener
 import com.work.restaurant.view.search.contract.SearchLookContract
 import com.work.restaurant.view.search.presenter.SearchLookPresenter
 import kotlinx.android.synthetic.main.search_look_fragment.*
 
-class SearchLookFragment : Fragment(), View.OnClickListener, SearchItemAdapterDataListener,
+class SearchLookFragment : Fragment(), View.OnClickListener, AdapterDataListener,
     SearchLookContract.View {
+    override fun getData(data: String) {
+        Toast.makeText(context, data, Toast.LENGTH_LONG).show()
+        val searchOkItemFragment = SearchItemFragment()
+        searchOkItemFragment.setSelectItem(data)
+        this.requireFragmentManager().beginTransaction()
+            .add(R.id.search_look_sub_container, searchOkItemFragment).commit()
+    }
 
 
     private lateinit var searchItemAdapter: SearchItemAdapter
@@ -50,6 +57,7 @@ class SearchLookFragment : Fragment(), View.OnClickListener, SearchItemAdapterDa
         }
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
@@ -65,7 +73,7 @@ class SearchLookFragment : Fragment(), View.OnClickListener, SearchItemAdapterDa
     }
 
     override fun showSearchLook(
-        fitnessList: MutableList<FitnessCenterItemModel>
+        fitnessList: MutableList<FitnessCenterItemResponse>
     ) {
 
         recyclerview_look.run {
@@ -107,9 +115,7 @@ class SearchLookFragment : Fragment(), View.OnClickListener, SearchItemAdapterDa
 
     }
 
-
-    override fun getSearchItemData(data: String) {
-        Toast.makeText(context, data, Toast.LENGTH_LONG).show()
+    fun ttt(data: String) {
         val searchOkItemFragment = SearchItemFragment()
         searchOkItemFragment.setSelectItem(data)
         this.requireFragmentManager().beginTransaction()

@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
-import com.work.restaurant.view.adapter.AddressAdapterDataListener
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.addressClick
 import com.work.restaurant.view.home.fragment.HomeAddressFragment.Companion.selectAddress2
 import kotlinx.android.synthetic.main.home_address_select2_fragment.*
 
-class HomeAddressAdapterSelect2Fragment : Fragment(), AddressAdapterDataListener {
-    override fun getAddressData(data: String) {
+class HomeAddressAdapterSelect2Fragment : Fragment(), AdapterDataListener {
+    override fun getData(data: String) {
         Log.d("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", addressClick)
 
         selectAddress2 = data

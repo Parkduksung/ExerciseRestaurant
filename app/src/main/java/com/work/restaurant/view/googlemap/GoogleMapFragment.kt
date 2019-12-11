@@ -128,16 +128,16 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
                 placeMarkerOnMap(currentLatLng)
 
 
-                val getLatitude = getAddress1("효성동")[0]
-                val getLongitude = getAddress1("효성동")[1]
-
-                val getLatLng = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
-
-                placeMarkerOnMap(getLatLng)
+//                val getLatitude = getAddress1("효성동")[0]
+//                val getLongitude = getAddress1("효성동")[1]
+//
+//                val getLatLng = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
+//
+//                placeMarkerOnMap(getLatLng)
 
 
                 //new이 안에 1번째가 켜질때 그 위치로 이동되는거임.
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getLatLng, 16f))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
             }
         }
     }
@@ -182,7 +182,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             addressAll = "$address1 $address2 $address3"
 
         } catch (e: IOException) {
-            Log.e("MapsActivity", e!!.localizedMessage)
+            Log.e("MapsActivity", e.toString())
         }
 
         return addressAll
@@ -211,9 +211,8 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].latitude.toString())
 
 
-
         } catch (e: IOException) {
-            Log.e("MapsActivity", e!!.localizedMessage)
+            Log.e("MapsActivity", e.toString())
         }
 
         return list

@@ -1,6 +1,5 @@
 package com.work.restaurant.view.search.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.network.api.FitnessCenterApi
-import com.work.restaurant.network.model.FitnessCenterItemModel
+import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.BookMarkAdapter
 import kotlinx.android.synthetic.main.search_like_fragment.*
 import retrofit2.Call
@@ -19,7 +19,28 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchLikeFragment : Fragment(), View.OnClickListener {
+class SearchLikeFragment : Fragment(), View.OnClickListener, AdapterDataListener {
+    override fun getData(data: String) {
+        val searchFragment = SearchLookFragment()
+
+//        fragment.ttt(data)
+        val searchItemFragment = SearchItemFragment()
+//        fragment.ttt(data)
+
+        searchItemFragment.setSelectItem(data)
+
+        //add를 해야할지 replace를 해야할지 정답을 알려죠~
+
+        this.requireFragmentManager().beginTransaction()
+            .replace(R.id.main_container, searchFragment)
+            .add(R.id.search_look_sub_container, searchItemFragment)
+            .commit()
+
+
+//        fragment.requireFragmentManager().beginTransaction()
+//            .replace(R.id.loading_container, fragment).commit()
+
+    }
 
 
     private lateinit var bookMarkAdapter: BookMarkAdapter
@@ -31,19 +52,6 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +66,8 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
+
+        bookMarkAdapter.setItemClickListener(this)
 
         load()
 
@@ -74,15 +84,15 @@ class SearchLikeFragment : Fragment(), View.OnClickListener {
         val fitnessApi = retrofit.create(FitnessCenterApi::class.java)
 
 
-        fitnessApi.fitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItemModel>> {
+        fitnessApi.fitnessCenterAllItem().enqueue(object : Callback<List<FitnessCenterItemResponse>> {
 
-            override fun onFailure(call: Call<List<FitnessCenterItemModel>>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<FitnessCenterItemResponse>>?, t: Throwable?) {
                 Log.d("cccccccccccccccccccccccccccc", "$t")
             }
 
             override fun onResponse(
-                call: Call<List<FitnessCenterItemModel>>?,
-                response: Response<List<FitnessCenterItemModel>>?
+                call: Call<List<FitnessCenterItemResponse>>?,
+                response: Response<List<FitnessCenterItemResponse>>?
             ) {
                 recyclerview_bookmark.run {
 
