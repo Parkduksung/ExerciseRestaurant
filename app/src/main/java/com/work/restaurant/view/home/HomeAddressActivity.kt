@@ -2,9 +2,11 @@ package com.work.restaurant.view.home
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.home.fragment.HomeAddressAdapterSelect1Fragment
@@ -13,7 +15,6 @@ import com.work.restaurant.view.home.fragment.HomeAddressAdapterSelect3Fragment
 import kotlinx.android.synthetic.main.address_main.*
 
 
-@Suppress("DEPRECATION")
 class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.OnClickListener {
 
     private lateinit var presenter: HomeAddressContract.Presenter
@@ -29,12 +30,27 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
                 replaceFragment(HomeAddressAdapterSelect1Fragment())
 
-                tv_address1.setTextColor(resources.getColor(R.color.colorWhite))
-                tv_address2.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address3.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address1.textSize = 22F
-                tv_address2.textSize = 20F
-                tv_address3.textSize = 20F
+                tv_address1.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorWhite
+                    )
+                )
+                tv_address2.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address3.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
+                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
                 tv_address1.setTypeface(null, Typeface.BOLD)
                 tv_address2.setTypeface(null, Typeface.NORMAL)
                 tv_address3.setTypeface(null, Typeface.NORMAL)
@@ -48,12 +64,27 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
                 replaceFragment(HomeAddressAdapterSelect2Fragment())
 
-                tv_address1.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address2.setTextColor(resources.getColor(R.color.colorWhite))
-                tv_address3.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address1.textSize = 20F
-                tv_address2.textSize = 22F
-                tv_address3.textSize = 20F
+                tv_address1.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address2.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorWhite
+                    )
+                )
+                tv_address3.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
+                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
                 tv_address1.setTypeface(null, Typeface.NORMAL)
                 tv_address2.setTypeface(null, Typeface.BOLD)
                 tv_address3.setTypeface(null, Typeface.NORMAL)
@@ -68,12 +99,27 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
                 replaceFragment(HomeAddressAdapterSelect3Fragment())
 
-                tv_address1.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address2.setTextColor(resources.getColor(R.color.colorGrayBasic))
-                tv_address3.setTextColor(resources.getColor(R.color.colorWhite))
-                tv_address1.textSize = 20F
-                tv_address2.textSize = 20F
-                tv_address3.textSize = 22F
+                tv_address1.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address2.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorGrayBasic
+                    )
+                )
+                tv_address3.setTextColor(
+                    ContextCompat.getColor(
+                        this@HomeAddressActivity,
+                        R.color.colorWhite
+                    )
+                )
+                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
+                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
+                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
                 tv_address1.setTypeface(null, Typeface.NORMAL)
                 tv_address2.setTypeface(null, Typeface.NORMAL)
                 tv_address3.setTypeface(null, Typeface.BOLD)
@@ -104,8 +150,8 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
         tv_address3.setOnClickListener(this)
 
 
-        Toast.makeText(this, "들어왓음", Toast.LENGTH_SHORT).show()
 
+        Toast.makeText(this, "들어왓음", Toast.LENGTH_SHORT).show()
 
     }
 

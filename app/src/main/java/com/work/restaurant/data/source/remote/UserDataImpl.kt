@@ -15,16 +15,13 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
         userApi.login(email, pass).enqueue(object :
             Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callback.onFailure(t.toString())
+                callback.onFailure("${t?.message}")
             }
 
             override fun onResponse(
                 call: Call<ResultResponse>?,
                 response: Response<ResultResponse>?
             ) {
-
-
-//                response?.body()?.toUser()?.userEmail
 
 
                 val result = response?.body()?.result
@@ -60,7 +57,7 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
             pass
         ).enqueue(object : Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callback.onFailure(t.toString())
+                callback.onFailure("${t?.message}")
             }
 
             override fun onResponse(
@@ -85,7 +82,7 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
         userApi.delete(userNickname).enqueue(object :
             Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callback.onFailure(t.toString())
+                callback.onFailure("${t?.message}")
             }
 
             override fun onResponse(

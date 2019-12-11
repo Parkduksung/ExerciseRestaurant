@@ -20,7 +20,7 @@ class FitnessCenterDataImpl private constructor(private val fitnessCenterApi: Fi
                     call: Call<List<FitnessCenterItemResponse>>?,
                     t: Throwable?
                 ) {
-                    callback.onFailure("$t")
+                    callback.onFailure("${t?.message}")
                 }
 
                 override fun onResponse(

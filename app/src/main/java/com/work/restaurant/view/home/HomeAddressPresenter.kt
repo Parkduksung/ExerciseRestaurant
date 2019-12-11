@@ -4,5 +4,4 @@ class HomeAddressPresenter(private val homeAddressView : HomeAddressContract.Vie
     override fun backPage() {
         homeAddressView.showBackPage()
     }
-
 }

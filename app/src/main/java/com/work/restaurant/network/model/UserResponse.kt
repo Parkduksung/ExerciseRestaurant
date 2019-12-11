@@ -11,9 +11,7 @@ data class UserResponse(
     @SerializedName("user_email")
     val userEmail: String,
     @SerializedName("user_pass")
-    val userPass: String,
-
-    val result: Boolean
+    val userPass: String
 
 ) {
     fun toUser(): UserModel {
