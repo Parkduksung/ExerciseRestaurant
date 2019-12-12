@@ -64,10 +64,18 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
                 val result = response?.body()?.result
 
 
-                if (result == true) {
-                    Log.d("1111111", "성공")
-                    callback.onSuccess(nickName)
+                result?.let {
+                    if (it) {
+                        Log.d("1111111", "성공")
+                        callback.onSuccess(nickName)
+                    }
+
                 }
+
+//                if (result == true) {
+//                    Log.d("1111111", "성공")
+//                    callback.onSuccess(nickName)
+//                }
             }
         })
 
