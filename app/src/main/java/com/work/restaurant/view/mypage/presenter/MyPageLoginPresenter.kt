@@ -2,7 +2,7 @@ package com.work.restaurant.view.mypage.presenter
 
 import com.work.restaurant.data.repository.mypage.UserRepositoryCallback
 import com.work.restaurant.data.repository.mypage.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.UserDataImpl
+import com.work.restaurant.data.source.remote.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.mypage.contract.MyPageLoginContract
 import com.work.restaurant.view.mypage.fragment.MyPageLoginFragment.Companion.URL
@@ -24,7 +24,7 @@ class MyPageLoginPresenter(private val myPageLoginView: MyPageLoginContract.View
     override fun login(email: String, pass: String) {
 
 
-        UserRepositoryImpl.getInstance(UserDataImpl.getInstance(RetrofitInstance.getInstance(URL)))
+        UserRepositoryImpl.getInstance(UserRemoteDataSourceImpl.getInstance(RetrofitInstance.getInstance(URL)))
             .login(email, pass, object : UserRepositoryCallback {
                 override fun onSuccess(resultNickname: String) {
                     myPageLoginView.showLoginOk(resultNickname)

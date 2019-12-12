@@ -27,16 +27,27 @@ import com.work.restaurant.R
 import java.io.IOException
 
 
-@Suppress("DEPRECATION")
 class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(p0: Marker?) = false
 
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+        if (menuVisible && isResumed) {
+            if(::lastLocation.isInitialized && ::mMap.isInitialized){
+                val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                placeMarkerOnMap(currentLatLng)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
+            }
+        } else {
+
+        }
+    }
 
     private lateinit var mMap: GoogleMap
     private lateinit var mapView: MapView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-
+    private lateinit var addressAll: String
     override fun onMapReady(googleMap: GoogleMap) {
 
         mMap = googleMap
@@ -60,6 +71,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         mMap.setOnMarkerClickListener(this)
 
         setUpMap()
+
 
     }
 
@@ -128,10 +140,10 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
                 placeMarkerOnMap(currentLatLng)
 
 
-//                val getLatitude = getAddress1("효성동")[0]
-//                val getLongitude = getAddress1("효성동")[1]
-//
-//                val getLatLng = LatLng(getLatitude.toDouble(), getLongitude.toDouble())
+                val address = getAddress1("효성동")
+
+
+//                val getLatLng = LatLng(address[0], address[1])
 //
 //                placeMarkerOnMap(getLatLng)
 
@@ -169,42 +181,53 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 //            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
 //            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
 
-            array = addresses[0].getAddressLine(0).split(" ")
 
-            for (i in 0 until array.size) {
-                Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
+            if(addresses.isNotEmpty()){
+                array = addresses[0].getAddressLine(0).split(" ")
+                for (i in 0 until array.size) {
+                    Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
+                }
+
+                address1 = array[1].substring(0, 2)
+                address2 = array[2]
+                address3 = array[3]
+
+                addressAll = "$address1 $address2 $address3"
             }
 
-            address1 = array[1].substring(0, 2)
-            address2 = array[2]
-            address3 = array[3]
 
-            addressAll = "$address1 $address2 $address3"
+
+
 
         } catch (e: IOException) {
             Log.e("MapsActivity", e.toString())
         }
 
-        return addressAll
+        return if(::addressAll.isInitialized){
+            addressAll
+        } else {
+            ""
+        }
     }
-
-    private fun getAddress1(addressName: String): List<String> {
+// to-do AsyncTask 로 작업할것.
+    private fun getAddress1(addressName: String): List<Double> {
 
         val geoCoder = Geocoder(this.context)
         val addresses: List<Address>
 
-        var list = mutableListOf<String>()
+        var list = mutableListOf<Double>()
 
         try {
 
             addresses = geoCoder.getFromLocationName(addressName, addressName.length)
+            Log.d("하하하", "" + addresses.size)
 
 
-            list.add(0, addresses[0].latitude.toString())
-            list.add(1, addresses[0].longitude.toString())
+            list.add(0, addresses[0].latitude)
+            list.add(1, addresses[0].longitude)
 
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", list[0])
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", list[1])
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[0])
+            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[1])
 
             Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].toString())
             Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].longitude.toString())
@@ -270,6 +293,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         lateinit var address1: String
         lateinit var address2: String
         lateinit var address3: String
-        lateinit var addressAll: String
+        var address4 = ""
+
     }
 }

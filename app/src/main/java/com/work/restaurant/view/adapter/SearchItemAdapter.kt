@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.GlideApp
-import kotlinx.android.synthetic.main.search_look_item.view.*
 
 class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
@@ -26,42 +25,13 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
             )
         )
 
-
     override fun getItemCount(): Int =
         searchLookList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(searchLookList[position], adapterListener)
 
-
-        holder.searchLookName.setOnClickListener {
-
-            adapterListener?.getData(searchLookList[position].fitnessCenterName)
-
-        }
-
-        val fitnessCenterItemResponse: FitnessCenterItemResponse = searchLookList[position]
-
-        holder.run {
-            searchLookName.text = fitnessCenterItemResponse.fitnessCenterName
-
-            GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItemResponse.fitnessCenterImage)
-                .override(100, 100)
-                .into(holder.searchLookImage)
-
-        }
-
-
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
-        val searchLookName: TextView = itemView.tv_search_look_name
-        val searchLookImage: ImageView = itemView.iv_search_look_image
-
-    }
 
     fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
         searchLookList.addAll(fitnessCenterItemResponse)
@@ -78,6 +48,27 @@ class SearchItemAdapter : RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
     fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
         adapterListener = listenerAdapterAdapter
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
+        private val searchLookImage: ImageView = itemView.findViewById(R.id.iv_search_look_image)
+
+        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
+            searchLookName.setOnClickListener {
+                adapterListener?.getData(item.fitnessCenterName)
+            }
+            val fitnessCenterItemResponse: FitnessCenterItemResponse = item
+
+            searchLookName.text = fitnessCenterItemResponse.fitnessCenterName
+
+            GlideApp.with(itemView.context)
+                .load(fitnessCenterItemResponse.fitnessCenterImage)
+                .override(100, 100)
+                .into(searchLookImage)
+
+        }
+
     }
 
 }

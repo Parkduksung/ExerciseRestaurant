@@ -10,6 +10,7 @@ import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.search.contract.SearchContract
 import com.work.restaurant.view.search.presenter.SearchPresenter
+import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {

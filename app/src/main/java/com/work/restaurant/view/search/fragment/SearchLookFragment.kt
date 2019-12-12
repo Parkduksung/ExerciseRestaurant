@@ -62,6 +62,11 @@ class SearchLookFragment : Fragment(), View.OnClickListener, AdapterDataListener
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
+
+        //뒷화면 터치막기
+        root_layout.setOnTouchListener { v, event ->
+            true
+        }
         ib_search_look_back.setOnClickListener(this)
         ib_search_item_look.setOnClickListener(this)
         searchItemAdapter.setItemClickListener(this)

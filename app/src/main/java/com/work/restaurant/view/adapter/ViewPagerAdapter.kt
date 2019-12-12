@@ -5,12 +5,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
 
-@Suppress("DEPRECATION")
 class ViewPagerAdapter(
     supportFragmentManager: FragmentManager,
     private val fragmentMap: Map<String, Fragment>
 ) :
-    FragmentPagerAdapter(supportFragmentManager) {
+    FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
 
     override fun getItem(position: Int): Fragment =

@@ -1,4 +1,4 @@
-package com.work.restaurant.view.search.contract
+package com.work.restaurant.view.search.rank.presenter
 
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 

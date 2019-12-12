@@ -57,6 +57,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
         val adapter = viewPagerAdapter
 
         vp_main.adapter = adapter
+        vp_main.offscreenPageLimit = 4
 
         tl_main.run {
             setupWithViewPager(vp_main)

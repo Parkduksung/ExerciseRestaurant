@@ -1,4 +1,4 @@
-package com.work.restaurant.view.search.fragment
+package com.work.restaurant.view.search.rank
 
 import android.app.Activity
 import android.content.Intent
@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.adapter.FitnessRankAdapter
+import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.home.fragment.HomeAddressFragment
-import com.work.restaurant.view.search.contract.SearchRankContract
-import com.work.restaurant.view.search.presenter.SearchRankPresenter
+import com.work.restaurant.view.search.fragment.SearchItemFragment
+import com.work.restaurant.view.search.fragment.SearchLookFragment
+import com.work.restaurant.view.search.rank.presenter.SearchRankContract
+import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
 
 

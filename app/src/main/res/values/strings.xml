@@ -2,5 +2,6 @@
     <string name="app_name">ExerciseRestaurant</string>
     <string name="app_version">v.1.1.1</string>
     <string name="app_update">Update 2019.10.18</string>
+    <string name="search_look_hint">오늘은 어디에서?</string>
 
 </resources>

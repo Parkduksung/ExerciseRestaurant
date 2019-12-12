@@ -1,16 +1,16 @@
 package com.work.restaurant.data.repository.mypage
 
 import com.work.restaurant.data.source.remote.UserDataCallback
-import com.work.restaurant.data.source.remote.UserDataImpl
+import com.work.restaurant.data.source.remote.UserRemoteDataSourceImpl
 import com.work.restaurant.ext.isConnectedToNetwork
 import com.work.restaurant.util.App
 
-class UserRepositoryImpl private constructor(private val userDataImpl: UserDataImpl) :
+class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteDataSourceImpl) :
     UserRepository {
     override fun login(email: String, pass: String, callback: UserRepositoryCallback) {
 
         if (App.instance.context().isConnectedToNetwork()) {
-            userDataImpl.login(email, pass, object : UserDataCallback {
+            userRemoteDataSourceImpl.login(email, pass, object : UserDataCallback {
                 override fun onSuccess(resultNickname: String) {
                     callback.onSuccess(resultNickname)
                 }
@@ -32,7 +32,7 @@ class UserRepositoryImpl private constructor(private val userDataImpl: UserDataI
     ) {
 
         if (App.instance.context().isConnectedToNetwork()) {
-            userDataImpl.register(nickName, email, pass, object : UserDataCallback {
+            userRemoteDataSourceImpl.register(nickName, email, pass, object : UserDataCallback {
                 override fun onSuccess(resultNickname: String) {
                     callback.onSuccess(resultNickname)
                 }
@@ -48,7 +48,7 @@ class UserRepositoryImpl private constructor(private val userDataImpl: UserDataI
     override fun delete(userNickname: String, callback: UserRepositoryCallback) {
 
         if (App.instance.context().isConnectedToNetwork()) {
-            userDataImpl.delete(userNickname, object : UserDataCallback {
+            userRemoteDataSourceImpl.delete(userNickname, object : UserDataCallback {
                 override fun onSuccess(resultNickname: String) {
                     callback.onSuccess(resultNickname)
                 }
@@ -74,9 +74,9 @@ class UserRepositoryImpl private constructor(private val userDataImpl: UserDataI
 
         private var instance: UserRepositoryImpl? = null
         fun getInstance(
-            userDataImpl: UserDataImpl
+            userRemoteDataSourceImpl: UserRemoteDataSourceImpl
         ): UserRepositoryImpl =
-            instance ?: UserRepositoryImpl(userDataImpl).also {
+            instance ?: UserRepositoryImpl(userRemoteDataSourceImpl).also {
                 instance = it
             }
 

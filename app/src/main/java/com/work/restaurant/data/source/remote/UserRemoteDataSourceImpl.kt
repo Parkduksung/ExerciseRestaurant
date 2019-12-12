@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserDataImpl private constructor(private val userApi: UserApi) : UserData {
+class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi) : UserData {
 
     override fun login(email: String, pass: String, callback: UserDataCallback) {
 
@@ -118,10 +118,10 @@ class UserDataImpl private constructor(private val userApi: UserApi) : UserData 
 
     companion object {
 
-        private var instance: UserDataImpl? = null
+        private var instance: UserRemoteDataSourceImpl? = null
 
-        fun getInstance(userApi: UserApi): UserDataImpl =
-            instance ?: instance ?: UserDataImpl(userApi).also {
+        fun getInstance(userApi: UserApi): UserRemoteDataSourceImpl =
+            instance ?: instance ?: UserRemoteDataSourceImpl(userApi).also {
                 instance = it
             }
 
