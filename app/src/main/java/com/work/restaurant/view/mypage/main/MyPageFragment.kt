@@ -49,7 +49,6 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        return inflater.inflate(R.layout.mypage_fragment, container, false)
         return inflater.inflate(R.layout.mypage_fragment, container, false)
     }
 

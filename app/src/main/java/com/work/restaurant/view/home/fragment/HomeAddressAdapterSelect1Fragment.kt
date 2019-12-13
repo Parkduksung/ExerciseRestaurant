@@ -1,6 +1,7 @@
 package com.work.restaurant.view.home.fragment
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
@@ -23,14 +25,11 @@ class HomeAddressAdapterSelect1Fragment : Fragment(),
         addressClick += data
 
 
-
 //
 //        val dataIntent = Intent()
 //        dataIntent.putExtra("address1", data)
 //        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, dataIntent)
 //        this.requireFragmentManager().beginTransaction().commit()
-
-
 
 
     }
@@ -73,6 +72,9 @@ class HomeAddressAdapterSelect1Fragment : Fragment(),
 
         val loadingTextArrayList = resources.getStringArray(R.array.select)
 
+
+        recyclerview_address1.addItemDecoration(Decoration(20))
+
         recyclerview_address1.run {
             this.adapter = addressAdapter
 
@@ -85,46 +87,24 @@ class HomeAddressAdapterSelect1Fragment : Fragment(),
     }
 
 
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
-
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
-    }
-
-
     companion object {
-        private const val REQUEST_CODE = 2
         private const val TAG = "HomeAddressSelect1Fragment"
+    }
+
+
+    inner class Decoration(var count: Int) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.bottom = count
+            outRect.left = count
+            outRect.top = count
+            outRect.right = count
+        }
     }
 
 }

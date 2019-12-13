@@ -166,10 +166,6 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
     companion object {
 
-        private var select1 = true
-        private var select2 = false
-        private var select3 = false
-
 
     }
 }
