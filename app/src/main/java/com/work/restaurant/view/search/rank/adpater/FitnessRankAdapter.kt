@@ -5,13 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.GlideApp
 import com.work.restaurant.view.adapter.AdapterDataListener
-import kotlinx.android.synthetic.main.fitness_rank_item.view.*
 
 class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>() {
 
@@ -20,11 +18,11 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
     private var adapterListener: AdapterDataListener? = null
 
 
-    override fun onCreateViewHolder(holder: ViewGroup, viewType: Int): ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(holder.context).inflate(
+            LayoutInflater.from(parent.context).inflate(
                 R.layout.fitness_rank_item,
-                holder,
+                parent,
                 false
             )
         )
@@ -34,38 +32,33 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
         fitnessList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
-        val fitnessCenterItemResponse: FitnessCenterItemResponse = fitnessList[position]
-
-
-        holder.itemView.setOnClickListener {
-            val context = it.context
-            Toast.makeText(context, fitnessCenterItemResponse.fitnessCenterName, Toast.LENGTH_LONG)
-                .show()
-            adapterListener?.getData(fitnessList[position].fitnessCenterName)
-        }
-
-
-        holder.run {
-            fitnessNo.text = fitnessCenterItemResponse.fitnessCenterNo.toString()
-            fitnessName.text = fitnessCenterItemResponse.fitnessCenterName
-
-            GlideApp.with(holder.itemView.context)
-                .load(fitnessCenterItemResponse.fitnessCenterImage)
-                .override(100, 100)
-                .into(holder.fitnessImage)
-
-
-        }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(fitnessList[position], adapterListener)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val fitnessNo: TextView = itemView.fitness_rank_no_tv
-        val fitnessName: TextView = itemView.fitness_name_tv
-        val fitnessImage: ImageView = itemView.fitness_image_iv
+        private val fitnessNo: TextView = itemView.findViewById(R.id.fitness_rank_no_tv)
+        private val fitnessName: TextView = itemView.findViewById(R.id.fitness_name_tv)
+        private val fitnessImage: ImageView = itemView.findViewById(R.id.fitness_image_iv)
+
+        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
+
+            val fitnessCenterItemResponse: FitnessCenterItemResponse = item
+
+            itemView.setOnClickListener {
+                adapterListener?.getData(item.fitnessCenterName)
+            }
+
+            fitnessNo.text = fitnessCenterItemResponse.fitnessCenterNo.toString()
+            fitnessName.text = fitnessCenterItemResponse.fitnessCenterName
+
+            GlideApp.with(itemView.context)
+                .load(fitnessCenterItemResponse.fitnessCenterImage)
+                .override(100, 100)
+                .into(fitnessImage)
+
+        }
+
 
     }
 
@@ -83,3 +76,4 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
         adapterListener = listenerAdapterAdapter
     }
 }
+

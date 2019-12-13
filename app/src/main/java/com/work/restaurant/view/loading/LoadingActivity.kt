@@ -50,7 +50,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
     companion object {
         private const val TAG = "LoadingActivity"
-
     }
 
 }

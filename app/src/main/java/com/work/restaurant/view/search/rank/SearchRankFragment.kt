@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.home.fragment.HomeAddressFragment
-import com.work.restaurant.view.search.fragment.SearchItemFragment
-import com.work.restaurant.view.search.fragment.SearchLookFragment
+import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
+import com.work.restaurant.view.search.look_for.SearchLookForFragment
+import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
@@ -27,8 +27,9 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
     override fun getData(data: String) {
 
 
-        val searchLookFragment = SearchLookFragment()
-        val searchItemFragment = SearchItemFragment()
+        val searchLookFragment = SearchLookForFragment()
+        val searchItemFragment =
+            SearchItemDetailsFragment()
         searchItemFragment.setSelectItem(data)
 
 
@@ -92,7 +93,6 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
         val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
         return view.also {
             fitnessRankAdapter = FitnessRankAdapter()
-            presenter = SearchRankPresenter(this)
         }
     }
 
@@ -100,6 +100,7 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
+        presenter = SearchRankPresenter(this)
         iv_search_settings.setOnClickListener(this)
         fitnessRankAdapter.setItemClickListener(this)
         presenter.getFitnessList()

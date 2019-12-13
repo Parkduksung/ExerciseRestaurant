@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.community.fragment.CommunityFragment
-import com.work.restaurant.view.home.fragment.HomeFragment
-import com.work.restaurant.view.mypage.fragment.MyPageFragment
-import com.work.restaurant.view.search.fragment.SearchFragment
+import com.work.restaurant.view.home.main.HomeFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment
+import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -33,8 +33,6 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
 
         presenter = ExerciseRestaurantPresenter(this)
 //        (fragmentMap.toList()[1].second as SearchFragment).logged()
-
-
 
 
         start()
