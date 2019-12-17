@@ -22,11 +22,6 @@ class SearchBookmarksFragment : Fragment(), View.OnClickListener, AdapterDataLis
     SearchBookmarksContract.View {
 
 
-    interface ItemClickListener {
-        fun clickItemData(data: String)
-    }
-
-
     override fun showBookmarksList(fitnessList: List<FitnessCenterItemResponse>) {
         recyclerview_bookmark.run {
 
@@ -72,63 +67,15 @@ class SearchBookmarksFragment : Fragment(), View.OnClickListener, AdapterDataLis
         bookMarkAdapter.setItemClickListener(this)
 
         presenter.getBookmarksList()
-//        load()
 
     }
-//
-//    private fun load() {
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//
-//        val fitnessApi = retrofit.create(FitnessCenterApi::class.java)
-//
-//
-//        fitnessApi.fitnessCenterAllItem()
-//            .enqueue(object : Callback<List<FitnessCenterItemResponse>> {
-//
-//                override fun onFailure(
-//                    call: Call<List<FitnessCenterItemResponse>>?,
-//                    t: Throwable?
-//                ) {
-//                    Log.d("cccccccccccccccccccccccccccc", "$t")
-//                }
-//
-//                override fun onResponse(
-//                    call: Call<List<FitnessCenterItemResponse>>?,
-//                    response: Response<List<FitnessCenterItemResponse>>?
-//                ) {
-//                    recyclerview_bookmark.run {
-//
-//                        this.adapter = bookMarkAdapter
-//
-//
-//                        response?.body()?.let {
-//                            it.forEach { fitnessCenterItem ->
-//                                if (fitnessCenterItem.fitnessCenterLikeCount >= 90) {
-//                                    bookMarkAdapter.addData(fitnessCenterItem)
-//                                }
-//                            }
-//                        }
-//
-//                        layoutManager = LinearLayoutManager(this.context)
-//
-//                    }
-//                }
-//            })
-//
-//
-//    }
+
 
     override fun getData(data: String) {
 
-        val searchLookForActivity = SearchLookForActivity()
-        searchLookForActivity.clickItemData(data)
-
-        val intent = Intent(activity?.application, searchLookForActivity::class.java)
+        val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
+        intent.putExtra("data", data)
+        intent.putExtra("toggle", true)
         startActivity(intent)
         Toast.makeText(this.context, data, Toast.LENGTH_SHORT).show()
     }
@@ -136,7 +83,6 @@ class SearchBookmarksFragment : Fragment(), View.OnClickListener, AdapterDataLis
 
     companion object {
         private const val TAG = "SearchLikeFragment"
-        private const val URL = "https://duksung12.cafe24.com"
     }
 
 

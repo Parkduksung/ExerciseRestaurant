@@ -28,11 +28,6 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
     private lateinit var fitnessRankAdapter: FitnessRankAdapter
 
 
-    interface ItemClickListener {
-        fun clickItemData(data: String)
-    }
-
-
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -105,10 +100,9 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
 
     override fun getData(data: String) {
 
-        val searchLookForActivity = SearchLookForActivity()
-        searchLookForActivity.clickItemData(data)
-
-        val intent = Intent(activity?.application, searchLookForActivity::class.java)
+        val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
+        intent.putExtra("data", data)
+        intent.putExtra("toggle", true)
         startActivity(intent)
     }
 

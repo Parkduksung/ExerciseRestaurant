@@ -12,12 +12,11 @@ import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.search.adapter.LookForAdapter
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
-import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
 class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, AdapterDataListener,
-    SearchLookForContract.View, SearchRankFragment.ItemClickListener {
+    SearchLookForContract.View {
 
 
     private lateinit var lookForAdapter: LookForAdapter
@@ -33,13 +32,6 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
                 presenter.searchLook(et_search_look_for_item.text.toString())
             }
         }
-    }
-
-    override fun clickItemData(data: String) {
-
-        clickData = data
-        toggle = true
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +51,12 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
 
 
     private fun toggleData() {
+
+        val intent = intent
+
+        clickData = intent.extras?.getString("data").toString()
+        toggle = intent.extras?.getBoolean("toggle") ?: true
+
         if (toggle) {
             getData(clickData)
         }
@@ -122,10 +120,8 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         alertDialog.show()
     }
 
-    override fun showBackPage() {
-        toggle = false
+    override fun showBackPage() =
         this@SearchLookForActivity.finish()
-    }
 
 
     companion object {

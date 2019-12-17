@@ -74,8 +74,11 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
     }
 
     override fun showSearch() {
-        val searchLookForActivity = Intent(this.context, SearchLookForActivity::class.java)
-        startActivity(searchLookForActivity)
+
+        val intent = Intent(this.context, SearchLookForActivity()::class.java)
+        intent.putExtra("data", "")
+        intent.putExtra("toggle", false)
+        startActivity(intent)
 
     }
 
