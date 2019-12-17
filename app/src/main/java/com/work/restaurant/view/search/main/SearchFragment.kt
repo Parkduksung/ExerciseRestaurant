@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
+import com.work.restaurant.view.search.SearchLookForActivity
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
-import com.work.restaurant.view.search.look_for.SearchLookForFragment
 import com.work.restaurant.view.search.main.presenter.SearchContract
 import com.work.restaurant.view.search.main.presenter.SearchPresenter
 import com.work.restaurant.view.search.rank.SearchRankFragment
@@ -73,10 +74,9 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
     }
 
     override fun showSearch() {
-        this.requireFragmentManager().beginTransaction().replace(
-            R.id.main_container,
-            SearchLookForFragment()
-        ).commit()
+        val searchLookForActivity = Intent(this.context, SearchLookForActivity::class.java)
+        startActivity(searchLookForActivity)
+
     }
 
 

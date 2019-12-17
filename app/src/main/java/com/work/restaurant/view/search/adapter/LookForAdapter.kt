@@ -1,4 +1,4 @@
-package com.work.restaurant.view.search.look_for.adapter
+package com.work.restaurant.view.search.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.view.GlideApp
+import com.work.restaurant.util.GlideApp
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {

@@ -33,9 +33,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.ExerciseRestaurantActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan"/>
+        <activity
+            android:name=".view.ExerciseRestaurantActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".view.home.HomeAddressActivity" />
+        <activity
+            android:name=".view.search.SearchLookForActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
     </application>
 
 </manifest>

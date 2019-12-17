@@ -4,23 +4,40 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.view.home.fragment.HomeAddressAdapterSelect1Fragment
-import com.work.restaurant.view.home.fragment.HomeAddressAdapterSelect2Fragment
-import com.work.restaurant.view.home.fragment.HomeAddressAdapterSelect3Fragment
+import com.work.restaurant.util.Decoration
+import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import kotlinx.android.synthetic.main.address_main.*
 
 
-class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.OnClickListener {
+class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.OnClickListener,
+    AdapterDataListener {
+
+    override fun getData(data: String) {
+
+        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
+
+        if (address1 && address2 && address3) {
+            this.supportFragmentManager.beginTransaction()
+                .replace(R.id.address_main_container, HomeAddressSelectAllFragment()).commit()
+        }
+
+    }
 
     private lateinit var presenter: HomeAddressContract.Presenter
+    private lateinit var addressAdapter: AddressAdapter
 
 
     override fun onClick(v: View?) {
+
+
         when (v?.id) {
             R.id.ib_home_address_back -> {
                 presenter.backPage()
@@ -28,106 +45,43 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
             R.id.tv_address1 -> {
 
-                replaceFragment(HomeAddressAdapterSelect1Fragment())
+                address1 = true
+                address2 = false
+                address3 = false
 
-                tv_address1.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorWhite
-                    )
-                )
-                tv_address2.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address3.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
-                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address1.setTypeface(null, Typeface.BOLD)
-                tv_address2.setTypeface(null, Typeface.NORMAL)
-                tv_address3.setTypeface(null, Typeface.NORMAL)
+                select(tv_address1, resources.getStringArray(R.array.select))
+                unSelect(tv_address2)
+                unSelect(tv_address3)
+
                 Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
-
 
             }
 
             R.id.tv_address2 -> {
 
+                address1 = true
+                address2 = true
+                address3 = false
 
-                replaceFragment(HomeAddressAdapterSelect2Fragment())
-
-                tv_address1.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address2.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorWhite
-                    )
-                )
-                tv_address3.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
-                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address1.setTypeface(null, Typeface.NORMAL)
-                tv_address2.setTypeface(null, Typeface.BOLD)
-                tv_address3.setTypeface(null, Typeface.NORMAL)
-
+                select(tv_address2, resources.getStringArray(R.array.인천))
+                unSelect(tv_address1)
+                unSelect(tv_address3)
 
                 Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-
 
             }
 
             R.id.tv_address3 -> {
 
-                replaceFragment(HomeAddressAdapterSelect3Fragment())
+                address1 = true
+                address2 = true
+                address3 = true
 
-                tv_address1.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address2.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorGrayBasic
-                    )
-                )
-                tv_address3.setTextColor(
-                    ContextCompat.getColor(
-                        this@HomeAddressActivity,
-                        R.color.colorWhite
-                    )
-                )
-                tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-                tv_address3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
-                tv_address1.setTypeface(null, Typeface.NORMAL)
-                tv_address2.setTypeface(null, Typeface.NORMAL)
-                tv_address3.setTypeface(null, Typeface.BOLD)
-                tv_address3.typeface.isBold
-
+                select(tv_address3, resources.getStringArray(R.array.부평구))
+                unSelect(tv_address1)
+                unSelect(tv_address2)
 
                 Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
-
 
             }
         }
@@ -142,29 +96,78 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
         setContentView(R.layout.address_main)
 
         presenter = HomeAddressPresenter(this)
+        addressAdapter = AddressAdapter()
+        addressAdapter.setItemClickListener(this)
         ib_home_address_back.setOnClickListener(this)
-
-
         tv_address1.setOnClickListener(this)
         tv_address2.setOnClickListener(this)
         tv_address3.setOnClickListener(this)
 
-
-
-        Toast.makeText(this, "들어왓음", Toast.LENGTH_SHORT).show()
+        initView()
 
     }
 
+    private fun initView() {
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(
-            R.id.address_container,
-            fragment
-        ).commit()
+        tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+
+        val loadingTextArrayList = resources.getStringArray(R.array.select)
+        val decoration = Decoration(30, 30, 30, 30)
+
+        recyclerview_address.run {
+
+            this.adapter = addressAdapter
+            this.addItemDecoration(decoration)
+            loadingTextArrayList.forEach {
+                addressAdapter.addData(it)
+            }
+            layoutManager = GridLayoutManager(this.context, 3)
+
+        }
+
+    }
+
+    private fun select(address: TextView, loadingTextArrayList: Array<String>) {
+
+        addressAdapter.removeData()
+        loadingTextArrayList.forEach {
+            addressAdapter.addData(it)
+        }
+        recyclerview_address.adapter?.notifyDataSetChanged()
+
+
+        address.run {
+            this.setTextColor(
+                ContextCompat.getColor(
+                    this@HomeAddressActivity,
+                    R.color.colorWhite
+                )
+            )
+            this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+            this.setTypeface(null, Typeface.BOLD)
+        }
+
+    }
+
+    private fun unSelect(address: TextView) {
+        address.run {
+            this.setTextColor(
+                ContextCompat.getColor(
+                    this@HomeAddressActivity,
+                    R.color.colorGrayBasic
+                )
+            )
+            this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
+            this.setTypeface(null, Typeface.NORMAL)
+        }
     }
 
 
     companion object {
+
+        var address1 = false
+        var address2 = false
+        var address3 = false
 
 
     }

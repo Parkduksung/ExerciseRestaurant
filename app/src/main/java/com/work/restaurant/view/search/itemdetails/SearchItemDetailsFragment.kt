@@ -11,10 +11,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.view.GlideApp
+import com.work.restaurant.util.GlideApp
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
-import com.work.restaurant.view.search.look_for.SearchLookForFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
@@ -31,8 +30,8 @@ class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDe
 
             R.id.review_ll -> {
 
-                this.requireFragmentManager().beginTransaction().remove(this)
-                    .remove(SearchLookForFragment()).commit()
+//                this.requireFragmentManager().beginTransaction().remove(this)
+//                    .remove(SearchLookForFragment()).commit()
 //                this.requireFragmentManager().beginTransaction().remove(SearchLookFragment()).commit()
 
                 Toast.makeText(context, "click1", Toast.LENGTH_LONG).show()
@@ -80,6 +79,7 @@ class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDe
 
     override fun showItemInfoDetail(fitnessList: FitnessCenterItemResponse) {
         search_item_name_tv.text = fitnessList.fitnessCenterName
+        search_item_time_tv.text = fitnessList.fitnessCenterTime
         search_item_best_part_tv.text = fitnessList.fitnessCenterBestPart
         search_item_like_count_tv.text = fitnessList.fitnessCenterLikeCount.toString()
         search_item_parking_tv.text = fitnessList.fitnessCenterParking

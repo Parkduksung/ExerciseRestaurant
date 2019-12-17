@@ -17,15 +17,12 @@ import kotlinx.android.synthetic.main.home_fragment.*
 class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
-
             R.id.et_home -> {
-
                 val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
                 startActivity(homeAddressActivity)
             }
         }
     }
-
 
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")

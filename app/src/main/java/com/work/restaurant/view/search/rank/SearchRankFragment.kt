@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.home.fragment.HomeAddressFragment
-import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
-import com.work.restaurant.view.search.look_for.SearchLookForFragment
+import com.work.restaurant.view.home.HomeAddressActivity
+import com.work.restaurant.view.search.SearchLookForActivity
 import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
@@ -24,31 +23,14 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 
 class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.View,
     AdapterDataListener {
-    override fun getData(data: String) {
-
-
-        val searchLookFragment = SearchLookForFragment()
-        val searchItemFragment =
-            SearchItemDetailsFragment()
-        searchItemFragment.setSelectItem(data)
-
-
-        this.requireFragmentManager().beginTransaction()
-            .replace(
-                R.id.main_container,
-                searchLookFragment
-            )
-            .replace(
-                R.id.search_look_sub_container,
-                searchItemFragment
-            )
-            .commit()
-
-    }
-
 
     private lateinit var presenter: SearchRankPresenter
     private lateinit var fitnessRankAdapter: FitnessRankAdapter
+
+
+    interface ItemClickListener {
+        fun clickItemData(data: String)
+    }
 
 
     override fun onClick(v: View?) {
@@ -107,16 +89,10 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
 
     }
 
+
     override fun showSettings() {
-        val homeAddressFragment =
-            HomeAddressFragment()
-        homeAddressFragment.setTargetFragment(
-            targetFragment,
-            REQUEST_CODE
-        )
-        this.requireFragmentManager().beginTransaction()
-            .replace(R.id.search_main_container, homeAddressFragment)
-            .commit()
+        val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
+        startActivity(homeAddressActivity)
     }
 
     override fun showFitnessList(fitnessList: List<FitnessCenterItemResponse>) {
@@ -126,6 +102,16 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
             layoutManager = LinearLayoutManager(this.context)
         }
     }
+
+    override fun getData(data: String) {
+
+        val searchLookForActivity = SearchLookForActivity()
+        searchLookForActivity.clickItemData(data)
+
+        val intent = Intent(activity?.application, searchLookForActivity::class.java)
+        startActivity(intent)
+    }
+
 
     companion object {
         private const val TAG = "SearchRankFragment"

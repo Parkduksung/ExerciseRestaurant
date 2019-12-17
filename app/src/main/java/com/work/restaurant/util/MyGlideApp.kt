@@ -1,4 +1,4 @@
-package com.work.restaurant.view
+package com.work.restaurant.util
 
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule

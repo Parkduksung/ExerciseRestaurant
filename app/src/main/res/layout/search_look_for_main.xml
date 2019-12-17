@@ -55,7 +55,7 @@
                 tools:ignore="ContentDescription" />
 
             <EditText
-                android:id="@+id/et_search_item"
+                android:id="@+id/et_search_look_for_item"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -75,6 +75,7 @@
 
 
     <FrameLayout
+        android:background="@color/colorWhite"
         android:id="@+id/search_look_sub_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"

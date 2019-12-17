@@ -1,9 +1,8 @@
-package com.work.restaurant.view.search.look_for.presenter
+package com.work.restaurant.view.search
 
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 
 interface SearchLookForContract {
-
     interface View {
 
 

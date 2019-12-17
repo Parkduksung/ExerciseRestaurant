@@ -140,7 +140,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
                 placeMarkerOnMap(currentLatLng)
 
 
-                val address = getAddress1("효성동")
+//                val address = getAddress1("효성동")
 
 
 //                val getLatLng = LatLng(address[0], address[1])

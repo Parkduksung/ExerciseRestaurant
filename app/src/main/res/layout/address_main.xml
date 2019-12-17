@@ -68,6 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/colorGray"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -82,13 +83,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@color/colorGrayDark"
-                                android:clickable="true"
                                 android:gravity="center"
                                 android:text="@string/address_select1"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="20dp"
-                                android:textStyle="bold"
-                                android:focusable="true" />
+                                android:textStyle="bold"/>
 
 
                         </LinearLayout>
@@ -132,17 +131,17 @@
 
 
                         </LinearLayout>
+
                     </LinearLayout>
 
 
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/address_container"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_address"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="9"></FrameLayout>
-
+                    android:layout_weight="9" />
 
             </LinearLayout>
 

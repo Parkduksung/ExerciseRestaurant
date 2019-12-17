@@ -9,16 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.view.GlideApp
+import com.work.restaurant.util.GlideApp
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
     private val bookmarkList = ArrayList<FitnessCenterItemResponse>()
 
-
     private var adapterListener: AdapterDataListener? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

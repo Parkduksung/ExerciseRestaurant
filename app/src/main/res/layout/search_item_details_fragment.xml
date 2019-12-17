@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     android:weightSum="20"
     tools:ignore="NestedWeights,SpUsage,ContentDescription,DisableBaselineAlignment">
@@ -23,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="8"
             android:gravity="center"
-            android:textSize="40dp" />
+            android:textSize="30dp" />
 
         <LinearLayout
             android:layout_width="0dp"

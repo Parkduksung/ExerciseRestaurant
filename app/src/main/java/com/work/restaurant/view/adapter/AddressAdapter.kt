@@ -38,15 +38,27 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
             val address: String = item
 
-            itemView.setOnClickListener {
-                adapterListener?.getData(address)
-            }
+//            itemView.setOnClickListener {
+//                adapterListener?.getData(address)
+//
+//            }
 
             addressItem.text = address
+
+
+
+            addressItem.setOnClickListener {
+                adapterListener?.getData(address)
+            }
 
         }
 
     }
+
+    fun removeData(){
+        addressList.clear()
+    }
+
 
     fun addData(item: String) {
         addressList.add(item)
