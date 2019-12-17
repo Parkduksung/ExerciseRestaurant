@@ -24,9 +24,28 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
 
+
+
+        if (address1 && !address2 && !address3) {
+            select1 = data
+        }
+
+        if (address1 && address2 && !address3) {
+            select2 = data
+        }
+
         if (address1 && address2 && address3) {
+            select3 = data
+
+            selectAddress = "$select1 $select2 $select3"
+
+            val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
+                selectAddress
+            )
+
+
             this.supportFragmentManager.beginTransaction()
-                .replace(R.id.address_main_container, HomeAddressSelectAllFragment()).commit()
+                .replace(R.id.address_main_container, homeAddressSelectAllFragment).commit()
         }
 
     }
@@ -105,11 +124,13 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
 
         initView()
 
+
     }
 
     private fun initView() {
 
         tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+        address1 = true
 
         val loadingTextArrayList = resources.getStringArray(R.array.select)
         val decoration = Decoration(30, 30, 30, 30)
@@ -169,6 +190,11 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
         var address2 = false
         var address3 = false
 
+
+        var select1 = ""
+        var select2 = ""
+        var select3 = ""
+        var selectAddress = ""
 
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
@@ -33,11 +34,11 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
                 this.requireFragmentManager().beginTransaction().remove(this).commit()
 
 
+                this.activity?.finish()
+
             }
         }
     }
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,15 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false)
+        return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false).also {
+
+            val address = it.findViewById<TextView>(R.id.tv_address_select)
+
+            val bundle = arguments
+
+            address.text = bundle?.getString("Address")
+
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,6 +78,17 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
+
+        fun newInstance(
+            selectAddress: String
+        ) = HomeAddressSelectAllFragment().apply {
+            arguments = Bundle().apply {
+                putString("Address", selectAddress)
+            }
+
+        }
+
+
     }
 
 }
