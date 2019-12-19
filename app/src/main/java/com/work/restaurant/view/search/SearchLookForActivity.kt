@@ -1,10 +1,15 @@
 package com.work.restaurant.view.search
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
@@ -47,8 +52,31 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         toggleData()
 
 
+
+        searchItem(et_search_look_for_item)
+
     }
 
+    private fun searchItem(editText: EditText) {
+
+        editText.setOnKeyListener { _, _, event ->
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                Log.d("눌럿어", "돼?")
+                hideKeyboard(editText)
+                presenter.searchLook(editText.text.toString())
+                true
+            } else {
+                false
+            }
+        }
+
+    }
+
+    private fun hideKeyboard(editText: EditText) {
+        val inputMethodManager =
+            this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
 
     private fun toggleData() {
 

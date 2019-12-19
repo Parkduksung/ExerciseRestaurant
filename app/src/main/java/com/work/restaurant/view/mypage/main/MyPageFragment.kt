@@ -90,7 +90,6 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
                 val loginEmail = data?.extras?.getString("id")
                 val loginNickname = data?.extras?.getString("nickname")
 
-
                 userId = loginEmail.toString()
                 userNickname = loginNickname.toString()
                 loginState = true
@@ -147,7 +146,6 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
             this,
             LOGIN
         )
-
 
         this.requireFragmentManager().beginTransaction().replace(
             R.id.mypage_main_container,

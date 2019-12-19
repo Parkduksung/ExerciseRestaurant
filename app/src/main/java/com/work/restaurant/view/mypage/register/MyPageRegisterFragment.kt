@@ -3,13 +3,18 @@ package com.work.restaurant.view.mypage.register
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
@@ -18,19 +23,16 @@ import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterPresente
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
 
+
 class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterContract.View {
 
     private lateinit var presenter: MyPageRegisterContract.Presenter
-    private var emailState = false
-    private var nicknameState = false
-    private var passState = false
-    private var passSameState = false
-
 
     override fun onClick(v: View?) {
 
 
         when (v?.id) {
+
             R.id.ib_register_back -> {
                 presenter.backPage()
             }
@@ -38,55 +40,16 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
             R.id.btn_register -> {
                 registerState()
             }
-
         }
     }
 
     private fun registerState() {
-        if (et_register_nickname.text.toString() != "") {
-            nicknameState = true
-            iv_nickname_state.setImageResource(R.drawable.ic_ok)
-            Log.d("ddddddddddddddddd", "$nicknameState")
-        } else {
-            nicknameState = false
-            iv_nickname_state.setImageResource(R.drawable.ic_no)
-            Log.d("ddddddddddddddddd", "$nicknameState")
-        }
 
-        if (et_register_email.text.toString() != "") {
-            emailState = true
-            iv_email_state.setImageResource(R.drawable.ic_ok)
-            Log.d("ddddddddddddddddd", "$emailState")
-        } else {
-            emailState = false
-            iv_email_state.setImageResource(R.drawable.ic_no)
-            Log.d("ddddddddddddddddd", "$emailState")
-        }
-
-        if (et_register_pass.text.toString() != "") {
-            passState = true
-            iv_pass_state.setImageResource(R.drawable.ic_ok)
-            Log.d("ddddddddddddddddd", "$passState")
-
-        } else {
-            passState = false
-            iv_pass_state.setImageResource(R.drawable.ic_no)
-            Log.d("ddddddddddddddddd", "$passState")
-
-        }
-
-        if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
-            passSameState = true
-            iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
-            Log.d("ddddddddddddddddd", "$passSameState")
-        } else {
-            passSameState = false
-            iv_pass_ok_state.setImageResource(R.drawable.ic_no)
-            Log.d("ddddddddddddddddd", "$passSameState")
-        }
-
-
-        if (nicknameState && emailState && passState && passSameState) {
+        if (iv_nickname_state.tag == R.drawable.ic_ok &&
+            iv_email_state.tag == R.drawable.ic_ok &&
+            iv_pass_state.tag == R.drawable.ic_ok &&
+            iv_pass_ok_state.tag == R.drawable.ic_ok
+        ) {
             presenter.register(
                 et_register_nickname.text.toString(),
                 et_register_email.text.toString(),
@@ -131,7 +94,98 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
         ib_register_back.setOnClickListener(this)
         btn_register.setOnClickListener(this)
 
+        et_register_nickname.requestFocus()
+        inputState(et_register_nickname, iv_nickname_state)
+        inputState(et_register_email, iv_email_state)
+        inputState(et_register_pass, iv_pass_state)
+        inputState(et_register_pass_ok, iv_pass_ok_state)
+
+
     }
+
+
+    private fun inputState(editText: EditText, imageView: ImageView) {
+
+        editText.setOnFocusChangeListener { v, hasFocus ->
+
+            if (v != null) {
+                if (hasFocus) {
+                    editText.addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable?) {
+                            imageView.setImageResource(0)
+
+                            if (editText == et_register_pass || editText == et_register_pass_ok) {
+
+                                if (editText.length() < 6) {
+                                    imageView.setImageResource(R.drawable.ic_no)
+                                    imageView.tag = R.drawable.ic_no
+                                } else {
+                                    if (editText == et_register_pass_ok) {
+                                        if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
+                                            imageView.setImageResource(R.drawable.ic_ok)
+                                            imageView.tag = R.drawable.ic_ok
+                                        } else {
+                                            imageView.setImageResource(R.drawable.ic_no)
+                                            imageView.tag = R.drawable.ic_no
+                                        }
+                                    } else {
+                                        imageView.setImageResource(R.drawable.ic_ok)
+                                        imageView.tag = R.drawable.ic_ok
+                                    }
+
+                                }
+                            }
+                        }
+
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+
+                        }
+
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
+                            imageView.setImageResource(0)
+                        }
+                    })
+
+                } else {
+                    if (editText.text.toString() != "") {
+                        imageView.setImageResource(R.drawable.ic_ok)
+                        imageView.tag = R.drawable.ic_ok
+
+                        if (et_register_pass_ok.text.toString() != "") {
+
+                            if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
+                                iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
+                                iv_pass_ok_state.tag = R.drawable.ic_ok
+                            } else {
+                                iv_pass_ok_state.setImageResource(R.drawable.ic_no)
+                                iv_pass_ok_state.tag = R.drawable.ic_no
+                            }
+
+                        }
+
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_no)
+                        imageView.tag = R.drawable.ic_no
+                    }
+
+
+                }
+
+            }
+
+        }
+    }
+
 
     override fun showRegisterOk(nickName: String) {
 
@@ -175,7 +229,10 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
     override fun showBackPage() {
         this.requireFragmentManager().beginTransaction().remove(
             this
-        ).commit()
+        ).replace(
+            R.id.mypage_main_container,
+            MyPageLoginFragment()
+        ).addToBackStack(null).commit()
     }
 
 

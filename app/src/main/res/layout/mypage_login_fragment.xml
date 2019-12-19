@@ -71,6 +71,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="15"
                 android:background="@android:color/transparent"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
 
 
@@ -111,6 +115,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="15"
                 android:background="@android:color/transparent"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
 
 

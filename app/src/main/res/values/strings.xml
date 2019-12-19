@@ -56,5 +56,9 @@
     <string name="search_item_best_part">이집 잘해요!</string>
     <string name="bookmarks_title">추가 목록</string>
     <string name="rank_title">Top 10</string>
+    <string name="register_nickname_hint">본명 권장</string>
+    <string name="register_email_hint">로그인 시 필요</string>
+    <string name="register_pass_hint">6자리 이상</string>
+    <string name="register_pass_ok_hint">비밀번호 한번 더 입력</string>
 
 </resources>

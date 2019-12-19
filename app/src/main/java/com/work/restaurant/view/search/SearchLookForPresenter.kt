@@ -33,6 +33,7 @@ class SearchLookForPresenter(private val searchLookForView: SearchLookForContrac
                         val _fitnessList = mutableListOf<FitnessCenterItemResponse>()
 
 
+
                         fitnessList.forEach { fitnessCenterItemModel ->
                             if (fitnessCenterItemModel.fitnessCenterName.contains(searchItem)) {
                                 _fitnessList.add(fitnessCenterItemModel)

@@ -190,7 +190,6 @@ class HomeAddressActivity : AppCompatActivity(), HomeAddressContract.View, View.
         var address2 = false
         var address3 = false
 
-
         var select1 = ""
         var select2 = ""
         var select3 = ""

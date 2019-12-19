@@ -111,7 +111,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
                         .replace(
                             R.id.mypage_main_container,
                             MyPageFragment()
-                        ).commit().also {
+                        ).addToBackStack(null).commit().also {
                             val data = Intent()
                             data.putExtra("id", et_email.text.toString())
                             data.putExtra("nickname", nickName)
@@ -132,7 +132,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
     override fun showBackPage() {
         this.requireFragmentManager().beginTransaction().remove(
             this
-        ).commit()
+        ).addToBackStack(null).commit()
     }
 
     override fun showRegisterPage() {
@@ -140,14 +140,14 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
         this.requireFragmentManager().beginTransaction().replace(
             R.id.mypage_main_container,
             MyPageRegisterFragment()
-        ).commit()
+        ).addToBackStack(null).commit()
     }
 
     override fun showFindPassPage() {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.main_container,
             MyPageFindPassFragment()
-        ).commit()
+        ).addToBackStack(null).commit()
     }
 
     companion object {

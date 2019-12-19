@@ -70,14 +70,13 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
 
         btn_address_change_no.setOnClickListener(this)
         btn_address_change_ok.setOnClickListener(this)
-//
-//        tv_address_select.text = "$selectAddress1 $selectAddress2 $selectAddress3"
-//
+
     }
 
 
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
+
 
         fun newInstance(
             selectAddress: String
@@ -87,7 +86,6 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
             }
 
         }
-
 
     }
 

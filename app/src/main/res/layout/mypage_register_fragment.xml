@@ -77,6 +77,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="13"
                 android:background="@android:color/transparent"
+                android:hint="@string/register_nickname_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
 
             </EditText>
@@ -126,6 +131,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="13"
                 android:background="@android:color/transparent"
+                android:hint="@string/register_email_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
 
             </EditText>
@@ -175,8 +185,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="13"
                 android:background="@android:color/transparent"
+                android:hint="@string/register_pass_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
-
 
             </EditText>
 
@@ -226,6 +240,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="13"
                 android:background="@android:color/transparent"
+                android:hint="@string/register_pass_ok_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
                 tools:ignore="Autofill,LabelFor,TextFields">
 
             </EditText>
