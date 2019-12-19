@@ -77,12 +77,14 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
 
+        private const val ADDRESS = "address"
+
 
         fun newInstance(
             selectAddress: String
         ) = HomeAddressSelectAllFragment().apply {
             arguments = Bundle().apply {
-                putString("Address", selectAddress)
+                putString(ADDRESS, selectAddress)
             }
 
         }
