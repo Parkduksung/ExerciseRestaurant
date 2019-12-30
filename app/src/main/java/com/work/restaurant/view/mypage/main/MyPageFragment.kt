@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.R
 import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
@@ -155,6 +156,7 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
 
     override fun showLogOut() {
 
+
         val myPageLogoutFragment = MyPageLogoutFragment()
 
         myPageLogoutFragment.setTargetFragment(
@@ -165,7 +167,9 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
         this.requireFragmentManager().beginTransaction().replace(
             R.id.main_container,
             myPageLogoutFragment
-        ).commit()
+        ).commit().apply {
+            FirebaseAuth.getInstance().signOut()
+        }
     }
 
     override fun showWithDraw() {

@@ -1,6 +1,6 @@
 package com.work.restaurant.data.source.remote.user
 
-import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.network.api.UserApi
 import com.work.restaurant.network.model.ResultResponse
 import retrofit2.Call
@@ -10,7 +10,13 @@ import retrofit2.Response
 class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userApi: UserApi) :
     UserRemoteDataSource {
 
-    override fun login(email: String, pass: String, callbackRemoteSource: UserRemoteDataSourceCallback) {
+    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+
+    override fun login(
+        email: String,
+        pass: String,
+        callbackRemoteSource: UserRemoteDataSourceCallback
+    ) {
 
         userApi.login(email, pass).enqueue(object :
             Callback<ResultResponse> {
@@ -29,7 +35,15 @@ class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userA
 
                 if (result != null && resultNickname != null) {
                     if (result) {
-                        callbackRemoteSource.onSuccess(resultNickname)
+
+                        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                callbackRemoteSource.onSuccess(resultNickname)
+                            } else {
+                                callbackRemoteSource.onFailure("로그인 실패")
+                            }
+                        }
+
                     } else {
                         callbackRemoteSource.onFailure("등록된 아이디가 없습니다.")
                     }
@@ -64,28 +78,34 @@ class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userA
             ) {
                 val result = response?.body()?.result
 
-
                 result?.let {
                     if (it) {
-                        Log.d("1111111", "성공")
-                        callbackRemoteSource.onSuccess(nickName)
+                        firebaseAuth.createUserWithEmailAndPassword(email, pass)
+                            .addOnCompleteListener { Task ->
+                                if (Task.isSuccessful) {
+                                    callbackRemoteSource.onSuccess(nickName)
+                                } else {
+                                    callbackRemoteSource.onFailure("실패")
+                                }
+                            }
+
                     }
 
                 }
 
-//                if (result == true) {
-//                    Log.d("1111111", "성공")
-//                    callback.onSuccess(nickName)
-//                }
             }
         })
 
 
     }
 
-    override fun delete(userNickname: String, callbackRemoteSource: UserRemoteDataSourceCallback) {
+    override fun delete(
+        userNickname: String,
+        userEmail: String,
+        callbackRemoteSource: UserRemoteDataSourceCallback
+    ) {
 
-        userApi.delete(userNickname).enqueue(object :
+        userApi.delete(userNickname, userEmail).enqueue(object :
             Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
                 callbackRemoteSource.onFailure("${t?.message}")
@@ -100,7 +120,16 @@ class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userA
 
                 if (result != null) {
                     if (result) {
-                        callbackRemoteSource.onSuccess(userNickname)
+
+                        firebaseAuth.currentUser?.delete()?.addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                callbackRemoteSource.onSuccess(userNickname)
+                            } else {
+                                callbackRemoteSource.onFailure("삭제 실패")
+                            }
+                        }
+
+
                     } else {
                         callbackRemoteSource.onFailure("삭제 실패")
                     }
@@ -112,8 +141,40 @@ class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userA
         })
     }
 
-    override fun modify() {
 
+    override fun resetPass(email: String, callbackRemoteSource: UserRemoteDataSourceCallback) {
+
+        userApi.find(email).enqueue(object : Callback<ResultResponse> {
+
+            override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
+                callbackRemoteSource.onFailure("${t?.message}")
+            }
+
+            override fun onResponse(
+                call: Call<ResultResponse>?,
+                response: Response<ResultResponse>?
+            ) {
+                val result = response?.body()?.result
+                val resultNickname = response?.body()?.resultNickname
+
+                if (result != null && resultNickname != null) {
+                    if (result) {
+                        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                callbackRemoteSource.onSuccess(resultNickname)
+                            } else {
+                                callbackRemoteSource.onFailure("비밀번호 초기화 실패.")
+                            }
+                        }
+                    } else {
+                        callbackRemoteSource.onFailure("등록된 아이디가 없습니다.")
+                    }
+                } else {
+                    callbackRemoteSource.onFailure("비밀번호 초기화 실패.")
+                }
+
+            }
+        })
     }
 
 
@@ -127,8 +188,8 @@ class UserRemoteRemoteDataSourceSourceImpl private constructor(private val userA
                 ?: UserRemoteRemoteDataSourceSourceImpl(
                     userApi
                 ).also {
-                instance = it
-            }
+                    instance = it
+                }
 
     }
 

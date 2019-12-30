@@ -47,10 +47,10 @@ class UserRepositoryImpl private constructor(private val userRemoteDataSourceImp
 
     }
 
-    override fun delete(userNickname: String, callback: UserRepositoryCallback) {
+    override fun delete(userNickname: String, userEmail: String, callback: UserRepositoryCallback) {
 
         if (App.instance.context().isConnectedToNetwork()) {
-            userRemoteDataSourceImpl.delete(userNickname, object :
+            userRemoteDataSourceImpl.delete(userNickname, userEmail, object :
                 UserRemoteDataSourceCallback {
                 override fun onSuccess(resultNickname: String) {
                     callback.onSuccess(resultNickname)
@@ -63,10 +63,19 @@ class UserRepositoryImpl private constructor(private val userRemoteDataSourceImp
         }
     }
 
-    override fun modify() {
+    override fun resetPass(email: String, callback: UserRepositoryCallback) {
 
         if (App.instance.context().isConnectedToNetwork()) {
 
+            userRemoteDataSourceImpl.resetPass(email, object : UserRemoteDataSourceCallback {
+                override fun onSuccess(resultNickname: String) {
+                    callback.onSuccess(resultNickname)
+                }
+
+                override fun onFailure(message: String) {
+                    callback.onFailure(message)
+                }
+            })
         }
 
 

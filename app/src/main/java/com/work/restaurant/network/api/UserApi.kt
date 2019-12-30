@@ -25,6 +25,7 @@ interface UserApi {
 
     @GET("/delete.php")
     fun delete(
+        @Query("user_nickname") user_nickname: String,
         @Query("user_email") user_email: String
     ): Call<ResultResponse>
 

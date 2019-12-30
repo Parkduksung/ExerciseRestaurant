@@ -13,14 +13,14 @@ class MyPageWithdrawalPresenter(private val myPageWithdrawalView: MyPageWithdraw
         myPageWithdrawalView.showWithdrawCancel()
     }
 
-    override fun withdraw(userNickname: String) {
+    override fun withdraw(userNickname: String, userEmail: String) {
 
         UserRepositoryImpl.getInstance(
             UserRemoteRemoteDataSourceSourceImpl.getInstance(
                 RetrofitInstance.getInstance(URL)
             )
         )
-            .delete(userNickname, object : UserRepositoryCallback {
+            .delete(userNickname, userEmail, object : UserRepositoryCallback {
                 override fun onSuccess(resultNickname: String) {
                     myPageWithdrawalView.showWithdrawOk(resultNickname)
                 }

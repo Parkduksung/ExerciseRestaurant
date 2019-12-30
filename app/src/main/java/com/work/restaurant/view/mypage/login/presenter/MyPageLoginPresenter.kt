@@ -23,7 +23,11 @@ class MyPageLoginPresenter(private val myPageLoginView: MyPageLoginContract.View
     override fun login(email: String, pass: String) {
 
 
-        UserRepositoryImpl.getInstance(UserRemoteRemoteDataSourceSourceImpl.getInstance(RetrofitInstance.getInstance(URL)))
+        UserRepositoryImpl.getInstance(
+            UserRemoteRemoteDataSourceSourceImpl.getInstance(
+                RetrofitInstance.getInstance(URL)
+            )
+        )
             .login(email, pass, object : UserRepositoryCallback {
                 override fun onSuccess(resultNickname: String) {
                     myPageLoginView.showLoginOk(resultNickname)

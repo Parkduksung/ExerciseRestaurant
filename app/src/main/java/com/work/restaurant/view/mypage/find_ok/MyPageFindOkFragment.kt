@@ -8,20 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.mypage.find.MyPageFindPassFragment.Companion.inputEmail
+import com.work.restaurant.view.mypage.find_ok.presenter.MyPageFindOkContract
+import com.work.restaurant.view.mypage.find_ok.presenter.MyPageFindOkPresenter
 import kotlinx.android.synthetic.main.mypage_find_ok_fragment.*
 
-class MyPageFindOkFragment : Fragment(), View.OnClickListener {
+class MyPageFindOkFragment : Fragment(), View.OnClickListener, MyPageFindOkContract.View {
+
+    private lateinit var presenter: MyPageFindOkPresenter
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_send_change_pass -> {
-                this.requireFragmentManager().beginTransaction()
-                    .remove(
-                        this
-                    ).commit().also {
-                        inputEmail = ""
-                    }
-
+                presenter.ok()
             }
         }
     }
@@ -52,46 +50,18 @@ class MyPageFindOkFragment : Fragment(), View.OnClickListener {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        tv_request_email.text = inputEmail
 
+        presenter = MyPageFindOkPresenter(this)
         btn_send_change_pass.setOnClickListener(this)
 
     }
 
 
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
+    override fun showOk() {
+        this.requireFragmentManager().beginTransaction()
+            .remove(
+                this
+            ).commit()
     }
 
     companion object {

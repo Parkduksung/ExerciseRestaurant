@@ -114,6 +114,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
                         override fun afterTextChanged(s: Editable?) {
                             imageView.setImageResource(0)
 
+
                             if (editText == et_register_pass || editText == et_register_pass_ok) {
 
                                 if (editText.length() < 6) {
@@ -135,6 +136,20 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
 
                                 }
                             }
+
+                            if (editText == et_register_email) {
+
+                                if (presenter.isEmailValid(et_register_email.text.toString())) {
+                                    imageView.setImageResource(R.drawable.ic_ok)
+                                    imageView.tag = R.drawable.ic_ok
+
+                                } else {
+                                    imageView.setImageResource(R.drawable.ic_no)
+                                    imageView.tag = R.drawable.ic_no
+                                }
+
+                            }
+
                         }
 
                         override fun beforeTextChanged(
@@ -172,6 +187,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
                             }
 
                         }
+
 
                     } else {
                         imageView.setImageResource(R.drawable.ic_no)
@@ -234,7 +250,6 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
             MyPageLoginFragment()
         ).addToBackStack(null).commit()
     }
-
 
     companion object {
         private const val TAG = "MyPageRegisterFragment"

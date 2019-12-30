@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.mypage.main.MyPageFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalPresenter
@@ -32,7 +33,7 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
             }
 
             R.id.btn_withdraw_ok -> {
-                presenter.withdraw(userNickname)
+                presenter.withdraw(userNickname, userId)
             }
         }
     }
@@ -82,7 +83,6 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
     override fun showWithdrawOk(userNickname: String) {
         val alertDialog =
             AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-
 
         alertDialog.setTitle("성공")
         alertDialog.setMessage(userNickname + "님이 정상적으로 탈퇴 되었습니다.")

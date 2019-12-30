@@ -15,7 +15,7 @@ interface MyPageWithdrawalContract {
 
         fun withdrawCancel()
 
-        fun withdraw(userNickname: String)
+        fun withdraw(userNickname: String, userEmail: String)
 
     }
 }

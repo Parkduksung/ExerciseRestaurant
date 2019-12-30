@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "858597943438",
+    "firebase_url": "https://exerciserestaurant.firebaseio.com",
+    "project_id": "exerciserestaurant",
+    "storage_bucket": "exerciserestaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858597943438:android:898ebc55065af72edc81df",
+        "android_client_info": {
+          "package_name": "com.work.restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858597943438-odtvhudh1l4dhmpss0393fv3md7uc1pu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.work.restaurant",
+            "certificate_hash": "d247547a497385d05a3cd71e6a01136be500d2bf"
+          }
+        },
+        {
+          "client_id": "858597943438-1g735vqoq2hj79s8bvesuvik4dg8php2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1mu6ig1q8rY9GQV0BKqpF_I3L2EjSmmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858597943438-1g735vqoq2hj79s8bvesuvik4dg8php2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

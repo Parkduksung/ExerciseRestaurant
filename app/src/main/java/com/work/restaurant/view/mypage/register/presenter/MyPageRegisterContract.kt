@@ -10,6 +10,7 @@ interface MyPageRegisterContract {
 
         fun showBackPage()
 
+
     }
 
     interface Presenter {
@@ -17,6 +18,9 @@ interface MyPageRegisterContract {
         fun register(nickName: String, email: String, pass: String)
 
         fun backPage()
+
+        fun isEmailValid(email: String):Boolean
+
 
     }
 
