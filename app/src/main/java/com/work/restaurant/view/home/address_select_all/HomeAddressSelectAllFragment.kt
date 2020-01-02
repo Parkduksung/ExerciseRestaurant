@@ -24,16 +24,9 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
             R.id.btn_address_change_ok -> {
 
 
-//                val address = addressClick
-//                Log.d("mmmmmmmmmmmmmmmmmmmm", "asdfasdfasdf")
-//                Log.d("mmmmmmmmmmmmmmmmmmmm", addressClick)
-
                 val data = Intent()
-//                data.putExtra("address", address)
                 targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
                 this.requireFragmentManager().beginTransaction().remove(this).commit()
-
-
                 this.activity?.finish()
 
             }
@@ -80,14 +73,13 @@ class HomeAddressSelectAllFragment : Fragment(), View.OnClickListener {
         private const val ADDRESS = "address"
 
 
-        fun newInstance(
-            selectAddress: String
-        ) = HomeAddressSelectAllFragment().apply {
-            arguments = Bundle().apply {
-                putString(ADDRESS, selectAddress)
-            }
+        fun newInstance(selectAddress: String) =
+            HomeAddressSelectAllFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ADDRESS, selectAddress)
+                }
 
-        }
+            }
 
     }
 

@@ -11,10 +11,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
+import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.home.HomeAddressActivity
 import com.work.restaurant.view.search.SearchLookForActivity
+import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
@@ -77,7 +81,15 @@ class SearchRankFragment : Fragment(), View.OnClickListener, SearchRankContract.
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = SearchRankPresenter(this)
+        presenter = SearchRankPresenter(
+            this, FitnessItemRepositoryImpl.getInstance(
+                FitnessCenterRemoteDataSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        SearchFragment.URL
+                    )
+                )
+            )
+        )
         iv_search_settings.setOnClickListener(this)
         fitnessRankAdapter.setItemClickListener(this)
         presenter.getFitnessList()

@@ -12,10 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.user.UserRepositoryImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginContract
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginPresenter
 import com.work.restaurant.view.mypage.main.MyPageFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.URL
 import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 
@@ -57,12 +61,15 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = MyPageLoginPresenter(this)
+        presenter = MyPageLoginPresenter(
+            this, UserRepositoryImpl.getInstance(
+                UserRemoteDataSourceSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
+            )
+        )
         btn_login.setOnClickListener(this)
         ib_login_back.setOnClickListener(this)
         tv_login_register.setOnClickListener(this)
         tv_login_find.setOnClickListener(this)
-
 
     }
 
@@ -152,6 +159,7 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
 
     companion object {
         private const val TAG = "MyPageLoginFragment"
+
     }
 
 

@@ -10,10 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
+import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.util.GlideApp
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
+import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
@@ -63,16 +67,31 @@ class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDe
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
         detailsPresenter =
-            SearchItemDetailsPresenter(this)
+            SearchItemDetailsPresenter(
+                this, FitnessItemRepositoryImpl.getInstance(
+                    FitnessCenterRemoteDataSourceImpl.getInstance(
+                        RetrofitInstance.getInstance(
+                            SearchFragment.URL
+                        )
+                    )
+                )
+            )
         review_ll.setOnClickListener(this)
         search_item_calling.setOnClickListener(this)
         search_item_book_mark_check_ib.setOnClickListener(this)
     }
 
-
     fun setSelectItem(data: String) {
         detailsPresenter =
-            SearchItemDetailsPresenter(this)
+            SearchItemDetailsPresenter(
+                this, FitnessItemRepositoryImpl.getInstance(
+                    FitnessCenterRemoteDataSourceImpl.getInstance(
+                        RetrofitInstance.getInstance(
+                            SearchFragment.URL
+                        )
+                    )
+                )
+            )
         detailsPresenter.itemInfoDetail(data)
     }
 

@@ -1,11 +1,11 @@
 package com.work.restaurant.data.repository.user
 
 import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceCallback
-import com.work.restaurant.data.source.remote.user.UserRemoteRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
 import com.work.restaurant.ext.isConnectedToNetwork
 import com.work.restaurant.util.App
 
-class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteRemoteDataSourceSourceImpl) :
+class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteDataSourceSourceImpl) :
     UserRepository {
     override fun login(email: String, pass: String, callback: UserRepositoryCallback) {
 
@@ -86,7 +86,7 @@ class UserRepositoryImpl private constructor(private val userRemoteDataSourceImp
 
         private var instance: UserRepositoryImpl? = null
         fun getInstance(
-            userRemoteDataSourceImpl: UserRemoteRemoteDataSourceSourceImpl
+            userRemoteDataSourceImpl: UserRemoteDataSourceSourceImpl
         ): UserRepositoryImpl =
             instance ?: UserRepositoryImpl(userRemoteDataSourceImpl).also {
                 instance = it

@@ -13,10 +13,14 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
+import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.search.adapter.LookForAdapter
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
+import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
@@ -43,7 +47,15 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.search_look_for_main)
-        presenter = SearchLookForPresenter(this)
+        presenter = SearchLookForPresenter(
+            this, FitnessItemRepositoryImpl.getInstance(
+                FitnessCenterRemoteDataSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        SearchFragment.URL
+                    )
+                )
+            )
+        )
         lookForAdapter = LookForAdapter()
         lookForAdapter.setItemClickListener(this)
         ib_search_item_look.setOnClickListener(this)

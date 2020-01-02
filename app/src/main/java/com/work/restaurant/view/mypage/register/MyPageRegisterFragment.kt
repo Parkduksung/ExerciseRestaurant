@@ -14,7 +14,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.user.UserRepositoryImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.mypage.login.MyPageLoginFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
@@ -90,7 +94,15 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = MyPageRegisterPresenter(this)
+        presenter = MyPageRegisterPresenter(
+            this, UserRepositoryImpl.getInstance(
+                UserRemoteDataSourceSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        MyPageFragment.URL
+                    )
+                )
+            )
+        )
         ib_register_back.setOnClickListener(this)
         btn_register.setOnClickListener(this)
 

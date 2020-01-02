@@ -12,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.user.UserRepositoryImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
@@ -51,7 +54,15 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = MyPageWithdrawalPresenter(this)
+        presenter = MyPageWithdrawalPresenter(
+            this, UserRepositoryImpl.getInstance(
+                UserRemoteDataSourceSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        MyPageFragment.URL
+                    )
+                )
+            )
+        )
         btn_withdraw_cancel.setOnClickListener(this)
         btn_withdraw_ok.setOnClickListener(this)
 

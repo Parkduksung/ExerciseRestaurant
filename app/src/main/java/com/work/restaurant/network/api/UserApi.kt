@@ -10,29 +10,29 @@ interface UserApi {
 
     @GET("/login.php")
     fun login(
-        @Query("user_email") user_email: String,
-        @Query("user_pass") user_pass: String
+        @Query("userEmail") userEmail: String,
+        @Query("userPass") userPass: String
     ): Call<ResultResponse>
-//usermodel로 해서 할것.
+
 
     @POST("/register.php")
     fun register(
-        @Query("user_nickname") user_nickname: String,
-        @Query("user_email") user_email: String,
-        @Query("user_pass") user_pass: String
+        @Query("userNickname") userNickname: String,
+        @Query("userEmail") userEmail: String,
+        @Query("userPass") userPass: String
     ): Call<ResultResponse>
 
 
     @GET("/delete.php")
     fun delete(
-        @Query("user_nickname") user_nickname: String,
-        @Query("user_email") user_email: String
+        @Query("userNickname") userNickname: String,
+        @Query("userEmail") userEmail: String
     ): Call<ResultResponse>
 
 
     @GET("/find.php")
     fun find(
-        @Query("user_email") user_email: String
+        @Query("userEmail") userEmail: String
     ): Call<ResultResponse>
 
 

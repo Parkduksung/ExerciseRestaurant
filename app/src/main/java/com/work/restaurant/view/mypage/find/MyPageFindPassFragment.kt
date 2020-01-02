@@ -11,9 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.user.UserRepositoryImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassPresenter
 import com.work.restaurant.view.mypage.find_ok.MyPageFindOkFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment
 import kotlinx.android.synthetic.main.mypage_find_fragment.*
 
 class MyPageFindPassFragment : Fragment(), View.OnClickListener, MyPageFindPassContract.View {
@@ -113,7 +117,15 @@ class MyPageFindPassFragment : Fragment(), View.OnClickListener, MyPageFindPassC
         super.onActivityCreated(savedInstanceState)
 
 
-        presenter = MyPageFindPassPresenter(this)
+        presenter = MyPageFindPassPresenter(
+            this, UserRepositoryImpl.getInstance(
+                UserRemoteDataSourceSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        MyPageFragment.URL
+                    )
+                )
+            )
+        )
         ib_find_back.setOnClickListener(this)
         btn_request_change_pass.setOnClickListener(this)
 

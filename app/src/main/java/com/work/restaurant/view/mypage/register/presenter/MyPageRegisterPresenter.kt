@@ -1,13 +1,13 @@
 package com.work.restaurant.view.mypage.register.presenter
 
+import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.data.repository.user.UserRepositoryCallback
-import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteRemoteDataSourceSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.URL
 import java.util.regex.Pattern
 
-class MyPageRegisterPresenter(private val myPageRegisterView: MyPageRegisterContract.View) :
+class MyPageRegisterPresenter(
+    private val myPageRegisterView: MyPageRegisterContract.View,
+    private val userRepository: UserRepository
+) :
     MyPageRegisterContract.Presenter {
 
     override fun isEmailValid(email: String): Boolean {
@@ -23,20 +23,16 @@ class MyPageRegisterPresenter(private val myPageRegisterView: MyPageRegisterCont
 
     override fun register(nickName: String, email: String, pass: String) {
 
-        UserRepositoryImpl.getInstance(
-            UserRemoteRemoteDataSourceSourceImpl.getInstance(
-                RetrofitInstance.getInstance(URL)
-            )
-        )
-            .register(nickName, email, pass, object : UserRepositoryCallback {
-                override fun onSuccess(resultNickname: String) {
-                    myPageRegisterView.showRegisterOk(resultNickname)
-                }
 
-                override fun onFailure(message: String) {
-                    myPageRegisterView.showRegisterNo()
-                }
-            })
+        userRepository.register(nickName, email, pass, object : UserRepositoryCallback {
+            override fun onSuccess(resultNickname: String) {
+                myPageRegisterView.showRegisterOk(resultNickname)
+            }
+
+            override fun onFailure(message: String) {
+                myPageRegisterView.showRegisterNo()
+            }
+        })
 
     }
 }

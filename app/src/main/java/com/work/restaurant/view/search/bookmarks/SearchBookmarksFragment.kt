@@ -10,12 +10,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
+import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.search.SearchLookForActivity
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter
+import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
 
 class SearchBookmarksFragment : Fragment(), View.OnClickListener, AdapterDataListener,
@@ -63,7 +67,15 @@ class SearchBookmarksFragment : Fragment(), View.OnClickListener, AdapterDataLis
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-        presenter = SearchBookmarksPresenter(this)
+        presenter = SearchBookmarksPresenter(
+            this, FitnessItemRepositoryImpl.getInstance(
+                FitnessCenterRemoteDataSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        SearchFragment.URL
+                    )
+                )
+            )
+        )
         bookMarkAdapter.setItemClickListener(this)
 
         presenter.getBookmarksList()
