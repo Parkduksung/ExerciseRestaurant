@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.community.fragment.CommunityExerciseListFragment.Companion.ttttttt
 
 class CommunityGymListFragment : Fragment() {
 
@@ -36,6 +37,7 @@ class CommunityGymListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
+        ttttttt = "uuuuuuuuuuuuuuuuuuuuuuuuuu"
 
 
     }

@@ -1,151 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="40"
+    tools:ignore="SpUsage, NestedWeights, ContentDescription">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="40">
+        android:layout_height="0dp"
+        android:layout_marginTop="70dp"
+        android:layout_weight="6">
 
-
-        <LinearLayout
-            android:layout_marginTop="70dp"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/find_ok_title"
+            android:textColor="@color/colorMint"
+            android:textSize="35dp" />
 
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="전송완료!"
-                android:textColor="@color/colorMint"
-                android:textSize="35dp"></TextView>
+    </LinearLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_email"
-                android:layout_weight="10"
-                >
-            </ImageView>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="10"
+            android:src="@drawable/ic_email" />
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="12"
+        android:gravity="center"
+        android:orientation="vertical">
 
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/find_ok_explain1"
+            android:textColor="@color/colorBlack"
+            android:textSize="35dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/find_ok_explain2"
+            android:textColor="@color/colorBlack"
+            android:textSize="35dp" />
+
+        <TextView
+            android:id="@+id/tv_request_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_weight="12">
-
-            <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:textColor="@color/colorBlack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="비밀번호 재설정 메일을"
-                    android:gravity="center"
-                    android:textSize="35dp"></TextView>
-                <TextView
-                    android:textColor="@color/colorBlack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="보내드렸습니다."
-                    android:gravity="center"
-                    android:textSize="35dp"></TextView>
-                <TextView
-                    android:id="@+id/tv_request_email"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="email"
-                    android:gravity="center"
-                    android:textSize="25dp"></TextView>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="8">
+            android:gravity="center"
+            android:text=""
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="20">
+    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:gravity="center">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:orientation="horizontal">
 
 
-                    <Button
-                        android:id="@+id/btn_send_change_pass"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/button_round_style"
-                        android:text="확인"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="40dp"></Button>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:gravity="center">
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_send_change_pass"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/button_round_style"
+            android:text="@string/find_ok_okay"
+            android:textColor="@color/colorWhite"
+            android:textSize="40dp" />
 
 
     </LinearLayout>
 
 
 </LinearLayout>
+
+

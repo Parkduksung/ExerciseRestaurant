@@ -1,134 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loading_container"
+    android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.ExerciseRestaurantActivity">
-
-    <!--    <FrameLayout-->
-    <!--        android:id="@+id/main_container"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="630dp">-->
-
-    <!--    </FrameLayout>-->
-
-
-    <!--    <TableLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        android:stretchColumns="*">-->
-
-    <!--        <TableRow>-->
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="vertical">-->
-
-    <!--                <ImageButton-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:background="@color/colorWhite"-->
-    <!--                    app:srcCompat="@drawable/ic_home">-->
-    <!--                </ImageButton>-->
-
-    <!--                <TextView-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="홈"-->
-    <!--                    android:textSize="20dp"-->
-    <!--                    android:textStyle="bold">-->
-    <!--                </TextView>-->
-
-    <!--            </LinearLayout>-->
-
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="vertical">-->
-
-    <!--                <ImageButton-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:background="@color/colorWhite"-->
-    <!--                    app:srcCompat="@drawable/ic_search">-->
-    <!--                </ImageButton>-->
-
-    <!--                <TextView-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="헬스장검색"-->
-    <!--                    android:textSize="20dp"-->
-    <!--                    android:textStyle="bold">-->
-    <!--                </TextView>-->
-
-    <!--            </LinearLayout>-->
-
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="vertical">-->
-
-    <!--                <ImageButton-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:background="@color/colorWhite"-->
-    <!--                    app:srcCompat="@drawable/ic_community">-->
-    <!--                </ImageButton>-->
-
-    <!--                <TextView-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="커뮤니티"-->
-    <!--                    android:textSize="20dp"-->
-    <!--                    android:textStyle="bold">-->
-    <!--                </TextView>-->
-
-    <!--            </LinearLayout>-->
-
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="vertical">-->
-
-    <!--                <ImageButton-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:background="@color/colorWhite"-->
-    <!--                    app:srcCompat="@drawable/ic_mypage">-->
-    <!--                </ImageButton>-->
-
-    <!--                <TextView-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="마이페이지"-->
-    <!--                    android:textSize="20dp"-->
-    <!--                    android:textStyle="bold">-->
-    <!--                </TextView>-->
-
-    <!--            </LinearLayout>-->
-
-
-    <!--        </TableRow>-->
-
-
-    <!--        </TableLayout>-->
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10">
+        android:weightSum="10"
+        tools:ignore="UselessParent">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_main"
@@ -143,53 +28,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:theme="@style/TapTheme"
-            >
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:icon="@drawable/ic_login"-->
-<!--                android:text="홈">-->
-<!--            </com.google.android.material.tabs.TabItem>-->
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:icon="@drawable/ic_login"-->
-<!--                ">-->
-<!--            </com.google.android.material.tabs.TabItem>-->
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:icon="@drawable/ic_login"-->
-<!--                >-->
-<!--            </com.google.android.material.tabs.TabItem>-->
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:icon="@drawable/ic_login"-->
-<!--                >-->
-<!--            </com.google.android.material.tabs.TabItem>-->
-
+            android:theme="@style/TapTheme">
 
         </com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
-
-
-    <!--    <com.google.android.material.tabs.TabLayout-->
-    <!--        android:id="@+id/main_taps"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        >-->
-    <!--    </com.google.android.material.tabs.TabLayout>-->
-
-    <!--    <com.google.android.material.tabs.TabLayout-->
-    <!--        android:id="@+id/main_taps"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--       >-->
-    <!--    </com.google.android.material.tabs.TabLayout>-->
 
 
 </FrameLayout>

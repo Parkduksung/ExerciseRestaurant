@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:background="@drawable/button_round">
 
-    <androidx.cardview.widget.CardView
-
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_address_item"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_address_item"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_round"
-                android:textSize="25dp" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
+        android:textSize="25dp"
+        tools:text="인천시"
+        tools:ignore="SpUsage" />
 
 </LinearLayout>
+
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorWhite"
-    >
+    android:orientation="vertical"
+    tools:ignore="SpUsage,NestedWeights,ContentDescription">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,17 +16,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
-            >
+            android:layout_weight="10">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="운동맛집 회원가입 완료!"
-                android:textSize="40dp"
+                android:text="@string/register_ok_title"
                 android:textColor="@color/colorMint"
-                ></TextView>
+                android:textSize="40dp" />
 
 
         </LinearLayout>
@@ -34,75 +33,39 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="50"
-            >
+            android:weightSum="50">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/sholder"
                 android:layout_weight="11"
-                >
-            </ImageView>
+                android:src="@drawable/sholder" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/legs"
                 android:layout_weight="12"
-                >
-            </ImageView>
+                android:src="@drawable/legs" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:src="@drawable/arms"
                 android:layout_weight="8"
-                >
-            </ImageView>
+                android:src="@drawable/arms" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:src="@drawable/chest"
                 android:layout_weight="10"
-                >
-            </ImageView>
+                android:src="@drawable/chest" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:src="@drawable/lets"
                 android:layout_weight="9"
-                >
-            </ImageView>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="운동맛집과 함께"
-                android:textSize="40dp"
-                ></TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="건강한 하루를"
-                android:textSize="40dp"
-                ></TextView>
+                android:src="@drawable/lets" />
 
 
         </LinearLayout>
@@ -112,18 +75,38 @@
             android:layout_height="0dp"
             android:layout_weight="10"
             android:gravity="center"
-            >
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_ok_explain1"
+                android:textSize="40dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_ok_explain2"
+                android:textSize="40dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:gravity="center">
 
 
             <Button
                 android:id="@+id/btn_register_ok"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Start!"
                 android:background="@drawable/button_background"
-
-                ></Button>
+                android:text="@string/register_ok_start"
+                android:textSize="40dp"
+                />
 
         </LinearLayout>
 

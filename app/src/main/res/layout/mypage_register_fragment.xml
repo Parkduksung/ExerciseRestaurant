@@ -1,413 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="40"
+    tools:ignore="ContentDescription,SpUsage,NestedWeights">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="3">
+
+        <ImageButton
+            android:id="@+id/ib_register_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/ic_back" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:text="@string/register_title"
+            android:textColor="@color/colorMint"
+            android:textSize="45dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="5"
         android:orientation="vertical"
-        android:weightSum="40">
-
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="10dp"
-            android:layout_weight="3">
-
-            <ImageButton
-                android:layout_marginTop="2dp"
-                android:id="@+id/ib_register_back"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:background="@color/colorWhite"
-                app:srcCompat="@drawable/ic_back"></ImageButton>
-
-        </LinearLayout>
+        android:weightSum="5">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
+            android:layout_weight="4"
+            android:background="@drawable/bottom_line_2"
+            android:orientation="horizontal"
+            android:weightSum="20"
+            tools:ignore="UselessParent">
 
-            >
 
             <TextView
-                android:layout_marginTop="2dp"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="5"
                 android:gravity="center"
-                android:text="운동맛집 회원가입"
-                android:textColor="@color/colorMint"
-                android:textSize="45dp"></TextView>
+                android:text="@string/register_nickname"
+                android:textSize="20dp" />
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/et_register_nickname"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bottom_line_2"
-                android:weightSum="5"
-                >
+                android:layout_weight="13"
+                android:background="@android:color/transparent"
+                android:hint="@string/register_nickname_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
+                tools:ignore="Autofill,LabelFor,TextFields">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="20">
+            </EditText>
 
-                        <TextView
-
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="5"
-                            android:gravity="center"
-                            android:text="닉네임"
-                            android:textSize="20dp"></TextView>
-
-                        <EditText
-                            android:background="@android:color/transparent"
-                            android:id="@+id/et_register_nickname"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="13">
-
-
-                        </EditText>
-
-                        <ImageView
-                            android:id="@+id/iv_nickname_state"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            ></ImageView>
-
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    >
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/iv_nickname_state"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bottom_line_2"
-                android:weightSum="5"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="20">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="5"
-                            android:gravity="center"
-                            android:text="이메일"
-                            android:textSize="20dp"></TextView>
-
-                        <EditText
-                            android:background="@android:color/transparent"
-                            android:id="@+id/et_register_email"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="13">
-
-
-                        </EditText>
-
-                        <ImageView
-                            android:id="@+id/iv_email_state"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            ></ImageView>
-
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    >
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
+                android:layout_weight="2" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bottom_line_2"
-                android:weightSum="5"
-                >
+    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="20">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="5"
-                            android:gravity="center"
-                            android:text="비밀번호"
-                            android:textSize="20dp"></TextView>
-
-                        <EditText
-                            android:background="@android:color/transparent"
-                            android:id="@+id/et_register_pass"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="13">
-
-
-                        </EditText>
-
-                        <ImageView
-                            android:id="@+id/iv_pass_state"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            ></ImageView>
-
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    >
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bottom_line_2"
-                android:weightSum="5"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:weightSum="20">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="5"
-                            android:gravity="center"
-                            android:text="비번확인"
-                            android:textSize="20dp"></TextView>
-
-                        <EditText
-                            android:id="@+id/et_register_pass_ok"
-                            android:background="@android:color/transparent"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="13">
-
-
-                        </EditText>
-
-                        <ImageView
-                            android:id="@+id/iv_pass_ok_state"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            ></ImageView>
-
-                    </LinearLayout>
-
-
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    >
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:weightSum="5">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="8">
+            android:layout_weight="4"
+            android:background="@drawable/bottom_line_2"
+            android:orientation="horizontal"
+            android:weightSum="20"
+            tools:ignore="UselessParent">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="20">
+                android:layout_marginStart="10dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="@string/register_email"
+                android:textSize="20dp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:gravity="center">
+            <EditText
+                android:id="@+id/et_register_email"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="13"
+                android:background="@android:color/transparent"
+                android:hint="@string/register_email_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
+                tools:ignore="Autofill,LabelFor,TextFields">
 
+            </EditText>
 
-                </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_email_state"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:gravity="center">
-
-
-                    <Button
-                        android:id="@+id/btn_register"
-                        android:background="@drawable/button_background"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="가입"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="30dp"></Button>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:gravity="center">
+        </LinearLayout>
 
 
-                </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:weightSum="5">
 
 
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:background="@drawable/bottom_line_2"
+            android:orientation="horizontal"
+            android:weightSum="20"
+            tools:ignore="UselessParent">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="@string/register_pass"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/et_register_pass"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="13"
+                android:background="@android:color/transparent"
+                android:hint="@string/register_pass_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
+                tools:ignore="Autofill,LabelFor,TextFields">
+
+            </EditText>
+
+            <ImageView
+                android:id="@+id/iv_pass_state"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
 
 
         </LinearLayout>
@@ -415,5 +206,82 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:background="@drawable/bottom_line_2"
+            android:orientation="horizontal"
+            android:weightSum="20"
+            tools:ignore="UselessParent">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="@string/register_pass_ok"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/et_register_pass_ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="13"
+                android:background="@android:color/transparent"
+                android:hint="@string/register_pass_ok_hint"
+                android:imeActionLabel="완료"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:singleLine="true"
+                tools:ignore="Autofill,LabelFor,TextFields">
+
+            </EditText>
+
+            <ImageView
+                android:id="@+id/iv_pass_ok_state"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="8"
+        android:gravity="center">
+
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/register_ok"
+            android:textColor="@color/colorWhite"
+            android:textSize="30dp" />
+
+
+    </LinearLayout>
+
 
 </LinearLayout>
+
+

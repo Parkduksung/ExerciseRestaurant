@@ -1,90 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="40"
+    tools:ignore="NestedWeights,SpUsage">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="40">
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="3"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="10dp"
-            android:layout_weight="3">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/ib_back"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-
-                    <ImageButton
-                        android:id="@+id/ib_back"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:background="@color/colorWhite"
-                        app:srcCompat="@drawable/ic_back"></ImageButton>
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="최근 본 헬스장"
-                        android:textSize="30dp"></TextView>
-
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
+                android:layout_marginStart="10dp"
+                android:background="@color/colorWhite"
+                app:srcCompat="@drawable/ic_back"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/bottom_line_2"
-            ></LinearLayout>
-
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="36">
-
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="8">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="40dp"
-                android:text="Recyclerview"
-                ></TextView>
+                android:text="@string/recent_view_item"
+                android:textSize="30dp" />
 
 
         </LinearLayout>
@@ -92,5 +56,13 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_line_2" />
+
 
 </LinearLayout>
+
+

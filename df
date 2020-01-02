@@ -1,0 +1,203 @@
+[33mcommit 6048ee060f71cc1993b9f183d2129a0f557930df[m[33m ([m[1;36mHEAD -> [m[1;32mfeature-duksung[m[33m, [m[1;31morigin/feature-duksung[m[33m)[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Dec 11 23:01:25 2019 +0900
+
+    tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP,22F)
+
+[33mcommit 9d4987cc658b2afe1cc6361125e2a5b3d8768dfb[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Dec 11 21:14:03 2019 +0900
+
+    Daily Project 2  Naming 수정
+
+[33mcommit 9274a942da1736445342096366a3b2b75ded0972[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Dec 11 21:11:00 2019 +0900
+
+    Daily Project 2 api 외부주입 및 User CRUD 관련 Data, Repository 부분 변경, 일부분 Activity화, 지적사항 수정
+
+[33mcommit 09ddd61f1f74e821d9011a4a15c2eb272290e903[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Dec 4 01:27:46 2019 +0900
+
+    Daily Project 2 Search부분 mvp화
+
+[33mcommit e93e20a1a420b6cd3ce1e544ab998035f9b6b9e1[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Tue Dec 3 09:47:21 2019 +0900
+
+    Daily Project 2 MyPage부분 mvp화
+
+[33mcommit 08fe9a13dee0a24b043ac6002e28f3d0b46adf98[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Sat Nov 30 16:45:00 2019 +0900
+
+    Daily Project 2
+
+[33mcommit 07f6c84d5acf6c280c5a6a270de9c083ff97e551[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 29 21:54:22 2019 +0900
+
+    Daily Project Day12 변수명 변경 및 review 반영 수정
+
+[33mcommit a27628ebeec1f451ad8a916f772b8958624e7e39[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 29 21:12:29 2019 +0900
+
+    Daily Project Day13 MVP 아키텍쳐 표현
+
+[33mcommit 9b555bffc94f04fd8a05e5a3482d5223260dc89f[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 29 14:56:51 2019 +0900
+
+    Daily Project Day12 변수명 변경 및 review 반영
+
+[33mcommit 60edddfa3e96315d85d01c345db3189eed39c533[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 29 14:45:40 2019 +0900
+
+    Daily Project Day11 헬스장 검색시 나타내는 부분
+
+[33mcommit cc7a130ea9ff29eb8dadba2617d08344996e8ec2[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Nov 27 08:21:49 2019 +0900
+
+    Daily Project Day10 db관련 해결 및 주소 클릭시 나타내는 부분
+
+[33mcommit 3084488a9257215f62a6c2094d31cdb4f69df2a4[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Tue Nov 26 07:34:32 2019 +0900
+
+    Daily Project Day9 현재상황
+
+[33mcommit 9a54e132c9c7abe180bd9c53560cc92f333b4ec7[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 22 09:06:29 2019 +0900
+
+    Daily Project Day8 헬스장검색부분 이미지 추가 및 리뷰수정 작업
+
+[33mcommit 80479404b27d06f284448d074cc1a8de13bb07d6[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Tue Nov 19 06:46:47 2019 +0900
+
+    Daily Project Day7 헬스장DB 관련 작업 외 1
+
+[33mcommit d3533725635d439ee445fdabed4109be64334a10[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Nov 18 02:11:42 2019 +0900
+
+    Daily Project Feedback 1
+
+[33mcommit c11d23d396e6629181a71a376dafa025f45a52d9[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 15 23:19:00 2019 +0900
+
+    Daily Project Day6 U.I 관련 작업
+
+[33mcommit db0fdfd3491e69b6b61cbcf2db4f645733ba7abf[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Nov 15 04:46:40 2019 +0900
+
+    Daily Project Day5 Google Map관련 작업
+
+[33mcommit 5ec8989545da81ec500a486b1bd65e31f734a1dc[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Thu Nov 14 04:45:52 2019 +0900
+
+    Daily Project Day4 Google Map관련 작업 외 1
+
+[33mcommit 8364b5cf4f4d10bf76caadc1a6e0bc1b814e3bbe[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Wed Nov 13 05:16:17 2019 +0900
+
+    Daily Project Day3 home부분 주소설정 중간작업 외 2
+
+[33mcommit 43537219adfab8e0aa28267f66a518d30169bcd0[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Tue Nov 12 02:41:03 2019 +0900
+
+    Daily Project Day2 home부분 주소설정 초기작업
+
+[33mcommit 9cebf111bc82b62fcf55b3d7b127f4de557a57fb[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Nov 11 02:00:14 2019 +0900
+
+    Daily Project Day1 php
+
+[33mcommit 956edfae1f33b6ef68e6cdfa215bdf889692f175[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Nov 11 01:47:21 2019 +0900
+
+    Daily Project 1
+
+[33mcommit 11ad96fc0cd73541108ce5cd67bc8473701b553a[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Nov 11 01:44:23 2019 +0900
+
+    Project Day1
+
+[33mcommit 9f89a669e62e197b7cb80dd03562f49e9cbb21a0[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Sat Nov 2 05:14:22 2019 +0900
+
+    3주차 retrofit관련
+
+[33mcommit 5bf00046c75a3a05d9b40fbfa09470905ed0dc06[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Thu Oct 31 17:16:56 2019 +0900
+
+    2주차 Modify apply, run 등
+
+[33mcommit 7544bc6c79acd175496ca58c3da5acca101f2e31[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Oct 28 00:33:53 2019 +0900
+
+    Project 2주차
+
+[33mcommit 4abf8fc0834ffa6de3542e291d2d73f8c2c3e1e4[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Oct 21 23:44:52 2019 +0900
+
+    1주차 Modify Convention 관련
+
+[33mcommit 6392b8fb7be34facb8f3b23e3888506a43e02ccb[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Sat Oct 19 02:13:38 2019 +0900
+
+    1주차 Modify 생성자 Map을 이용한 ViewPagerAdapter 재사용성 관련
+
+[33mcommit d316684b394bddf6c21583480f331ced7dfc0c67[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Oct 18 21:48:31 2019 +0900
+
+    1주차 Modify 구조변경, Handler변경, 싱글톤 변수관리  관련
+
+[33mcommit 3859865284818274916d475d7df39183e8e817e1[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Oct 18 01:37:37 2019 +0900
+
+    1주차 Modify ViewPagerAdapter 재사용성, warning 관련
+
+[33mcommit 6a0ed63960b6c535456b1f16eb15c9c514640302[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Fri Oct 18 00:42:55 2019 +0900
+
+    1주차 Modify Naming 관련
+
+[33mcommit 42ad0a91163ca9544386730433b1f3eddcc9bbbd[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Thu Oct 17 21:19:03 2019 +0900
+
+    Project 1주차
+
+[33mcommit 96ba0e8507782a0a4fa72a5a3dae0f02ab5f843c[m
+Author: Parkduksung <duksung1234@naver.com>
+Date:   Mon Oct 14 20:55:46 2019 +0900
+
+    Init Project
+
+[33mcommit 6bc1a6a27ee6f986e6b27921ea63527d38bbe603[m
+Author: Parkduksung <54328309+Parkduksung@users.noreply.github.com>
+Date:   Mon Oct 14 20:43:28 2019 +0900
+
+    Initial commit

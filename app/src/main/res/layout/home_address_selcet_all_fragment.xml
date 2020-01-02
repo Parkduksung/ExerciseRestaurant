@@ -1,121 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="10"
+    tools:ignore="SpUsage,NestedWeights">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:background="@color/transparent"></LinearLayout>
+        android:background="@color/transparent" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:weightSum="10">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="10">
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="2">
+
+            <Button
+
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/button_background"
+                android:text="@string/address_change_title"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_address_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="38dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="2">
-
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/button_background"
-                    android:text="선택주소"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="20dp"></Button>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
-                    android:id="@+id/tv_address_select"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_address_change_no"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/colorBlack"
-                    android:textSize="38dp"
-                    android:textStyle="bold"></TextView>
+                    android:layout_marginStart="30dp"
+                    android:background="@drawable/button_round"
+                    android:text="@string/address_change_cancel"
+                    android:textSize="25dp" />
 
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-
-                    >
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <Button
-                            android:id="@+id/btn_address_change_no"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30dp"
-                            android:background="@drawable/button_round"
-                            android:text="취소"
-                            android:textSize="25dp"></Button>
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <Button
-                            android:id="@+id/btn_address_change_ok"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="30dp"
-                            android:background="@drawable/button_logout"
-                            android:text="변경"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="25dp"></Button>
-
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_address_change_ok"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/button_logout"
+                    android:text="@string/address_change_ok"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25dp" />
 
 
             </LinearLayout>

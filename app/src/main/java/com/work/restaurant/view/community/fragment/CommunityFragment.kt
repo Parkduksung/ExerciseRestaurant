@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
+import com.work.restaurant.view.community.fragment.CommunityExerciseListFragment.Companion.ttttttt
 import kotlinx.android.synthetic.main.community_fragment.*
 
 class CommunityFragment : Fragment() {
@@ -40,6 +41,8 @@ class CommunityFragment : Fragment() {
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
+        Log.d("]]]]]]]]]]]]]]]]]]",ttttttt)
+        
         init()
 
     }
