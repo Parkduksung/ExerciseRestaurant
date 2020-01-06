@@ -15,6 +15,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ExerciseRestaurantActivity : AppCompatActivity(),
     ExerciseRestaurantContract.View {
 
+//    override fun onBackPressed() {
+//        val fragmentList = supportFragmentManager.fragments
+//
+//        if (fragmentList != null) {
+//            //TODO: Perform your logic to pass back press here
+//            for (fragment in fragmentList) {
+//                if (fragment is OnBackPressedListener) {
+//                    (fragment as OnBackPressedListener).onBackPressed()
+//                }
+//            }
+//        }
+//    }
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 

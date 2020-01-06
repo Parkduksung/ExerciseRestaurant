@@ -25,7 +25,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.login_ll -> {
+            R.id.iv_login -> {
                 presenter.logIn()
             }
 
@@ -48,7 +48,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         super.onActivityCreated(savedInstanceState)
 
         presenter = MyPagePresenter(this)
-        login_ll.setOnClickListener(this)
+        iv_login.setOnClickListener(this)
         tv_page_logout.setOnClickListener(this)
         tv_page_withdrawal.setOnClickListener(this)
         tv_page_late_view.setOnClickListener(this)

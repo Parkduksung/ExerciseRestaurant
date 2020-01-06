@@ -145,6 +145,7 @@ class HomeAddressActivity : AppCompatActivity(),
             }
             layoutManager = GridLayoutManager(this.context, 3)
 
+
         }
 
     }

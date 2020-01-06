@@ -4,10 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -61,18 +60,13 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         ib_search_look_back.setOnClickListener(this)
 
         toggleData()
-
-
-
         searchItem(et_search_look_for_item)
 
     }
 
     private fun searchItem(editText: EditText) {
-
-        editText.setOnKeyListener { _, _, event ->
-            if (event.action == KeyEvent.ACTION_DOWN) {
-                Log.d("눌럿어", "돼?")
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard(editText)
                 presenter.searchLook(editText.text.toString())
                 true
@@ -80,6 +74,7 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
                 false
             }
         }
+
 
     }
 
@@ -114,8 +109,7 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
             .addToBackStack(null)
-            .commitAllowingStateLoss()
-
+            .commit()
 
     }
 
@@ -166,6 +160,7 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
     companion object {
         var clickData = ""
         var toggle = false
+
         private const val TAG = "SearchLookForActivity"
     }
 }

@@ -19,13 +19,11 @@ class SearchLookForPresenter(
             searchLookForView.showSearchNoFind()
         } else {
 
-
             fitnessItemRepository.getFitnessResult(object : FitnessItemRepositoryCallback {
                 override fun onSuccess(fitnessList: List<FitnessCenterItemResponse>) {
 
                     var count = 0
                     val _fitnessList = mutableListOf<FitnessCenterItemResponse>()
-
 
 
                     fitnessList.forEach { fitnessCenterItemModel ->
@@ -34,7 +32,6 @@ class SearchLookForPresenter(
                             count++
                         }
                     }
-
 
                     if (count == 0) {
                         searchLookForView.showSearchNoFind()
