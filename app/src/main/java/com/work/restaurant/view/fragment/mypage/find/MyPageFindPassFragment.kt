@@ -9,7 +9,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.fragment.base.BaseFragment
 import com.work.restaurant.view.fragment.mypage.find.presenter.MyPageFindPassContract
@@ -110,7 +110,7 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
 
         presenter = MyPageFindPassPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
                     RetrofitInstance.getInstance(
                         MyPageFragment.URL
                     )

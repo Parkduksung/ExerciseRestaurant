@@ -10,7 +10,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.fragment.base.BaseFragment
 import com.work.restaurant.view.fragment.mypage.find.MyPageFindPassFragment
@@ -54,7 +54,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
 
         presenter = MyPageLoginPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
+                UserRemoteDataSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
             )
         )
         btn_login.setOnClickListener(this)

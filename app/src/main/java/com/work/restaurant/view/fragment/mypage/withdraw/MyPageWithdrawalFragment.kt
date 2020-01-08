@@ -10,7 +10,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.fragment.base.BaseFragment
 import com.work.restaurant.view.fragment.mypage.main.MyPageFragment
@@ -46,7 +46,7 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
         presenter = MyPageWithdrawalPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
                     RetrofitInstance.getInstance(
                         MyPageFragment.URL
                     )

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.road.RoadRepositoryImpl
+import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
@@ -20,26 +22,31 @@ import kotlinx.android.synthetic.main.address_main.*
 class HomeAddressActivity : AppCompatActivity(),
     HomeAddressContract.View, View.OnClickListener,
     AdapterDataListener {
+    override fun showRoadItem(address: TextView, list: List<String>) {
+
+        select(address, list.toTypedArray())
+
+    }
 
     override fun getData(data: String) {
 
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
 
         if (address1 && !address2 && !address3) {
-            select1 = data
+            si = data
             address2 = true
-            select(tv_address2, resources.getStringArray(R.array.인천))
+            presenter.getRoadItem(tv_address2, data, si, "goon_gu")
             unSelect(tv_address1)
             unSelect(tv_address3)
         } else if (address1 && address2 && !address3) {
-            select2 = data
+            goon_gu = data
             address3 = true
-            select(tv_address3, resources.getStringArray(R.array.부평구))
+            presenter.getRoadItem(tv_address3, data, si, "dong")
             unSelect(tv_address1)
             unSelect(tv_address2)
         } else if (address1 && address2 && address3) {
-            select3 = data
-            selectAddress = "$select1 $select2 $select3"
+            dong = data
+            selectAddress = "$si $goon_gu $dong"
             val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
                 selectAddress
             )
@@ -53,7 +60,6 @@ class HomeAddressActivity : AppCompatActivity(),
 
 
     override fun onClick(v: View?) {
-
 
         when (v?.id) {
             R.id.ib_home_address_back -> {
@@ -78,7 +84,13 @@ class HomeAddressActivity : AppCompatActivity(),
                 address3 = false
 
                 if (address2) {
+
+                    //
+                    //이 부분은 만약 <시>를 선택해서 <군구>로 넘어왔는데 사용자가 <군구>를 다시 눌렀을때 다른게 안뜨는 것 방지.
                     select(tv_address2, resources.getStringArray(R.array.인천))
+                    //
+                    //
+                    presenter.getRoadItem(tv_address2, si, si, "goon_gu")
                     unSelect(tv_address1)
                     unSelect(tv_address3)
                 }
@@ -90,7 +102,7 @@ class HomeAddressActivity : AppCompatActivity(),
             R.id.tv_address3 -> {
 
                 if (address3) {
-                    select(tv_address3, resources.getStringArray(R.array.부평구))
+                    presenter.getRoadItem(tv_address2, dong, si, "goon_gu")
                     unSelect(tv_address1)
                     unSelect(tv_address2)
                 }
@@ -109,7 +121,11 @@ class HomeAddressActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.address_main)
 
-        presenter = HomeAddressPresenter(this)
+        presenter = HomeAddressPresenter(
+            this, RoadRepositoryImpl.getInstance(
+                RoadLocalDataSourceImpl.getInstance()
+            )
+        )
         addressAdapter = AddressAdapter()
         addressAdapter.setItemClickListener(this)
         ib_home_address_back.setOnClickListener(this)
@@ -143,7 +159,7 @@ class HomeAddressActivity : AppCompatActivity(),
 
     }
 
-    private fun select(address: TextView, loadingTextArrayList: Array<String>) {
+    private fun select(address: TextView, loadingTextArrayList: Array<String?>) {
 
         addressAdapter.removeData()
         loadingTextArrayList.forEach {
@@ -184,9 +200,9 @@ class HomeAddressActivity : AppCompatActivity(),
         var address2 = false
         var address3 = false
 
-        var select1 = ""
-        var select2 = ""
-        var select3 = ""
+        var si = ""
+        var goon_gu = ""
+        var dong = ""
         var selectAddress = ""
 
     }

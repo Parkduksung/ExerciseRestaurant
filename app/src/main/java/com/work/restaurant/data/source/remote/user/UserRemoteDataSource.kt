@@ -2,7 +2,12 @@ package com.work.restaurant.data.source.remote.user
 
 interface UserRemoteDataSource {
 
-    fun login(email: String, pass: String, callbackRemoteSource: UserRemoteDataSourceCallback)
+    fun login(
+        email: String,
+        pass: String,
+        callbackRemoteSource: UserRemoteDataSourceCallback
+    )
+
     fun register(
         nickName: String,
         email: String,

@@ -42,11 +42,7 @@ class FitnessCenterRemoteDataSourceImpl private constructor(private val fitnessC
         private var instance: FitnessCenterRemoteDataSourceImpl? = null
 
         fun getInstance(fitnessCenterApi: FitnessCenterApi): FitnessCenterRemoteDataSourceImpl =
-            instance
-                ?: instance
-                ?: FitnessCenterRemoteDataSourceImpl(
-                    fitnessCenterApi
-                ).also {
+            instance ?: FitnessCenterRemoteDataSourceImpl(fitnessCenterApi).also {
                 instance = it
             }
 

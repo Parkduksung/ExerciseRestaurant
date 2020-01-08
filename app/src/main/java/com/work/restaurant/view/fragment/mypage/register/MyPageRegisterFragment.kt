@@ -12,7 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.fragment.base.BaseFragment
 import com.work.restaurant.view.fragment.mypage.login.MyPageLoginFragment
@@ -86,7 +86,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
         presenter = MyPageRegisterPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
                     RetrofitInstance.getInstance(
                         MyPageFragment.URL
                     )

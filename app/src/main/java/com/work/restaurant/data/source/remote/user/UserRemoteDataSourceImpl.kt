@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRemoteDataSourceSourceImpl private constructor(private val userApi: UserApi) :
+class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi) :
     UserRemoteDataSource {
 
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
@@ -180,16 +180,12 @@ class UserRemoteDataSourceSourceImpl private constructor(private val userApi: Us
 
     companion object {
 
-        private var instance: UserRemoteDataSourceSourceImpl? = null
+        private var instance: UserRemoteDataSourceImpl? = null
 
-        fun getInstance(userApi: UserApi): UserRemoteDataSourceSourceImpl =
-            instance
-                ?: instance
-                ?: UserRemoteDataSourceSourceImpl(
-                    userApi
-                ).also {
-                    instance = it
-                }
+        fun getInstance(userApi: UserApi): UserRemoteDataSourceImpl =
+            instance ?: UserRemoteDataSourceImpl(userApi).also {
+                instance = it
+            }
 
     }
 

@@ -59,9 +59,10 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         addressList.clear()
     }
 
-
-    fun addData(item: String) {
-        addressList.add(item)
+    fun addData(item: String?) {
+        if (item != null) {
+            addressList.add(item)
+        }
     }
 
 
