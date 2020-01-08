@@ -67,7 +67,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
 
-        private const val ADDRESS = "address"
+        private const val ADDRESS = "Address"
 
 
         fun newInstance(selectAddress: String) =

@@ -25,30 +25,27 @@ class HomeAddressActivity : AppCompatActivity(),
 
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
 
-
-
         if (address1 && !address2 && !address3) {
             select1 = data
-        }
-
-        if (address1 && address2 && !address3) {
+            address2 = true
+            select(tv_address2, resources.getStringArray(R.array.인천))
+            unSelect(tv_address1)
+            unSelect(tv_address3)
+        } else if (address1 && address2 && !address3) {
             select2 = data
-        }
-
-        if (address1 && address2 && address3) {
+            address3 = true
+            select(tv_address3, resources.getStringArray(R.array.부평구))
+            unSelect(tv_address1)
+            unSelect(tv_address2)
+        } else if (address1 && address2 && address3) {
             select3 = data
-
             selectAddress = "$select1 $select2 $select3"
-
             val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
                 selectAddress
             )
-
-
             this.supportFragmentManager.beginTransaction()
                 .replace(R.id.address_main_container, homeAddressSelectAllFragment).commit()
         }
-
     }
 
     private lateinit var presenter: HomeAddressContract.Presenter
@@ -65,7 +62,6 @@ class HomeAddressActivity : AppCompatActivity(),
 
             R.id.tv_address1 -> {
 
-                address1 = true
                 address2 = false
                 address3 = false
 
@@ -79,13 +75,13 @@ class HomeAddressActivity : AppCompatActivity(),
 
             R.id.tv_address2 -> {
 
-                address1 = true
-                address2 = true
                 address3 = false
 
-                select(tv_address2, resources.getStringArray(R.array.인천))
-                unSelect(tv_address1)
-                unSelect(tv_address3)
+                if (address2) {
+                    select(tv_address2, resources.getStringArray(R.array.인천))
+                    unSelect(tv_address1)
+                    unSelect(tv_address3)
+                }
 
                 Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
 
@@ -93,13 +89,11 @@ class HomeAddressActivity : AppCompatActivity(),
 
             R.id.tv_address3 -> {
 
-                address1 = true
-                address2 = true
-                address3 = true
-
-                select(tv_address3, resources.getStringArray(R.array.부평구))
-                unSelect(tv_address1)
-                unSelect(tv_address2)
+                if (address3) {
+                    select(tv_address3, resources.getStringArray(R.array.부평구))
+                    unSelect(tv_address1)
+                    unSelect(tv_address2)
+                }
 
                 Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
 
@@ -132,20 +126,19 @@ class HomeAddressActivity : AppCompatActivity(),
 
         tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
         address1 = true
+        address2 = false
+        address3 = false
 
         val loadingTextArrayList = resources.getStringArray(R.array.select)
         val decoration = Decoration(30, 30, 30, 30)
 
         recyclerview_address.run {
-
             this.adapter = addressAdapter
             this.addItemDecoration(decoration)
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
-
-
         }
 
     }
@@ -157,7 +150,6 @@ class HomeAddressActivity : AppCompatActivity(),
             addressAdapter.addData(it)
         }
         recyclerview_address.adapter?.notifyDataSetChanged()
-
 
         address.run {
             this.setTextColor(

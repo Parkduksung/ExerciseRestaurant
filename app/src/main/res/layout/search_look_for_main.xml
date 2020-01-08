@@ -63,6 +63,7 @@
                 android:background="@drawable/button_round"
                 android:gravity="center"
                 android:hint="@string/search_look_hint"
+                android:imeActionId="1"
                 android:imeOptions="actionDone"
                 android:lines="1"
                 android:singleLine="true"
