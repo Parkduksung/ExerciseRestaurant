@@ -17,17 +17,12 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-
-        super.onActivityCreated(savedInstanceState)
-
+        val view = inflater.inflate(layoutId, container, false)
         view?.setOnTouchListener { _, _ ->
             true
         }
+        return view
     }
-
-
 }
+
+
