@@ -27,7 +27,6 @@ class MyPageFindOkFragment : BaseFragment(R.layout.mypage_find_ok_fragment), Vie
         Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
-
         presenter = MyPageFindOkPresenter(this)
         btn_send_change_pass.setOnClickListener(this)
 
@@ -35,10 +34,9 @@ class MyPageFindOkFragment : BaseFragment(R.layout.mypage_find_ok_fragment), Vie
 
 
     override fun showOk() {
-        this.requireFragmentManager().beginTransaction()
-            .remove(
-                this
-            ).commit()
+        requireFragmentManager().beginTransaction()
+            .remove(this)
+            .commit()
     }
 
     companion object {
