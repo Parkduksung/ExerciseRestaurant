@@ -24,7 +24,7 @@
             android:value="AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4" />
 
 
-        <activity android:name="com.work.restaurant.view.activity.loading.LoadingActivity">
+        <activity android:name="com.work.restaurant.view.loading.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,11 +33,11 @@
         </activity>
 
         <activity
-            android:name=".view.activity.ExerciseRestaurantActivity"
+            android:name=".view.ExerciseRestaurantActivity"
             android:windowSoftInputMode="adjustResize|adjustPan" />
-        <activity android:name="com.work.restaurant.view.activity.home.HomeAddressActivity" />
+        <activity android:name="com.work.restaurant.view.home.address.HomeAddressActivity" />
         <activity
-            android:name="com.work.restaurant.view.activity.search.SearchLookForActivity"
+            android:name="com.work.restaurant.view.search.lookfor.SearchLookForActivity"
             android:windowSoftInputMode="adjustResize|adjustPan" />
     </application>
 
