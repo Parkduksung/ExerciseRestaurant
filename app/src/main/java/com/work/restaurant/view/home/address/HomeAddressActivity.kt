@@ -37,15 +37,19 @@ class HomeAddressActivity : AppCompatActivity(),
         if (address1 && !address2 && !address3) {
             si = data
             address2 = true
-            presenter.getRoadItem(tv_address2, data,
-                si, "goon_gu")
+            presenter.getRoadItem(
+                tv_address2, data,
+                si, "goon_gu"
+            )
             unSelect(tv_address1)
             unSelect(tv_address3)
         } else if (address1 && address2 && !address3) {
             goon_gu = data
             address3 = true
-            presenter.getRoadItem(tv_address3, data,
-                si, "dong")
+            presenter.getRoadItem(
+                tv_address3, data,
+                si, "dong"
+            )
             unSelect(tv_address1)
             unSelect(tv_address2)
         } else if (address1 && address2 && address3) {
@@ -94,9 +98,11 @@ class HomeAddressActivity : AppCompatActivity(),
                     select(tv_address2, resources.getStringArray(R.array.인천))
                     //
                     //
-                    presenter.getRoadItem(tv_address2,
+                    presenter.getRoadItem(
+                        tv_address2,
                         si,
-                        si, "goon_gu")
+                        si, "goon_gu"
+                    )
                     unSelect(tv_address1)
                     unSelect(tv_address3)
                 }
@@ -108,9 +114,11 @@ class HomeAddressActivity : AppCompatActivity(),
             R.id.tv_address3 -> {
 
                 if (address3) {
-                    presenter.getRoadItem(tv_address2,
+                    presenter.getRoadItem(
+                        tv_address2,
                         dong,
-                        si, "goon_gu")
+                        si, "goon_gu"
+                    )
                     unSelect(tv_address1)
                     unSelect(tv_address2)
                 }

@@ -116,7 +116,6 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             "확인",
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-
                     this@MyPageLoginFragment.requireFragmentManager()
                         .beginTransaction()
                         .replace(
@@ -131,7 +130,6 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
                                 Activity.RESULT_OK,
                                 data
                             )
-
                         }
                 }
             })

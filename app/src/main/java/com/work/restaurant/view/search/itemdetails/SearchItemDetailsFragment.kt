@@ -35,10 +35,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
             R.id.review_ll -> {
 
-//                this.requireFragmentManager().beginTransaction().remove(this)
-//                    .remove(SearchLookForFragment()).commit()
-//                this.requireFragmentManager().beginTransaction().remove(SearchLookFragment()).commit()
-
                 Toast.makeText(context, "click1", Toast.LENGTH_LONG).show()
             }
 

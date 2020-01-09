@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.work.restaurant.R
-import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.googlemaps.GoogleMapFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
@@ -33,17 +33,6 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener 
 
 
     }
-
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.home_fragment, container, false)
-//
-//    }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Log.d(TAG, "onActivityCreated")

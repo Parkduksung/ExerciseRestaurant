@@ -15,21 +15,24 @@ import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
 class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_all_fragment),
     View.OnClickListener {
+
+    interface a {
+        fun a(data: String)
+    }
+
+
     override fun onClick(v: View?) {
 
         when (v?.id) {
             R.id.btn_address_change_no -> {
-                this.requireFragmentManager().beginTransaction().remove(this).commit()
+                requireFragmentManager().beginTransaction().remove(this).commit()
             }
 
             R.id.btn_address_change_ok -> {
-
-
                 val data = Intent()
-                targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
-                this.requireFragmentManager().beginTransaction().remove(this).commit()
-                this.activity?.finish()
-
+                targetFragment?.onActivityResult(12345, Activity.RESULT_OK, data)
+                requireFragmentManager().beginTransaction().remove(this).commit()
+                activity?.finish()
             }
         }
     }
@@ -68,7 +71,6 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         private const val TAG = "HomeAddressSelectAllFragment"
 
         private const val ADDRESS = "Address"
-
 
         fun newInstance(selectAddress: String) =
             HomeAddressSelectAllFragment().apply {
