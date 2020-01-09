@@ -39,12 +39,12 @@ class HomeAddressActivity : AppCompatActivity(),
             address2 = true
             presenter.getRoadItem(
                 tv_address2, data,
-                si, "goon_gu"
+                si, "gunGu"
             )
             unSelect(tv_address1)
             unSelect(tv_address3)
         } else if (address1 && address2 && !address3) {
-            goon_gu = data
+            gunGu = data
             address3 = true
             presenter.getRoadItem(
                 tv_address3, data,
@@ -54,7 +54,7 @@ class HomeAddressActivity : AppCompatActivity(),
             unSelect(tv_address2)
         } else if (address1 && address2 && address3) {
             dong = data
-            selectAddress = "$si $goon_gu $dong"
+            selectAddress = "$si $gunGu $dong"
             val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
                 selectAddress
             )
@@ -101,7 +101,7 @@ class HomeAddressActivity : AppCompatActivity(),
                     presenter.getRoadItem(
                         tv_address2,
                         si,
-                        si, "goon_gu"
+                        si, "gunGu"
                     )
                     unSelect(tv_address1)
                     unSelect(tv_address3)
@@ -117,7 +117,7 @@ class HomeAddressActivity : AppCompatActivity(),
                     presenter.getRoadItem(
                         tv_address2,
                         dong,
-                        si, "goon_gu"
+                        si, "gunGu"
                     )
                     unSelect(tv_address1)
                     unSelect(tv_address2)
@@ -217,7 +217,7 @@ class HomeAddressActivity : AppCompatActivity(),
         var address3 = false
 
         var si = ""
-        var goon_gu = ""
+        var gunGu = ""
         var dong = ""
         var selectAddress = ""
 

@@ -16,7 +16,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
     private val bookmarkList = ArrayList<FitnessCenterItemResponse>()
 
-    private var adapterListener: AdapterDataListener? = null
+    private lateinit var adapterListener: AdapterDataListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -24,30 +24,36 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
                 R.layout.bookmark_item,
                 parent,
                 false
-            )
+            ),
+            adapterListener
         )
 
     override fun getItemCount(): Int =
         bookmarkList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(bookmarkList[position], adapterListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (::adapterListener.isInitialized) {
+            holder.bind(bookmarkList[position])
+        }
+    }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+        RecyclerView.ViewHolder(itemView) {
 
         private val bookmarkName: TextView = itemView.findViewById(R.id.tv_bookmark_name)
         private val bookmarkImage: ImageView = itemView.findViewById(R.id.iv_bookmark_image)
         private val bookmarkCancel: ImageButton = itemView.findViewById(R.id.ib_bookmark_cancel)
 
 
-        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
+        fun bind(item: FitnessCenterItemResponse) {
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
             itemView.setOnClickListener {
-                adapterListener?.getData(item.fitnessCenterName)
+                adapterListener.getData(item.fitnessCenterName)
             }
+
 
             bookmarkCancel.setOnClickListener {
                 bookmarkList.remove(item)

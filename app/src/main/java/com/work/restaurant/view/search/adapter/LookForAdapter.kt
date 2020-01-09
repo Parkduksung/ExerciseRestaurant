@@ -15,7 +15,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
     private val searchLookList = ArrayList<FitnessCenterItemResponse>()
 
-    private var adapterListener: AdapterDataListener? = null
+    private lateinit var adapterListener: AdapterDataListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -23,15 +23,19 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 R.layout.search_look_item,
                 parent,
                 false
-            )
+            ),
+            adapterListener
         )
 
     override fun getItemCount(): Int =
         searchLookList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(searchLookList[position], adapterListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (::adapterListener.isInitialized) {
+            holder.bind(searchLookList[position])
+        }
+    }
 
 
     fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
@@ -51,13 +55,14 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         adapterListener = listenerAdapterAdapter
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+        RecyclerView.ViewHolder(itemView) {
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
         private val searchLookImage: ImageView = itemView.findViewById(R.id.iv_search_look_image)
 
-        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
+        fun bind(item: FitnessCenterItemResponse) {
             searchLookName.setOnClickListener {
-                adapterListener?.getData(item.fitnessCenterName)
+                adapterListener.getData(item.fitnessCenterName)
             }
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 

@@ -32,7 +32,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
                     result.forEach {
                         val road = gson.fromJson(it, RoadModel::class.java)
-                        if (road.goon_gu == clickData) {
+                        if (road.gunGu == clickData) {
                             list.add(road)
                         }
                     }
@@ -44,7 +44,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
                     }
                 }
 
-                if (zone == "goon_gu") {
+                if (zone == "gunGu") {
                     val assetManager = App.instance.context().assets
 
                     val inputStream = assetManager.open("incheon.json")
@@ -64,7 +64,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
                     }
 
                     if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.goon_gu }.distinct().sorted())
+                        callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
                     } else {
                         callback.onFailure("error")
                     }
@@ -91,7 +91,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
                     result.forEach {
                         val road = gson.fromJson(it, RoadModel::class.java)
-                        if (road.goon_gu == clickData) {
+                        if (road.gunGu == clickData) {
                             list.add(road)
                         }
                     }
@@ -103,7 +103,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
                     }
                 }
 
-                if (zone == "goon_gu") {
+                if (zone == "gunGu") {
                     val assetManager = App.instance.context().assets
 
                     val inputStream = assetManager.open("seoul.json")
@@ -123,7 +123,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
                     }
 
                     if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.goon_gu }.distinct().sorted())
+                        callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
                     } else {
                         callback.onFailure("error")
                     }
@@ -149,7 +149,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 //
 //        result.forEach {
 //            val road = gson.fromJson(it, RoadModel::class.java)
-//            if (road.goon_gu == "계양구") {
+//            if (road.gunGu == "계양구") {
 //                list.add(road)
 //            }
 //        }

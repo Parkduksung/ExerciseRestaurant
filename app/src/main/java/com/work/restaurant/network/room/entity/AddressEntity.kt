@@ -6,15 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "address")
 data class AddressEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val addressNum: Int?,
+    @ColumnInfo(name = "si")
     val si: String,
-    @ColumnInfo(name = "gun_gu_list")
-    val gunGuList: List<GunGu>
-) {
-    data class GunGu(
-        @ColumnInfo(name = "gun_gu")
-        val gunGu: String,
-        @ColumnInfo(name = "dong_list")
-        val dongList: List<String>
-    )
-}
+    @ColumnInfo(name = "gunGu")
+    val gunGu: String,
+    @ColumnInfo(name = "dong")
+    val dong: String
+)
+
