@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.work.restaurant.R
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import java.io.IOException
 
@@ -112,7 +114,6 @@ class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps)
 
         if (::mapView.isInitialized) {
             mapView.onCreate(savedInstanceState)
-
         }
 
 
@@ -136,8 +137,12 @@ class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps)
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
             if (location != null) {
                 lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
+                val t = getAddress1(selectAll)
+
+                val currentLatLng = LatLng(t[0], t[1])
+//                val currentLatLng = LatLng(location.latitude, location.longitude)
                 placeMarkerOnMap(currentLatLng)
+
 
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
@@ -239,6 +244,8 @@ class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps)
     override fun onResume() {
         Log.d(TAG, "onResume")
         super.onResume()
+
+        Toast.makeText(context, selectAll, Toast.LENGTH_SHORT).show()
         mapView.onResume()
     }
 

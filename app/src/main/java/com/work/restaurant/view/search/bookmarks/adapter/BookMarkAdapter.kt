@@ -54,7 +54,6 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
                 adapterListener.getData(item.fitnessCenterName)
             }
 
-
             bookmarkCancel.setOnClickListener {
                 bookmarkList.remove(item)
                 notifyDataSetChanged()

@@ -66,7 +66,6 @@ class HomeAddressActivity : AppCompatActivity(),
     private lateinit var presenter: HomeAddressContract.Presenter
     private lateinit var addressAdapter: AddressAdapter
 
-
     override fun onClick(v: View?) {
 
         when (v?.id) {

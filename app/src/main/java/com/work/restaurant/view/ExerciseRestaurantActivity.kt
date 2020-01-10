@@ -40,6 +40,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
     }
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -55,6 +57,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
     private fun start() {
         presenter.init()
     }
+
+
 
     override fun showInit() {
 
@@ -78,6 +82,11 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             getTabAt(3)?.setIcon(R.drawable.ic_mypage)
         }
 
+    }
+
+    companion object{
+
+        var selectAll = "인천 계양구 효성동"
     }
 
 

@@ -16,5 +16,8 @@ interface AddressDao {
     @Query("SELECT COUNT(*) FROM address")
     fun getAllCount(): Int
 
+    @Query("SELECT * FROM address")
+    fun getAll(): List<AddressEntity>
+
 
 }

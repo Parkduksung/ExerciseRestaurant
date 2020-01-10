@@ -1,7 +1,5 @@
 package com.work.restaurant.view.home.address_select_all
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.work.restaurant.R
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
 
 class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_all_fragment),
     View.OnClickListener {
-
-    interface a {
-        fun a(data: String)
-    }
 
 
     override fun onClick(v: View?) {
@@ -29,8 +24,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
             }
 
             R.id.btn_address_change_ok -> {
-                val data = Intent()
-                targetFragment?.onActivityResult(12345, Activity.RESULT_OK, data)
+                selectAll = tv_address_select.text.toString()
                 requireFragmentManager().beginTransaction().remove(this).commit()
                 activity?.finish()
             }

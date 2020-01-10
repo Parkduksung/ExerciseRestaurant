@@ -13,28 +13,47 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     private val addressList = ArrayList<String>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.address_item,
-                parent,
-                false
-            ),
-            adapterListener
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        if (::adapterListener.isInitialized) {
+            return ViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.address_item,
+                    parent,
+                    false
+                ),
+                adapterListener
+            )
+        } else {
+            adapterListener = object : AdapterDataListener {
+                override fun getData(data: String) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+            }
+            return ViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.address_item,
+                    parent,
+                    false
+                ),
+                adapterListener
+            )
+        }
+
+
+    }
+
 
     override fun getItemCount(): Int =
         addressList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (::adapterListener.isInitialized) {
-            holder.bind(addressList[position])
-        }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(addressList[position])
 
 
-    class ViewHolder(itemView: View, val adapterListener: AdapterDataListener) :
+    class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
         RecyclerView.ViewHolder(itemView) {
         private val addressItem: Button = itemView.findViewById(R.id.btn_address_item)
 
@@ -64,5 +83,6 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
         adapterListener = listenerAdapterAdapter
     }
+
 
 }

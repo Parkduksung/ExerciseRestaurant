@@ -10,7 +10,7 @@ import com.work.restaurant.network.room.entity.AddressEntity
 @Database(entities = [AddressEntity::class], version = 1)
 abstract class AddressDatabase : RoomDatabase() {
 
-    abstract fun AddressDao(): AddressDao
+    abstract fun addressDao(): AddressDao
 
     companion object {
         private var INSTANCE: AddressDatabase? = null

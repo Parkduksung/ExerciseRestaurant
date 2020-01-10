@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
 import com.work.restaurant.util.App
+import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
 class RoadLocalDataSourceImpl : RoadLocalDataSource {
     override fun getLocalData(
@@ -13,152 +14,60 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
         callback: RoadLocalDataSourceCallback
     ) {
 
-        when (area) {
+        if (zone == "dong") {
+            val assetManager = App.instance.context().assets
 
-            "인천" -> {
+            val inputStream = assetManager.open("Address.json")
 
-                if (zone == "dong") {
-                    val assetManager = App.instance.context().assets
+            val string = inputStream.bufferedReader().use { it.readText() }
 
-                    val inputStream = assetManager.open("incheon.json")
+            val gson = Gson()
 
-                    val string = inputStream.bufferedReader().use { it.readText() }
+            val result = gson.fromJson(string, JsonArray::class.java)
 
-                    val gson = Gson()
+            val list = mutableListOf<RoadModel>()
 
-                    val result = gson.fromJson(string, JsonArray::class.java)
-
-                    val list = mutableListOf<RoadModel>()
-
-                    result.forEach {
-                        val road = gson.fromJson(it, RoadModel::class.java)
-                        if (road.gunGu == clickData) {
-                            list.add(road)
-                        }
-                    }
-
-                    if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.dong }.distinct().sorted())
-                    } else {
-                        callback.onFailure("error")
-                    }
+            result.forEach {
+                val road = gson.fromJson(it, RoadModel::class.java)
+                if (road.si.contains(si, false) && road.gunGu == clickData) {
+                    list.add(road)
                 }
-
-                if (zone == "gunGu") {
-                    val assetManager = App.instance.context().assets
-
-                    val inputStream = assetManager.open("incheon.json")
-
-                    val string = inputStream.bufferedReader().use { it.readText() }
-
-                    val gson = Gson()
-
-                    val result = gson.fromJson(string, JsonArray::class.java)
-
-                    val list = mutableListOf<RoadModel>()
-
-                    result.forEach {
-                        val road = gson.fromJson(it, RoadModel::class.java)
-                        list.add(road)
-
-                    }
-
-                    if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
-                    } else {
-                        callback.onFailure("error")
-                    }
-                }
-
-
             }
 
-            "서울" -> {
-
-
-                if (zone == "dong") {
-                    val assetManager = App.instance.context().assets
-
-                    val inputStream = assetManager.open("seoul.json")
-
-                    val string = inputStream.bufferedReader().use { it.readText() }
-
-                    val gson = Gson()
-
-                    val result = gson.fromJson(string, JsonArray::class.java)
-
-                    val list = mutableListOf<RoadModel>()
-
-                    result.forEach {
-                        val road = gson.fromJson(it, RoadModel::class.java)
-                        if (road.gunGu == clickData) {
-                            list.add(road)
-                        }
-                    }
-
-                    if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.dong }.distinct().sorted())
-                    } else {
-                        callback.onFailure("error")
-                    }
-                }
-
-                if (zone == "gunGu") {
-                    val assetManager = App.instance.context().assets
-
-                    val inputStream = assetManager.open("seoul.json")
-
-                    val string = inputStream.bufferedReader().use { it.readText() }
-
-                    val gson = Gson()
-
-                    val result = gson.fromJson(string, JsonArray::class.java)
-
-                    val list = mutableListOf<RoadModel>()
-
-                    result.forEach {
-                        val road = gson.fromJson(it, RoadModel::class.java)
-                        list.add(road)
-
-                    }
-
-                    if (list.isNotEmpty()) {
-                        callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
-                    } else {
-                        callback.onFailure("error")
-                    }
-                }
-
+            if (list.isNotEmpty()) {
+                callback.onSuccess(list.map { it.dong }.distinct().sorted())
+            } else {
+                callback.onFailure("error")
             }
-
-
         }
 
-//
-//        val assetManager = App.instance.context().assets
-//
-//        val inputStream = assetManager.open("incheon.json")
-//
-//        val string = inputStream.bufferedReader().use { it.readText() }
-//
-//        val gson = Gson()
-//
-//        val result = gson.fromJson(string, JsonArray::class.java)
-//
-//        val list = mutableListOf<RoadModel>()
-//
-//        result.forEach {
-//            val road = gson.fromJson(it, RoadModel::class.java)
-//            if (road.gunGu == "계양구") {
-//                list.add(road)
-//            }
-//        }
-//
-//        if (list.isNotEmpty()) {
-//            callback.onSuccess(list.map { it.dong }.distinct().sorted())
-//        } else {
-//            callback.onFailure("error")
-//        }
+        if (zone == "gunGu") {
+            val assetManager = App.instance.context().assets
+
+            val inputStream = assetManager.open("Address.json")
+
+            val string = inputStream.bufferedReader().use { it.readText() }
+
+            val gson = Gson()
+
+            val result = gson.fromJson(string, JsonArray::class.java)
+
+            val list = mutableListOf<RoadModel>()
+
+            result.forEach {
+                val road = gson.fromJson(it, RoadModel::class.java)
+                if (road.si.contains(clickData, false)) {
+                    list.add(road)
+                }
+            }
+
+            if (list.isNotEmpty()) {
+                callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
+            } else {
+                callback.onFailure("error")
+            }
+        }
+
     }
 
     companion object {

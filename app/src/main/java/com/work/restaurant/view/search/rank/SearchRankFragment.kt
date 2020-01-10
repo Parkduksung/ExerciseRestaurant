@@ -1,6 +1,7 @@
 package com.work.restaurant.view.search.rank
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,10 +15,14 @@ import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
 import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.view.home.address.HomeAddressActivity
-import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.home.address.HomeAddressActivity
+import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.dong
+import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.gunGu
+import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
+import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
@@ -64,6 +69,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -92,10 +98,61 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         fitnessRankAdapter.setItemClickListener(this)
         presenter.getFitnessList()
 
+
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "onAttach")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        tv_search_locate.text = "$si $gunGu $dong"
+        Log.d(TAG, "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy")
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach")
+        super.onDetach()
+    }
 
     override fun showSettings() {
+
+        val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
+        homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
+
         val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
         startActivity(homeAddressActivity)
     }
