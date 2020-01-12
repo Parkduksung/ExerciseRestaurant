@@ -7,4 +7,10 @@ interface RoadLocalDataSource {
         clickData: String,
         callback: RoadLocalDataSourceCallback
     )
+
+
+    fun getAddressCount(callback: RoadLocalDataCountCallback)
+
+    fun isContainAddress(callback: RoadLocalDataCountCallback)
+
 }

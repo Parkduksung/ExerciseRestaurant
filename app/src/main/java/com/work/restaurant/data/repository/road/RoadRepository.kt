@@ -7,4 +7,8 @@ interface RoadRepository {
         clickData: String,
         callback: RoadRepositoryCallback
     )
+
+    fun getAddressCount(callback: RoadRepositoryDataCountCallback)
+
+
 }

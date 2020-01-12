@@ -1,18 +1,70 @@
 package com.work.restaurant.data.source.local.road
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
+import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.util.App
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
 class RoadLocalDataSourceImpl : RoadLocalDataSource {
+    override fun isContainAddress(callback: RoadLocalDataCountCallback) {
+
+        val thread = Thread {
+            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
+
+            val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
+
+            Log.d("결과결과", getAddressCount.toString())
+
+            if (addressDatabase?.isOpen!!) {
+                if (getAddressCount != null) {
+                    callback.onSuccess(true)
+                    Log.d("결과결과", "true가 나와야함.")
+                } else {
+                    callback.onSuccess(false)
+                    Log.d("결과결과", "false가 나와야함.")
+                }
+            } else {
+                callback.onFailure("error!")
+            }
+        }
+
+        thread.start()
+
+    }
+
+    override fun getAddressCount(callback: RoadLocalDataCountCallback) {
+        val thread = Thread {
+            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
+
+            val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
+
+            Log.d("결과결과", getAddressCount.toString())
+
+            if (addressDatabase?.isOpen!!) {
+                if (getAddressCount != null) {
+                    callback.onSuccess(true)
+                } else {
+                    callback.onSuccess(false)
+                }
+            } else {
+                callback.onFailure("error!")
+            }
+        }
+
+
+        thread.start()
+    }
+
     override fun getLocalData(
         zone: String,
         area: String,
         clickData: String,
         callback: RoadLocalDataSourceCallback
     ) {
+
 
         if (zone == "dong") {
             val assetManager = App.instance.context().assets
@@ -69,6 +121,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
         }
 
     }
+
 
     companion object {
 

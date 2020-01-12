@@ -12,7 +12,6 @@ interface AddressDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun registerAddress(addressEntity: AddressEntity)
 
-
     @Query("SELECT COUNT(*) FROM address")
     fun getAllCount(): Int
 

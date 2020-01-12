@@ -7,6 +7,13 @@ import com.work.restaurant.util.App
 
 class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteDataSourceImpl) :
     UserRepository {
+
+
+
+
+
+
+
     override fun login(email: String, pass: String, callback: UserRepositoryCallback) {
 
         if (App.instance.context().isConnectedToNetwork()) {
