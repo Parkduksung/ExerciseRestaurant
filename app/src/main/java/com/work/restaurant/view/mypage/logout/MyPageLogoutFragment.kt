@@ -31,10 +31,8 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
         }
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = MyPageLogoutPresenter(this)
         btn_logout_cancel.setOnClickListener(this)
         btn_logout_ok.setOnClickListener(this)

@@ -23,8 +23,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 R.layout.search_look_item,
                 parent,
                 false
-            ),
-            adapterListener
+            )
         )
 
     override fun getItemCount(): Int =
@@ -55,15 +54,28 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         adapterListener = listenerAdapterAdapter
     }
 
-    class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
         private val searchLookImage: ImageView = itemView.findViewById(R.id.iv_search_look_image)
 
         fun bind(item: FitnessCenterItemResponse) {
-            searchLookName.setOnClickListener {
-                adapterListener.getData(item.fitnessCenterName)
+
+            if (::adapterListener.isInitialized) {
+                searchLookName.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                searchLookName.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
             }
+
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
             searchLookName.text = fitnessCenterItemResponse.fitnessCenterName

@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.EditText
@@ -80,9 +79,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageRegisterPresenter(
             this, UserRepositoryImpl.getInstance(
@@ -101,10 +99,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         inputState(et_register_email, iv_email_state)
         inputState(et_register_pass, iv_pass_state)
         inputState(et_register_pass_ok, iv_pass_ok_state)
-
-
     }
-
 
     private fun inputState(editText: EditText, imageView: ImageView) {
 

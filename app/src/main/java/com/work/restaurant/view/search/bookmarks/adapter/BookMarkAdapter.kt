@@ -24,8 +24,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
                 R.layout.bookmark_item,
                 parent,
                 false
-            ),
-            adapterListener
+            )
         )
 
     override fun getItemCount(): Int =
@@ -39,7 +38,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
     }
 
 
-    inner class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val bookmarkName: TextView = itemView.findViewById(R.id.tv_bookmark_name)
@@ -50,8 +49,19 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         fun bind(item: FitnessCenterItemResponse) {
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
-            itemView.setOnClickListener {
-                adapterListener.getData(item.fitnessCenterName)
+            if (::adapterListener.isInitialized) {
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
             }
 
             bookmarkCancel.setOnClickListener {

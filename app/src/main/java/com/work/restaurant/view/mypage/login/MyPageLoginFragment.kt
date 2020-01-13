@@ -47,23 +47,8 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
         }
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        presenter = MyPageLoginPresenter(
-//            this, UserRepositoryImpl.getInstance(
-//                UserRemoteDataSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
-//            )
-//        )
-//        btn_login.setOnClickListener(this)
-//        ib_login_back.setOnClickListener(this)
-//        tv_login_register.setOnClickListener(this)
-//        tv_login_find.setOnClickListener(this)
-//    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageLoginPresenter(
             this, UserRepositoryImpl.getInstance(
@@ -74,7 +59,6 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
         ib_login_back.setOnClickListener(this)
         tv_login_register.setOnClickListener(this)
         tv_login_find.setOnClickListener(this)
-
     }
 
 

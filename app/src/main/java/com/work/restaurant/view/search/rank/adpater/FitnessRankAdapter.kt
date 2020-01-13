@@ -24,8 +24,7 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
                 R.layout.fitness_rank_item,
                 parent,
                 false
-            ),
-            adapterListener
+            )
         )
 
 
@@ -40,7 +39,7 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
     }
 
 
-    class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val fitnessNo: TextView = itemView.findViewById(R.id.fitness_rank_no_tv)
@@ -51,9 +50,21 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
 
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
-            itemView.setOnClickListener {
-                adapterListener.getData(item.fitnessCenterName)
+            if (::adapterListener.isInitialized) {
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
             }
+
 
             fitnessNo.text = fitnessCenterItemResponse.fitnessCenterNo.toString()
             fitnessName.text = fitnessCenterItemResponse.fitnessCenterName

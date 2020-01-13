@@ -3,7 +3,6 @@ package com.work.restaurant.view.search.itemdetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,9 +59,10 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         detailsPresenter =
             SearchItemDetailsPresenter(
                 this, FitnessItemRepositoryImpl.getInstance(

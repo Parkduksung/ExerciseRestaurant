@@ -81,10 +81,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = SearchRankPresenter(
             this, FitnessItemRepositoryImpl.getInstance(
                 FitnessCenterRemoteDataSourceImpl.getInstance(
@@ -97,7 +95,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         iv_search_settings.setOnClickListener(this)
         fitnessRankAdapter.setItemClickListener(this)
         presenter.getFitnessList()
-
 
     }
 

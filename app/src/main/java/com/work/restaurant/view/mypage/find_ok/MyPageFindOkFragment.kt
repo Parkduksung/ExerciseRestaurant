@@ -1,7 +1,6 @@
 package com.work.restaurant.view.mypage.find_ok
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
@@ -22,14 +21,11 @@ class MyPageFindOkFragment : BaseFragment(R.layout.mypage_find_ok_fragment), Vie
         }
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageFindOkPresenter(this)
         btn_send_change_pass.setOnClickListener(this)
-
     }
 
 

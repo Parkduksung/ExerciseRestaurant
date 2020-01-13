@@ -51,13 +51,11 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         btn_address_change_no.setOnClickListener(this)
         btn_address_change_ok.setOnClickListener(this)
-
     }
 
 

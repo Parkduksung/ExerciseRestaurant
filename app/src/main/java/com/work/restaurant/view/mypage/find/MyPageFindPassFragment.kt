@@ -1,7 +1,6 @@
 package com.work.restaurant.view.mypage.find
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +19,39 @@ import kotlinx.android.synthetic.main.mypage_find_fragment.*
 
 class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View.OnClickListener,
     MyPageFindPassContract.View {
+
+    private lateinit var presenter: MyPageFindPassPresenter
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.ib_find_back -> {
+                presenter.backPage()
+            }
+
+            R.id.btn_request_change_pass -> {
+                presenter.resetPass(et_change_pass.text.toString())
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter = MyPageFindPassPresenter(
+            this, UserRepositoryImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        MyPageFragment.URL
+                    )
+                )
+            )
+        )
+        ib_find_back.setOnClickListener(this)
+        btn_request_change_pass.setOnClickListener(this)
+
+    }
+
+
     override fun showResetOk(nickName: String) {
 
         val alertDialog =
@@ -75,57 +107,7 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
         ).commit()
     }
 
-    private lateinit var presenter: MyPageFindPassPresenter
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.ib_find_back -> {
-                presenter.backPage()
-            }
-
-            R.id.btn_request_change_pass -> {
-                presenter.resetPass(et_change_pass.text.toString())
-            }
-        }
-    }
-
-
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
-
-        presenter = MyPageFindPassPresenter(
-            this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        MyPageFragment.URL
-                    )
-                )
-            )
-        )
-        ib_find_back.setOnClickListener(this)
-        btn_request_change_pass.setOnClickListener(this)
-
-
-    }
-
-
     companion object {
-        private const val URL = "https://duksung12.cafe24.com"
         private const val TAG = "MyPageFindFragment"
     }
 

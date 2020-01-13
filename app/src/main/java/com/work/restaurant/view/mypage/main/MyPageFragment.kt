@@ -3,7 +3,6 @@ package com.work.restaurant.view.mypage.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
@@ -43,10 +42,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = MyPagePresenter(this)
         iv_login.setOnClickListener(this)
         tv_page_logout.setOnClickListener(this)

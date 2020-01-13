@@ -2,7 +2,6 @@ package com.work.restaurant.view.search.bookmarks
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,12 @@ import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
 import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
 
@@ -64,10 +63,8 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = SearchBookmarksPresenter(
             this, FitnessItemRepositoryImpl.getInstance(
                 FitnessCenterRemoteDataSourceImpl.getInstance(
