@@ -8,9 +8,10 @@ interface RoadLocalDataSource {
         callback: RoadLocalDataSourceCallback
     )
 
-
     fun getAddressCount(callback: RoadLocalDataCountCallback)
 
     fun isContainAddress(callback: RoadLocalDataCountCallback)
+
+    fun registerAddress(roadLocalDataRegisterCallback: RoadLocalDataRegisterCallback)
 
 }

@@ -10,5 +10,7 @@ interface RoadRepository {
 
     fun getAddressCount(callback: RoadRepositoryDataCountCallback)
 
+    fun registerAddress(callback: Callback)
+
 
 }

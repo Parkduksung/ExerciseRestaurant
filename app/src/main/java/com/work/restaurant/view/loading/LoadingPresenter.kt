@@ -1,14 +1,41 @@
 package com.work.restaurant.view.loading
 
 import android.util.Log
+import com.work.restaurant.data.model.RoadModel
+import com.work.restaurant.data.repository.road.Callback
 import com.work.restaurant.data.repository.road.RoadRepositoryDataCountCallback
 import com.work.restaurant.data.repository.road.RoadRepositoryImpl
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
+import com.work.restaurant.network.room.entity.AddressEntity
 import kotlin.random.Random
 
 class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingContract.Presenter {
     override fun registerAddress() {
-        //등록하는곳
+
+        RoadRepositoryImpl.getInstance(RoadLocalDataSourceImpl.getInstance())
+            .registerAddress(object : Callback {
+                override fun onSuccess(list: List<AddressEntity>) {
+
+                    val roadList = mutableListOf<RoadModel>()
+
+                    list.forEach {
+
+                        val roadModel =
+                            RoadModel(it.si, it.gunGu, it.dong)
+                        roadList.add(roadModel)
+                    }
+
+                    roadList.forEach {
+                        it.toAddressEntity()
+                    }
+
+                }
+
+                override fun onFailure(message: String) {
+                    Log.d("결과결과", message)
+                }
+            })
+
     }
 
     override fun delayTime() =
@@ -35,6 +62,7 @@ class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingC
                         Log.d("결과결과", "갯수없음")
                     }
                 }
+
                 override fun onFailure(message: String) {
                     Log.d("결과결과", message)
                 }

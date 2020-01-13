@@ -5,10 +5,46 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
 import com.work.restaurant.network.room.database.AddressDatabase
+import com.work.restaurant.network.room.entity.AddressEntity
 import com.work.restaurant.util.App
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
 class RoadLocalDataSourceImpl : RoadLocalDataSource {
+    override fun registerAddress(roadLocalDataRegisterCallback: RoadLocalDataRegisterCallback) {
+
+        val thread = Thread {
+            val assetManager = App.instance.context().assets
+
+            val inputStream = assetManager.open("Address.json")
+
+            val string = inputStream.bufferedReader().use { it.readLine() }
+
+            val gson = Gson()
+
+            val result = gson.fromJson(string, JsonArray::class.java)
+
+            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
+
+            if (addressDatabase?.isOpen!!) {
+
+                result.forEach {
+                    val road = gson.fromJson(it, AddressEntity::class.java)
+                    addressDatabase.addressDao().registerAddress(road)
+                }
+
+                val addressList = addressDatabase.addressDao().getAll()
+                if (addressList.isNotEmpty()) {
+                    roadLocalDataRegisterCallback.onSuccess(addressList)
+                } else {
+                    roadLocalDataRegisterCallback.onFailure("error")
+                }
+            } else {
+                roadLocalDataRegisterCallback.onFailure("error")
+            }
+        }
+        thread.start()
+    }
+
     override fun isContainAddress(callback: RoadLocalDataCountCallback) {
 
         val thread = Thread {
@@ -20,6 +56,7 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
             if (addressDatabase?.isOpen!!) {
                 if (getAddressCount != null) {
+
                     callback.onSuccess(true)
                     Log.d("결과결과", "true가 나와야함.")
                 } else {
