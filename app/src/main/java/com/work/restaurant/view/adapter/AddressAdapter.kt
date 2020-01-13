@@ -13,37 +13,14 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     private val addressList = ArrayList<String>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        if (::adapterListener.isInitialized) {
-            return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.address_item,
-                    parent,
-                    false
-                ),
-                adapterListener
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.address_item,
+                parent,
+                false
             )
-        } else {
-            adapterListener = object : AdapterDataListener {
-                override fun getData(data: String) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-            }
-            return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.address_item,
-                    parent,
-                    false
-                ),
-                adapterListener
-            )
-        }
-
-
-    }
-
+        )
 
     override fun getItemCount(): Int =
         addressList.size
@@ -53,7 +30,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         holder.bind(addressList[position])
 
 
-    class ViewHolder(itemView: View, private val adapterListener: AdapterDataListener) :
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         private val addressItem: Button = itemView.findViewById(R.id.btn_address_item)
 
@@ -62,9 +39,21 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
             val address: String = item
             addressItem.text = address
 
-            addressItem.setOnClickListener {
-                adapterListener.getData(address)
+            if (::adapterListener.isInitialized) {
+                addressItem.setOnClickListener {
+                    adapterListener.getData(address)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                addressItem.setOnClickListener {
+                    adapterListener.getData(address)
+                }
             }
+
         }
 
     }
