@@ -7,6 +7,7 @@ import com.work.restaurant.data.model.RoadModel
 import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.network.room.entity.AddressEntity
 import com.work.restaurant.util.App
+import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
 class RoadLocalDataSourceImpl : RoadLocalDataSource {
@@ -73,7 +74,8 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
     }
 
     override fun getAddressCount(callback: RoadLocalDataCountCallback) {
-        val thread = Thread {
+
+        AppExecutors().diskIO.execute {
             val addressDatabase = AddressDatabase.getInstance(App.instance.context())
 
             val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
@@ -82,7 +84,9 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
             if (addressDatabase?.isOpen!!) {
                 if (getAddressCount != null) {
-                    callback.onSuccess(true)
+                    AppExecutors().mainThread.execute {
+                        callback.onSuccess(true)
+                    }
                 } else {
                     callback.onSuccess(false)
                 }
@@ -90,9 +94,6 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
                 callback.onFailure("error!")
             }
         }
-
-
-        thread.start()
     }
 
     override fun getLocalData(
