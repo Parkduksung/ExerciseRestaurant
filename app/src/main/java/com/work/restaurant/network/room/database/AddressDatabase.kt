@@ -16,17 +16,18 @@ abstract class AddressDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: AddressDatabase? = null
 
-        fun getInstance(context: Context): AddressDatabase? {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(
-                    context.applicationContext,
-                    AddressDatabase::class.java, "address"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-            }
-            return INSTANCE
-        }
+        fun getInstance(context: Context): AddressDatabase =
+            INSTANCE ?: Room.databaseBuilder(
+                context.applicationContext,
+                AddressDatabase::class.java,
+                "address"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+                .also {
+                    INSTANCE = it
+                }
+
     }
 
 }

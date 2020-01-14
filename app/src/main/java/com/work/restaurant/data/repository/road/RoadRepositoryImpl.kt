@@ -63,9 +63,10 @@ class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImp
         fun getInstance(
             roadLocalDataSourceImpl: RoadLocalDataSourceImpl
         ): RoadRepositoryImpl =
-            instance ?: RoadRepositoryImpl(roadLocalDataSourceImpl).also {
-                instance = it
-            }
+            instance ?: RoadRepositoryImpl(roadLocalDataSourceImpl)
+                .also {
+                    instance = it
+                }
     }
 
 }

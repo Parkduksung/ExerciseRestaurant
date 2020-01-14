@@ -11,7 +11,7 @@ import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
 class RoadLocalDataSourceImpl private constructor(
-    private val addressDatabase: AddressDatabase?,
+    private val addressDatabase: AddressDatabase,
     private val appExecutors: AppExecutors
 ) : RoadLocalDataSource {
     override fun registerAddress(roadLocalDataRegisterCallback: RoadLocalDataRegisterCallback) {
@@ -81,17 +81,13 @@ class RoadLocalDataSourceImpl private constructor(
 
         appExecutors.diskIO.execute {
 
-            val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
+            val getAddressCount = addressDatabase.addressDao().getAllCount()
 
             Log.d("결과결과", getAddressCount.toString())
 
-            if (addressDatabase != null) {
-                if (addressDatabase.isOpen) {
-                    appExecutors.mainThread.execute {
-                        callback.onSuccess(true)
-                    }
-                } else {
-                    callback.onFailure("error!")
+            if (addressDatabase.isOpen) {
+                appExecutors.mainThread.execute {
+                    callback.onSuccess(true)
                 }
             } else {
                 callback.onFailure("error!")
@@ -170,7 +166,7 @@ class RoadLocalDataSourceImpl private constructor(
         private var instance: RoadLocalDataSourceImpl? = null
 
         fun getInstance(
-            addressDatabase: AddressDatabase?,
+            addressDatabase: AddressDatabase,
             appExecutors: AppExecutors
         ): RoadLocalDataSourceImpl =
             instance ?: RoadLocalDataSourceImpl(
