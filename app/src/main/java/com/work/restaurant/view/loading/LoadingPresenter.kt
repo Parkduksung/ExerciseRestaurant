@@ -6,13 +6,23 @@ import com.work.restaurant.data.repository.road.Callback
 import com.work.restaurant.data.repository.road.RoadRepositoryDataCountCallback
 import com.work.restaurant.data.repository.road.RoadRepositoryImpl
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
+import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.util.App
+import com.work.restaurant.util.AppExecutors
 import kotlin.random.Random
 
 class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingContract.Presenter {
     override fun registerAddress() {
 
-        RoadRepositoryImpl.getInstance(RoadLocalDataSourceImpl.getInstance())
+        RoadRepositoryImpl.getInstance(
+            RoadLocalDataSourceImpl.getInstance(
+                AddressDatabase.getInstance(
+                    App.instance.context()
+                ),
+                AppExecutors()
+            )
+        )
             .registerAddress(object : Callback {
                 override fun onSuccess(list: List<AddressEntity>) {
 
@@ -50,7 +60,14 @@ class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingC
 
     override fun getAddressDataCount() {
 
-        RoadRepositoryImpl.getInstance(RoadLocalDataSourceImpl.getInstance())
+        RoadRepositoryImpl.getInstance(
+            RoadLocalDataSourceImpl.getInstance(
+                AddressDatabase.getInstance(
+                    App.instance.context()
+                ),
+                AppExecutors()
+            )
+        )
             .getAddressCount(object : RoadRepositoryDataCountCallback {
                 override fun onSuccess(state: Boolean) {
                     if (state) {

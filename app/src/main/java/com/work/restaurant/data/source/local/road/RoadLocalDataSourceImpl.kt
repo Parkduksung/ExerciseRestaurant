@@ -10,7 +10,10 @@ import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 
-class RoadLocalDataSourceImpl : RoadLocalDataSource {
+class RoadLocalDataSourceImpl private constructor(
+    private val addressDatabase: AddressDatabase?,
+    private val appExecutors: AppExecutors
+) : RoadLocalDataSource {
     override fun registerAddress(roadLocalDataRegisterCallback: RoadLocalDataRegisterCallback) {
 
         val thread = Thread {
@@ -75,25 +78,26 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
     override fun getAddressCount(callback: RoadLocalDataCountCallback) {
 
-        AppExecutors().diskIO.execute {
-            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
+
+        appExecutors.diskIO.execute {
 
             val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
 
             Log.d("결과결과", getAddressCount.toString())
 
-            if (addressDatabase?.isOpen!!) {
-                if (getAddressCount != null) {
-                    AppExecutors().mainThread.execute {
+            if (addressDatabase != null) {
+                if (addressDatabase.isOpen) {
+                    appExecutors.mainThread.execute {
                         callback.onSuccess(true)
                     }
                 } else {
-                    callback.onSuccess(false)
+                    callback.onFailure("error!")
                 }
             } else {
                 callback.onFailure("error!")
             }
         }
+
     }
 
     override fun getLocalData(
@@ -165,10 +169,17 @@ class RoadLocalDataSourceImpl : RoadLocalDataSource {
 
         private var instance: RoadLocalDataSourceImpl? = null
 
-        fun getInstance(): RoadLocalDataSourceImpl =
-            instance ?: RoadLocalDataSourceImpl().also {
-                instance = it
-            }
+        fun getInstance(
+            addressDatabase: AddressDatabase?,
+            appExecutors: AppExecutors
+        ): RoadLocalDataSourceImpl =
+            instance ?: RoadLocalDataSourceImpl(
+                addressDatabase,
+                appExecutors
+            )
+                .also {
+                    instance = it
+                }
 
     }
 

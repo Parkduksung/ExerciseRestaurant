@@ -23,6 +23,7 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
         }
         return view
     }
+    
 }
 
 

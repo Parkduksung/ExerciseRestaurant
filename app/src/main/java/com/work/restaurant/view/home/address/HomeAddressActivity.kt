@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.road.RoadRepositoryImpl
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
+import com.work.restaurant.network.room.database.AddressDatabase
+import com.work.restaurant.util.App
+import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
@@ -138,7 +141,12 @@ class HomeAddressActivity : AppCompatActivity(),
 
         presenter = HomeAddressPresenter(
             this, RoadRepositoryImpl.getInstance(
-                RoadLocalDataSourceImpl.getInstance()
+                RoadLocalDataSourceImpl.getInstance(
+                    AddressDatabase.getInstance(
+                        App.instance.context()
+                    ),
+                    AppExecutors()
+                )
             )
         )
         addressAdapter = AddressAdapter()

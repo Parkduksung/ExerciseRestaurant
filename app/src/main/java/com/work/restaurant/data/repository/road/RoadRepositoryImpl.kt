@@ -8,7 +8,8 @@ import com.work.restaurant.network.room.entity.AddressEntity
 class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImpl: RoadLocalDataSourceImpl) :
     RoadRepository {
     override fun registerAddress(callback: Callback) {
-        roadRemoteDataSourceImpl.registerAddress(object: com.work.restaurant.data.source.local.road.RoadLocalDataRegisterCallback{
+        roadRemoteDataSourceImpl.registerAddress(object :
+            com.work.restaurant.data.source.local.road.RoadLocalDataRegisterCallback {
             override fun onSuccess(list: List<AddressEntity>) {
                 callback.onSuccess(list)
             }
@@ -60,9 +61,9 @@ class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImp
         private var instance: RoadRepositoryImpl? = null
 
         fun getInstance(
-            roadRemoteDataSourceImpl: RoadLocalDataSourceImpl
+            roadLocalDataSourceImpl: RoadLocalDataSourceImpl
         ): RoadRepositoryImpl =
-            instance ?: RoadRepositoryImpl(roadRemoteDataSourceImpl).also {
+            instance ?: RoadRepositoryImpl(roadLocalDataSourceImpl).also {
                 instance = it
             }
     }
