@@ -43,17 +43,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
                 addressItem.setOnClickListener {
                     adapterListener.getData(address)
                 }
-            } else {
-                adapterListener = object : AdapterDataListener {
-                    override fun getData(data: String) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-                }
-                addressItem.setOnClickListener {
-                    adapterListener.getData(address)
-                }
             }
-
         }
 
     }
