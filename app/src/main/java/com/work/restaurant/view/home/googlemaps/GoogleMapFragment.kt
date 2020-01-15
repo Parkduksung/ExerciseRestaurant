@@ -2,122 +2,126 @@
 
 package com.work.restaurant.view.home.googlemaps
 
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
-import java.io.IOException
+import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapContract
+import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapPresenter
+import kotlinx.android.synthetic.main.google_maps.*
+import java.util.*
 
 
-class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps),
+class GoogleMapFragment : GoogleMapContract.View,
+    OnMapReadyCallback,
+    BaseFragment(R.layout.google_maps),
     GoogleMap.OnMarkerClickListener {
+
+    private lateinit var presenter: GoogleMapPresenter
+    private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallBack: LocationCallback
+    lateinit var lastLocation: Location
+    lateinit var currentLatLng: LatLng
 
     override fun onMarkerClick(p0: Marker?) = false
 
+    override fun onMapReady(mMap: GoogleMap) {
 
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-        if (menuVisible && isResumed) {
-            if (::lastLocation.isInitialized && ::mMap.isInitialized) {
-                val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+        this.mMap = mMap
+
+//        getCurrentLocation()
+        getLocation(selectAll)
+
+//        mMap.uiSettings.isMyLocationButtonEnabled = true
+//        mMap.isMyLocationEnabled = true // 현재 위치로 오는 버튼 생성됨.
+//        mMap?.isMyLocationEnabled = true
+//        mMap!!.uiSettings.isMyLocationButtonEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = true
+        this.mMap.setOnMarkerClickListener(this)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mapView.onCreate(savedInstanceState)
+        loadMap()
+        presenter = GoogleMapPresenter(this)
+
+    }
+
+
+    private fun loadMap() {
+
+        mapView.onResume()
+        mapView.getMapAsync(this)
+
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(App.instance.context())
+
+        createLocationCallBack()
+        createLocationRequest()
+    }
+
+
+    private fun createLocationCallBack() {
+        locationCallBack = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+
+                mMap.clear()
+                if (locationResult != null) {
+                    lastLocation = locationResult.lastLocation
+                }
+                currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                Log.d("결과결과2", presenter.getAddress(currentLatLng))
                 placeMarkerOnMap(currentLatLng)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
             }
-        } else {
-
         }
     }
 
-    private lateinit var mMap: GoogleMap
-    private lateinit var mapView: MapView
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var lastLocation: Location
-    private lateinit var addressAll: String
-    override fun onMapReady(googleMap: GoogleMap) {
-
-        mMap = googleMap
-//        val seoulPosition = LatLng(37.56, 126.97)
-//        val markerOptions = MarkerOptions().apply {
-//            position(seoulPosition)
-//            title("서울")
-//            snippet("한국의 수도")
-//        }
-//
-//        googleMap.apply {
-//            addMarker(markerOptions)
-//            moveCamera(CameraUpdateFactory.newLatLng(seoulPosition))
-//            animateCamera(CameraUpdateFactory.zoomTo(10f))
-//        }
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-        mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.setOnMarkerClickListener(this)
-
-        setUpMap()
-
-
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
     }
 
-
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
+    private fun getCurrentLocation() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallBack,
+            Looper.myLooper()
+        )
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.google_maps, container, false)
-        mapView = rootView.findViewById(R.id.map)
-        mapView.getMapAsync(this)
-        fusedLocationClient =
-            LocationServices.getFusedLocationProviderClient(this.requireActivity())
-        return rootView
+        return inflater.inflate(R.layout.google_maps, container, false)
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
-        if (::mapView.isInitialized) {
-            mapView.onCreate(savedInstanceState)
-        }
-
-
-    }
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(
@@ -132,163 +136,48 @@ class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps)
             )
             return
         }
-        mMap.isMyLocationEnabled = true
+    }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
-            if (location != null) {
-                lastLocation = location
-                val t = getAddress1(selectAll)
+    private fun getLocation(location: String) {
+        mMap.clear()
+        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
+        val addresses = geoCoder.getFromLocationName(
+            location,
+            1
+        )
 
-                val currentLatLng = LatLng(t[0], t[1])
-//                val currentLatLng = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLng)
+        if (addresses != null) {
+            for (i in 0 until addresses.size) {
+                val searchLatLng = LatLng(addresses[i].latitude, addresses[i].longitude)
+                val markerOptions = MarkerOptions().apply {
+                    position(searchLatLng)
+                    title(selectAll)
+                    draggable(true)
+                }
 
-
-
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
+                mMap.run {
+                    addMarker(markerOptions)
+                    animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
+                }
             }
         }
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
-
         val markerOptions = MarkerOptions().position(location)
-
-        val titleStr = getAddress(location)  // add these two lines
+        val titleStr = presenter.getAddress(location)
         markerOptions.title(titleStr)
         mMap.addMarker(markerOptions)
     }
 
-    private fun getAddress(latLng: LatLng): String {
-
-        val geoCoder = Geocoder(this.context)
-        val addresses: List<Address>
-
-//        val addresses1: List<Address>
-        var array: List<String>
-
-//        val addName = "구월동"
-
-        try {
-
-            addresses = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-//            Log.d("sssssssssssssssssssssss", addresses[0].toString())
-//            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
-//            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
-
-
-            if (addresses.isNotEmpty()) {
-                array = addresses[0].getAddressLine(0).split(" ")
-                for (i in 0 until array.size) {
-                    Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
-                }
-
-                address1 = array[1].substring(0, 2)
-                address2 = array[2]
-                address3 = array[3]
-
-                addressAll = "$address1 $address2 $address3"
-            }
-
-
-        } catch (e: IOException) {
-            Log.e("MapsActivity", e.toString())
-        }
-
-        return if (::addressAll.isInitialized) {
-            addressAll
-        } else {
-            ""
-        }
-    }
-
-    // to-do AsyncTask 로 작업할것.
-    private fun getAddress1(addressName: String): List<Double> {
-
-        val geoCoder = Geocoder(this.context)
-        val addresses: List<Address>
-
-        var list = mutableListOf<Double>()
-
-        try {
-
-            addresses = geoCoder.getFromLocationName(addressName, addressName.length)
-            Log.d("하하하", "" + addresses.size)
-
-
-            list.add(0, addresses[0].latitude)
-            list.add(1, addresses[0].longitude)
-
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[0])
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[1])
-
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].toString())
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].longitude.toString())
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].latitude.toString())
-
-
-        } catch (e: IOException) {
-            Log.e("MapsActivity", e.toString())
-        }
-
-        return list
-    }
-
-
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-        mapView.onStart()
-    }
-
     override fun onResume() {
-        Log.d(TAG, "onResume")
         super.onResume()
-
-        Toast.makeText(context, selectAll, Toast.LENGTH_SHORT).show()
-        mapView.onResume()
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-        mapView.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-
-
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        mapView.onDestroy()
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
+        mapView.getMapAsync(this)
     }
 
     companion object {
         private const val TAG = "GoogleMapFragment"
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-
-
-        // 주소 변경 할때 사용용도 및 현재 주소 표현
-        lateinit var address1: String
-        lateinit var address2: String
-        lateinit var address3: String
-        var address4 = ""
 
     }
 }
