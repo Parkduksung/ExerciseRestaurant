@@ -3,25 +3,25 @@ package com.work.restaurant.view.search.itemdetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
 import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.util.GlideApp
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
-class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDetailsContract.View {
+class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment),
+    View.OnClickListener, SearchItemDetailsContract.View {
 
 
     private lateinit var detailsPresenter: SearchItemDetailsPresenter
@@ -33,10 +33,6 @@ class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDe
         when (v?.id) {
 
             R.id.review_ll -> {
-
-//                this.requireFragmentManager().beginTransaction().remove(this)
-//                    .remove(SearchLookForFragment()).commit()
-//                this.requireFragmentManager().beginTransaction().remove(SearchLookFragment()).commit()
 
                 Toast.makeText(context, "click1", Toast.LENGTH_LONG).show()
             }
@@ -63,9 +59,10 @@ class SearchItemDetailsFragment : Fragment(), View.OnClickListener, SearchItemDe
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         detailsPresenter =
             SearchItemDetailsPresenter(
                 this, FitnessItemRepositoryImpl.getInstance(

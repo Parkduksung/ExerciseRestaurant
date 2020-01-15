@@ -1,4 +1,4 @@
-package com.work.restaurant.view.search
+package com.work.restaurant.view.search.lookfor.presenter
 
 import com.work.restaurant.data.repository.fitness.FitnessItemRepository
 import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryCallback
@@ -19,13 +19,11 @@ class SearchLookForPresenter(
             searchLookForView.showSearchNoFind()
         } else {
 
-
             fitnessItemRepository.getFitnessResult(object : FitnessItemRepositoryCallback {
                 override fun onSuccess(fitnessList: List<FitnessCenterItemResponse>) {
 
                     var count = 0
                     val _fitnessList = mutableListOf<FitnessCenterItemResponse>()
-
 
 
                     fitnessList.forEach { fitnessCenterItemModel ->
@@ -34,7 +32,6 @@ class SearchLookForPresenter(
                             count++
                         }
                     }
-
 
                     if (count == 0) {
                         searchLookForView.showSearchNoFind()

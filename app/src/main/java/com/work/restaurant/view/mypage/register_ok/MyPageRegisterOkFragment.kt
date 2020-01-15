@@ -1,18 +1,16 @@
 package com.work.restaurant.view.mypage.register_ok
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.register_ok.presenter.MyPageRegisterOkContract
 import com.work.restaurant.view.mypage.register_ok.presenter.MyPageRegisterOkPresenter
 import kotlinx.android.synthetic.main.mypage_registerok_fragment.*
 
-class MyPageRegisterOkFragment : Fragment(), View.OnClickListener, MyPageRegisterOkContract.View {
+class MyPageRegisterOkFragment : BaseFragment(R.layout.mypage_registerok_fragment),
+    View.OnClickListener, MyPageRegisterOkContract.View {
 
 
     private lateinit var presenter: MyPageRegisterOkPresenter
@@ -25,23 +23,14 @@ class MyPageRegisterOkFragment : Fragment(), View.OnClickListener, MyPageRegiste
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.mypage_registerok_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageRegisterOkPresenter(this)
         btn_register_ok.setOnClickListener(this)
 
     }
+
 
     override fun showRegisterOk() {
         this@MyPageRegisterOkFragment.requireFragmentManager().beginTransaction()

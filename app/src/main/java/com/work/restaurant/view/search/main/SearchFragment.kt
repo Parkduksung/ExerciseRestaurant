@@ -2,25 +2,20 @@ package com.work.restaurant.view.search.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.view.adapter.ViewPagerAdapter
-import com.work.restaurant.view.search.SearchLookForActivity
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.main.presenter.SearchContract
 import com.work.restaurant.view.search.main.presenter.SearchPresenter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_fragment.*
 
-class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-
-    }
+class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListener,
+    SearchContract.View {
 
     private lateinit var presenter: SearchPresenter
 
@@ -32,29 +27,13 @@ class SearchFragment : Fragment(), View.OnClickListener, SearchContract.View {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
-
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
         presenter = SearchPresenter(this)
 
-        start()
-        et_search_look.setOnClickListener(this)
-
-    }
-
-    private fun start() {
         presenter.init()
+        et_search_look.setOnClickListener(this)
     }
 
 

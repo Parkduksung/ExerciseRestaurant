@@ -3,14 +3,11 @@ package com.work.restaurant.view.mypage.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.R
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
 import com.work.restaurant.view.mypage.main.presenter.MyPageContract
@@ -18,7 +15,8 @@ import com.work.restaurant.view.mypage.main.presenter.MyPagePresenter
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
 import kotlinx.android.synthetic.main.mypage_fragment.*
 
-class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
+class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
+    View.OnClickListener {
 
 
     private lateinit var presenter: MyPageContract.Presenter
@@ -26,7 +24,7 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.login_ll -> {
+            R.id.iv_login -> {
                 presenter.logIn()
             }
 
@@ -44,22 +42,10 @@ class MyPageFragment : Fragment(), MyPageContract.View, View.OnClickListener {
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.mypage_fragment, container, false)
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = MyPagePresenter(this)
-        login_ll.setOnClickListener(this)
+        iv_login.setOnClickListener(this)
         tv_page_logout.setOnClickListener(this)
         tv_page_withdrawal.setOnClickListener(this)
         tv_page_late_view.setOnClickListener(this)

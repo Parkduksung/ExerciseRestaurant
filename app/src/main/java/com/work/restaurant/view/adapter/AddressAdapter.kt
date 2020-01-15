@@ -9,7 +9,7 @@ import com.work.restaurant.R
 
 class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
-    private var adapterListener: AdapterDataListener? = null
+    private lateinit var adapterListener: AdapterDataListener
 
     private val addressList = ArrayList<String>()
 
@@ -27,46 +27,41 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(addressList[position], adapterListener)
+        holder.bind(addressList[position])
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         private val addressItem: Button = itemView.findViewById(R.id.btn_address_item)
 
-
-        fun bind(item: String, adapterListener: AdapterDataListener?) {
+        fun bind(item: String) {
 
             val address: String = item
-
-//            itemView.setOnClickListener {
-//                adapterListener?.getData(address)
-//
-//            }
-
             addressItem.text = address
 
-
-
-            addressItem.setOnClickListener {
-                adapterListener?.getData(address)
+            if (::adapterListener.isInitialized) {
+                addressItem.setOnClickListener {
+                    adapterListener.getData(address)
+                }
             }
-
         }
 
     }
 
-    fun removeData(){
+    fun removeData() {
         addressList.clear()
     }
 
-
-    fun addData(item: String) {
-        addressList.add(item)
+    fun addData(item: String?) {
+        if (item != null) {
+            addressList.add(item)
+        }
     }
 
 
     fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
         adapterListener = listenerAdapterAdapter
     }
+
 
 }

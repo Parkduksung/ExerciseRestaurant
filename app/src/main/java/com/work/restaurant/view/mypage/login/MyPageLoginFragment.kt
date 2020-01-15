@@ -7,14 +7,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginContract
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginPresenter
@@ -23,7 +21,8 @@ import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.URL
 import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 
-class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContract.View {
+class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.OnClickListener,
+    MyPageLoginContract.View {
 
     private lateinit var presenter: MyPageLoginContract.Presenter
 
@@ -48,29 +47,18 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.mypage_login_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageLoginPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
+                UserRemoteDataSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
             )
         )
         btn_login.setOnClickListener(this)
         ib_login_back.setOnClickListener(this)
         tv_login_register.setOnClickListener(this)
         tv_login_find.setOnClickListener(this)
-
     }
 
 
@@ -112,7 +100,6 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
             "확인",
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-
                     this@MyPageLoginFragment.requireFragmentManager()
                         .beginTransaction()
                         .replace(
@@ -127,7 +114,6 @@ class MyPageLoginFragment : Fragment(), View.OnClickListener, MyPageLoginContrac
                                 Activity.RESULT_OK,
                                 data
                             )
-
                         }
                 }
             })

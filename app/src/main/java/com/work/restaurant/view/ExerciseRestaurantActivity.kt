@@ -12,7 +12,8 @@ import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContract.View {
+class ExerciseRestaurantActivity : AppCompatActivity(),
+    ExerciseRestaurantContract.View {
 
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
@@ -32,8 +33,6 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
         setContentView(R.layout.activity_main)
 
         presenter = ExerciseRestaurantPresenter(this)
-//        (fragmentMap.toList()[1].second as SearchFragment).logged()
-
 
         start()
 
@@ -42,6 +41,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
     private fun start() {
         presenter.init()
     }
+
 
     override fun showInit() {
 
@@ -65,6 +65,11 @@ class ExerciseRestaurantActivity : AppCompatActivity(), ExerciseRestaurantContra
             getTabAt(3)?.setIcon(R.drawable.ic_mypage)
         }
 
+    }
+
+    companion object {
+
+        var selectAll = "인천 계양구 효성동"
     }
 
 

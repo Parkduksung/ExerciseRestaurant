@@ -5,16 +5,13 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
@@ -22,7 +19,8 @@ import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContra
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalPresenter
 import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
 
-class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdrawalContract.View {
+class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragment),
+    View.OnClickListener, MyPageWithdrawalContract.View {
 
 
     private lateinit var presenter: MyPageWithdrawalContract.Presenter
@@ -41,22 +39,11 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.mypage_withdrawal_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter = MyPageWithdrawalPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
                     RetrofitInstance.getInstance(
                         MyPageFragment.URL
                     )
@@ -65,6 +52,7 @@ class MyPageWithdrawalFragment : Fragment(), View.OnClickListener, MyPageWithdra
         )
         btn_withdraw_cancel.setOnClickListener(this)
         btn_withdraw_ok.setOnClickListener(this)
+
 
     }
 

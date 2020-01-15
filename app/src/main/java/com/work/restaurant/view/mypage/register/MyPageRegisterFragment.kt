@@ -5,18 +5,15 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
@@ -28,7 +25,8 @@ import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
 
 
-class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterContract.View {
+class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
+    View.OnClickListener, MyPageRegisterContract.View {
 
     private lateinit var presenter: MyPageRegisterContract.Presenter
 
@@ -81,22 +79,12 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
 
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.mypage_register_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageRegisterPresenter(
             this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceSourceImpl.getInstance(
+                UserRemoteDataSourceImpl.getInstance(
                     RetrofitInstance.getInstance(
                         MyPageFragment.URL
                     )
@@ -111,10 +99,7 @@ class MyPageRegisterFragment : Fragment(), View.OnClickListener, MyPageRegisterC
         inputState(et_register_email, iv_email_state)
         inputState(et_register_pass, iv_pass_state)
         inputState(et_register_pass_ok, iv_pass_ok_state)
-
-
     }
-
 
     private fun inputState(editText: EditText, imageView: ImageView) {
 

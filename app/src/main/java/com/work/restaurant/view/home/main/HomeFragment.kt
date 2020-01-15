@@ -1,20 +1,17 @@
 package com.work.restaurant.view.home.main
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.home.HomeAddressActivity
+import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.googlemaps.GoogleMapFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.et_home -> {
@@ -24,39 +21,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
-
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-
-        super.onActivityCreated(savedInstanceState)
-
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         et_home.setOnClickListener(this)
-
         startGoogleMaps()
-
 
     }
 

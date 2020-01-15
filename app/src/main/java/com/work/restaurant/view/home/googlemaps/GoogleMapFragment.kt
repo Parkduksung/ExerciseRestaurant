@@ -12,8 +12,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,16 +24,21 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.work.restaurant.R
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
+import com.work.restaurant.view.base.BaseFragment
 import java.io.IOException
 
 
-class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClickListener {
+class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps),
+    GoogleMap.OnMarkerClickListener {
+
     override fun onMarkerClick(p0: Marker?) = false
+
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)
         if (menuVisible && isResumed) {
-            if(::lastLocation.isInitialized && ::mMap.isInitialized){
+            if (::lastLocation.isInitialized && ::mMap.isInitialized) {
                 val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
                 placeMarkerOnMap(currentLatLng)
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
@@ -94,14 +99,11 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val rootView = inflater.inflate(R.layout.google_maps, container, false)
-
         mapView = rootView.findViewById(R.id.map)
         mapView.getMapAsync(this)
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(this.requireActivity())
-
         return rootView
     }
 
@@ -112,7 +114,6 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
         if (::mapView.isInitialized) {
             mapView.onCreate(savedInstanceState)
-
         }
 
 
@@ -136,19 +137,14 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
             if (location != null) {
                 lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
+                val t = getAddress1(selectAll)
+
+                val currentLatLng = LatLng(t[0], t[1])
+//                val currentLatLng = LatLng(location.latitude, location.longitude)
                 placeMarkerOnMap(currentLatLng)
 
 
-//                val address = getAddress1("효성동")
 
-
-//                val getLatLng = LatLng(address[0], address[1])
-//
-//                placeMarkerOnMap(getLatLng)
-
-
-                //new이 안에 1번째가 켜질때 그 위치로 이동되는거임.
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
             }
         }
@@ -160,7 +156,6 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 
         val titleStr = getAddress(location)  // add these two lines
         markerOptions.title(titleStr)
-
         mMap.addMarker(markerOptions)
     }
 
@@ -182,7 +177,7 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
 //            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
 
 
-            if(addresses.isNotEmpty()){
+            if (addresses.isNotEmpty()) {
                 array = addresses[0].getAddressLine(0).split(" ")
                 for (i in 0 until array.size) {
                     Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
@@ -196,20 +191,18 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
             }
 
 
-
-
-
         } catch (e: IOException) {
             Log.e("MapsActivity", e.toString())
         }
 
-        return if(::addressAll.isInitialized){
+        return if (::addressAll.isInitialized) {
             addressAll
         } else {
             ""
         }
     }
-// to-do AsyncTask 로 작업할것.
+
+    // to-do AsyncTask 로 작업할것.
     private fun getAddress1(addressName: String): List<Double> {
 
         val geoCoder = Geocoder(this.context)
@@ -251,6 +244,8 @@ class GoogleMapFragment : OnMapReadyCallback, Fragment(), GoogleMap.OnMarkerClic
     override fun onResume() {
         Log.d(TAG, "onResume")
         super.onResume()
+
+        Toast.makeText(context, selectAll, Toast.LENGTH_SHORT).show()
         mapView.onResume()
     }
 

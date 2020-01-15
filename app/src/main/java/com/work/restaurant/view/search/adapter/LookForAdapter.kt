@@ -15,7 +15,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
     private val searchLookList = ArrayList<FitnessCenterItemResponse>()
 
-    private var adapterListener: AdapterDataListener? = null
+    private lateinit var adapterListener: AdapterDataListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -30,8 +30,11 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         searchLookList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(searchLookList[position], adapterListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (::adapterListener.isInitialized) {
+            holder.bind(searchLookList[position])
+        }
+    }
 
 
     fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
@@ -51,14 +54,28 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         adapterListener = listenerAdapterAdapter
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
         private val searchLookImage: ImageView = itemView.findViewById(R.id.iv_search_look_image)
 
-        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
-            searchLookName.setOnClickListener {
-                adapterListener?.getData(item.fitnessCenterName)
+        fun bind(item: FitnessCenterItemResponse) {
+
+            if (::adapterListener.isInitialized) {
+                searchLookName.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                searchLookName.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
             }
+
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
             searchLookName.text = fitnessCenterItemResponse.fitnessCenterName

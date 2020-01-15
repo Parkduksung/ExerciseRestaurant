@@ -7,7 +7,6 @@ class ExerciseRestaurantPresenter(private val exerciseRestaurantView: ExerciseRe
         exerciseRestaurantView.showInit()
     }
 
-
 }
 
 

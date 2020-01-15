@@ -15,7 +15,7 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
 
     private val fitnessList = ArrayList<FitnessCenterItemResponse>()
 
-    private var adapterListener: AdapterDataListener? = null
+    private lateinit var adapterListener: AdapterDataListener
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -32,22 +32,39 @@ class FitnessRankAdapter : RecyclerView.Adapter<FitnessRankAdapter.ViewHolder>()
         fitnessList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(fitnessList[position], adapterListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (::adapterListener.isInitialized) {
+            holder.bind(fitnessList[position])
+        }
+    }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    inner class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
 
         private val fitnessNo: TextView = itemView.findViewById(R.id.fitness_rank_no_tv)
         private val fitnessName: TextView = itemView.findViewById(R.id.fitness_name_tv)
         private val fitnessImage: ImageView = itemView.findViewById(R.id.fitness_image_iv)
 
-        fun bind(item: FitnessCenterItemResponse, adapterListener: AdapterDataListener?) {
+        fun bind(item: FitnessCenterItemResponse) {
 
             val fitnessCenterItemResponse: FitnessCenterItemResponse = item
 
-            itemView.setOnClickListener {
-                adapterListener?.getData(item.fitnessCenterName)
+            if (::adapterListener.isInitialized) {
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener {
+                    override fun getData(data: String) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                }
+                itemView.setOnClickListener {
+                    adapterListener.getData(item.fitnessCenterName)
+                }
             }
+
 
             fitnessNo.text = fitnessCenterItemResponse.fitnessCenterNo.toString()
             fitnessName.text = fitnessCenterItemResponse.fitnessCenterName

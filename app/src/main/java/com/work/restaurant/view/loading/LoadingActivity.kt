@@ -12,7 +12,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
     private lateinit var presenter: LoadingContract.Presenter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_fragment)
@@ -21,12 +20,14 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
         start()
 
+
     }
 
 
     private fun start() {
         presenter.randomText(resources.getStringArray(R.array.load_string))
         presenter.delayTime()
+        presenter.getAddressDataCount()
 
     }
 

@@ -1,4 +1,4 @@
-package com.work.restaurant.view.search
+package com.work.restaurant.view.search.lookfor.presenter
 
 import com.work.restaurant.network.model.FitnessCenterItemResponse
 
