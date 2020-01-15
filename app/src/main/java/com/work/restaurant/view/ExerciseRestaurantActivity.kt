@@ -69,7 +69,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
 
     companion object {
 
-        var selectAll = "인천 계양구 효성동"
+        var selectAll = ""
     }
 
 

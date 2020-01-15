@@ -67,5 +67,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
 
-
+    //Ted_Permission
+    implementation 'gun0912.ted:tedpermission:2.0.0'
 }

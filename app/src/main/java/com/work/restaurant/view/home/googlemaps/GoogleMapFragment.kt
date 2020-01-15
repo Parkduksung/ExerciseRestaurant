@@ -2,7 +2,8 @@
 
 package com.work.restaurant.view.home.googlemaps
 
-import android.content.pm.PackageManager
+
+import android.Manifest
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -12,8 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,6 +21,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
@@ -52,11 +53,9 @@ class GoogleMapFragment : GoogleMapContract.View,
 
         mMap = googleMap
 
-        if (::lastLocation.isInitialized) {
+        if (toggleMap) {
             getLocation(selectAll)
         }
-
-        mMap.isMyLocationEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = true
     }
 
@@ -64,72 +63,40 @@ class GoogleMapFragment : GoogleMapContract.View,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("GoogleMapFragment1", "onViewCreated")
         mapView.onCreate(savedInstanceState)
         presenter = GoogleMapPresenter(this)
+        checkPer()
 
-        if (checkLocationPermission()) {
+    }
+
+    private fun checkPer() {
+        TedPermission.with(context)
+            .setPermissionListener(permissionListener)
+            .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
+            .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+//            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
+            .check()
+    }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+
+        override fun onPermissionGranted() {
             loadMap()
+            Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
         }
 
-    }
-
-    private fun checkLocationPermission(): Boolean {
-
-        val checkPermission = ContextCompat.checkSelfPermission(
-            this.requireContext(),
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        )
-
-        if (checkPermission != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this.requireActivity(),
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                ActivityCompat.requestPermissions(
-                    this.requireActivity(),
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            } else {
-                ActivityCompat.requestPermissions(
-                    this.requireActivity(),
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
-            return false
-
-        } else return true
-
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this.requireContext(), "Permission 승인o", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    Toast.makeText(this.requireContext(), "Permission 승인x", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
+        override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+            Toast.makeText(activity, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
+                .show()
         }
+
     }
 
     private fun loadMap() {
 
         mapView.onResume()
-        mapView.getMapAsync(this)
-
-        checkLocationPermission()
 
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.instance.context())
@@ -145,17 +112,15 @@ class GoogleMapFragment : GoogleMapContract.View,
             override fun onLocationResult(locationResult: LocationResult?) {
                 mMap.clear()
 
-
                 if (locationResult != null) {
                     lastLocation = locationResult.lastLocation
                 }
 
                 mMarker?.remove()
                 latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                Log.d("결과결과2", presenter.getAddress(latLng))
                 placeMarkerOnMap(latLng)
+                mMap.isMyLocationEnabled = true
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
-
             }
         }
     }
@@ -183,7 +148,6 @@ class GoogleMapFragment : GoogleMapContract.View,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.google_maps, container, false)
-
     }
 
 
@@ -205,17 +169,21 @@ class GoogleMapFragment : GoogleMapContract.View,
                 }
 
                 mMap.run {
+                    if (::lastLocation.isInitialized) {
+                        placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+                    }
                     addMarker(markerOptions)
                     animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
                 }
             }
         }
+
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
         val markerOptions = MarkerOptions()
             .position(location)
-            .title("Your position")
+            .title("내 위치")
             .icon(
                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
             )
@@ -225,14 +193,42 @@ class GoogleMapFragment : GoogleMapContract.View,
         mMarker = mMap.addMarker(markerOptions)
     }
 
+
     override fun onResume() {
         super.onResume()
         mapView.getMapAsync(this)
     }
 
+//    override fun onDestroyView() {
+//        toggleMap=false
+//        Log.d("GoogleMapFragment1", "onDestroyView")
+//        super.onDestroyView()
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        Log.d("GoogleMapFragment1", "onStop")
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        Log.d("GoogleMapFragment1", "onPause")
+//    }
+//
+//    override fun onDetach() {
+//        super.onDetach()
+//        Log.d("GoogleMapFragment1", "onDetach")
+//    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        toggleMap = false
+        Log.d("GoogleMapFragment1", "onDestroy")
+    }
+
     companion object {
         private const val TAG = "GoogleMapFragment"
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        var toggleMap = false
 
     }
 }

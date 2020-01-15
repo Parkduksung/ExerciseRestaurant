@@ -139,6 +139,8 @@ class HomeAddressActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.address_main)
 
+
+
         presenter = HomeAddressPresenter(
             this, RoadRepositoryImpl.getInstance(
                 RoadLocalDataSourceImpl.getInstance(
