@@ -11,11 +11,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -40,62 +43,119 @@ class GoogleMapFragment : GoogleMapContract.View,
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallBack: LocationCallback
     lateinit var lastLocation: Location
-    lateinit var currentLatLng: LatLng
+    lateinit var latLng: LatLng
+    private var mMarker: Marker? = null
 
     override fun onMarkerClick(p0: Marker?) = false
 
-    override fun onMapReady(mMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
 
-        this.mMap = mMap
+        mMap = googleMap
 
-//        getCurrentLocation()
-        getLocation(selectAll)
+        if (::lastLocation.isInitialized) {
+            getLocation(selectAll)
+        }
 
-//        mMap.uiSettings.isMyLocationButtonEnabled = true
-//        mMap.isMyLocationEnabled = true // 현재 위치로 오는 버튼 생성됨.
-//        mMap?.isMyLocationEnabled = true
-//        mMap!!.uiSettings.isMyLocationButtonEnabled = true
+        mMap.isMyLocationEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = true
-        this.mMap.setOnMarkerClickListener(this)
-
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mapView.onCreate(savedInstanceState)
-        loadMap()
         presenter = GoogleMapPresenter(this)
+
+        if (checkLocationPermission()) {
+            loadMap()
+        }
 
     }
 
+    private fun checkLocationPermission(): Boolean {
+
+        val checkPermission = ContextCompat.checkSelfPermission(
+            this.requireContext(),
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+        if (checkPermission != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this.requireActivity(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                ActivityCompat.requestPermissions(
+                    this.requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            } else {
+                ActivityCompat.requestPermissions(
+                    this.requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }
+            return false
+
+        } else return true
+
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this.requireContext(), "Permission 승인o", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(this.requireContext(), "Permission 승인x", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
 
     private fun loadMap() {
 
         mapView.onResume()
         mapView.getMapAsync(this)
 
+        checkLocationPermission()
+
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.instance.context())
 
         createLocationCallBack()
         createLocationRequest()
+        getCurrentLocation()
     }
 
 
     private fun createLocationCallBack() {
         locationCallBack = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
-                super.onLocationResult(locationResult)
-
                 mMap.clear()
+
+
                 if (locationResult != null) {
                     lastLocation = locationResult.lastLocation
                 }
-                currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                Log.d("결과결과2", presenter.getAddress(currentLatLng))
-                placeMarkerOnMap(currentLatLng)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+
+                mMarker?.remove()
+                latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                Log.d("결과결과2", presenter.getAddress(latLng))
+                placeMarkerOnMap(latLng)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+
             }
         }
     }
@@ -103,6 +163,9 @@ class GoogleMapFragment : GoogleMapContract.View,
     private fun createLocationRequest() {
         locationRequest = LocationRequest()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+//            .setInterval(5000)
+//            .setFastestInterval(3000)
+//            .setSmallestDisplacement(10f)
     }
 
     private fun getCurrentLocation() {
@@ -120,23 +183,9 @@ class GoogleMapFragment : GoogleMapContract.View,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.google_maps, container, false)
+
     }
 
-
-    private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(
-                this.requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this.requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
-            return
-        }
-    }
 
     private fun getLocation(location: String) {
         mMap.clear()
@@ -164,10 +213,16 @@ class GoogleMapFragment : GoogleMapContract.View,
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
-        val markerOptions = MarkerOptions().position(location)
-        val titleStr = presenter.getAddress(location)
-        markerOptions.title(titleStr)
-        mMap.addMarker(markerOptions)
+        val markerOptions = MarkerOptions()
+            .position(location)
+            .title("Your position")
+            .icon(
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            )
+//        val titleStr = presenter.getAddress(location)
+//        markerOptions.title(titleStr)
+
+        mMarker = mMap.addMarker(markerOptions)
     }
 
     override fun onResume() {

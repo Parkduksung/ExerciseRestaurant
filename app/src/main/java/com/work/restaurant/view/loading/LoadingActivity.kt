@@ -37,6 +37,7 @@ class LoadingActivity : Activity(), LoadingContract.View {
     }
 
     override fun showDelay() {
+
         Handler().postDelayed({
 
             val nextIntent = Intent(this, ExerciseRestaurantActivity::class.java)

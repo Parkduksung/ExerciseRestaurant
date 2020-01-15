@@ -21,7 +21,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4" />
+            android:value="@string/google_geo_api_key" />
 
 
         <activity android:name="com.work.restaurant.view.loading.LoadingActivity">
