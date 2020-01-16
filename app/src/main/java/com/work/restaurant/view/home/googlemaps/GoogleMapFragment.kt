@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.work.restaurant.view.home.googlemaps
 
 
@@ -24,12 +22,18 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.network.api.GoogleApi
+import com.work.restaurant.network.model.PlaceResponse
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapContract
 import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapPresenter
 import kotlinx.android.synthetic.main.google_maps.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 
@@ -47,6 +51,9 @@ class GoogleMapFragment : GoogleMapContract.View,
     lateinit var latLng: LatLng
     private var mMarker: Marker? = null
 
+    //    lateinit var mService: GoogleApi
+    internal lateinit var currentPlace: PlaceResponse
+
     override fun onMarkerClick(p0: Marker?) = false
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -55,13 +62,24 @@ class GoogleMapFragment : GoogleMapContract.View,
 
         if (toggleMap) {
             getLocation(selectAll)
+            nearByPlace("gym")
+            placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
         }
+
         mMap.uiSettings.isZoomControlsEnabled = true
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.google_maps, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         Log.d("GoogleMapFragment1", "onViewCreated")
         mapView.onCreate(savedInstanceState)
@@ -107,6 +125,86 @@ class GoogleMapFragment : GoogleMapContract.View,
     }
 
 
+    private fun nearByPlace(typePlace: String) {
+
+        mMap.clear()
+
+        val url = getUrl(latLng.latitude, latLng.longitude, typePlace)
+
+        RetrofitInstance.getInstance<GoogleApi>("https://maps.googleapis.com/")
+            .getNearbyPlaces(url).enqueue(object : Callback<PlaceResponse> {
+                override fun onFailure(call: Call<PlaceResponse>?, t: Throwable?) {
+                    Toast.makeText(activity, "" + t!!.message, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onResponse(
+                    call: Call<PlaceResponse>?,
+                    response: Response<PlaceResponse>?
+                ) {
+
+                    Log.d("결과결과4", "${response?.body()?.results?.size}")
+
+                    if (response != null) {
+                        currentPlace = response.body()
+                        if (response.isSuccessful) {
+
+                            currentPlace = response.body()
+                            if (response.body().results?.size == 0) {
+                                Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG)
+                                    .show()
+                            } else {
+                                for (i in 0 until (response.body().results?.size ?: 0)) {
+
+                                    val marketOption = MarkerOptions()
+                                    val googlePlace = response.body().results!![i]
+                                    val lat = googlePlace.geometry!!.location!!.lat
+                                    val lng = googlePlace.geometry!!.location!!.lng
+                                    val placeName = googlePlace.name
+                                    val latLng = LatLng(lat, lng)
+
+                                    marketOption.position(latLng)
+                                    marketOption.title(placeName)
+//                        아이콘 바꾸는거. bitmap size 생각도 해야됨.
+//                        if(typePlace == "hospital"){
+//                            marketOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cooking))
+//                        }
+
+                                    marketOption.icon(
+                                        BitmapDescriptorFactory.defaultMarker(
+                                            BitmapDescriptorFactory.HUE_BLUE
+                                        )
+                                    )
+
+                                    mMap.addMarker(marketOption)
+
+                                }
+                            }
+
+                        }
+                    } else {
+                        Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            })
+
+    }
+
+    private fun getUrl(latitude: Double, longitude: Double, typePlace: String): String {
+
+        val googlePlaceUrl =
+            StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json")
+        googlePlaceUrl.append("?location=$latitude,$longitude")
+        googlePlaceUrl.append("&radius=5000") // 1km
+        googlePlaceUrl.append("&type=$typePlace")
+        googlePlaceUrl.append("&key=AIzaSyBJhfUcKYnQiS3_Vx92iHv0UVFwL4IjKIE")
+
+        Log.d("URL_DEBUG", googlePlaceUrl.toString())
+        return googlePlaceUrl.toString()
+
+    }
+
+
     private fun createLocationCallBack() {
         locationCallBack = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
@@ -118,6 +216,7 @@ class GoogleMapFragment : GoogleMapContract.View,
 
                 mMarker?.remove()
                 latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                nearByPlace("gym")
                 placeMarkerOnMap(latLng)
                 mMap.isMyLocationEnabled = true
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
@@ -141,16 +240,6 @@ class GoogleMapFragment : GoogleMapContract.View,
         )
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.google_maps, container, false)
-    }
-
-
     private fun getLocation(location: String) {
         mMap.clear()
         val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
@@ -161,9 +250,9 @@ class GoogleMapFragment : GoogleMapContract.View,
 
         if (addresses != null) {
             for (i in 0 until addresses.size) {
-                val searchLatLng = LatLng(addresses[i].latitude, addresses[i].longitude)
+                latLng = LatLng(addresses[i].latitude, addresses[i].longitude)
                 val markerOptions = MarkerOptions().apply {
-                    position(searchLatLng)
+                    position(latLng)
                     title(selectAll)
                     draggable(true)
                 }
@@ -173,7 +262,7 @@ class GoogleMapFragment : GoogleMapContract.View,
                         placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
                     }
                     addMarker(markerOptions)
-                    animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
+                    animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                 }
             }
         }
