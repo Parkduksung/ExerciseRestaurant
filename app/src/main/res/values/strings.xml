@@ -63,6 +63,6 @@
 
 
     <string name="google_geo_api_key">AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4</string>
-
+    <string name="kakao_map_api_key">d50bab27d11f5a684f1e0b2f7b70dda4</string>
 
 </resources>

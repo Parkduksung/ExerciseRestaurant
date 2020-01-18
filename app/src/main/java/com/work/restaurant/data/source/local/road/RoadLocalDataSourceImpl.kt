@@ -1,5 +1,7 @@
 package com.work.restaurant.data.source.local.road
 
+import android.content.pm.PackageManager
+import android.util.Base64
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -9,6 +11,7 @@ import com.work.restaurant.network.room.entity.AddressEntity
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
+import java.security.MessageDigest
 
 class RoadLocalDataSourceImpl private constructor(
     private val addressDatabase: AddressDatabase,
@@ -80,6 +83,9 @@ class RoadLocalDataSourceImpl private constructor(
 
 
         appExecutors.diskIO.execute {
+
+
+
 
             val getAddressCount = addressDatabase.addressDao().getAllCount()
 

@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.work.restaurant.R
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.home.googlemaps.GoogleMapFragment.Companion.toggleMap
 import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
 
@@ -26,7 +25,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
 
             R.id.btn_address_change_ok -> {
                 selectAll = tv_address_select.text.toString()
-                toggleMap = true
+//                toggleMap = true
                 requireFragmentManager().beginTransaction().remove(this).commit()
                 activity?.finish()
             }
