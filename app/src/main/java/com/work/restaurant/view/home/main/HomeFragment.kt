@@ -43,6 +43,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener 
     }
 
 
+
     override fun onStart() {
         Log.d(TAG, "onStart")
         super.onStart()
