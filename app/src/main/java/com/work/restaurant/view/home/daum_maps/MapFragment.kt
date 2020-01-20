@@ -4,8 +4,10 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
@@ -13,29 +15,112 @@ import androidx.core.view.isEmpty
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.util.AppExecutors
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import kotlinx.android.synthetic.main.map.*
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import java.util.*
 
 
-class MapFragment : BaseFragment(R.layout.map) {
-
+class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventListener {
 
     private lateinit var mapView: MapView
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    private lateinit var mapPOIItem: MapPOIItem
+    private lateinit var currentPOIItem: MapPOIItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkPermission()
+    }
+
+    private fun createMarker(mapPOIItem: MapPOIItem, location: String, mapPoint: MapPoint) {
+
+        mapPOIItem.apply {
+            this.itemName = location
+            this.markerType = MapPOIItem.MarkerType.BluePin
+            this.mapPoint = mapPoint
+            this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+        }
+        mapView.addPOIItem(mapPOIItem)
+//        mapView.selectPOIItem(mapPOIItem, true)
+        mapView.setMapCenterPoint(mapPoint, true)
+    }
+
+
+    override fun onCurrentLocationUpdate(p0: MapView?, p1: MapPoint?, p2: Float) {
+
+
+        if (::currentPOIItem.isInitialized) {
+            mapView.removePOIItem(currentPOIItem)
+            p1?.let {
+                createMarker(currentPOIItem, "내위치", it)
+            }
+//            currentPOIItem.tag = 0
+        } else {
+            currentPOIItem = MapPOIItem()
+            p1?.let {
+                createMarker(currentPOIItem, "내위치", it)
+            }
+//            currentPOIItem.tag = 0
+        }
+
+        Log.d("결과결과123", "${p1?.mapPointGeoCoord?.latitude}")
+        Log.d("결과결과123", "${p1?.mapPointGeoCoord?.longitude}")
+
 
     }
+
+    override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
+
+    }
+
+    override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
+
+    }
+
+    override fun onCurrentLocationUpdateFailed(p0: MapView?) {
+
+    }
+
+
+    private fun selectCurrentLocation() {
+        if (::mapView.isInitialized) {
+            mapView.currentLocationTrackingMode =
+                MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+        }
+    }
+
+
+    private fun getLocation(location: String) {
+        val geoCoder = Geocoder(context, Locale.getDefault())
+
+        val runnable = Runnable {
+            val addresses = geoCoder.getFromLocationName(location, 1)
+            val returnedAddress = addresses[0]
+
+            for (i in 0..returnedAddress.maxAddressLineIndex) {
+                val strReturnedAddress = StringBuilder("")
+                strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+
+                val mapPoint =
+                    MapPoint.mapPointWithGeoCoord(addresses[i].latitude, addresses[i].longitude)
+
+                createMarker(mapPOIItem, selectAll, mapPoint)
+            }
+        }
+        if (::mapPOIItem.isInitialized) {
+            mapView.removePOIItem(mapPOIItem)
+            AppExecutors().mainThread.execute(runnable)
+        } else {
+            mapPOIItem = MapPOIItem()
+            AppExecutors().mainThread.execute(runnable)
+        }
+
+    }
+
 
     //Gps잡히는지 확인하는것.
     private fun checkLocationServicesStatus(): Boolean {
@@ -65,7 +150,6 @@ class MapFragment : BaseFragment(R.layout.map) {
                 showDialogForLocationServiceSetting()
                 Toast.makeText(context, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
             }
-
         }
 
         override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
@@ -78,11 +162,13 @@ class MapFragment : BaseFragment(R.layout.map) {
     private fun loadMap() {
         Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
         mapView = MapView(this.requireContext())
+        mapView.setCurrentLocationEventListener(this)
+
         map_view.addView(mapView)
     }
 
-    private fun showDialogForLocationServiceSetting() {
 
+    private fun showDialogForLocationServiceSetting() {
         val alertDialog =
             AlertDialog.Builder(
                 ContextThemeWrapper(
@@ -129,7 +215,6 @@ class MapFragment : BaseFragment(R.layout.map) {
     override fun onResume() {
         super.onResume()
 
-        //사용자가 잘 쓰다가 갑자기 위치 꺼버린경우 화면 없애버리고 다시 눌렀을시 화면 회복 그러면서 혹시시 해서 권환도 다시 체크.
         if (::mapView.isInitialized) {
             if (!checkLocationServicesStatus()) {
                 map_view.removeView(mapView)
@@ -137,15 +222,24 @@ class MapFragment : BaseFragment(R.layout.map) {
             } else {
                 if (map_view.isEmpty()) {
                     checkPermission()
+                } else {
+                    if (toggleMap) {
+                        mapView.currentLocationTrackingMode =
+                            MapView.CurrentLocationTrackingMode.TrackingModeOff
+                        mapView.setShowCurrentLocationMarker(false)
+                        getLocation(selectAll)
+                    } else {
+                        selectCurrentLocation()
+                    }
                 }
             }
         }
-
     }
 
     companion object {
 
         private const val GPS_ENABLE_REQUEST_CODE = 1
+        var toggleMap = false
 
     }
 }
