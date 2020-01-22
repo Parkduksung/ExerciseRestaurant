@@ -52,7 +52,7 @@
                     android:text="@string/add_eat_today" />
 
                 <TextView
-                    android:id="@+id/tv_add_today"
+                    android:id="@+id/tv_add_eat_today"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
@@ -132,33 +132,6 @@
                     android:text="@string/add_eat_menu_snack"
                     android:textSize="17dp" />
 
-
-                <!--                <RadioButton-->
-                <!--                    -->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="match_parent">-->
-                <!--                    -->
-                <!--                </RadioButton>-->
-                <!--                -->
-                <!--                <TextView-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_weight="4"-->
-                <!--                    android:text="식사"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:textSize="20dp"-->
-                <!--                    >-->
-                <!--                </TextView>-->
-                <!--                -->
-                <!--                <RadioButton-->
-                <!--                    android:layout_weight="8"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content">-->
-
-                <!--                </RadioButton>-->
-
             </RadioGroup>
 
         </LinearLayout>
@@ -185,6 +158,7 @@
                 android:padding="10dp">
 
                 <EditText
+                    android:id="@+id/et_add_eat_memo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:autofillHints=""

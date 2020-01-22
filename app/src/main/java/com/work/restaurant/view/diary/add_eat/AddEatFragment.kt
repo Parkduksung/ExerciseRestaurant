@@ -1,10 +1,13 @@
 package com.work.restaurant.view.diary.add_eat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
@@ -16,8 +19,12 @@ import java.util.*
 
 class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
+    override fun showAddResult(msg: String) {
+        Log.d("저장결과", msg)
+    }
 
-    private lateinit var addEatPresenter: AddEatPresenter
+    private lateinit var presenter: AddEatPresenter
+
 
     override fun onClick(v: View?) {
 
@@ -61,9 +68,24 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             }
 
             R.id.add_eat_save -> {
-                requireFragmentManager().beginTransaction()
-                    .remove(this@AddEatFragment)
-                    .commit()
+
+                if (radioClick <= 1) {
+                    presenter.addEat(
+                        tv_add_eat_today.text.toString(),
+                        btn_add_eat_time.text.toString(),
+                        radioClick,
+                        et_add_eat_memo.text.toString()
+                    )
+                    radioClick = 2
+
+//                    requireFragmentManager().beginTransaction()
+//                        .remove(this@AddEatFragment)
+//                        .commit()
+                } else {
+
+                    Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+
             }
 
         }
@@ -75,36 +97,34 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
         init()
 
-        addEatPresenter = AddEatPresenter(this)
+        presenter = AddEatPresenter(
+            this,
+            Injection.provideEatRepository()
+        )
         btn_add_eat_time.setOnClickListener(this)
         add_eat_cancel.setOnClickListener(this)
         add_eat_save.setOnClickListener(this)
-//        add_eat_radio_group.setOnCheckedChangeListener { group, checkedId ->
-//
-//            when (checkedId) {
-//
-//                R.id.rb_meal -> {
-//                    Toast.makeText(this.context, "라디오 그룹 버튼1 눌렸습니다.", Toast.LENGTH_SHORT)
-//                        .show()
-//
-//                }
-//
-//                R.id.rb_snack -> {
-//                    Toast.makeText(this.context, "라디오 그룹 버튼2 눌렸습니다.", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            }
-//        }
 
 
-//        btn_add_eat_main.setOnClickListener {
-//
-//            val btn = EditText(this.context)
-//
-//            ll_add_eat_main.addView(btn)
-//
-//        }
+    }
 
+    private fun getRadioClickNum(radioGroup: RadioGroup) {
+
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+
+            when (checkedId) {
+
+                R.id.rb_meal -> {
+                    Toast.makeText(this.context, "0", Toast.LENGTH_SHORT).show()
+                    radioClick = 0
+                }
+
+                R.id.rb_snack -> {
+                    Toast.makeText(this.context, "1", Toast.LENGTH_SHORT).show()
+                    radioClick = 1
+                }
+            }
+        }
     }
 
     private fun init() {
@@ -113,14 +133,20 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault()).format(currentTime)
 
 
-        val dateText1 = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentTime)
+        val dateText1 = SimpleDateFormat("yyyyMMddahhmm", Locale.getDefault()).format(currentTime)
+
+        Log.d("결괄", dateText1.substring(0, 4))
+        Log.d("결괄", dateText1.substring(4, 6))
+        Log.d("결괄", dateText1.substring(6, 8))
+        Log.d("결괄", dateText1.substring(8))
 
         Toast.makeText(this.context, dateText1, Toast.LENGTH_SHORT).show()
         val timeText =
             SimpleDateFormat("a h시 mm분", Locale.getDefault()).format(currentTime)
 
-        tv_add_today.text = dateText
+        tv_add_eat_today.text = dateText
         btn_add_eat_time.text = timeText
+        getRadioClickNum(add_eat_radio_group)
     }
 
     private fun getAmPm(hour: Int): String {
@@ -138,6 +164,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
     companion object {
         private const val TAG = "AddEatFragment"
+        var radioClick = 2
 
     }
 

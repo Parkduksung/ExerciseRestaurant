@@ -4,29 +4,28 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.work.restaurant.network.room.dao.AddressDao
-import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.network.room.dao.EatDao
+import com.work.restaurant.network.room.entity.EatEntity
 
-@Database(entities = [AddressEntity::class], version = 1)
-abstract class AddressDatabase : RoomDatabase() {
+@Database(entities = [EatEntity::class], version = 2)
+abstract class EatDatabase : RoomDatabase() {
 
-    abstract fun addressDao(): AddressDao
+    abstract fun eatDao(): EatDao
 
     companion object {
-        private var INSTANCE: AddressDatabase? = null
+        private var INSTANCE: EatDatabase? = null
 
-        fun getInstance(context: Context): AddressDatabase =
+        fun getInstance(context: Context): EatDatabase =
             INSTANCE ?: Room.databaseBuilder(
                 context.applicationContext,
-                AddressDatabase::class.java,
-                "address"
+                EatDatabase::class.java,
+                "eat"
             )
                 .fallbackToDestructiveMigration()
                 .build()
                 .also {
                     INSTANCE = it
                 }
-
     }
 
 }
