@@ -66,7 +66,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             }
 
 
-
 //            currentPOIItem.tag = 0
         }
 
@@ -116,10 +115,10 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
         if (::mapPOIItem.isInitialized) {
             mapView.removePOIItem(mapPOIItem)
-            AppExecutors().mainThread.execute(runnable)
+            AppExecutors().diskIO.execute(runnable)
         } else {
             mapPOIItem = MapPOIItem()
-            AppExecutors().mainThread.execute(runnable)
+            AppExecutors().diskIO.execute(runnable)
         }
 
     }
