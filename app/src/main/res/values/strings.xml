@@ -64,5 +64,28 @@
 
     <string name="google_geo_api_key">AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4</string>
     <string name="kakao_map_api_key">d50bab27d11f5a684f1e0b2f7b70dda4</string>
+    <string name="home_address_main_text">주소 설정</string>
+    <string name="btn_eat">식단</string>
+    <string name="btn_exercise">운동</string>
+    <string name="add_exercise_year">2020년</string>
+    <string name="add_exercise_today">1월 17일</string>
+    <string name="diary_main_today">2020년 1월 17일 금요일</string>
+    <string name="add_exercise_category">카테고리</string>
+    <string name="add_exercise_category_chest">가슴</string>
+    <string name="add_exercise_category_back">등</string>
+    <string name="add_exercise_category_shoulder">어깨</string>
+    <string name="add_exercise_category_legs">하체</string>
+    <string name="add_exercise_category_arm">팔</string>
+    <string name="exercise_set_delete">삭제</string>
+    <string name="exercise_set_add">추가</string>
+    <string name="tv_add_eat_category">식단 추가</string>
+    <string name="add_eat_today">요일</string>
+    <string name="add_eat_today_time">시간</string>
+    <string name="add_eat_list">종류</string>
+    <string name="add_eat_menu_meal">식사</string>
+    <string name="add_eat_menu_snack">간식</string>
+    <string name="add_eat_memo">메모</string>
+    <string name="add_eat_cancel">취소</string>
+    <string name="add_eat_save">저장</string>
 
 </resources>

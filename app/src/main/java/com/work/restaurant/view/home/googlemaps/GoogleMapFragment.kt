@@ -283,6 +283,7 @@ class GoogleMapFragment : GoogleMapContract.View,
     }
 
 
+
     override fun onResume() {
         super.onResume()
         mapView.getMapAsync(this)

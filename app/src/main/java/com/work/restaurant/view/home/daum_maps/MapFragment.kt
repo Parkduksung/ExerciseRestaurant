@@ -64,6 +64,9 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             p1?.let {
                 createMarker(currentPOIItem, "내위치", it)
             }
+
+
+
 //            currentPOIItem.tag = 0
         }
 

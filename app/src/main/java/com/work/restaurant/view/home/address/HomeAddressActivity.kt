@@ -97,7 +97,7 @@ class HomeAddressActivity : AppCompatActivity(),
 
                     //
                     //이 부분은 만약 <시>를 선택해서 <군구>로 넘어왔는데 사용자가 <군구>를 다시 눌렀을때 다른게 안뜨는 것 방지.
-                    select(tv_address2, resources.getStringArray(R.array.인천))
+//                    select(tv_address2, resources.getStringArray(R.array.인천))
                     //
                     //
                     presenter.getRoadItem(
