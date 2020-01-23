@@ -37,7 +37,6 @@ class EatLocalDataSourceImpl(
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
 
 
-
             registerEat.takeIf { true }
                 .apply {
                     callback.onSuccess("success")

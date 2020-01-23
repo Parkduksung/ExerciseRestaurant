@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.View.inflate
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
@@ -32,7 +33,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
             R.id.btn_add_eat_time -> {
 
-                val dialogView = layoutInflater.inflate(R.layout.time_picker, null)
+                val dialogView = inflate(context, R.layout.time_picker, null)
 
                 val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
 
@@ -93,7 +94,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         super.onViewCreated(view, savedInstanceState)
 
         init()
-
         presenter = AddEatPresenter(
             this,
             Injection.provideEatRepository()
@@ -101,7 +101,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         btn_add_eat_time.setOnClickListener(this)
         add_eat_cancel.setOnClickListener(this)
         add_eat_save.setOnClickListener(this)
-
 
     }
 
