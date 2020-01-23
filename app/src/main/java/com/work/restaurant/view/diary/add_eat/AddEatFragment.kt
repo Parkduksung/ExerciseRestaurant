@@ -33,6 +33,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             R.id.btn_add_eat_time -> {
 
                 val dialogView = layoutInflater.inflate(R.layout.time_picker, null)
+
                 val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
 
                 val alertDialog =
@@ -79,7 +80,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                     radioClick = 2
 
                 } else {
-
                     Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -125,24 +125,18 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     }
 
     private fun init() {
+
         val currentTime = Calendar.getInstance().time
-        val dateText =
-            SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault()).format(currentTime)
 
+        val dateTextAll =
+            SimpleDateFormat("yyyy-MM-dd-a-hh-mm", Locale.getDefault()).format(currentTime)
 
-        val dateText1 = SimpleDateFormat("yyyyMMddahhmm", Locale.getDefault()).format(currentTime)
+        val dateArray = dateTextAll.split("-")
 
-        Log.d("결괄", dateText1.substring(0, 4))
-        Log.d("결괄", dateText1.substring(4, 6))
-        Log.d("결괄", dateText1.substring(6, 8))
-        Log.d("결괄", dateText1.substring(8))
-
-        Toast.makeText(this.context, dateText1, Toast.LENGTH_SHORT).show()
-        val timeText =
-            SimpleDateFormat("a h시 mm분", Locale.getDefault()).format(currentTime)
-
-        tv_add_eat_today.text = dateText
-        btn_add_eat_time.text = timeText
+        tv_add_eat_today.text =
+            getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
+        btn_add_eat_time.text =
+            getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
         getRadioClickNum(add_eat_radio_group)
     }
 

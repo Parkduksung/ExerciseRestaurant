@@ -89,4 +89,7 @@
     <string name="add_eat_save">저장</string>
     <string name="time_picker_main">시간 변경</string>
 
+    <string name="current_date">%s년 %s월 %s일</string>
+    <string name="current_time">%s %s시 %s분</string>
+
 </resources>
