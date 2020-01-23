@@ -78,9 +78,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                     )
                     radioClick = 2
 
-//                    requireFragmentManager().beginTransaction()
-//                        .remove(this@AddEatFragment)
-//                        .commit()
                 } else {
 
                     Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()

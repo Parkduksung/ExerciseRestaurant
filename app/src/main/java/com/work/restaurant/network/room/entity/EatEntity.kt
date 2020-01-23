@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class EatEntity(
 
     @PrimaryKey(autoGenerate = true)
-    val eatNum: Int?,
+    val eatNum: Int = 0,
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "time")

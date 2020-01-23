@@ -32,9 +32,10 @@ class EatLocalDataSourceImpl(
     ) {
         appExecutors.diskIO.execute {
 
-            val eatEntity = EatEntity(null, date, time, type, memo)
+            val eatEntity = EatEntity(date = date, time = time, type = type, memo = memo)
 
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
+
 
             registerEat.takeIf { true }
                 .apply {
