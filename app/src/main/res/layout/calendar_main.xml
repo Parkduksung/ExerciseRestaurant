@@ -2,38 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
-    >
+    android:orientation="vertical">
 
     <CalendarView
+        android:id="@+id/calender_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/calender"
-        >
-
-
-    </CalendarView>
-
-
-    <DatePicker
-        android:id="@+id/date_Picker"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:calendarViewShown="false"
-        android:datePickerMode="calendar" />
-
-    <TextView
-        android:id="@+id/text_view_date_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:textSize="35dp" />
-
-    <Button
-        android:id="@+id/button_date_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Date" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
