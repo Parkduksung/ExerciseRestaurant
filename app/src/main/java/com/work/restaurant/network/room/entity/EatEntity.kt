@@ -3,6 +3,7 @@ package com.work.restaurant.network.room.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.work.restaurant.network.model.EatResponse
 
 @Entity(tableName = "eat")
 data class EatEntity(
@@ -18,4 +19,10 @@ data class EatEntity(
     @ColumnInfo(name = "memo")
     val memo: String
 
-)
+) {
+    fun toEatResponse(): EatResponse {
+        return EatResponse(date, time, type, memo)
+    }
+
+
+}

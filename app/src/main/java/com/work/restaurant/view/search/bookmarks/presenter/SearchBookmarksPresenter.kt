@@ -8,8 +8,8 @@ import com.work.restaurant.network.model.FitnessCenterItemResponse
 class SearchBookmarksPresenter(
     private val searchBookmarksView: SearchBookmarksContract.View,
     private val fitnessItemRepository: FitnessItemRepository
-) :
-    SearchBookmarksContract.Presenter {
+) : SearchBookmarksContract.Presenter {
+
     override fun getBookmarksList() {
 
         fitnessItemRepository.getFitnessResult(object : FitnessItemRepositoryCallback {

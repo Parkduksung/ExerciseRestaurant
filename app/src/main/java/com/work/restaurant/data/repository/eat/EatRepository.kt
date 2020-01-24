@@ -9,4 +9,9 @@ interface EatRepository {
         memo: String,
         callback: EatRepositoryCallback.AddEatCallback
     )
+
+
+    fun getList(
+        callback: EatRepositoryCallback.GetAllList
+    )
 }

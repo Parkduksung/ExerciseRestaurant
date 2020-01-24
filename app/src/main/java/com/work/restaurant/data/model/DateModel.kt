@@ -2,7 +2,7 @@ package com.work.restaurant.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class DataModel(
+data class DateModel(
     @SerializedName("date")
     val date: String,
     @SerializedName("time")
@@ -13,6 +13,7 @@ data class DataModel(
     @SerializedName("memo")
     val memo: String
 )
+
 //{
 //
 //    fun toDataModel(

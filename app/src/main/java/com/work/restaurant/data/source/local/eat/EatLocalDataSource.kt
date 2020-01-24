@@ -20,4 +20,9 @@ interface EatLocalDataSource {
         callback: EatLocalDataSourceCallback.GetDataOfTheDay
     )
 
+    fun getAllList(
+
+        callback: EatLocalDataSourceCallback.GetAllList
+    )
+
 }

@@ -36,9 +36,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
                     bookMarkAdapter.addData(fitnessCenterItem)
                 }
             }
-
             layoutManager = LinearLayoutManager(this.context)
-
         }
     }
 

@@ -1,6 +1,7 @@
 package com.work.restaurant.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.work.restaurant.data.model.DateModel
 
 data class EatResponse(
     @SerializedName("date")
@@ -13,4 +14,9 @@ data class EatResponse(
     val type: Int,
     @SerializedName("memo")
     val memo: String
-)
+) {
+
+    fun toDateModel(): DateModel =
+        DateModel(date, time, type, memo)
+
+}
