@@ -1,97 +1,72 @@
-@file:Suppress("DEPRECATION")
-
 package com.work.restaurant.view.home.googlemaps
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Address
+
+import android.Manifest
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.network.api.GoogleApi
+import com.work.restaurant.network.model.PlaceResponse
+import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
-import java.io.IOException
+import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapContract
+import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapPresenter
+import kotlinx.android.synthetic.main.google_maps.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 
-class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps),
+class GoogleMapFragment : GoogleMapContract.View,
+    OnMapReadyCallback,
+    BaseFragment(R.layout.google_maps),
     GoogleMap.OnMarkerClickListener {
+
+    private lateinit var presenter: GoogleMapPresenter
+    private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallBack: LocationCallback
+    lateinit var lastLocation: Location
+    lateinit var latLng: LatLng
+    private var mMarker: Marker? = null
+
+    //    lateinit var mService: GoogleApi
+    internal lateinit var currentPlace: PlaceResponse
 
     override fun onMarkerClick(p0: Marker?) = false
 
-
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-        if (menuVisible && isResumed) {
-            if (::lastLocation.isInitialized && ::mMap.isInitialized) {
-                val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                placeMarkerOnMap(currentLatLng)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
-            }
-        } else {
-
-        }
-    }
-
-    private lateinit var mMap: GoogleMap
-    private lateinit var mapView: MapView
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var lastLocation: Location
-    private lateinit var addressAll: String
     override fun onMapReady(googleMap: GoogleMap) {
 
         mMap = googleMap
-//        val seoulPosition = LatLng(37.56, 126.97)
-//        val markerOptions = MarkerOptions().apply {
-//            position(seoulPosition)
-//            title("서울")
-//            snippet("한국의 수도")
-//        }
-//
-//        googleMap.apply {
-//            addMarker(markerOptions)
-//            moveCamera(CameraUpdateFactory.newLatLng(seoulPosition))
-//            animateCamera(CameraUpdateFactory.zoomTo(10f))
-//        }
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        if (toggleMap) {
+            getLocation(selectAll)
+            nearByPlace("gym")
+            placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+        }
 
         mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.setOnMarkerClickListener(this)
-
-        setUpMap()
-
-
-    }
-
-
-    override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
-        super.onAttach(context)
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -99,196 +74,251 @@ class GoogleMapFragment : OnMapReadyCallback, BaseFragment(R.layout.google_maps)
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.google_maps, container, false)
-        mapView = rootView.findViewById(R.id.map)
-        mapView.getMapAsync(this)
+        return inflater.inflate(R.layout.google_maps, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        Log.d("GoogleMapFragment1", "onViewCreated")
+        mapView.onCreate(savedInstanceState)
+        presenter = GoogleMapPresenter(this)
+        checkPer()
+
+    }
+
+    private fun checkPer() {
+        TedPermission.with(context)
+            .setPermissionListener(permissionListener)
+            .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
+            .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+//            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
+            .check()
+    }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+
+        override fun onPermissionGranted() {
+            loadMap()
+            Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+            Toast.makeText(activity, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+    }
+
+    private fun loadMap() {
+
+        mapView.onResume()
+
         fusedLocationClient =
-            LocationServices.getFusedLocationProviderClient(this.requireActivity())
-        return rootView
+            LocationServices.getFusedLocationProviderClient(App.instance.context())
+
+        createLocationCallBack()
+        createLocationRequest()
+        getCurrentLocation()
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
+    private fun nearByPlace(typePlace: String) {
 
-        if (::mapView.isInitialized) {
-            mapView.onCreate(savedInstanceState)
-        }
+        mMap.clear()
 
+        val url = getUrl(latLng.latitude, latLng.longitude, typePlace)
+
+        RetrofitInstance.getInstance<GoogleApi>("https://maps.googleapis.com/")
+            .getNearbyPlaces(url).enqueue(object : Callback<PlaceResponse> {
+                override fun onFailure(call: Call<PlaceResponse>?, t: Throwable?) {
+                    Toast.makeText(activity, "" + t!!.message, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onResponse(
+                    call: Call<PlaceResponse>?,
+                    response: Response<PlaceResponse>?
+                ) {
+
+                    Log.d("결과결과4", "${response?.body()?.results?.size}")
+
+                    if (response != null) {
+                        currentPlace = response.body()
+                        if (response.isSuccessful) {
+
+                            currentPlace = response.body()
+                            if (response.body().results?.size == 0) {
+                                Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG)
+                                    .show()
+                            } else {
+                                for (i in 0 until (response.body().results?.size ?: 0)) {
+
+                                    val marketOption = MarkerOptions()
+                                    val googlePlace = response.body().results!![i]
+                                    val lat = googlePlace.geometry!!.location!!.lat
+                                    val lng = googlePlace.geometry!!.location!!.lng
+                                    val placeName = googlePlace.name
+                                    val latLng = LatLng(lat, lng)
+
+                                    marketOption.position(latLng)
+                                    marketOption.title(placeName)
+//                        아이콘 바꾸는거. bitmap size 생각도 해야됨.
+//                        if(typePlace == "hospital"){
+//                            marketOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cooking))
+//                        }
+
+                                    marketOption.icon(
+                                        BitmapDescriptorFactory.defaultMarker(
+                                            BitmapDescriptorFactory.HUE_BLUE
+                                        )
+                                    )
+
+                                    mMap.addMarker(marketOption)
+
+                                }
+                            }
+
+                        }
+                    } else {
+                        Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            })
 
     }
 
-    private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(
-                this.requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this.requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
-            return
-        }
-        mMap.isMyLocationEnabled = true
+    private fun getUrl(latitude: Double, longitude: Double, typePlace: String): String {
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
-            if (location != null) {
-                lastLocation = location
-                val t = getAddress1(selectAll)
+        val googlePlaceUrl =
+            StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json")
+        googlePlaceUrl.append("?location=$latitude,$longitude")
+        googlePlaceUrl.append("&radius=5000") // 1km
+        googlePlaceUrl.append("&type=$typePlace")
+        googlePlaceUrl.append("&key=AIzaSyBJhfUcKYnQiS3_Vx92iHv0UVFwL4IjKIE")
 
-                val currentLatLng = LatLng(t[0], t[1])
-//                val currentLatLng = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLng)
+        Log.d("URL_DEBUG", googlePlaceUrl.toString())
+        return googlePlaceUrl.toString()
+
+    }
 
 
+    private fun createLocationCallBack() {
+        locationCallBack = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                mMap.clear()
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
+                if (locationResult != null) {
+                    lastLocation = locationResult.lastLocation
+                }
+
+                mMarker?.remove()
+                latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                nearByPlace("gym")
+                placeMarkerOnMap(latLng)
+                mMap.isMyLocationEnabled = true
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
             }
         }
+    }
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+//            .setInterval(5000)
+//            .setFastestInterval(3000)
+//            .setSmallestDisplacement(10f)
+    }
+
+    private fun getCurrentLocation() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallBack,
+            Looper.myLooper()
+        )
+    }
+
+    private fun getLocation(location: String) {
+        mMap.clear()
+        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
+        val addresses = geoCoder.getFromLocationName(
+            location,
+            1
+        )
+
+        if (addresses != null) {
+            for (i in 0 until addresses.size) {
+                latLng = LatLng(addresses[i].latitude, addresses[i].longitude)
+                val markerOptions = MarkerOptions().apply {
+                    position(latLng)
+                    title(selectAll)
+                    draggable(true)
+                }
+
+                mMap.run {
+                    if (::lastLocation.isInitialized) {
+                        placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+                    }
+                    addMarker(markerOptions)
+                    animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                }
+            }
+        }
+
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
+        val markerOptions = MarkerOptions()
+            .position(location)
+            .title("내 위치")
+            .icon(
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            )
+//        val titleStr = presenter.getAddress(location)
+//        markerOptions.title(titleStr)
 
-        val markerOptions = MarkerOptions().position(location)
-
-        val titleStr = getAddress(location)  // add these two lines
-        markerOptions.title(titleStr)
-        mMap.addMarker(markerOptions)
-    }
-
-    private fun getAddress(latLng: LatLng): String {
-
-        val geoCoder = Geocoder(this.context)
-        val addresses: List<Address>
-
-//        val addresses1: List<Address>
-        var array: List<String>
-
-//        val addName = "구월동"
-
-        try {
-
-            addresses = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-//            Log.d("sssssssssssssssssssssss", addresses[0].toString())
-//            Log.d("sssssssssssssssssssssss", addresses[0].adminArea.substring(0, 2))
-//            Log.d("ttttttttttttttttttttttt", addresses[0].getAddressLine(0))
-
-
-            if (addresses.isNotEmpty()) {
-                array = addresses[0].getAddressLine(0).split(" ")
-                for (i in 0 until array.size) {
-                    Log.e("cccccccccccccccccccccccccccccccccccccccc", array[i])
-                }
-
-                address1 = array[1].substring(0, 2)
-                address2 = array[2]
-                address3 = array[3]
-
-                addressAll = "$address1 $address2 $address3"
-            }
-
-
-        } catch (e: IOException) {
-            Log.e("MapsActivity", e.toString())
-        }
-
-        return if (::addressAll.isInitialized) {
-            addressAll
-        } else {
-            ""
-        }
-    }
-
-    // to-do AsyncTask 로 작업할것.
-    private fun getAddress1(addressName: String): List<Double> {
-
-        val geoCoder = Geocoder(this.context)
-        val addresses: List<Address>
-
-        var list = mutableListOf<Double>()
-
-        try {
-
-            addresses = geoCoder.getFromLocationName(addressName, addressName.length)
-            Log.d("하하하", "" + addresses.size)
-
-
-            list.add(0, addresses[0].latitude)
-            list.add(1, addresses[0].longitude)
-
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[0])
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", "" + list[1])
-
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].toString())
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].longitude.toString())
-            Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt", addresses[0].latitude.toString())
-
-
-        } catch (e: IOException) {
-            Log.e("MapsActivity", e.toString())
-        }
-
-        return list
+        mMarker = mMap.addMarker(markerOptions)
     }
 
 
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-        mapView.onStart()
-    }
 
     override fun onResume() {
-        Log.d(TAG, "onResume")
         super.onResume()
-
-        Toast.makeText(context, selectAll, Toast.LENGTH_SHORT).show()
-        mapView.onResume()
+        mapView.getMapAsync(this)
     }
 
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-        mapView.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-
-
-    }
+//    override fun onDestroyView() {
+//        toggleMap=false
+//        Log.d("GoogleMapFragment1", "onDestroyView")
+//        super.onDestroyView()
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        Log.d("GoogleMapFragment1", "onStop")
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        Log.d("GoogleMapFragment1", "onPause")
+//    }
+//
+//    override fun onDetach() {
+//        super.onDetach()
+//        Log.d("GoogleMapFragment1", "onDetach")
+//    }
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        mapView.onDestroy()
         super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
+        toggleMap = false
+        Log.d("GoogleMapFragment1", "onDestroy")
     }
 
     companion object {
         private const val TAG = "GoogleMapFragment"
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-
-
-        // 주소 변경 할때 사용용도 및 현재 주소 표현
-        lateinit var address1: String
-        lateinit var address2: String
-        lateinit var address3: String
-        var address4 = ""
+        var toggleMap = false
 
     }
 }

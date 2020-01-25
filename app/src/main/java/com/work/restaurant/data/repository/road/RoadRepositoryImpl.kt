@@ -1,6 +1,7 @@
 package com.work.restaurant.data.repository.road
 
 import com.work.restaurant.data.source.local.road.RoadLocalDataCountCallback
+import com.work.restaurant.data.source.local.road.RoadLocalDataRegisterCallback
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceCallback
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
 import com.work.restaurant.network.room.entity.AddressEntity
@@ -9,7 +10,7 @@ class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImp
     RoadRepository {
     override fun registerAddress(callback: Callback) {
         roadRemoteDataSourceImpl.registerAddress(object :
-            com.work.restaurant.data.source.local.road.RoadLocalDataRegisterCallback {
+            RoadLocalDataRegisterCallback {
             override fun onSuccess(list: List<AddressEntity>) {
                 callback.onSuccess(list)
             }
@@ -22,7 +23,8 @@ class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImp
 
 
     override fun getAddressCount(callback: RoadRepositoryDataCountCallback) {
-        roadRemoteDataSourceImpl.getAddressCount(object : RoadLocalDataCountCallback {
+        roadRemoteDataSourceImpl.getAddressCount(object :
+            RoadLocalDataCountCallback {
             override fun onSuccess(state: Boolean) {
                 callback.onSuccess(state)
             }
@@ -52,6 +54,7 @@ class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImp
 
                 override fun onFailure(message: String) {
                     callback.onFailure(message)
+
                 }
             })
     }

@@ -83,7 +83,6 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
     fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
         bookmarkList.addAll(fitnessCenterItemResponse)
 
-
     fun addData(fitnessCenterItemResponse: FitnessCenterItemResponse) =
         bookmarkList.add(fitnessCenterItemResponse)
 

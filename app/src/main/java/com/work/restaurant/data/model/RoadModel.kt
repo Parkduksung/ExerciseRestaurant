@@ -15,6 +15,4 @@ data class RoadModel(
             dong = dong
         )
     }
-
-
 }

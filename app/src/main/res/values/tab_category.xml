@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="tab_main">
         <item>홈</item>
         <item>헬스장검색</item>
-        <item>커뮤니티</item>
+        <item>다이어리</item>
+        <item>켈린더</item>
         <item>마이페이지</item>
     </string-array>
 
@@ -24,6 +24,5 @@
         <item>운동일지</item>
         <item>영양일지</item>
     </string-array>
-
 
 </resources>

@@ -12,7 +12,6 @@ abstract class AddressDatabase : RoomDatabase() {
 
     abstract fun addressDao(): AddressDao
 
-
     companion object {
         private var INSTANCE: AddressDatabase? = null
 

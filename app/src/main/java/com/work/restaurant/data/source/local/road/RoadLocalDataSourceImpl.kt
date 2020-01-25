@@ -86,6 +86,7 @@ class RoadLocalDataSourceImpl private constructor(
             Log.d("결과결과", getAddressCount.toString())
 
             if (addressDatabase.isOpen) {
+                Log.d("결과결과55", getAddressCount.toString())
                 appExecutors.mainThread.execute {
                     callback.onSuccess(true)
                 }
@@ -169,10 +170,11 @@ class RoadLocalDataSourceImpl private constructor(
             addressDatabase: AddressDatabase,
             appExecutors: AppExecutors
         ): RoadLocalDataSourceImpl =
-            instance ?: RoadLocalDataSourceImpl(
-                addressDatabase,
-                appExecutors
-            )
+            instance
+                ?: RoadLocalDataSourceImpl(
+                    addressDatabase,
+                    appExecutors
+                )
                 .also {
                     instance = it
                 }
