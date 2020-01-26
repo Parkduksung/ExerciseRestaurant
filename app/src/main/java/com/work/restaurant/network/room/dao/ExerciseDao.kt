@@ -1,0 +1,21 @@
+package com.work.restaurant.network.room.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.work.restaurant.network.room.entity.ExerciseEntity
+
+@Dao
+interface ExerciseDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun registerExercise(exerciseEntity: ExerciseEntity)
+
+    @Query("SELECT COUNT(*) FROM exercise")
+    fun getAllCount(): Int
+
+    @Query("SELECT * FROM exercise")
+    fun getAll(): List<ExerciseEntity>
+
+}

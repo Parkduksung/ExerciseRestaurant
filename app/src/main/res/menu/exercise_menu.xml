@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chest"
+        android:icon="@drawable/chest"
+        android:title="@string/item_chest" />
+
+    <item
+        android:id="@+id/back"
+        android:icon="@drawable/lets"
+        android:title="@string/item_back" />
+
+    <item
+        android:id="@+id/shoulder"
+        android:icon="@drawable/sholder"
+        android:title="@string/item_shoulder" />
+
+    <item
+        android:id="@+id/legs"
+        android:icon="@drawable/legs"
+        android:title="@string/item_legs" />
+
+    <item
+        android:id="@+id/arm"
+        android:icon="@drawable/arms"
+        android:title="@string/item_arm" />
+
+</menu>

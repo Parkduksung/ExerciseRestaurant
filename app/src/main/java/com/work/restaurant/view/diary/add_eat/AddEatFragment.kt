@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
-import android.view.View.inflate
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
@@ -24,6 +23,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         Log.d("저장결과", msg)
     }
 
+
     private lateinit var presenter: AddEatPresenter
 
 
@@ -33,32 +33,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
             R.id.btn_add_eat_time -> {
 
-                val dialogView = inflate(context, R.layout.time_picker, null)
-
-                val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
-
-                val alertDialog =
-                    android.app.AlertDialog.Builder(
-                        ContextThemeWrapper(
-                            activity,
-                            R.style.Theme_AppCompat_Light_Dialog
-                        )
-                    )
-
-                alertDialog.setView(dialogView)
-                    .setPositiveButton("변경") { _, _ ->
-
-                        val changedTime =
-                            "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
-
-                        btn_add_eat_time.text = changedTime
-
-                    }
-                    .setNegativeButton("취소") { _, _ ->
-
-                    }
-                    .show()
-
+                getTimePicker()
 
             }
 
@@ -79,6 +54,11 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                         et_add_eat_memo.text.toString()
                     )
                     radioClick = 2
+
+                    requireFragmentManager().beginTransaction()
+                        .remove(this@AddEatFragment)
+                        .commit()
+                    Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
                 } else {
                     Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -137,6 +117,35 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         btn_add_eat_time.text =
             getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
         getRadioClickNum(add_eat_radio_group)
+    }
+
+    private fun getTimePicker() {
+        val dialogView = View.inflate(context, R.layout.time_picker, null)
+
+        val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
+
+        val alertDialog =
+            android.app.AlertDialog.Builder(
+                ContextThemeWrapper(
+                    activity,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
+
+        alertDialog.setView(dialogView)
+            .setPositiveButton("변경") { _, _ ->
+
+                val changedTime =
+                    "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
+
+                btn_add_eat_time.text = changedTime
+
+            }
+            .setNegativeButton("취소") { _, _ ->
+
+            }
+            .show()
+
     }
 
     private fun getAmPm(hour: Int): String {

@@ -4,10 +4,28 @@ import android.util.Log
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceCallback
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
 import com.work.restaurant.network.model.EatResponse
+import com.work.restaurant.network.room.entity.EatEntity
 
 class EatRepositoryImpl private constructor(
     private val eatLocalDataSourceImpl: EatLocalDataSourceImpl
 ) : EatRepository {
+
+    override fun getDataOfTheDay(today: String, callback: EatRepositoryCallback.GetDataOfTheDay) {
+        eatLocalDataSourceImpl.getDataOfTheDay(
+            today,
+            object : EatLocalDataSourceCallback.GetDataOfTheDay {
+                override fun onSuccess(list: List<EatEntity>) {
+                    callback.onSuccess(list)
+                }
+
+                override fun onFailure(msg: String) {
+                    callback.onFailure(msg)
+                }
+            })
+
+    }
+
+
     override fun getList(callback: EatRepositoryCallback.GetAllList) {
         eatLocalDataSourceImpl.getAllList(object : EatLocalDataSourceCallback.GetAllList {
             override fun onSuccess(list: List<EatResponse>) {

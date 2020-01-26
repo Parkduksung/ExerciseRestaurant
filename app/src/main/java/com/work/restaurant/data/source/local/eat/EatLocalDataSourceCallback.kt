@@ -20,7 +20,7 @@ interface EatLocalDataSourceCallback {
 
     interface GetDataOfTheDay {
 
-        fun onSuccess(): EatEntity
+        fun onSuccess(list: List<EatEntity>)
         fun onFailure(msg: String)
 
     }

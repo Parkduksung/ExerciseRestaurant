@@ -1,15 +1,14 @@
 package com.work.restaurant.view.diary.main
 
-import android.annotation.TargetApi
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.DateModel
+import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -28,19 +27,15 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     AdapterDataListener {
     override fun getData(data: String) {
 
+        Toast.makeText(this.context, data, Toast.LENGTH_SHORT).show()
+
     }
 
-    override fun showData(data: List<DateModel>) {
-
+    override fun showData(data: List<EatModel>) {
 
         recyclerview_diary.run {
-
-            this.adapter = diaryAdapter
-
             diaryAdapter.clearListData()
             diaryAdapter.addAllData(data)
-
-            layoutManager = LinearLayoutManager(this.context)
         }
 
     }
@@ -81,7 +76,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -90,11 +85,12 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             this,
             Injection.provideEatRepository()
         )
-        diaryAdapter.setItemClickListener(this)
+
         init()
 
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
+        diaryAdapter.setItemClickListener(this)
 
 
     }
@@ -102,14 +98,38 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun init() {
 
+        recyclerview_diary.run {
+
+            this.adapter = diaryAdapter
+
+            layoutManager = LinearLayoutManager(this.context)
+
+        }
+
         val currentTime = Calendar.getInstance().time
-        val dateText =
-            SimpleDateFormat("yyyy년 MM월 dd일 EE요일", Locale.getDefault()).format(currentTime)
-        tv_today.text = dateText
 
-        presenter.data()
+        val dateTextAll =
+            SimpleDateFormat("yyyy-MM-dd-EE", Locale.getDefault()).format(currentTime)
 
+        val dateArray = dateTextAll.split("-")
 
+        tv_today.text =
+            getString(
+                R.string.diary_main_date,
+                dateArray[0],
+                dateArray[1],
+                dateArray[2],
+                dateArray[3]
+            )
+
+        presenter.todayData(
+            getString(
+                R.string.current_date,
+                dateArray[0],
+                dateArray[1],
+                dateArray[2]
+            )
+        )
     }
 
 
@@ -121,7 +141,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onResume() {
         super.onResume()
-
+        init()
+//        presenter.data()
     }
 
 }

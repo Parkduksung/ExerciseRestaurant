@@ -163,7 +163,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
     private fun loadMap() {
         Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-        mapView = MapView(this.requireContext())
+        mapView = MapView(this.context)
         mapView.setCurrentLocationEventListener(this)
 
         map_view.addView(mapView)

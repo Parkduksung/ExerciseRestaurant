@@ -16,4 +16,9 @@ interface EatDao {
 
     @Query("SELECT * FROM eat")
     fun getAll(): List<EatEntity>
+
+    @Query("SELECT * FROM eat WHERE date = (:today)")
+    fun getTodayItem(today: String): List<EatEntity>
+
+
 }

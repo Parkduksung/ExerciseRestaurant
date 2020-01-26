@@ -14,4 +14,9 @@ interface EatRepository {
     fun getList(
         callback: EatRepositoryCallback.GetAllList
     )
+
+    fun getDataOfTheDay(
+        today: String,
+        callback: EatRepositoryCallback.GetDataOfTheDay
+    )
 }

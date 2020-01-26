@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.DateModel
+import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class DiaryAdapter : RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
 
     private lateinit var adapterListener: AdapterDataListener
-    private val addEatList = ArrayList<DateModel>()
+    private val addEatList = ArrayList<EatModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -41,7 +41,7 @@ class DiaryAdapter : RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
         private val addTime: TextView = itemView.findViewById(R.id.add_time)
         private val addMemo: TextView = itemView.findViewById(R.id.add_memo)
 
-        fun bind(item: DateModel) {
+        fun bind(item: EatModel) {
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
@@ -58,32 +58,34 @@ class DiaryAdapter : RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
                 }
             }
 
-            val dateModel: DateModel = item
+            val eatModel: EatModel = item
 
-            addType.text = type[dateModel.type]
-            addTime.text = dateModel.time
-            addMemo.text = dateModel.memo
+            addType.text = type[eatModel.type]
+            addTime.text = eatModel.time
+            addMemo.text = eatModel.memo
 
         }
     }
 
 
-    fun addAllData(dateModelList: List<DateModel>) =
-        addEatList.addAll(dateModelList)
+    fun addAllData(eatModelList: List<EatModel>) =
+        addEatList.addAll(eatModelList)
 
-    fun addData(dateModel: DateModel) {
-        addEatList.add(dateModel)
+    fun addData(eatModel: EatModel) {
+        addEatList.add(eatModel)
         notifyDataSetChanged()
     }
 
     fun clearListData() {
         addEatList.clear()
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
     }
 
     fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
         adapterListener = listenerAdapterAdapter
     }
+
+
 
 }
 

@@ -2,7 +2,7 @@ package com.work.restaurant.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class DateModel(
+data class EatModel(
     @SerializedName("date")
     val date: String,
     @SerializedName("time")

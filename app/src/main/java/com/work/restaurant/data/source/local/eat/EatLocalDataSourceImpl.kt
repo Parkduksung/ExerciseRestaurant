@@ -43,6 +43,19 @@ class EatLocalDataSourceImpl(
         callback: EatLocalDataSourceCallback.GetDataOfTheDay
     ) {
 
+        appExecutors.diskIO.execute {
+
+            val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(date)
+
+
+            getDataOfTheDay.takeIf { true }
+                .apply {
+                    callback.onSuccess(getDataOfTheDay)
+                } ?: callback.onFailure("error")
+
+        }
+
+
     }
 
 
