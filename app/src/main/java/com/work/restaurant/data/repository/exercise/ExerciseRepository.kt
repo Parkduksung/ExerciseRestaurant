@@ -8,8 +8,18 @@ interface ExerciseRepository {
         date: String,
         time: String,
         type: String,
-        list: ExerciseSet,
+        exerciseName: String,
+        list: List<ExerciseSet>,
         callback: ExerciseRepositoryCallback.AddExerciseCallback
+    )
+
+    fun getList(
+        callback: ExerciseRepositoryCallback.GetAllList
+    )
+
+    fun getDataOfTheDay(
+        today: String,
+        callback: ExerciseRepositoryCallback.GetDataOfTheDay
     )
 
 }

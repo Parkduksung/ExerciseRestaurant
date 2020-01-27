@@ -108,7 +108,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-MM-dd-a-hh-mm", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-MM-dd-a-h-m", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
 

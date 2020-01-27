@@ -9,32 +9,70 @@ class ExerciseLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val exerciseDatabase: ExerciseDatabase
 ) : ExerciseLocalDataSource {
+    override fun getDataOfTheDay(
+        date: String,
+        callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay
+    ) {
+        appExecutors.diskIO.execute {
+
+            appExecutors.diskIO.execute {
+
+                val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(date)
+
+                getDataOfTheDay.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getDataOfTheDay)
+                    } ?: callback.onFailure("error")
+
+            }
+        }
+    }
 
     override fun addExercise(
         date: String,
         time: String,
         type: String,
-        list: ExerciseSet,
+        exerciseName: String,
+        list: List<ExerciseSet>,
         callbackLocal: ExerciseLocalDataSourceCallback.AddExerciseCallback
     ) {
 
         appExecutors.diskIO.execute {
 
-            val exerciseSetResponseList = list.toExerciseSetResponse()
+
+            val exerciseSetResponseList = list.map {
+                it.toExerciseSetResponse()
+            }
 
             val exerciseEntity = ExerciseEntity(
                 date = date,
                 time = time,
                 type = type,
-                exerciseSetResponse = exerciseSetResponseList
+                exerciseName = exerciseName,
+                exerciseSetList = exerciseSetResponseList
             )
-
             val registerExercise = exerciseDatabase.exerciseDao().registerExercise(exerciseEntity)
 
             registerExercise.takeIf { true }
                 .apply {
                     callbackLocal.onSuccess("success")
                 } ?: callbackLocal.onFailure("error")
+        }
+
+    }
+
+    override fun getAllList(callback: ExerciseLocalDataSourceCallback.GetAllList) {
+
+
+        appExecutors.diskIO.execute {
+
+            val getAllList = exerciseDatabase.exerciseDao().getAll()
+
+            getAllList.takeIf { true }
+                .apply {
+                    callback.onSuccess(getAllList)
+                } ?: callback.onFailure("error")
+
         }
 
     }

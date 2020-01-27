@@ -60,6 +60,7 @@
                     android:gravity="center"
                     android:textSize="14dp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -114,36 +115,48 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                app:srcCompat="@drawable/add" />
+                app:srcCompat="@drawable/add"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/iv_remove_exercise"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                app:srcCompat="@drawable/remove" />
+                app:srcCompat="@drawable/remove"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recyclerview_add_exercise"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="6">-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5">
 
-<!--        </androidx.recyclerview.widget.RecyclerView>-->
+            <EditText
+                android:id="@+id/et_add_exercise_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="@string/hint_add_exercise_name"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textSize="20dp"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6">
+            android:layout_weight="5">
 
             <LinearLayout
                 android:id="@+id/ll_add_remove_exercise"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="ScrollViewSize">
 
             </LinearLayout>
 

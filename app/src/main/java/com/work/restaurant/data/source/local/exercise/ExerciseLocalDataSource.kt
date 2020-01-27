@@ -8,7 +8,17 @@ interface ExerciseLocalDataSource {
         date: String,
         time: String,
         type: String,
-        list: ExerciseSet,
+        exerciseName: String,
+        list: List<ExerciseSet>,
         callbackLocal: ExerciseLocalDataSourceCallback.AddExerciseCallback
+    )
+
+    fun getAllList(
+        callback: ExerciseLocalDataSourceCallback.GetAllList
+    )
+
+    fun getDataOfTheDay(
+        date: String,
+        callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay
     )
 }

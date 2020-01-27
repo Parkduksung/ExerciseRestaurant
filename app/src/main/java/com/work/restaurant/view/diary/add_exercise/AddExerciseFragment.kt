@@ -14,7 +14,6 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.diary.add_exercise.adapter.ExerciseAdapter
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
 import kotlinx.android.synthetic.main.diary_add_exercise.*
@@ -32,9 +31,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     private lateinit var viewList: ArrayList<View>
 
     private lateinit var presenter: AddExercisePresenter
-
-    private lateinit var exerciseAdapter: ExerciseAdapter
-
 
     override fun onClick(v: View?) {
 
@@ -78,34 +74,65 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             R.id.add_exercise_save -> {
 
 
-                if (btn_add_exercise_category.text != null && viewList.isNotEmpty()) {
+                if (btn_add_exercise_category.text != null && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
+
+                    val setList = mutableListOf<ExerciseSet>()
+
 
                     viewList.forEach {
 
-                        val addExerciseName: EditText =
-                            it.findViewById(R.id.et_add_exercise_name)
                         val addExerciseKg: EditText =
                             it.findViewById(R.id.et_add_exercise_kg)
                         val addExerciseCount: EditText =
                             it.findViewById(R.id.et_add_exercise_count)
 
-                        val exerciseSet = ExerciseSet(
-                            addExerciseName.text.toString(),
-                            addExerciseKg.text.toString(),
-                            addExerciseCount.text.toString()
-                        )
-
-                        if (addExerciseName.text.toString() != "" && addExerciseKg.text.toString() != "" && addExerciseCount.text.toString() != "") {
-                            presenter.addExercise(
-                                tv_add_exercise_today.text.toString(),
-                                btn_add_exercise_time.text.toString(),
-                                btn_add_exercise_category.text.toString(),
-                                exerciseSet
+                        if (addExerciseKg.text.toString() != "" && addExerciseCount.text.toString() != "") {
+                            val exerciseSet = ExerciseSet(
+                                addExerciseKg.text.toString(),
+                                addExerciseCount.text.toString()
                             )
+                            setList.add(exerciseSet)
                         }
-
                     }
 
+
+                    if (setList.isNotEmpty()) {
+
+//                        setList.forEach {
+//                            if (it.exerciseSetCount != "" && it.exerciseSetKg != "") {
+//                                presenter.addExercise(
+//                                    tv_add_exercise_today.text.toString(),
+//                                    btn_add_exercise_time.text.toString(),
+//                                    btn_add_exercise_category.text.toString(),
+//                                    et_add_exercise_name.text.toString(),
+//                                    setList
+//                                )
+//                                requireFragmentManager().beginTransaction()
+//                                    .remove(this@AddExerciseFragment)
+//                                    .commit()
+//                                Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+//                            } else {
+//                                Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT)
+//                                    .show()
+//                            }
+//                        }
+
+                        presenter.addExercise(
+                            tv_add_exercise_today.text.toString(),
+                            btn_add_exercise_time.text.toString(),
+                            btn_add_exercise_category.text.toString(),
+                            et_add_exercise_name.text.toString(),
+                            setList
+                        )
+                        requireFragmentManager().beginTransaction()
+                            .remove(this@AddExerciseFragment)
+                            .commit()
+                        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+
+                    } else {
+                        Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -117,7 +144,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exerciseAdapter = ExerciseAdapter()
         viewList = ArrayList()
     }
 
@@ -146,7 +172,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-MM-dd-a-hh-mm", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-MM-dd-a-h-m", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
 
@@ -175,7 +201,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             .setPositiveButton("변경") { _, _ ->
 
                 val changedTime =
-                    "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
+                    "${getAmPm(timePicker.hour)} 0${timePicker.minute}분"
 
                 btn_add_exercise_time.text = changedTime
 

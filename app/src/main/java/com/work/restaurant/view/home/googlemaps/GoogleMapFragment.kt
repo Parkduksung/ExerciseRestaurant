@@ -22,18 +22,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.api.GoogleApi
-import com.work.restaurant.network.model.PlaceResponse
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapContract
 import com.work.restaurant.view.home.googlemaps.presenter.GoogleMapPresenter
 import kotlinx.android.synthetic.main.google_maps.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 
@@ -52,7 +46,7 @@ class GoogleMapFragment : GoogleMapContract.View,
     private var mMarker: Marker? = null
 
     //    lateinit var mService: GoogleApi
-    internal lateinit var currentPlace: PlaceResponse
+//    internal lateinit var currentPlace: PlaceResponse
 
     override fun onMarkerClick(p0: Marker?) = false
 
@@ -62,7 +56,7 @@ class GoogleMapFragment : GoogleMapContract.View,
 
         if (toggleMap) {
             getLocation(selectAll)
-            nearByPlace("gym")
+//            nearByPlace("gym")
             placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
         }
 
@@ -125,70 +119,70 @@ class GoogleMapFragment : GoogleMapContract.View,
     }
 
 
-    private fun nearByPlace(typePlace: String) {
-
-        mMap.clear()
-
-        val url = getUrl(latLng.latitude, latLng.longitude, typePlace)
-
-        RetrofitInstance.getInstance<GoogleApi>("https://maps.googleapis.com/")
-            .getNearbyPlaces(url).enqueue(object : Callback<PlaceResponse> {
-                override fun onFailure(call: Call<PlaceResponse>?, t: Throwable?) {
-                    Toast.makeText(activity, "" + t!!.message, Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onResponse(
-                    call: Call<PlaceResponse>?,
-                    response: Response<PlaceResponse>?
-                ) {
-
-                    Log.d("결과결과4", "${response?.body()?.results?.size}")
-
-                    if (response != null) {
-                        currentPlace = response.body()
-                        if (response.isSuccessful) {
-
-                            currentPlace = response.body()
-                            if (response.body().results?.size == 0) {
-                                Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG)
-                                    .show()
-                            } else {
-                                for (i in 0 until (response.body().results?.size ?: 0)) {
-
-                                    val marketOption = MarkerOptions()
-                                    val googlePlace = response.body().results!![i]
-                                    val lat = googlePlace.geometry!!.location!!.lat
-                                    val lng = googlePlace.geometry!!.location!!.lng
-                                    val placeName = googlePlace.name
-                                    val latLng = LatLng(lat, lng)
-
-                                    marketOption.position(latLng)
-                                    marketOption.title(placeName)
-//                        아이콘 바꾸는거. bitmap size 생각도 해야됨.
-//                        if(typePlace == "hospital"){
-//                            marketOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cooking))
+//    private fun nearByPlace(typePlace: String) {
+//
+//        mMap.clear()
+//
+//        val url = getUrl(latLng.latitude, latLng.longitude, typePlace)
+//
+//        RetrofitInstance.getInstance<GoogleApi>("https://maps.googleapis.com/")
+//            .getNearbyPlaces(url).enqueue(object : Callback<PlaceResponse> {
+//                override fun onFailure(call: Call<PlaceResponse>?, t: Throwable?) {
+//                    Toast.makeText(activity, "" + t!!.message, Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onResponse(
+//                    call: Call<PlaceResponse>?,
+//                    response: Response<PlaceResponse>?
+//                ) {
+//
+//                    Log.d("결과결과4", "${response?.body()?.results?.size}")
+//
+//                    if (response != null) {
+//                        currentPlace = response.body()
+//                        if (response.isSuccessful) {
+//
+//                            currentPlace = response.body()
+//                            if (response.body().results?.size == 0) {
+//                                Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG)
+//                                    .show()
+//                            } else {
+//                                for (i in 0 until (response.body().results?.size ?: 0)) {
+//
+//                                    val marketOption = MarkerOptions()
+//                                    val googlePlace = response.body().results!![i]
+//                                    val lat = googlePlace.geometry!!.location!!.lat
+//                                    val lng = googlePlace.geometry!!.location!!.lng
+//                                    val placeName = googlePlace.name
+//                                    val latLng = LatLng(lat, lng)
+//
+//                                    marketOption.position(latLng)
+//                                    marketOption.title(placeName)
+////                        아이콘 바꾸는거. bitmap size 생각도 해야됨.
+////                        if(typePlace == "hospital"){
+////                            marketOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cooking))
+////                        }
+//
+//                                    marketOption.icon(
+//                                        BitmapDescriptorFactory.defaultMarker(
+//                                            BitmapDescriptorFactory.HUE_BLUE
+//                                        )
+//                                    )
+//
+//                                    mMap.addMarker(marketOption)
+//
+//                                }
+//                            }
+//
 //                        }
-
-                                    marketOption.icon(
-                                        BitmapDescriptorFactory.defaultMarker(
-                                            BitmapDescriptorFactory.HUE_BLUE
-                                        )
-                                    )
-
-                                    mMap.addMarker(marketOption)
-
-                                }
-                            }
-
-                        }
-                    } else {
-                        Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-            })
-
-    }
+//                    } else {
+//                        Toast.makeText(App.instance.context(), "결과 없음.", Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//
+//            })
+//
+//    }
 
     private fun getUrl(latitude: Double, longitude: Double, typePlace: String): String {
 
@@ -216,7 +210,7 @@ class GoogleMapFragment : GoogleMapContract.View,
 
                 mMarker?.remove()
                 latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                nearByPlace("gym")
+//                nearByPlace("gym")
                 placeMarkerOnMap(latLng)
                 mMap.isMyLocationEnabled = true
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
@@ -281,7 +275,6 @@ class GoogleMapFragment : GoogleMapContract.View,
 
         mMarker = mMap.addMarker(markerOptions)
     }
-
 
 
     override fun onResume() {

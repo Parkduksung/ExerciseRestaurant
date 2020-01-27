@@ -10,5 +10,7 @@
     <color name="colorMint">#00a000</color>
     <color name="colorGrayBasic">#E0E0E0</color>
     <color name="colorGrayDark">#949494</color>
+    <color name="colorYellow">#ffd400</color>
+    <color name="colorPurple">#8b00ff</color>
     <color name="transparent">#4D000000</color>
 </resources>

@@ -99,7 +99,7 @@
     <string name="item_arm">팔</string>
     <string name="add_exercise_category_today">요일</string>
     <string name="add_exercise_category_time">시간</string>
-    <string name="add_exercise_list">종류</string>
+    <string name="add_exercise_list">운동부위</string>
     <string name="add_exercise_save">저장</string>
     <string name="add_exercise_cancel">취소</string>
     <string name="add_exercise_main">운동 추가</string>

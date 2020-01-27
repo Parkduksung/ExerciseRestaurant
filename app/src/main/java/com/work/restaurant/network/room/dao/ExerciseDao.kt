@@ -18,4 +18,8 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise")
     fun getAll(): List<ExerciseEntity>
 
+
+    @Query("SELECT * FROM exercise WHERE date = (:today)")
+    fun getTodayItem(today: String): List<ExerciseEntity>
+
 }

@@ -2,7 +2,10 @@ package com.work.restaurant.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ExerciseModel(
+data class DiaryModel(
+    @SerializedName("kind")
+    val kind: Int,
+
     @SerializedName("date")
     val date: String,
 
@@ -12,23 +15,19 @@ data class ExerciseModel(
     @SerializedName("type")
     val type: String,
 
+    @SerializedName("memo")
+    val memo: String?,
+
     @SerializedName("exercise_name")
-    val exerciseSetName: String,
+    val exerciseSetName: String?,
 
     @SerializedName("set")
-    val exerciseSet: List<ExerciseSet>
-
+    val exerciseSet: List<ExerciseSet>?
 ) {
 
-    fun toDiaryModel(): DiaryModel =
-        DiaryModel(
-            1,
-            date,
-            time,
-            type,
-            null,
-            exerciseSetName,
-            exerciseSet
-        )
-}
+    companion object {
+        const val EAT = 0
+        const val EXERCISE = 1
+    }
 
+}

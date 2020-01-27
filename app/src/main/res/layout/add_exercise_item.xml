@@ -4,30 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="15"
+    android:weightSum="2"
     tools:ignore="NestedWeights, ContentDescription, SpUsage,Autofill">
 
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="9">-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/et_add_exercise_name"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="50dp"-->
+    <!--            android:gravity="center"-->
+    <!--            android:hint="@string/hint_add_exercise_name"-->
+    <!--            android:inputType="text"-->
+    <!--            android:singleLine="true"-->
+    <!--            android:textSize="15dp" />-->
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="9">
-
-        <EditText
-            android:id="@+id/et_add_exercise_name"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:hint="@string/hint_add_exercise_name"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textSize="15dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3">
+        android:layout_weight="1">
 
         <EditText
             android:id="@+id/et_add_exercise_kg"
@@ -43,7 +43,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3">
+        android:layout_weight="1">
 
         <EditText
             android:id="@+id/et_add_exercise_count"

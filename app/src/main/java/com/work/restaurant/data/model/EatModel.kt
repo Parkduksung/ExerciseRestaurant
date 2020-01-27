@@ -12,25 +12,16 @@ data class EatModel(
     val type: Int,
     @SerializedName("memo")
     val memo: String
-)
+) {
+    fun toDiaryModel(): DiaryModel =
+        DiaryModel(
+            0,
+            date,
+            time,
+            type.toString(),
+            memo,
+            null,
+            null
+        )
 
-//{
-//
-//    fun toDataModel(
-//        date: String,
-//        time: String,
-//        type: Int,
-//        memo: String
-//    ): DataModel {
-//
-//        val year = date.substring(0, 4) + "년"
-//        val month = date.substring(4, 6) + "월"
-//        val day = date.substring(6, 8) + "일"
-//
-//        val totalDate = "$year $month $day"
-//
-//
-//    }
-//
-//
-//}
+}

@@ -9,7 +9,7 @@
     tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage">
 
     <TextView
-        android:id="@+id/add_type"
+        android:id="@+id/add_eat_type"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_background"
@@ -24,15 +24,24 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/add_memo"
+            android:id="@+id/add_eat_memo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorGrayBasic" />
 
         <TextView
-            android:id="@+id/add_time"
+            android:id="@+id/add_eat_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_asdf"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
     </LinearLayout>
 
 </LinearLayout>

@@ -11,11 +11,18 @@ class AddExercisePresenter(
     AddExerciseContract.Presenter {
 
 
-    override fun addExercise(date: String, time: String, type: String, list: ExerciseSet) {
+    override fun addExercise(
+        date: String,
+        time: String,
+        type: String,
+        exerciseName: String,
+        list: List<ExerciseSet>
+    ) {
         exerciseRepository.addExercise(
             date,
             time,
             type,
+            exerciseName,
             list,
             object : ExerciseRepositoryCallback.AddExerciseCallback {
                 override fun onSuccess(msg: String) {

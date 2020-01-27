@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
+import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -25,24 +27,33 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     View.OnClickListener,
     DiaryContract.View,
     AdapterDataListener {
+    override fun showExerciseData(data: List<ExerciseModel>) {
+        val getDiaryModel = data.map {
+            it.toDiaryModel()
+        }
+        diaryModel.addAll(getDiaryModel)
+    }
+
     override fun getData(data: String) {
 
         Toast.makeText(this.context, data, Toast.LENGTH_SHORT).show()
 
     }
 
-    override fun showData(data: List<EatModel>) {
+    override fun showEatData(data: List<EatModel>) {
 
-        recyclerview_diary.run {
-            diaryAdapter.clearListData()
-            diaryAdapter.addAllData(data)
+        val getDiaryModel = data.map {
+            it.toDiaryModel()
         }
+
+        diaryModel.addAll(getDiaryModel)
 
     }
 
 
     private lateinit var presenter: DiaryPresenter
     private lateinit var diaryAdapter: DiaryAdapter
+    private var diaryModel = mutableListOf<DiaryModel>()
 
     override fun onClick(v: View?) {
 
@@ -83,10 +94,12 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
         presenter = DiaryPresenter(
             this,
-            Injection.provideEatRepository()
+            Injection.provideEatRepository(),
+            Injection.provideExerciseRepository()
         )
 
         init()
+
 
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
@@ -97,14 +110,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     private fun init() {
-
-        recyclerview_diary.run {
-
-            this.adapter = diaryAdapter
-
-            layoutManager = LinearLayoutManager(this.context)
-
-        }
 
         val currentTime = Calendar.getInstance().time
 
@@ -121,8 +126,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dateArray[2],
                 dateArray[3]
             )
-
-        presenter.todayData(
+        presenter.todayEatData(
             getString(
                 R.string.current_date,
                 dateArray[0],
@@ -130,8 +134,24 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dateArray[2]
             )
         )
-    }
 
+        presenter.todayExerciseData(
+            getString(
+                R.string.current_date,
+                dateArray[0],
+                dateArray[1],
+                dateArray[2]
+            )
+        )
+
+        recyclerview_diary.run {
+            this.adapter = diaryAdapter
+            diaryAdapter.clearListData()
+            diaryAdapter.addAllData(diaryModel.distinct())
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
+    }
 
     companion object {
         private const val TAG = "DiaryFragment"
@@ -142,6 +162,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun onResume() {
         super.onResume()
         init()
+
 //        presenter.data()
     }
 

@@ -6,14 +6,18 @@ interface AddExerciseContract {
 
     interface View {
 
-
         fun showAddResult(msg: String)
-
 
     }
 
     interface Presenter {
 
-        fun addExercise(date: String, time: String, type: String, list: ExerciseSet)
+        fun addExercise(
+            date: String,
+            time: String,
+            type: String,
+            exerciseName: String,
+            list: List<ExerciseSet>
+        )
     }
 }
