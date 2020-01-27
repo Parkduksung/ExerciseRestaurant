@@ -1,12 +1,12 @@
-package com.work.restaurant.network.model
+package com.work.restaurant.network.room.entity
 
 import androidx.room.ColumnInfo
 import com.work.restaurant.data.model.ExerciseSet
 
 data class ExerciseSetResponse(
-    @ColumnInfo(name = "exerciseSet_kg")
+    @ColumnInfo(name = "exercise_set_kg")
     val exerciseSetKg: String,
-    @ColumnInfo(name = "exerciseSet_count")
+    @ColumnInfo(name = "exercise_set_count")
     val exerciseSetCount: String
 ) {
     fun toExerciseSet(): ExerciseSet =

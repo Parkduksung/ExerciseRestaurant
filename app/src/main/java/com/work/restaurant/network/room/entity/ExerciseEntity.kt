@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.work.restaurant.data.model.ExerciseModel
-import com.work.restaurant.network.model.ExerciseSetResponse
 import com.work.restaurant.network.room.converter.ExerciseSetConverter
 
 @Entity(tableName = "exercise")

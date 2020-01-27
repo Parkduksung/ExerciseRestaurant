@@ -163,7 +163,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         super.onResume()
         init()
 
-//        presenter.data()
     }
 
 }

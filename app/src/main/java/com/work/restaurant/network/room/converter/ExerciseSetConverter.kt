@@ -2,7 +2,7 @@ package com.work.restaurant.network.room.converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.work.restaurant.network.model.ExerciseSetResponse
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 
 class ExerciseSetConverter {
     @TypeConverter
