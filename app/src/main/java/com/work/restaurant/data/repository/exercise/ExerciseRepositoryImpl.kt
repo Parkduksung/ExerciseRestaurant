@@ -8,6 +8,23 @@ import com.work.restaurant.network.room.entity.ExerciseEntity
 class ExerciseRepositoryImpl(
     private val exerciseLocalDataSourceImpl: ExerciseLocalDataSourceImpl
 ) : ExerciseRepository {
+    override fun deleteEat(
+        data: ExerciseEntity,
+        callback: ExerciseRepositoryCallback.DeleteExerciseCallback
+    ) {
+        exerciseLocalDataSourceImpl.deleteEat(
+            data,
+            object : ExerciseLocalDataSourceCallback.DeleteExerciseCallback {
+                override fun onSuccess(msg: String) {
+                    callback.onSuccess(msg)
+                }
+
+                override fun onFailure(msg: String) {
+                    callback.onFailure(msg)
+                }
+            })
+    }
+
     override fun getList(callback: ExerciseRepositoryCallback.GetAllList) {
         exerciseLocalDataSourceImpl.getAllList(object : ExerciseLocalDataSourceCallback.GetAllList {
             override fun onSuccess(list: List<ExerciseEntity>) {

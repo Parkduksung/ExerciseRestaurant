@@ -27,6 +27,7 @@ data class ExerciseEntity(
             it.toExerciseSet()
         }
         return ExerciseModel(
+            exerciseNum,
             date,
             time,
             type,

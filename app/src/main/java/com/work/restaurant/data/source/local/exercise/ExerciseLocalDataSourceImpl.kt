@@ -9,6 +9,22 @@ class ExerciseLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val exerciseDatabase: ExerciseDatabase
 ) : ExerciseLocalDataSource {
+    override fun deleteEat(
+        data: ExerciseEntity,
+        callback: ExerciseLocalDataSourceCallback.DeleteExerciseCallback
+    ) {
+        appExecutors.diskIO.execute {
+
+            val deleteExercise = exerciseDatabase.exerciseDao().deleteExercise(data)
+
+            deleteExercise.takeIf { true }
+                .apply {
+                    callback.onSuccess("success")
+                } ?: callback.onFailure("error")
+
+        }
+    }
+
     override fun getDataOfTheDay(
         date: String,
         callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay

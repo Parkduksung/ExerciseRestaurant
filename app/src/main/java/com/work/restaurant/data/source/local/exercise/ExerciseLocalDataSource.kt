@@ -1,6 +1,7 @@
 package com.work.restaurant.data.source.local.exercise
 
 import com.work.restaurant.data.model.ExerciseSet
+import com.work.restaurant.network.room.entity.ExerciseEntity
 
 interface ExerciseLocalDataSource {
 
@@ -20,5 +21,10 @@ interface ExerciseLocalDataSource {
     fun getDataOfTheDay(
         date: String,
         callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay
+    )
+
+    fun deleteEat(
+        data: ExerciseEntity,
+        callback: ExerciseLocalDataSourceCallback.DeleteExerciseCallback
     )
 }

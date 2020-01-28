@@ -1,9 +1,6 @@
 package com.work.restaurant.network.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.work.restaurant.network.room.entity.ExerciseEntity
 
 @Dao
@@ -21,5 +18,10 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM exercise WHERE date = (:today)")
     fun getTodayItem(today: String): List<ExerciseEntity>
+
+    @Delete
+    fun deleteExercise(exerciseEntity: ExerciseEntity)
+
+
 
 }

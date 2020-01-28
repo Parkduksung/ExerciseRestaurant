@@ -10,6 +10,12 @@ interface ExerciseRepositoryCallback {
         fun onFailure(msg: String)
     }
 
+    interface DeleteExerciseCallback {
+        fun onSuccess(msg: String)
+        fun onFailure(msg: String)
+
+    }
+
 
     interface GetAllList {
         fun onSuccess(list: List<ExerciseEntity>)

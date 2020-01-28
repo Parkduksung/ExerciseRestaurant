@@ -1,10 +1,13 @@
 package com.work.restaurant.view.diary.main
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -26,19 +29,91 @@ import java.util.*
 class DiaryFragment : BaseFragment(R.layout.diary_main),
     View.OnClickListener,
     DiaryContract.View,
-    AdapterDataListener {
+    AdapterDataListener.GetList {
+    override fun showResult(msg: String) {
+        Log.d("결과", msg)
+    }
+
+    override fun getData(data: DiaryModel) {
+
+        if (data.kind == 1) {
+
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("삭제")
+            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
+            alertDialog.setPositiveButton(
+                "삭제",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                        recyclerview_diary.run {
+                            diaryAdapter.deleteDate(data)
+                        }
+                        presenter.deleteExercise(data)
+                        diaryModel.remove(data)
+                    }
+                })
+            alertDialog.setNegativeButton("취소", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                }
+            })
+
+            alertDialog.show()
+
+        } else {
+
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("삭제")
+            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
+            alertDialog.setPositiveButton(
+                "삭제",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                        recyclerview_diary.run {
+                            diaryAdapter.deleteDate(data)
+                        }
+                        presenter.deleteEat(data)
+                        diaryModel.remove(data)
+                    }
+                })
+            alertDialog.setNegativeButton("취소", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                }
+            })
+
+            alertDialog.show()
+
+        }
+
+
+    }
+
+
     override fun showExerciseData(data: List<ExerciseModel>) {
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
+
         diaryModel.addAll(getDiaryModel)
     }
 
-    override fun getData(data: String) {
-
-        Toast.makeText(this.context, data, Toast.LENGTH_SHORT).show()
-
-    }
 
     override fun showEatData(data: List<EatModel>) {
 
@@ -50,10 +125,9 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     }
 
-
     private lateinit var presenter: DiaryPresenter
     private lateinit var diaryAdapter: DiaryAdapter
-    private var diaryModel = mutableListOf<DiaryModel>()
+    private var diaryModel = mutableSetOf<DiaryModel>()
 
     override fun onClick(v: View?) {
 
@@ -111,6 +185,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun init() {
 
+
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
@@ -147,7 +222,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         recyclerview_diary.run {
             this.adapter = diaryAdapter
             diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.distinct())
+            diaryAdapter.addAllData(diaryModel.toList())
             layoutManager = LinearLayoutManager(this.context)
         }
 

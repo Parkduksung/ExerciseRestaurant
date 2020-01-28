@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.eat
 
-import com.work.restaurant.network.model.EatResponse
 import com.work.restaurant.network.room.entity.EatEntity
 
 interface EatLocalDataSourceCallback {
@@ -13,7 +12,7 @@ interface EatLocalDataSourceCallback {
 
     interface DeleteEatCallback {
 
-        fun onSuccess()
+        fun onSuccess(msg: String)
         fun onFailure(msg: String)
 
     }
@@ -27,7 +26,7 @@ interface EatLocalDataSourceCallback {
 
     interface GetAllList {
 
-        fun onSuccess(list: List<EatResponse>)
+        fun onSuccess(list: List<EatEntity>)
         fun onFailure(msg: String)
 
     }

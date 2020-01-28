@@ -18,7 +18,7 @@ class DiaryAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    private lateinit var adapterListener: AdapterDataListener
+    private lateinit var adapterListener: AdapterDataListener.GetList
     private val diaryList = mutableListOf<DiaryModel>()
 
 
@@ -80,6 +80,25 @@ class DiaryAdapter :
         fun bind(item: DiaryModel) {
 
             addSet.removeAllViews()
+
+
+            if (::adapterListener.isInitialized) {
+                itemView.setOnClickListener {
+
+                    adapterListener.getData(item)
+                }
+            } else {
+                adapterListener = object : AdapterDataListener.GetList {
+                    override fun getData(data: DiaryModel) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                }
+                itemView.setOnClickListener {
+                    adapterListener.getData(item)
+                }
+            }
+
 
             var i = 0
             addType.text = "운동"
@@ -154,16 +173,18 @@ class DiaryAdapter :
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.date)
+
+                    adapterListener.getData(item)
                 }
             } else {
-                adapterListener = object : AdapterDataListener {
-                    override fun getData(data: String) {
+                adapterListener = object : AdapterDataListener.GetList {
+                    override fun getData(data: DiaryModel) {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
+
                 }
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.date)
+                    adapterListener.getData(item)
                 }
             }
 
@@ -189,7 +210,13 @@ class DiaryAdapter :
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+    fun deleteDate(diaryModel: DiaryModel) {
+        diaryList.remove(diaryModel)
+        notifyDataSetChanged()
+    }
+
+
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetList) {
         adapterListener = listenerAdapterAdapter
     }
 

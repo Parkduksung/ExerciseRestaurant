@@ -152,11 +152,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         return if (hour > 12) {
             "오후 ${hour - 12}시"
         } else {
-            if (hour == 0) {
-                "오전 ${hour + 12}시"
-            } else {
-                "오전 ${hour}시"
-            }
+            "오전 ${hour}시"
         }
     }
 

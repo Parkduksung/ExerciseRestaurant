@@ -9,6 +9,13 @@ interface ExerciseLocalDataSourceCallback {
         fun onFailure(msg: String)
     }
 
+    interface DeleteExerciseCallback {
+
+        fun onSuccess(msg: String)
+        fun onFailure(msg: String)
+
+    }
+
 
     interface GetAllList {
 

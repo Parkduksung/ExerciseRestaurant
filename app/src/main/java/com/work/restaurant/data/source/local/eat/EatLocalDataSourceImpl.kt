@@ -1,7 +1,6 @@
 package com.work.restaurant.data.source.local.eat
 
 import android.util.Log
-import com.work.restaurant.network.model.EatResponse
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
@@ -10,14 +9,29 @@ class EatLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val eatDatabase: EatDatabase
 ) : EatLocalDataSource {
+
+    override fun deleteEat(
+        data: EatEntity,
+        callback: EatLocalDataSourceCallback.DeleteEatCallback
+    ) {
+        appExecutors.diskIO.execute {
+
+            val deleteEat = eatDatabase.eatDao().deleteEat(data)
+
+            deleteEat.takeIf { true }
+                .apply {
+                    callback.onSuccess("success")
+                } ?: callback.onFailure("error")
+
+        }
+    }
+
     override fun getAllList(callback: EatLocalDataSourceCallback.GetAllList) {
 
         appExecutors.diskIO.execute {
 
-            val getAllList: List<EatResponse> =
-                eatDatabase.eatDao().getAll().map {
-                    it.toEatResponse()
-                }
+            val getAllList =
+                eatDatabase.eatDao().getAll()
 
             getAllList.forEach {
                 Log.d("결콰콰", it.date)
@@ -55,11 +69,6 @@ class EatLocalDataSourceImpl(
 
         }
 
-
-    }
-
-
-    override fun deleteEat(date: String, callback: EatLocalDataSourceCallback.DeleteEatCallback) {
 
     }
 

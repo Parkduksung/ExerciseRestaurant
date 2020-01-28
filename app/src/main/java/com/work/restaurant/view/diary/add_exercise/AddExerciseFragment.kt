@@ -201,7 +201,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             .setPositiveButton("변경") { _, _ ->
 
                 val changedTime =
-                    "${getAmPm(timePicker.hour)} 0${timePicker.minute}분"
+                    "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
 
                 btn_add_exercise_time.text = changedTime
 
@@ -217,11 +217,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         return if (hour > 12) {
             "오후 ${hour - 12}시"
         } else {
-            if (hour == 0) {
-                "오전 ${hour + 12}시"
-            } else {
-                "오전 ${hour}시"
-            }
+            "오전 ${hour}시"
         }
     }
 

@@ -1,6 +1,7 @@
 package com.work.restaurant.data.model
 
 data class ExerciseModel(
+    val exerciseNum: Int,
     val date: String,
     val time: String,
     val type: String,
@@ -10,11 +11,13 @@ data class ExerciseModel(
 
     fun toDiaryModel(): DiaryModel =
         DiaryModel(
+            0,
+            exerciseNum,
             1,
             date,
             time,
             type,
-            null,
+            "",
             exerciseSetName,
             exerciseSet
         )
