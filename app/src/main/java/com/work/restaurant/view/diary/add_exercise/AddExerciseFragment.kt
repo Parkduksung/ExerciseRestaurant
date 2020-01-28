@@ -98,25 +98,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
                     if (setList.isNotEmpty()) {
 
-//                        setList.forEach {
-//                            if (it.exerciseSetCount != "" && it.exerciseSetKg != "") {
-//                                presenter.addExercise(
-//                                    tv_add_exercise_today.text.toString(),
-//                                    btn_add_exercise_time.text.toString(),
-//                                    btn_add_exercise_category.text.toString(),
-//                                    et_add_exercise_name.text.toString(),
-//                                    setList
-//                                )
-//                                requireFragmentManager().beginTransaction()
-//                                    .remove(this@AddExerciseFragment)
-//                                    .commit()
-//                                Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-//                            } else {
-//                                Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT)
-//                                    .show()
-//                            }
-//                        }
-
                         presenter.addExercise(
                             tv_add_exercise_today.text.toString(),
                             btn_add_exercise_time.text.toString(),
@@ -292,9 +273,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     override fun onResume() {
         super.onResume()
 
-        if (::viewList.isInitialized) {
-            Log.d("결곸", viewList.size.toString())
-        }
     }
 
 }

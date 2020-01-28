@@ -5,8 +5,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.work.restaurant.util.App
 import java.util.*
 
-class GoogleMapPresenter(private val googleMapView: GoogleMapContract.View) :
+class GoogleMapPresenter(
+    private val googleMapView: GoogleMapContract.View
+) :
     GoogleMapContract.Presenter {
+
+
     override fun getAddress(latLng: LatLng): String {
 
         val geocoder = Geocoder(App.instance.context(), Locale.getDefault())

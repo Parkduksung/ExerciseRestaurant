@@ -13,5 +13,6 @@ interface GoogleMapContract {
 
         fun getAddress(latLng: LatLng): String
 
+
     }
 }

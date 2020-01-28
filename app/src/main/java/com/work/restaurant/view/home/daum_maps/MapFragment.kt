@@ -6,6 +6,7 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.location.Geocoder
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -15,9 +16,15 @@ import androidx.core.view.isEmpty
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.data.repository.kakao.KakaoRepositoryImpl
+import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.network.model.Documents
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.home.daum_maps.presenter.MapContract
+import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
 import kotlinx.android.synthetic.main.map.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -25,15 +32,45 @@ import net.daum.mf.map.api.MapView
 import java.util.*
 
 
-class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventListener {
+class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventListener,
+    MapContract.View {
+    override fun showKakaoData(list: List<Documents>) {
+
+        Log.d("카카오결과", list.size.toString())
+
+        list.forEach {
+            Log.d("카카오결과", it.addressName)
+            Log.d("카카오결과", it.categoryName)
+            Log.d("카카오결과", it.distance)
+            Log.d("카카오결과", it.locationX)
+            Log.d("카카오결과", it.locationY)
+            Log.d("카카오결과", it.placeName)
+        }
+    }
 
     private lateinit var mapView: MapView
     private lateinit var mapPOIItem: MapPOIItem
     private lateinit var currentPOIItem: MapPOIItem
+    private lateinit var presenter: MapPresenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
+
+        presenter = MapPresenter(
+            this,
+            KakaoRepositoryImpl.getInstance(
+                KakaoRemoteDataSourceImpl.getInstance(
+                    RetrofitInstance.getInstance(
+                        "https://dapi.kakao.com/"
+                    )
+                )
+            )
+        )
+
+        presenter.getKakaoData()
+
+        Log.d("카카오결과", "1")
     }
 
     private fun createMarker(mapPOIItem: MapPOIItem, location: String, mapPoint: MapPoint) {
@@ -165,6 +202,11 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
         mapView = MapView(this.context)
         mapView.setCurrentLocationEventListener(this)
+
+        val uri = "daummaps://search?q=맛집&p=37.537229,127.005515"
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startActivity(intent)
 
         map_view.addView(mapView)
     }
