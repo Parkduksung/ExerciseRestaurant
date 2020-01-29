@@ -108,29 +108,29 @@ class DiaryAdapter :
 
             when (item.type) {
 
-                "가슴" -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[0] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorAccent)
                 }
-                "등" -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[1] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorYellow)
                 }
-                "어깨" -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[2] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorMint)
                 }
-                "팔" -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[3] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorPurple)
                 }
-                "다리" -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[4] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorBlue)
                 }
             }
 
-            item.exerciseSet?.forEach {
+            item.exerciseSet.forEach {
 
                 i += 1
 
