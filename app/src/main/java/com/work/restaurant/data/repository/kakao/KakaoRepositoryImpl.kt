@@ -4,28 +4,32 @@ import android.util.Log
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSource
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceCallback
 import com.work.restaurant.ext.isConnectedToNetwork
-import com.work.restaurant.network.model.Documents
+import com.work.restaurant.network.model.kakao.Documents
 import com.work.restaurant.util.App
 
 class KakaoRepositoryImpl private constructor(
     private val kakaoRemoteDataSource: KakaoRemoteDataSource
 ) : KakaoRepository {
-    override fun getKakaoResult(callback: KakaoRepositoryCallback) {
-
+    override fun getKakaoResult(
+        currentX: Double,
+        currentY: Double,
+        callback: KakaoRepositoryCallback
+    ) {
         if (App.instance.context().isConnectedToNetwork()) {
-            kakaoRemoteDataSource.getData(object : KakaoRemoteDataSourceCallback {
-                override fun onSuccess(fitnessList: List<Documents>) {
-                    callback.onSuccess(fitnessList)
-                    Log.d("카카오결과", "3")
-                }
+            kakaoRemoteDataSource.getData(
+                currentX,
+                currentY,
+                object : KakaoRemoteDataSourceCallback {
+                    override fun onSuccess(kakaoList: List<Documents>) {
+                        callback.onSuccess(kakaoList)
+                        Log.d("카카오결과", "3")
+                    }
 
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-                }
-            })
+                    override fun onFailure(message: String) {
+                        callback.onFailure(message)
+                    }
+                })
         }
-
-
     }
 
 

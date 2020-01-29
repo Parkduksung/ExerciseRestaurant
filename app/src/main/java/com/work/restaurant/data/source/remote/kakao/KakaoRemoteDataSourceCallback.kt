@@ -1,10 +1,10 @@
 package com.work.restaurant.data.source.remote.kakao
 
-import com.work.restaurant.network.model.Documents
+import com.work.restaurant.network.model.kakao.Documents
 
 interface KakaoRemoteDataSourceCallback {
 
-    fun onSuccess(fitnessList: List<Documents>)
+    fun onSuccess(kakaoList: List<Documents>)
 
     fun onFailure(message: String)
 }

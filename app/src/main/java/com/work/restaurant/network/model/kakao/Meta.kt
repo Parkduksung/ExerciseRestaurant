@@ -1,4 +1,4 @@
-package com.work.restaurant.network.model
+package com.work.restaurant.network.model.kakao
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,7 +8,7 @@ data class Meta(
     @SerializedName("pageable_count")
     val pageableCount: Int,
     @SerializedName("is_end")
-    val isEnd: Int,
+    val isEnd: Boolean,
     @SerializedName("same_name")
-    val sameName: Int
+    val sameName: SameName
 )

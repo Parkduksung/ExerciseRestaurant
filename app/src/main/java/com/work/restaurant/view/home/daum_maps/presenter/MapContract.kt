@@ -1,16 +1,22 @@
 package com.work.restaurant.view.home.daum_maps.presenter
 
-import com.work.restaurant.network.model.Documents
+import com.work.restaurant.data.model.KakaoModel
 
 interface MapContract {
 
     interface View {
-        fun showKakaoData(list: List<Documents>)
+        fun showKakaoData(
+            currentX: Double,
+            currentY: Double, list: List<KakaoModel>
+        )
     }
 
 
     interface Presenter {
 
-        fun getKakaoData()
+        fun getKakaoData(
+            currentX: Double,
+            currentY: Double
+        )
     }
 }

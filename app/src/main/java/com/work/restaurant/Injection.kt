@@ -4,8 +4,12 @@ import com.work.restaurant.data.repository.eat.EatRepository
 import com.work.restaurant.data.repository.eat.EatRepositoryImpl
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
 import com.work.restaurant.data.repository.exercise.ExerciseRepositoryImpl
+import com.work.restaurant.data.repository.kakao.KakaoRepository
+import com.work.restaurant.data.repository.kakao.KakaoRepositoryImpl
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceImpl
+import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceImpl
+import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.database.ExerciseDatabase
 import com.work.restaurant.util.App
@@ -34,5 +38,15 @@ object Injection {
 
         )
 
+    fun provideKakaoRepository(): KakaoRepository =
+        KakaoRepositoryImpl.getInstance(
+            KakaoRemoteDataSourceImpl.getInstance(
+                RetrofitInstance.getInstance(
+                    KAKAO_URL
+                )
+            )
+        )
 
+
+    const val KAKAO_URL = "https://dapi.kakao.com/"
 }

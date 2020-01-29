@@ -30,6 +30,13 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     View.OnClickListener,
     DiaryContract.View,
     AdapterDataListener.GetList {
+
+
+    private lateinit var presenter: DiaryPresenter
+    private lateinit var diaryAdapter: DiaryAdapter
+    private var diaryModel = mutableSetOf<DiaryModel>()
+
+
     override fun showResult(msg: String) {
         Log.d("결과", msg)
     }
@@ -125,9 +132,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     }
 
-    private lateinit var presenter: DiaryPresenter
-    private lateinit var diaryAdapter: DiaryAdapter
-    private var diaryModel = mutableSetOf<DiaryModel>()
 
     override fun onClick(v: View?) {
 

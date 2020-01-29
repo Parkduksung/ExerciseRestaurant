@@ -22,6 +22,7 @@ class DiaryPresenter(
             object : ExerciseRepositoryCallback.DeleteExerciseCallback {
                 override fun onSuccess(msg: String) {
                     diaryView.showResult(msg)
+
                 }
 
                 override fun onFailure(msg: String) {
