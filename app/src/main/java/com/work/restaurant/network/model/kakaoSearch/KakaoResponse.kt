@@ -1,11 +1,11 @@
-package com.work.restaurant.network.model.kakao
+package com.work.restaurant.network.model.kakaoSearch
 
 import com.google.gson.annotations.SerializedName
 
 data class KakaoResponse(
     @SerializedName("documents")
-    val documents: List<Documents>,
+    val documents: List<KakaoSearchDocuments>,
     @SerializedName("meta")
-    val meta: Meta
+    val kakaoSearchMeta: KakaoSearchMeta
 )
 

@@ -1,9 +1,9 @@
-package com.work.restaurant.network.model.kakao
+package com.work.restaurant.network.model.kakaoSearch
 
 import com.google.gson.annotations.SerializedName
 import com.work.restaurant.data.model.KakaoModel
 
-data class Documents(
+data class KakaoSearchDocuments(
     @SerializedName("address_name")
     val addressName: String,
     @SerializedName("category_group_code")
@@ -39,6 +39,4 @@ data class Documents(
             locationX,
             locationY
         )
-
-
 }

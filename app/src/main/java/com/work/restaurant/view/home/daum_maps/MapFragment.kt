@@ -56,7 +56,9 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
 
         list.forEach {
-            Log.d("카카오결과", it.placeName)
+            //            Log.d("카카오결과", it.placeName)
+
+            Log.d("카카오결과", it.placeUrl)
             val mapPoint =
                 MapPoint.mapPointWithGeoCoord(it.locationY.toDouble(), it.locationX.toDouble())
             showKakaoDataList(kakaoPOIItem, it.placeName, mapPoint)
@@ -87,6 +89,27 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     private fun showCurrentMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
 
         if (mapPOIItem == currentPOIItem) {
+
+            val geoCoder = Geocoder(context, Locale.getDefault())
+
+            val address = geoCoder.getFromLocation(
+                mapPoint.mapPointGeoCoord.latitude,
+                mapPoint.mapPointGeoCoord.longitude,
+                1
+            )
+
+
+            if (address.isNotEmpty()) {
+
+                Log.d("내위치결과", address[0].getAddressLine(0))
+            }
+
+
+
+
+
+            selectAll = address[0].getAddressLine(0)
+
             mapPOIItem.itemName = "내위치"
         } else {
             mapPOIItem.itemName = selectAll
@@ -152,6 +175,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 //            mapView.removePOIItem(currentPOIItem)
 
             val geoCoder = Geocoder(context, Locale.getDefault())
+
             val addresses = geoCoder.getFromLocationName(location, 1)
 
             if (addresses.isNotEmpty()) {

@@ -64,6 +64,8 @@
 
     <string name="google_geo_api_key">AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4</string>
     <string name="kakao_map_api_key">e1a49279a8c0b5c209b02042f5ba74fd</string>
+
+
     <string name="home_address_main_text">주소 설정</string>
     <string name="btn_eat">식단</string>
     <string name="btn_exercise">운동</string>
@@ -106,9 +108,6 @@
     <string name="hint_add_exercise_name">운동종목을 입력하세요</string>
     <string name="hint_add_exercise_kg">kg</string>
     <string name="hint_add_exercise_count">횟수</string>
-
-
-
 
 
 </resources>

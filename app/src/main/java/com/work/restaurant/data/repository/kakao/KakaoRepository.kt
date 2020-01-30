@@ -6,4 +6,14 @@ interface KakaoRepository {
         currentY: Double,
         callback: KakaoRepositoryCallback
     )
+
+    fun getKakaoItemInfo(
+        placeName: String,
+        callback: KakaoRepositoryCallback.KakaoItemInfoCallback
+    )
+
+    fun getKakaoImage(
+        placeName: String,
+        callback: KakaoRepositoryCallback.KakaoImageCallback
+    )
 }

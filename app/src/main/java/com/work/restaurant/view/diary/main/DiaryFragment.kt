@@ -117,7 +117,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
-
         diaryModel.addAll(getDiaryModel)
     }
 
@@ -240,6 +239,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onResume() {
         super.onResume()
+        Log.d("로그로그리고", "ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ")
         init()
 
     }

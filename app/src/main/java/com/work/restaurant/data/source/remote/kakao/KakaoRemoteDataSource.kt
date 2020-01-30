@@ -7,4 +7,16 @@ interface KakaoRemoteDataSource {
         currentY: Double,
         callback: KakaoRemoteDataSourceCallback
     )
+
+    fun getKakaoItemInfo(
+        placeName: String,
+        callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
+    )
+
+    fun getKakaoImage(
+        placeName: String,
+        callback: KakaoRemoteDataSourceCallback.KakaoImageCallback
+    )
+
+
 }

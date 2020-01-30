@@ -3,7 +3,7 @@ package com.work.restaurant.view.home.daum_maps.presenter
 import android.util.Log
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
-import com.work.restaurant.network.model.kakao.Documents
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 
 class MapPresenter(
     private val mapView: MapContract.View,
@@ -14,7 +14,7 @@ class MapPresenter(
             currentX,
             currentY,
             object : KakaoRepositoryCallback {
-                override fun onSuccess(kakaoList: List<Documents>) {
+                override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
 
                     val toKakaoModelList = kakaoList.map { it.toKakaoModel() }
 

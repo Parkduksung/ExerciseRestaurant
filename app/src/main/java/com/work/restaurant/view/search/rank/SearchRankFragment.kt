@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
 import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
@@ -25,6 +27,7 @@ import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFrag
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
+import com.work.restaurant.view.search.rank.adpater.KakaoRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
@@ -36,7 +39,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     private lateinit var presenter: SearchRankPresenter
     private lateinit var fitnessRankAdapter: FitnessRankAdapter
-
+    private lateinit var kakaoAdapter: KakaoRankAdapter
 
     override fun onClick(v: View?) {
 
@@ -78,6 +81,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
         return view.also {
             fitnessRankAdapter = FitnessRankAdapter()
+            kakaoAdapter = KakaoRankAdapter()
         }
     }
 
@@ -90,11 +94,20 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                         SearchFragment.URL
                     )
                 )
-            )
+            ),
+            Injection.provideKakaoRepository()
         )
+
+
+
+
+
         iv_search_settings.setOnClickListener(this)
         fitnessRankAdapter.setItemClickListener(this)
-        presenter.getFitnessList()
+        kakaoAdapter.setItemClickListener(this)
+//        presenter.getFitnessList()
+
+        presenter.getKakaoList()
 
     }
 
@@ -120,29 +133,13 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         Log.d(TAG, "onResume")
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
+    override fun showKakaoList(kakaoList: List<KakaoSearchDocuments>) {
+        recyclerview_rank.run {
+            this.adapter = kakaoAdapter
+            kakaoAdapter.clearListData()
+            kakaoAdapter.addData(kakaoList)
+            layoutManager = LinearLayoutManager(this.context)
+        }
     }
 
     override fun showSettings() {
@@ -157,12 +154,15 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     override fun showFitnessList(fitnessList: List<FitnessCenterItemResponse>) {
         recyclerview_rank.run {
             this.adapter = fitnessRankAdapter
-            fitnessRankAdapter.addData(fitnessList)
+            fitnessRankAdapter.clearListData()
+//            fitnessRankAdapter.addData(fitnessList)
             layoutManager = LinearLayoutManager(this.context)
         }
     }
 
     override fun getData(data: String) {
+
+
         val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
         intent.putExtra("data", data)
         intent.putExtra("toggle", true)

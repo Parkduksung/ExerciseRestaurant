@@ -3,17 +3,22 @@ package com.work.restaurant.view.search.itemdetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
 import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.util.GlideApp
+import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.search.itemdetails.adapter.KakaoImageAdapter
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
 import com.work.restaurant.view.search.main.SearchFragment
@@ -22,10 +27,48 @@ import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment),
     View.OnClickListener, SearchItemDetailsContract.View {
+    override fun showKakaoImage(imageList: List<KakaoImageDocuments>) {
+
+
+        if (imageList.isNotEmpty()) {
+            imageList.forEach {
+                Log.d("이미지결과", it.imageUrl)
+            }
+
+            recyclerview_item_image.run {
+                this.adapter = kakaoImageAdapter
+                kakaoImageAdapter.clearListData()
+                kakaoImageAdapter.addData(imageList)
+                layoutManager = LinearLayoutManager(this.context).also {
+                    it.orientation = LinearLayoutManager.HORIZONTAL
+                }
+            }
+        }
+    }
+
+
+    override fun showKakaoItemInfoDetail(searchList: KakaoSearchDocuments) {
+
+        search_item_name_tv.text = searchList.placeName
+        search_item_time_tv.text = searchList.distance
+        search_item_best_part_tv.text = searchList.roadAddressName
+        search_item_like_count_tv.text = searchList.distance
+        search_item_parking_tv.text = searchList.distance
+        search_item_pay_tv.text = searchList.distance
+        search_item_parking_tv.text = searchList.distance
+
+        Log.d("카카오결과", searchList.placeUrl)
+
+        if (searchList.phone != "") {
+            callNumber = searchList.phone
+        }
+
+    }
 
 
     private lateinit var detailsPresenter: SearchItemDetailsPresenter
     private lateinit var intent: Intent
+    private lateinit var kakaoImageAdapter: KakaoImageAdapter
 
 
     override fun onClick(v: View?) {
@@ -56,6 +99,7 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     ): View? {
         return inflater.inflate(R.layout.search_item_details_fragment, container, false).also {
             intent = Intent(Intent.ACTION_DIAL)
+            kakaoImageAdapter = KakaoImageAdapter()
         }
     }
 
@@ -71,7 +115,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                             SearchFragment.URL
                         )
                     )
-                )
+                ),
+                Injection.provideKakaoRepository()
             )
         review_ll.setOnClickListener(this)
         search_item_calling.setOnClickListener(this)
@@ -87,9 +132,12 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                             SearchFragment.URL
                         )
                     )
-                )
+                ),
+                Injection.provideKakaoRepository()
             )
-        detailsPresenter.itemInfoDetail(data)
+
+        detailsPresenter.kakaoItemImage(data)
+        detailsPresenter.kakaoItemInfoDetail(data)
     }
 
 
@@ -104,9 +152,9 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
         callNumber = fitnessList.fitnessCenterCalling
 
-        GlideApp.with(context!!)
-            .load(fitnessList.fitnessCenterImage)
-            .into(search_item_image_iv)
+//        GlideApp.with(context!!)
+//            .load(fitnessList.fitnessCenterImage)
+//            .into(search_item_image_iv)
 
 
     }
@@ -116,6 +164,13 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         intent.data = Uri.parse("tel:$callNumber")
         startActivity(intent)
     }
+
+//    private fun showItemUrl(itemUrl: String) {
+//
+//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(itemUrl))
+//        startActivity(intent)
+//
+//    }
 
 
     companion object {
