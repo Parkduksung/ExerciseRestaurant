@@ -1,7 +1,9 @@
 package com.work.restaurant.view.diary.main
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -34,7 +36,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private lateinit var presenter: DiaryPresenter
     private lateinit var diaryAdapter: DiaryAdapter
-    private var diaryModel = mutableSetOf<DiaryModel>()
+    private val diaryModel = mutableSetOf<DiaryModel>()
 
 
     override fun showResult(msg: String) {
@@ -104,11 +106,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
                 }
             })
-
             alertDialog.show()
-
         }
-
 
     }
 
@@ -122,15 +121,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     override fun showEatData(data: List<EatModel>) {
-
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
-
         diaryModel.addAll(getDiaryModel)
-
     }
-
 
     override fun onClick(v: View?) {
 
@@ -138,15 +133,29 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
             R.id.btn_add_eat -> {
 
+                val addEatFragment = AddEatFragment()
+
+                addEatFragment.setTargetFragment(
+                    this,
+                    REGISTER_EAT
+                )
+
                 requireFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, AddEatFragment())
+                    .replace(R.id.main_container, addEatFragment)
                     .addToBackStack(null)
                     .commit()
             }
 
             R.id.btn_add_exercise -> {
+
+                val addExerciseFragment = AddExerciseFragment()
+                addExerciseFragment.setTargetFragment(
+                    this,
+                    REGISTER_EXERCISE
+                )
+
                 requireFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, AddExerciseFragment())
+                    .replace(R.id.main_container, addExerciseFragment)
                     .addToBackStack(null)
                     .commit()
             }
@@ -168,7 +177,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         presenter = DiaryPresenter(
             this,
             Injection.provideEatRepository(),
@@ -177,14 +185,31 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
         init()
 
-
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
         diaryAdapter.setItemClickListener(this)
 
-
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+
+            REGISTER_EAT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    this.onResume()
+                }
+            }
+
+            REGISTER_EXERCISE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    this.onResume()
+                }
+            }
+
+        }
+    }
 
     private fun init() {
 
@@ -192,7 +217,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-MM-dd-EE", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-M-d-EE", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
 
@@ -204,6 +229,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dateArray[2],
                 dateArray[3]
             )
+
+
         presenter.todayEatData(
             getString(
                 R.string.current_date,
@@ -231,17 +258,19 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     }
 
+
     companion object {
         private const val TAG = "DiaryFragment"
-
+        private const val REGISTER_EAT = 1
+        private const val REGISTER_EXERCISE = 2
     }
 
 
     override fun onResume() {
-        super.onResume()
-        Log.d("로그로그리고", "ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ")
-        init()
 
+        Log.d("결과가어떻게나오니?", "일단resume된다.")
+        super.onResume()
+        init()
     }
 
 }

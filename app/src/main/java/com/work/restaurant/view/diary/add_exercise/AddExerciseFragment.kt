@@ -1,6 +1,8 @@
 package com.work.restaurant.view.diary.add_exercise
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -107,7 +109,15 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                         )
                         requireFragmentManager().beginTransaction()
                             .remove(this@AddExerciseFragment)
-                            .commit()
+                            .commit().also {
+                                val data = Intent()
+                                targetFragment?.onActivityResult(
+                                    targetRequestCode,
+                                    Activity.RESULT_OK,
+                                    data
+                                )
+
+                            }
                         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
 
@@ -153,7 +163,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-MM-dd-a-h-m", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-M-d-a-h-m", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
 

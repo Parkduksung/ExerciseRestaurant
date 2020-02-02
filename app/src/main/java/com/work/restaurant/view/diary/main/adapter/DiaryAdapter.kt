@@ -17,7 +17,6 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 class DiaryAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     private lateinit var adapterListener: AdapterDataListener.GetList
     private val diaryList = mutableListOf<DiaryModel>()
 
@@ -84,7 +83,6 @@ class DiaryAdapter :
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
-
                     adapterListener.getData(item)
                 }
             } else {
@@ -92,7 +90,6 @@ class DiaryAdapter :
                     override fun getData(data: DiaryModel) {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
-
                 }
                 itemView.setOnClickListener {
                     adapterListener.getData(item)
@@ -107,7 +104,6 @@ class DiaryAdapter :
             addName.text = item.exerciseSetName
 
             when (item.type) {
-
                 itemView.resources.getStringArray(R.array.add_exercise_part)[0] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorAccent)
@@ -131,9 +127,7 @@ class DiaryAdapter :
             }
 
             item.exerciseSet.forEach {
-
                 i += 1
-
                 val exerciseSetView = LayoutInflater.from(App.instance.context()).inflate(
                     R.layout.exercise_set_item,
                     null
@@ -145,7 +139,6 @@ class DiaryAdapter :
                     3f
                 )
 
-
                 val setNum: TextView = exerciseSetView.findViewById(R.id.set_num)
                 val setKg: TextView = exerciseSetView.findViewById(R.id.set_kg)
                 val setCount: TextView = exerciseSetView.findViewById(R.id.set_count)
@@ -153,7 +146,6 @@ class DiaryAdapter :
                 setNum.text = i.toString() + "세트"
                 setKg.text = it.exerciseSetKg + "Kg"
                 setCount.text = it.exerciseSetCount + "회"
-
 
                 addSet.addView(exerciseSetView)
             }

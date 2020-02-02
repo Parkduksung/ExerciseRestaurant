@@ -165,12 +165,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         startActivity(intent)
     }
 
-//    private fun showItemUrl(itemUrl: String) {
-//
-//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(itemUrl))
-//        startActivity(intent)
-//
-//    }
 
 
     companion object {

@@ -1,7 +1,7 @@
 package com.work.restaurant.network.api
 
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
-import com.work.restaurant.network.model.kakaoSearch.KakaoResponse
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -16,7 +16,7 @@ interface KakaoApi {
         @Query("y") y: Double,
         @Query("radius") radius: Int = 20000,
         @Query("sort") sort: String = "accuracy"
-    ): Call<KakaoResponse>
+    ): Call<KakaoSearchResponse>
 
     @Headers(HEADERS)
     @GET("v2/search/image.json")
@@ -29,7 +29,7 @@ interface KakaoApi {
     @GET("v2/local/search/keyword.json")
     fun kakaoItemSearcy(
         @Query("query") keyword: String
-    ): Call<KakaoResponse>
+    ): Call<KakaoSearchResponse>
 
 
     companion object {

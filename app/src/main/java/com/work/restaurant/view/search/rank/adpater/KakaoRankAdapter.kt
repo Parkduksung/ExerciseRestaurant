@@ -1,9 +1,9 @@
 package com.work.restaurant.view.search.rank.adpater
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
@@ -13,7 +13,7 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
 
     private val kakaoList = ArrayList<KakaoSearchDocuments>()
 
-    private lateinit var adapterListener: AdapterDataListener
+    private lateinit var adapterListener: AdapterDataListener.GetKakaoData
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -40,31 +40,115 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        private val fitnessNo: TextView = itemView.findViewById(R.id.fitness_rank_no_tv)
-        private val fitnessName: TextView = itemView.findViewById(R.id.fitness_name_tv)
+        private val kakaoDistance: TextView = itemView.findViewById(R.id.kakao_distance_tv)
+        private val kakaoName: TextView = itemView.findViewById(R.id.kakao_name_tv)
+
 
         fun bind(item: KakaoSearchDocuments) {
 
-            val fitnessCenterItemResponse: KakaoSearchDocuments = item
+            val kakaoItem: KakaoSearchDocuments = item
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.placeName)
+
+
+                    val menuBuilder = MenuBuilder(itemView.context)
+                    val inflater = MenuInflater(itemView.context)
+                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
+
+                    if (kakaoItem.phone == "") {
+                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
+                    }
+
+
+                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
+
+
+                    val optionMenu =
+                        MenuPopupHelper(itemView.context, menuBuilder, itemView)
+                    optionMenu.setForceShowIcon(true)
+
+
+                    optionMenu.gravity = Gravity.LEFT
+                    menuBuilder.setCallback(object : MenuBuilder.Callback {
+                        override fun onMenuModeChange(menu: MenuBuilder?) {
+
+                        }
+
+                        override fun onMenuItemSelected(
+                            menu: MenuBuilder?,
+                            item: MenuItem?
+                        ): Boolean {
+
+                            when (item?.itemId) {
+
+                                R.id.kakao_url_item -> {
+                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+                                }
+                                R.id.kakao_calling_item -> {
+                                    adapterListener.getKakaoData(2, kakaoItem.phone)
+                                }
+                            }
+                            return true
+                        }
+                    })
+
+                    optionMenu.show()
+
                 }
             } else {
-                adapterListener = object : AdapterDataListener {
-                    override fun getData(data: String) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                adapterListener = object : AdapterDataListener.GetKakaoData {
+                    override fun getKakaoData(select: Int, data: String) {
+
                     }
                 }
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.placeName)
+                    val menuBuilder = MenuBuilder(itemView.context)
+                    val inflater = MenuInflater(itemView.context)
+                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
+
+                    if (kakaoItem.phone == "") {
+                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
+                    }
+
+                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
+
+                    val optionMenu =
+                        MenuPopupHelper(itemView.context, menuBuilder, itemView)
+                    optionMenu.setForceShowIcon(true)
+
+
+                    optionMenu.gravity = Gravity.LEFT
+                    menuBuilder.setCallback(object : MenuBuilder.Callback {
+                        override fun onMenuModeChange(menu: MenuBuilder?) {
+
+                        }
+
+                        override fun onMenuItemSelected(
+                            menu: MenuBuilder?,
+                            item: MenuItem?
+                        ): Boolean {
+
+                            when (item?.itemId) {
+
+                                R.id.kakao_url_item -> {
+
+                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+                                }
+                                R.id.kakao_calling_item -> {
+                                    adapterListener.getKakaoData(2, kakaoItem.placeUrl)
+                                }
+                            }
+                            return true
+                        }
+                    })
+
+                    optionMenu.show()
                 }
             }
 
-            fitnessNo.text = fitnessCenterItemResponse.distance
-            fitnessName.text = fitnessCenterItemResponse.placeName
-
+            kakaoDistance.text = kakaoItem.distance + "M"
+            kakaoName.text = kakaoItem.placeName
 
         }
 
@@ -81,7 +165,7 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetKakaoData) {
         adapterListener = listenerAdapterAdapter
     }
 }

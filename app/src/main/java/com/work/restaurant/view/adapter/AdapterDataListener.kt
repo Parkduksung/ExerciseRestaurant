@@ -9,4 +9,10 @@ interface AdapterDataListener {
         fun getData(data: DiaryModel)
     }
 
+    interface GetKakaoData {
+
+        fun getKakaoData(select: Int, data: String)
+
+    }
+
 }

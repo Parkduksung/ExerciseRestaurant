@@ -1,8 +1,8 @@
 package com.work.restaurant.view.search.rank
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +12,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
@@ -24,9 +20,6 @@ import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.dong
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.gunGu
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
-import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import com.work.restaurant.view.search.main.SearchFragment
-import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
 import com.work.restaurant.view.search.rank.adpater.KakaoRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
@@ -35,17 +28,20 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
-    AdapterDataListener {
+    AdapterDataListener.GetKakaoData {
 
     private lateinit var presenter: SearchRankPresenter
-    private lateinit var fitnessRankAdapter: FitnessRankAdapter
     private lateinit var kakaoAdapter: KakaoRankAdapter
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
             R.id.iv_search_settings -> {
-                presenter.settings()
+                val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
+                homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
+
+                val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
+                startActivity(homeAddressActivity)
             }
 
         }
@@ -80,7 +76,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     ): View? {
         val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
         return view.also {
-            fitnessRankAdapter = FitnessRankAdapter()
             kakaoAdapter = KakaoRankAdapter()
         }
     }
@@ -88,43 +83,19 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = SearchRankPresenter(
-            this, FitnessItemRepositoryImpl.getInstance(
-                FitnessCenterRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        SearchFragment.URL
-                    )
-                )
-            ),
+            this,
             Injection.provideKakaoRepository()
         )
 
 
 
-
-
         iv_search_settings.setOnClickListener(this)
-        fitnessRankAdapter.setItemClickListener(this)
         kakaoAdapter.setItemClickListener(this)
-//        presenter.getFitnessList()
 
         presenter.getKakaoList()
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "onAttach")
-    }
 
     override fun onResume() {
         super.onResume()
@@ -142,37 +113,30 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun showSettings() {
 
-        val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
-        homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
+    override fun getKakaoData(select: Int, data: String) {
+        when (select) {
+            SELECT_URL -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
+                startActivity(intent)
+            }
 
-        val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-        startActivity(homeAddressActivity)
-    }
-
-    override fun showFitnessList(fitnessList: List<FitnessCenterItemResponse>) {
-        recyclerview_rank.run {
-            this.adapter = fitnessRankAdapter
-            fitnessRankAdapter.clearListData()
-//            fitnessRankAdapter.addData(fitnessList)
-            layoutManager = LinearLayoutManager(this.context)
+            SELECT_CALLING -> {
+                val intent = Intent()
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.data = Uri.parse("tel:$data")
+                startActivity(intent)
+            }
         }
-    }
-
-    override fun getData(data: String) {
-
-
-        val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-        intent.putExtra("data", data)
-        intent.putExtra("toggle", true)
-        startActivity(intent)
     }
 
 
     companion object {
         private const val TAG = "SearchRankFragment"
         private const val REQUEST_CODE = 1
+
+        private const val SELECT_URL = 1
+        private const val SELECT_CALLING = 2
     }
 
 
