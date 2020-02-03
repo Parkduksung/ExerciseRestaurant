@@ -18,36 +18,41 @@ import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
 
 class CalendarFragment : BaseFragment(R.layout.calendar_main),
-    View.OnClickListener, CalendarContract.View {
+    CalendarContract.View {
 
 
     private lateinit var presenter: CalendarPresenter
     private lateinit var diaryAdapter: DiaryAdapter
 
-    private val dayOfList = mutableSetOf<DiaryModel>()
+
+    private val eat = mutableSetOf<DiaryModel>()
+    private val exercise = mutableSetOf<DiaryModel>()
+
 
     override fun showEatData(data: List<EatModel>) {
+
+        eat.clear()
 
         val toDateModel = data.map {
             it.toDiaryModel()
         }
-        dayOfList.addAll(toDateModel)
+
+        eat.addAll(toDateModel)
+        a = true
     }
 
     override fun showExerciseData(data: List<ExerciseModel>) {
 
+        exercise.clear()
+
         val toDateModel = data.map {
             it.toDiaryModel()
         }
-        dayOfList.addAll(toDateModel)
+
+        exercise.addAll(toDateModel)
+        b = true
     }
 
-    override fun onClick(v: View?) {
-
-        when (v?.id) {
-
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +72,16 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             this.adapter = diaryAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
+
+
         clickDate(calender_view)
     }
 
     private fun clickDate(calendarView: CalendarView) {
 
-
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+
+            val dayOfList = mutableSetOf<DiaryModel>()
 
             val msg = getString(
                 R.string.current_date,
@@ -81,25 +89,36 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 (month + 1).toString(),
                 dayOfMonth.toString()
             )
-
             Toast.makeText(this.context, msg, Toast.LENGTH_SHORT).show()
 
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
 
-            Log.d("결콰콰코카1", dayOfList.size.toString())
 
-            recyclerview_calendar.run {
-                diaryAdapter.clearListData()
-                diaryAdapter.addAllData(dayOfList.toList().sortedBy { it.time })
+            if (a && b) {
+                dayOfList.addAll(eat)
+                dayOfList.addAll(exercise)
+                a = false
+                b = false
+
+                Log.d("결콰콰코카1", dayOfList.size.toString())
+
+                this.activity?.runOnUiThread {
+                    recyclerview_calendar.run {
+                        diaryAdapter.clearListData()
+                        diaryAdapter.addAllData(dayOfList.toList().sortedBy { it.time })
+                    }
+                }
             }
+
         }
     }
-
 
     companion object {
         private const val TAG = "CalendarFragment"
 
+        var a = false
+        var b = false
     }
 
 }

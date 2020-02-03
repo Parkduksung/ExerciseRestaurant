@@ -98,17 +98,11 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
                 1
             )
 
-
             if (address.isNotEmpty()) {
-
                 Log.d("내위치결과", address[0].getAddressLine(0))
             }
 
-
-
-
-
-            selectAll = address[0].getAddressLine(0)
+//            selectAll = address[0].getAddressLine(0)
 
             mapPOIItem.itemName = "내위치"
         } else {
