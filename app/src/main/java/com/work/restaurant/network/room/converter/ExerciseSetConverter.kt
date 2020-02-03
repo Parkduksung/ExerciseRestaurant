@@ -18,7 +18,7 @@ class ExerciseSetConverter {
             Gson().fromJson(
                 value,
                 Array<ExerciseSetResponse>::class.java
-            ) as Array<ExerciseSetResponse>
+            )
         return objects.toList()
     }
 }
