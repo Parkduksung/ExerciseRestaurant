@@ -2,7 +2,6 @@ package com.work.restaurant.view.diary.main
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -58,22 +57,17 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.setTitle("삭제")
             alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
             alertDialog.setPositiveButton(
-                "삭제",
-                object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                        recyclerview_diary.run {
-                            diaryAdapter.deleteDate(data)
-                        }
-                        presenter.deleteExercise(data)
-                        diaryModel.remove(data)
-                    }
-                })
-            alertDialog.setNegativeButton("취소", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-
+                "삭제"
+            ) { _, _ ->
+                recyclerview_diary.run {
+                    diaryAdapter.deleteDate(data)
                 }
-            })
+                presenter.deleteExercise(data)
+                diaryModel.remove(data)
+            }
+            alertDialog.setNegativeButton(
+                "취소"
+            ) { _, _ -> }
 
             alertDialog.show()
 
@@ -90,22 +84,17 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.setTitle("삭제")
             alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
             alertDialog.setPositiveButton(
-                "삭제",
-                object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                        recyclerview_diary.run {
-                            diaryAdapter.deleteDate(data)
-                        }
-                        presenter.deleteEat(data)
-                        diaryModel.remove(data)
-                    }
-                })
-            alertDialog.setNegativeButton("취소", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-
+                "삭제"
+            ) { _, _ ->
+                recyclerview_diary.run {
+                    diaryAdapter.deleteDate(data)
                 }
-            })
+                presenter.deleteEat(data)
+                diaryModel.remove(data)
+            }
+            alertDialog.setNegativeButton(
+                "취소"
+            ) { _, _ -> }
             alertDialog.show()
         }
 
@@ -182,6 +171,10 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             Injection.provideEatRepository(),
             Injection.provideExerciseRepository()
         )
+        recyclerview_diary.run {
+            this.adapter = diaryAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
 
         init()
 
@@ -193,21 +186,17 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         when (requestCode) {
-
             REGISTER_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     this.onResume()
                 }
             }
-
             REGISTER_EXERCISE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     this.onResume()
                 }
             }
-
         }
     }
 
@@ -249,15 +238,16 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             )
         )
 
-        recyclerview_diary.run {
-            this.adapter = diaryAdapter
-            diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.toList())
-            layoutManager = LinearLayoutManager(this.context)
+
+        this.activity?.runOnUiThread {
+
+            recyclerview_diary.run {
+                diaryAdapter.clearListData()
+                diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+            }
         }
 
     }
-
 
     companion object {
         private const val TAG = "DiaryFragment"
@@ -267,8 +257,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     override fun onResume() {
-
-        Log.d("결과가어떻게나오니?", "일단resume된다.")
         super.onResume()
         init()
     }

@@ -1,5 +1,6 @@
 package com.work.restaurant.view.diary.add_eat.presenter
 
+import android.util.Log
 import com.work.restaurant.data.repository.eat.EatRepository
 import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 
@@ -10,11 +11,11 @@ class AddEatPresenter(
     override fun addEat(date: String, time: String, type: Int, memo: String) {
         eatRepository.addEat(date, time, type, memo, object : EatRepositoryCallback.AddEatCallback {
             override fun onSuccess(msg: String) {
-                addEatView.showAddResult(msg)
+                addEatView.showAddSuccess()
             }
 
             override fun onFailure(msg: String) {
-                addEatView.showAddResult(msg)
+                Log.d("오류", msg)
             }
         })
     }

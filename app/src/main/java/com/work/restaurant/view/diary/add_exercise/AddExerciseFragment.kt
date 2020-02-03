@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.TimePicker
@@ -26,9 +25,23 @@ import kotlin.collections.ArrayList
 
 class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     View.OnClickListener, AddExerciseContract.View {
-    override fun showAddResult(msg: String) {
-        Log.d("저장결과11", msg)
+    override fun showAddSuccess() {
+        requireFragmentManager().beginTransaction()
+            .remove(this@AddExerciseFragment)
+            .commit().also {
+                val data = Intent()
+                targetFragment?.onActivityResult(
+                    targetRequestCode,
+                    Activity.RESULT_OK,
+                    data
+                )
+
+            }
+        this.activity?.runOnUiThread {
+            Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
     private lateinit var viewList: ArrayList<View>
 
@@ -107,19 +120,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                             et_add_exercise_name.text.toString(),
                             setList
                         )
-                        requireFragmentManager().beginTransaction()
-                            .remove(this@AddExerciseFragment)
-                            .commit().also {
-                                val data = Intent()
-                                targetFragment?.onActivityResult(
-                                    targetRequestCode,
-                                    Activity.RESULT_OK,
-                                    data
-                                )
-
-                            }
-                        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
 
                     } else {
                         Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -163,7 +163,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-m", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
 
@@ -191,10 +191,17 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         alertDialog.setView(dialogView)
             .setPositiveButton("변경") { _, _ ->
 
-                val changedTime =
-                    "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
+                if (timePicker.minute / 10 == 0) {
+                    val changedTime =
+                        "${getAmPm(timePicker.hour)} 0${timePicker.minute}분"
 
-                btn_add_exercise_time.text = changedTime
+                    btn_add_exercise_time.text = changedTime
+                } else {
+                    val changedTime =
+                        "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
+
+                    btn_add_exercise_time.text = changedTime
+                }
 
             }
             .setNegativeButton("취소") { _, _ ->

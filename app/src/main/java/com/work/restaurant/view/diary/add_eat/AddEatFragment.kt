@@ -3,7 +3,6 @@ package com.work.restaurant.view.diary.add_eat
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.RadioGroup
@@ -21,8 +20,22 @@ import java.util.*
 
 class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
-    override fun showAddResult(msg: String) {
-        Log.d("저장결과", msg)
+
+    override fun showAddSuccess() {
+        requireFragmentManager().beginTransaction()
+            .remove(this@AddEatFragment)
+            .commit().also {
+                val data = Intent()
+                targetFragment?.onActivityResult(
+                    targetRequestCode,
+                    Activity.RESULT_OK,
+                    data
+                )
+            }
+
+        this.activity?.runOnUiThread {
+            Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
@@ -57,17 +70,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                     )
                     radioClick = 2
 
-                    requireFragmentManager().beginTransaction()
-                        .remove(this@AddEatFragment)
-                        .commit().also {
-                            val data = Intent()
-                            targetFragment?.onActivityResult(
-                                targetRequestCode,
-                                Activity.RESULT_OK,
-                                data
-                            )
-                        }
-                    Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
                 } else {
                     Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -116,9 +118,11 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         val currentTime = Calendar.getInstance().time
 
         val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-m", Locale.getDefault()).format(currentTime)
+            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
 
         val dateArray = dateTextAll.split("-")
+
+
 
         tv_add_eat_today.text =
             getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
@@ -143,10 +147,18 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         alertDialog.setView(dialogView)
             .setPositiveButton("변경") { _, _ ->
 
-                val changedTime =
-                    "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
 
-                btn_add_eat_time.text = changedTime
+                if (timePicker.minute / 10 == 0) {
+                    val changedTime =
+                        "${getAmPm(timePicker.hour)} 0${timePicker.minute}분"
+
+                    btn_add_eat_time.text = changedTime
+                } else {
+                    val changedTime =
+                        "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
+
+                    btn_add_eat_time.text = changedTime
+                }
 
             }
             .setNegativeButton("취소") { _, _ ->

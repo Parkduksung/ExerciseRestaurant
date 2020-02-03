@@ -6,7 +6,7 @@ interface AddExerciseContract {
 
     interface View {
 
-        fun showAddResult(msg: String)
+        fun showAddSuccess()
 
     }
 
