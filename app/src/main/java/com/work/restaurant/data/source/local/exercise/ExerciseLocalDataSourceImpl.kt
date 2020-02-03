@@ -31,16 +31,14 @@ class ExerciseLocalDataSourceImpl(
     ) {
         appExecutors.diskIO.execute {
 
-            appExecutors.diskIO.execute {
 
-                val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(date)
+            val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(date)
 
-                getDataOfTheDay.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getDataOfTheDay)
-                    } ?: callback.onFailure("error")
+            getDataOfTheDay.takeIf { true }
+                .apply {
+                    callback.onSuccess(getDataOfTheDay)
+                } ?: callback.onFailure("error")
 
-            }
         }
     }
 
@@ -83,6 +81,8 @@ class ExerciseLocalDataSourceImpl(
         appExecutors.diskIO.execute {
 
             val getAllList = exerciseDatabase.exerciseDao().getAll()
+
+
 
             getAllList.takeIf { true }
                 .apply {

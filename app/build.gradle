@@ -65,5 +65,6 @@ dependencies {
     //Ted_Permission
     implementation 'gun0912.ted:tedpermission:2.0.0'
     implementation files('libs\\libDaumMapAndroid.jar')
-    implementation files('libs\\libDaumMapAndroid.jar')
+
+    compile files('libs/libDaumMapAndroid.jar')
 }

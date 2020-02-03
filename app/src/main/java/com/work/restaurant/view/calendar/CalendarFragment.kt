@@ -31,14 +31,15 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
     override fun showEatData(data: List<EatModel>) {
 
-        eat.clear()
 
+        eat.clear()
         val toDateModel = data.map {
             it.toDiaryModel()
         }
-
         eat.addAll(toDateModel)
-        a = true
+        workEat = true
+
+        showDayOfData()
     }
 
     override fun showExerciseData(data: List<ExerciseModel>) {
@@ -50,7 +51,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         }
 
         exercise.addAll(toDateModel)
-        b = true
+        workExercise = true
+
+        showDayOfData()
     }
 
 
@@ -81,8 +84,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
-            val dayOfList = mutableSetOf<DiaryModel>()
-
             val msg = getString(
                 R.string.current_date,
                 year.toString(),
@@ -93,32 +94,34 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
+        }
+    }
 
+    private fun showDayOfData() {
+        if (workEat && workExercise) {
 
-            if (a && b) {
-                dayOfList.addAll(eat)
-                dayOfList.addAll(exercise)
-                a = false
-                b = false
+            val dayOfList = mutableSetOf<DiaryModel>()
+            dayOfList.addAll(eat)
+            dayOfList.addAll(exercise)
+            workEat = false
+            workExercise = false
 
-                Log.d("결콰콰코카1", dayOfList.size.toString())
+            Log.d("결콰콰코카1", dayOfList.size.toString())
 
-                this.activity?.runOnUiThread {
-                    recyclerview_calendar.run {
-                        diaryAdapter.clearListData()
-                        diaryAdapter.addAllData(dayOfList.toList().sortedBy { it.time })
-                    }
+            this.activity?.runOnUiThread {
+                recyclerview_calendar.run {
+                    diaryAdapter.clearListData()
+                    diaryAdapter.addAllData(dayOfList.toList().sortedBy { it.time })
                 }
             }
-
         }
     }
 
     companion object {
         private const val TAG = "CalendarFragment"
 
-        var a = false
-        var b = false
+        var workEat = false
+        var workExercise = false
     }
 
 }
