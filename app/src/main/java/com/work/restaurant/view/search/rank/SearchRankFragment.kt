@@ -48,7 +48,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

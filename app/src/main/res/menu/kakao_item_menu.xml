@@ -9,16 +9,6 @@
         android:title=""
         />
 
-    <item
-        android:id="@+id/kakao_calling_item"
-        android:icon="@drawable/ic_calling"
-        android:title="전화하기" />
-
-    <item
-        android:id="@+id/kakao_url_item"
-        android:icon="@drawable/browser"
-        android:title="상세페이지이동" />
-
 
 
 </menu>

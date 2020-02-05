@@ -59,7 +59,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                     inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
 
                     if (kakaoItem.phone == "") {
-                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
+//                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
                     }
 
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
@@ -79,12 +79,12 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
                             when (item?.itemId) {
 
-                                R.id.kakao_url_item -> {
-                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
-                                }
-                                R.id.kakao_calling_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem.phone)
-                                }
+//                                R.id.kakao_url_item -> {
+//                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+//                                }
+//                                R.id.kakao_calling_item -> {
+//                                    adapterListener.getKakaoData(2, kakaoItem.phone)
+//                                }
                             }
                             return true
                         }
@@ -114,7 +114,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                     inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
 
                     if (kakaoItem.phone == "") {
-                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
+//                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
                     }
 
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
@@ -133,13 +133,13 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                         ): Boolean {
 
                             when (item?.itemId) {
-
-                                R.id.kakao_url_item -> {
-                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
-                                }
-                                R.id.kakao_calling_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem.phone)
-                                }
+//
+//                                R.id.kakao_url_item -> {
+//                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+//                                }
+//                                R.id.kakao_calling_item -> {
+//                                    adapterListener.getKakaoData(2, kakaoItem.phone)
+//                                }
                             }
                             return true
                         }

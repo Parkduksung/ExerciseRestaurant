@@ -1,10 +1,12 @@
 package com.work.restaurant.view.search.itemdetails
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -26,12 +28,27 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
     override fun showKakaoItemInfoDetail(searchList: List<KakaoSearchModel>) {
 
-        wb_search_item_detail.loadUrl(searchList[0].placeUrl)
 
         val webSettings = wb_search_item_detail.settings
         webSettings.javaScriptEnabled = true
 
-        wb_search_item_detail.webViewClient = WebViewClient()
+        wb_search_item_detail.webViewClient = object : WebViewClient() {
+
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                if (url != null) {
+                    if (url.startsWith("tel:")) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+
+                        startActivity(intent)
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+
+        wb_search_item_detail.loadUrl(searchList[0].placeUrl)
     }
 
 
@@ -76,12 +93,25 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         if (bundle?.getBoolean("toggle") != null) {
             if (bundle.getBoolean("toggle")) {
 
-                wb_search_item_detail.loadUrl(bundle.getString("data"))
-
                 val webSettings = wb_search_item_detail.settings
                 webSettings.javaScriptEnabled = true
 
-                wb_search_item_detail.webViewClient = WebViewClient()
+                wb_search_item_detail.webViewClient = object : WebViewClient() {
+
+                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                        if (url != null) {
+                            if (url.startsWith("tel:")) {
+                                val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+
+                                startActivity(intent)
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                }
+                wb_search_item_detail.loadUrl(bundle.getString("data"))
 
             } else {
 
