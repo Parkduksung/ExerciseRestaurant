@@ -33,9 +33,9 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                         val toKakaoDocuments = mutableSetOf<KakaoImageDocuments>()
 
                         list.forEach {
-                            if (it.imageUrl.split(":")[0] == "https") {
-                                toKakaoDocuments.add(it)
-                            }
+
+                            toKakaoDocuments.add(it)
+
                         }
                         callback.onSuccess(toKakaoDocuments.toList())
                     } else {
@@ -63,9 +63,7 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                 if (response != null) {
                     if (response.isSuccessful) {
 
-                        //이부분 애매하네요. 쿼리돌려보면 리사이클러뷰에 뿌린 이름 다 1개씩나와서
-                        //이렇게 가도 되는지 싶네요..
-                        callback.onSuccess(response.body().documents[0])
+                        callback.onSuccess(response.body().documents)
                     } else {
                         callback.onFailure(response.message())
                     }

@@ -27,10 +27,10 @@
             tools:ignore="NestedWeights">
 
             <ImageView
-                android:id="@+id/iv_search_look_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/dumbell"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>

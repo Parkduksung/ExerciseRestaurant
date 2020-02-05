@@ -1,12 +1,12 @@
 package com.work.restaurant.view.search.lookfor.presenter
 
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.KakaoSearchModel
 
 interface SearchLookForContract {
     interface View {
 
 
-        fun showSearchLook(fitnessList: MutableList<FitnessCenterItemResponse>)
+        fun showSearchLook(searchKakaoList: List<KakaoSearchModel>)
 
         fun showSearchNoFind()
 

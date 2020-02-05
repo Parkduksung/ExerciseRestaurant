@@ -1,6 +1,7 @@
 package com.work.restaurant.view.search.rank.adpater
 
 import android.view.*
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -9,7 +10,8 @@ import com.work.restaurant.R
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.view.adapter.AdapterDataListener
 
-class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
+class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
+
 
     private val kakaoList = ArrayList<KakaoSearchDocuments>()
 
@@ -42,15 +44,15 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
 
         private val kakaoDistance: TextView = itemView.findViewById(R.id.kakao_distance_tv)
         private val kakaoName: TextView = itemView.findViewById(R.id.kakao_name_tv)
-
+        private val kakaoMoreVert: ImageButton = itemView.findViewById(R.id.ib_more_vert)
 
         fun bind(item: KakaoSearchDocuments) {
 
             val kakaoItem: KakaoSearchDocuments = item
 
             if (::adapterListener.isInitialized) {
-                itemView.setOnClickListener {
 
+                kakaoMoreVert.setOnClickListener {
 
                     val menuBuilder = MenuBuilder(itemView.context)
                     val inflater = MenuInflater(itemView.context)
@@ -60,19 +62,14 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
                         menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
                     }
 
-
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
 
-
                     val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, itemView)
+                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
                     optionMenu.setForceShowIcon(true)
-
-
-                    optionMenu.gravity = Gravity.LEFT
+//                    optionMenu.gravity = Gravity.LEFT
                     menuBuilder.setCallback(object : MenuBuilder.Callback {
                         override fun onMenuModeChange(menu: MenuBuilder?) {
-
                         }
 
                         override fun onMenuItemSelected(
@@ -96,13 +93,22 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
                     optionMenu.show()
 
                 }
+
+
+                itemView.setOnClickListener {
+
+                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+                }
+
+
             } else {
                 adapterListener = object : AdapterDataListener.GetKakaoData {
                     override fun getKakaoData(select: Int, data: String) {
 
                     }
                 }
-                itemView.setOnClickListener {
+                kakaoMoreVert.setOnClickListener {
+
                     val menuBuilder = MenuBuilder(itemView.context)
                     val inflater = MenuInflater(itemView.context)
                     inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
@@ -114,14 +120,11 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
 
                     val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, itemView)
+                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
                     optionMenu.setForceShowIcon(true)
-
-
-                    optionMenu.gravity = Gravity.LEFT
+//                    optionMenu.gravity = Gravity.LEFT
                     menuBuilder.setCallback(object : MenuBuilder.Callback {
                         override fun onMenuModeChange(menu: MenuBuilder?) {
-
                         }
 
                         override fun onMenuItemSelected(
@@ -132,18 +135,21 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
                             when (item?.itemId) {
 
                                 R.id.kakao_url_item -> {
-
                                     adapterListener.getKakaoData(1, kakaoItem.placeUrl)
                                 }
                                 R.id.kakao_calling_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem.placeUrl)
+                                    adapterListener.getKakaoData(2, kakaoItem.phone)
                                 }
                             }
                             return true
                         }
                     })
-
                     optionMenu.show()
+                }
+
+                itemView.setOnClickListener {
+
+                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
                 }
             }
 
@@ -154,6 +160,7 @@ class KakaoRankAdapter : RecyclerView.Adapter<KakaoRankAdapter.ViewHolder>() {
 
 
     }
+
 
     fun addData(documents: List<KakaoSearchDocuments>) =
         kakaoList.addAll(documents)

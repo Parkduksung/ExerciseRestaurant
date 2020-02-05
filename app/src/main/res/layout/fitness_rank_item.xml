@@ -46,9 +46,20 @@
                 android:id="@+id/kakao_name_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5.5"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:textSize="20dp" />
+
+            <ImageButton
+                android:id="@+id/ib_more_vert"
+                android:backgroundTint="@color/colorWhite"
+                android:background="@drawable/button_round"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:layout_weight="0.5"
+                app:srcCompat="@drawable/more_vert"
+                tools:ignore="NestedWeights,RtlHardcoded" />
 
 
         </LinearLayout>

@@ -11,17 +11,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.search.adapter.LookForAdapter
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
+import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForContract
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
-import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
@@ -48,13 +45,8 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_look_for_main)
         presenter = SearchLookForPresenter(
-            this, FitnessItemRepositoryImpl.getInstance(
-                FitnessCenterRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        SearchFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideKakaoRepository()
         )
         lookForAdapter = LookForAdapter()
         lookForAdapter.setItemClickListener(this)
@@ -101,23 +93,35 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
 
     override fun getData(data: String) {
 
-        et_search_look_for_item.text.clear()
+        if (toggle) {
+            val searchItemDetailsFragment =
+                SearchItemDetailsFragment.newInstance(data, true)
+            this.supportFragmentManager.beginTransaction()
+                .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                .addToBackStack(null)
+                .commit()
+            et_search_look_for_item.text.clear()
+            toggle = false
+        } else {
+            val searchItemDetailsFragment =
+                SearchItemDetailsFragment.newInstance(
+                    et_search_look_for_item.text.toString(),
+                    false
+                )
+            this.supportFragmentManager.beginTransaction()
+                .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                .addToBackStack(null)
+                .commit()
 
-        val searchItemDetailsFragment =
-            SearchItemDetailsFragment()
-        searchItemDetailsFragment.setSelectItem(data)
-
-
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
-            .addToBackStack(null)
-            .commit()
+            et_search_look_for_item.text.clear()
+        }
 
     }
 
-    override fun showSearchLook(fitnessList: MutableList<FitnessCenterItemResponse>) {
+    override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
 
         this.supportFragmentManager.popBackStack()
+
 
         recyclerview_look.run {
 
@@ -125,8 +129,8 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
 
             lookForAdapter.clearListData()
 
-            fitnessList.forEach { fitnessCenterItemModel ->
-                lookForAdapter.addData(fitnessCenterItemModel)
+            searchKakaoList.forEach {
+                lookForAdapter.addData(it)
             }
 
             layoutManager = LinearLayoutManager(this.context)

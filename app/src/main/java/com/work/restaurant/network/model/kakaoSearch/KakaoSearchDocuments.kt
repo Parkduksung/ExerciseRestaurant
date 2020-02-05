@@ -1,7 +1,7 @@
 package com.work.restaurant.network.model.kakaoSearch
 
 import com.google.gson.annotations.SerializedName
-import com.work.restaurant.data.model.KakaoModel
+import com.work.restaurant.data.model.KakaoSearchModel
 
 data class KakaoSearchDocuments(
     @SerializedName("address_name")
@@ -29,8 +29,8 @@ data class KakaoSearchDocuments(
     @SerializedName("y")
     val locationY: String
 ) {
-    fun toKakaoModel(): KakaoModel =
-        KakaoModel(
+    fun toKakaoModel(): KakaoSearchModel =
+        KakaoSearchModel(
             addressName,
             distance,
             phone,

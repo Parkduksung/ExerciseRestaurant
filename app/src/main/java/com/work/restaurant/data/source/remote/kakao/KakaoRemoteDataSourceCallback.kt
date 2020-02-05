@@ -12,7 +12,7 @@ interface KakaoRemoteDataSourceCallback {
 
     interface KakaoItemInfoCallback {
 
-        fun onSuccess(item: KakaoSearchDocuments)
+        fun onSuccess(item: List<KakaoSearchDocuments>)
 
         fun onFailure(message: String)
     }

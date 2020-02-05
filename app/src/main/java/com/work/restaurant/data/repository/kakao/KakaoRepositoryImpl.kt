@@ -34,7 +34,7 @@ class KakaoRepositoryImpl private constructor(
     ) {
         kakaoRemoteDataSource.getKakaoItemInfo(placeName,
             object : KakaoRemoteDataSourceCallback.KakaoItemInfoCallback {
-                override fun onSuccess(item: KakaoSearchDocuments) {
+                override fun onSuccess(item: List<KakaoSearchDocuments>) {
 
                     callback.onSuccess(item)
 

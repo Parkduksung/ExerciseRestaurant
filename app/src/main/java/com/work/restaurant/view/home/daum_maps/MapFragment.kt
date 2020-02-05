@@ -16,7 +16,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoModel
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
@@ -42,7 +42,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     private lateinit var presenter: MapPresenter
 
 
-    override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoModel>) {
+    override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoSearchModel>) {
         //currentX  =  longitude  , currentY  =  latitude
 
         if (!toggleMap) {

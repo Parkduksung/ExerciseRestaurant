@@ -20,7 +20,8 @@ import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.dong
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.gunGu
 import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
-import com.work.restaurant.view.search.rank.adpater.KakaoRankAdapter
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity
+import com.work.restaurant.view.search.rank.adpater.SearchRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
@@ -31,7 +32,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     AdapterDataListener.GetKakaoData {
 
     private lateinit var presenter: SearchRankPresenter
-    private lateinit var kakaoAdapter: KakaoRankAdapter
+    private lateinit var searchRankAdapter: SearchRankAdapter
 
     override fun onClick(v: View?) {
 
@@ -76,7 +77,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     ): View? {
         val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
         return view.also {
-            kakaoAdapter = KakaoRankAdapter()
+            searchRankAdapter = SearchRankAdapter()
         }
     }
 
@@ -87,10 +88,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             Injection.provideKakaoRepository()
         )
 
-
-
         iv_search_settings.setOnClickListener(this)
-        kakaoAdapter.setItemClickListener(this)
+        searchRankAdapter.setItemClickListener(this)
 
         presenter.getKakaoList()
 
@@ -99,16 +98,15 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     override fun onResume() {
         super.onResume()
-
         tv_search_locate.text = "$si $gunGu $dong"
         Log.d(TAG, "onResume")
     }
 
     override fun showKakaoList(kakaoList: List<KakaoSearchDocuments>) {
         recyclerview_rank.run {
-            this.adapter = kakaoAdapter
-            kakaoAdapter.clearListData()
-            kakaoAdapter.addData(kakaoList)
+            this.adapter = searchRankAdapter
+            searchRankAdapter.clearListData()
+            searchRankAdapter.addData(kakaoList)
             layoutManager = LinearLayoutManager(this.context)
         }
     }
@@ -117,11 +115,16 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     override fun getKakaoData(select: Int, data: String) {
         when (select) {
             SELECT_URL -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
+
+                val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
+                intent.putExtra("data", data)
+                intent.putExtra("toggle", true)
                 startActivity(intent)
             }
 
             SELECT_CALLING -> {
+
+
                 val intent = Intent()
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 intent.data = Uri.parse("tel:$data")
