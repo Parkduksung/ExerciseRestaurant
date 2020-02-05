@@ -63,8 +63,7 @@
 
 
     <string name="google_geo_api_key">AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4</string>
-    <string name="kakao_map_api_key">e1a49279a8c0b5c209b02042f5ba74fd</string>
-
+    <string name="kakao_map_api_key">785b8c0fb5d7046009351ac6fe2fed8b</string>
 
     <string name="home_address_main_text">주소 설정</string>
     <string name="btn_eat">식단</string>
