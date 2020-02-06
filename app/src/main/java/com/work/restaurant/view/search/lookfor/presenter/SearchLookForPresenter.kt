@@ -15,7 +15,6 @@ class SearchLookForPresenter(
 
     override fun searchLook(searchItem: String) {
 
-
         kakaoRepository.getKakaoItemInfo(searchItem,
             object : KakaoRepositoryCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {

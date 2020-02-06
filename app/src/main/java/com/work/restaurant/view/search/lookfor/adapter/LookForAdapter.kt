@@ -3,10 +3,13 @@ package com.work.restaurant.view.search.lookfor.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
@@ -38,13 +41,32 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
+        private val searchBookmarkCheckbox: CheckBox =
+            itemView.findViewById(R.id.cb_search_add_bookmark)
 
         fun bind(item: KakaoSearchModel) {
+
+            searchLookName.text = item.placeName
+
+            searchBookmarkCheckbox.setButtonDrawable(R.drawable.selector_checkbox_drawable)
 
             if (::adapterListener.isInitialized) {
                 searchLookName.setOnClickListener {
                     adapterListener.getData(item.placeName)
                 }
+
+                searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
+                    if (searchBookmarkCheckbox.isChecked) {
+                        Toast.makeText(App.instance.context(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+
+                    } else {
+                        Toast.makeText(App.instance.context(), "즐겨찾기에 제거되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                }
+
             } else {
                 adapterListener = object : AdapterDataListener {
                     override fun getData(data: String) {
@@ -54,10 +76,20 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 searchLookName.setOnClickListener {
                     adapterListener.getData(item.placeName)
                 }
+
+                searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
+                    if (searchBookmarkCheckbox.isChecked) {
+                        Toast.makeText(App.instance.context(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+
+                    } else {
+                        Toast.makeText(App.instance.context(), "즐겨찾기에 제거되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                }
+
             }
-
-
-            searchLookName.text = item.placeName
 
 
         }

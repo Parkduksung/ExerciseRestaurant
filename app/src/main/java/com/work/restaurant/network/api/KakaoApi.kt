@@ -27,7 +27,7 @@ interface KakaoApi {
 
     @Headers(HEADERS)
     @GET("v2/local/search/keyword.json")
-    fun kakaoItemSearcy(
+    fun kakaoItemSearch(
         @Query("query") keyword: String
     ): Call<KakaoSearchResponse>
 

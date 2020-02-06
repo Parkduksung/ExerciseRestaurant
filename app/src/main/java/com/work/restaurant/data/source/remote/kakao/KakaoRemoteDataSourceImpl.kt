@@ -3,6 +3,7 @@ package com.work.restaurant.data.source.remote.kakao
 import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,7 +52,7 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
     ) {
-        kakaoApi.kakaoItemSearcy(placeName).enqueue(object : Callback<KakaoSearchResponse> {
+        kakaoApi.kakaoItemSearch(placeName).enqueue(object : Callback<KakaoSearchResponse> {
             override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
                 callback.onFailure("${t?.message}")
             }
@@ -63,7 +64,16 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                 if (response != null) {
                     if (response.isSuccessful) {
 
-                        callback.onSuccess(response.body().documents)
+                        val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
+
+                        response.body().documents.forEach {
+                            if (it.categoryName.contains("스포츠,레저")) {
+                                toSortDocuments.add(it)
+                            }
+                        }
+
+
+                        callback.onSuccess(toSortDocuments)
                     } else {
                         callback.onFailure(response.message())
                     }

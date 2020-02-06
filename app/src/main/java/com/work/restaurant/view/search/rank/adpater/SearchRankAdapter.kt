@@ -63,7 +63,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                     }
 
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
-
+                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
                     val optionMenu =
                         MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
                     optionMenu.setForceShowIcon(true)
@@ -78,6 +78,10 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                         ): Boolean {
 
                             when (item?.itemId) {
+
+                                R.id.kakao_bookmark_item -> {
+                                    adapterListener.getKakaoData(3, kakaoItem.placeName)
+                                }
 
 //                                R.id.kakao_url_item -> {
 //                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
@@ -117,8 +121,9 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 //                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
                     }
 
-                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
 
+                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
+                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
                     val optionMenu =
                         MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
                     optionMenu.setForceShowIcon(true)
@@ -133,6 +138,10 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                         ): Boolean {
 
                             when (item?.itemId) {
+                                R.id.kakao_bookmark_item -> {
+                                    adapterListener.getKakaoData(3, kakaoItem.placeName)
+                                }
+
 //
 //                                R.id.kakao_url_item -> {
 //                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)

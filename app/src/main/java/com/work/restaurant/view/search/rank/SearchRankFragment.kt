@@ -129,6 +129,10 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 intent.data = Uri.parse("tel:$data")
                 startActivity(intent)
             }
+
+            SELECT_BOOKMARK -> {
+                Toast.makeText(this.context, "$data 즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -139,6 +143,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         private const val SELECT_URL = 1
         private const val SELECT_CALLING = 2
+        private const val SELECT_BOOKMARK = 3
     }
 
 

@@ -9,6 +9,12 @@
         android:title=""
         />
 
+    <item
+        android:id="@+id/kakao_bookmark_item"
+        android:icon="@drawable/ic_like"
+        android:title=""
+        />
+
 
 
 </menu>
