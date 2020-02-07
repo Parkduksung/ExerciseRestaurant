@@ -34,6 +34,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         presenter = ExerciseRestaurantPresenter(this)
+
         start()
 
     }
@@ -58,6 +59,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
         vp_main.adapter = adapter
         vp_main.offscreenPageLimit = 5
 
+        vp_main.setSwipePagingEnabled(false)
+
         tl_main.run {
             setupWithViewPager(vp_main)
             getTabAt(0)?.setIcon(R.drawable.ic_home)
@@ -66,6 +69,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             getTabAt(3)?.setIcon(R.drawable.calendar)
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
+
 
     }
 
