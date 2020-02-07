@@ -57,10 +57,10 @@ class SearchLookForPresenter(
         kakaoRepository.getKakaoItemInfo(searchItem,
             object : KakaoRepositoryCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
-                    val toKakaoSearchModel = item.map {
+                    val toKakaoSearchModelList = item.map {
                         it.toKakaoModel()
                     }
-                    searchLookForView.showSearchLook(toKakaoSearchModel)
+                    searchLookForView.showSearchLook(toKakaoSearchModelList)
                 }
 
                 override fun onFailure(message: String) {

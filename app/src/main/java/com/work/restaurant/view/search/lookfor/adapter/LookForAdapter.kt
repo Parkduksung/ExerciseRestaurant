@@ -12,7 +12,7 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
-    private val searchLookList = ArrayList<KakaoSearchModel>()
+    private val searchLookList = mutableListOf<KakaoSearchModel>()
 
     private lateinit var adapterListener: AdapterDataListener
     private lateinit var bookmarkListener: AdapterDataListener.GetKakaoData
@@ -111,8 +111,8 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         adapterListener = itemClickListener
     }
 
-    fun setBookmarkListener(bookmarkAdapterListener: AdapterDataListener.GetKakaoData) {
-        bookmarkListener = bookmarkAdapterListener
+    fun setBookmarkListener(listener: AdapterDataListener.GetKakaoData) {
+        bookmarkListener = listener
     }
 
 }

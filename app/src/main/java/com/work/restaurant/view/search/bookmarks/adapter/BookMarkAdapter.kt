@@ -13,7 +13,7 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
-    private val bookmarkList = ArrayList<BookmarkModel>()
+    private val bookmarkList = mutableListOf<BookmarkModel>()
 
     private lateinit var adapterListener: AdapterDataListener.GetBookmarkData
 
@@ -89,8 +89,8 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetBookmarkData) {
-        adapterListener = listenerAdapterAdapter
+    fun setItemClickListener(listener: AdapterDataListener.GetBookmarkData) {
+        adapterListener = listener
     }
 
 

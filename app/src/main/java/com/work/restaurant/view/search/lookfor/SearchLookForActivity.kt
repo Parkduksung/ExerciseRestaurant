@@ -2,7 +2,6 @@ package com.work.restaurant.view.search.lookfor
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -30,7 +29,7 @@ class SearchLookForActivity : AppCompatActivity(),
     SearchLookForContract.View {
 
 
-    private lateinit var lookForAdapter: LookForAdapter
+    private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
 
@@ -92,7 +91,6 @@ class SearchLookForActivity : AppCompatActivity(),
             Injection.provideKakaoRepository(),
             Injection.provideBookmarkRepository()
         )
-        lookForAdapter = LookForAdapter()
         lookForAdapter.setItemClickListener(this)
         lookForAdapter.setBookmarkListener(this)
         ib_search_item_look.setOnClickListener(this)
@@ -127,8 +125,8 @@ class SearchLookForActivity : AppCompatActivity(),
 
         val intent = intent
 
-        clickData = intent.extras?.getString("data").toString()
-        toggle = intent.extras?.getBoolean("toggle") ?: true
+        clickData = intent.extras?.getString(GET_DATA).toString()
+        toggle = intent.extras?.getBoolean(GET_TOGGLE) ?: true
 
         if (toggle) {
             getData(clickData)
@@ -174,9 +172,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
             lookForAdapter.clearListData()
 
-            searchKakaoList.forEach {
-                lookForAdapter.addData(it)
-            }
+            lookForAdapter.addAllData(searchKakaoList)
 
             layoutManager = LinearLayoutManager(this.context)
 
@@ -195,12 +191,8 @@ class SearchLookForActivity : AppCompatActivity(),
         alertDialog.setTitle("검색 실패")
         alertDialog.setMessage("다시 입력해 주세요.")
         alertDialog.setPositiveButton(
-            "확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                }
-            })
+            "확인"
+        ) { _, _ -> }
         alertDialog.show()
     }
 
@@ -219,6 +211,9 @@ class SearchLookForActivity : AppCompatActivity(),
         private const val SUCCESS_ADD = "successAdd"
         private const val SUCCESS_DELETE = "successDelete"
         private const val RESULT_FAILURE = "error"
+
+        private const val GET_DATA = "data"
+        private const val GET_TOGGLE = "toggle"
 
     }
 }

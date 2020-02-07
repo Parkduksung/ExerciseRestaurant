@@ -19,11 +19,11 @@ class SearchItemDetailsPresenter(
 
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
 
-                    val toKakaoSearchModel = item.map{
+                    val toKakaoSearchModelList = item.map{
                         it.toKakaoModel()
                     }
 
-                    searchItemDetailsView.showKakaoItemInfoDetail(toKakaoSearchModel)
+                    searchItemDetailsView.showKakaoItemInfoDetail(toKakaoSearchModelList)
                 }
 
                 override fun onFailure(message: String) {

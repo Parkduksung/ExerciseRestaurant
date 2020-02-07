@@ -1,7 +1,6 @@
 package com.work.restaurant.view.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CalendarView
 import android.widget.Toast
@@ -22,15 +21,13 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
 
     private lateinit var presenter: CalendarPresenter
-    private lateinit var diaryAdapter: DiaryAdapter
-
+    private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
 
     private val eat = mutableSetOf<DiaryModel>()
     private val exercise = mutableSetOf<DiaryModel>()
 
 
     override fun showEatData(data: List<EatModel>) {
-
 
         eat.clear()
         val toDateModel = data.map {
@@ -56,11 +53,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         showDayOfData()
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        diaryAdapter = DiaryAdapter()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -100,18 +92,16 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private fun showDayOfData() {
         if (workEat && workExercise) {
 
-            val dayOfList = mutableSetOf<DiaryModel>()
-            dayOfList.addAll(eat)
-            dayOfList.addAll(exercise)
+            val dayOfSet = mutableSetOf<DiaryModel>()
+            dayOfSet.addAll(eat)
+            dayOfSet.addAll(exercise)
             workEat = false
             workExercise = false
-
-            Log.d("결콰콰코카1", dayOfList.size.toString())
 
             this.activity?.runOnUiThread {
                 recyclerview_calendar.run {
                     diaryAdapter.clearListData()
-                    diaryAdapter.addAllData(dayOfList.toList().sortedBy { it.time })
+                    diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
                 }
             }
         }

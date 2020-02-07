@@ -13,7 +13,7 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
 
-    private val kakaoList = ArrayList<KakaoSearchModel>()
+    private val kakaoList = mutableListOf<KakaoSearchModel>()
 
     private lateinit var adapterListener: AdapterDataListener.GetKakaoData
 
@@ -165,8 +165,8 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetKakaoData) {
-        adapterListener = listenerAdapterAdapter
+    fun setItemClickListener(listener: AdapterDataListener.GetKakaoData) {
+        adapterListener = listener
     }
 }
 

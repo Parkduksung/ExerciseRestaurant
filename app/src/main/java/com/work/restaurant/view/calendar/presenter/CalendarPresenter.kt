@@ -22,11 +22,11 @@ class CalendarPresenter(
             object : ExerciseRepositoryCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<ExerciseEntity>) {
 
-                    val toExerciseModel = list.map {
+                    val toExerciseModelList = list.map {
                         it.toExerciseModel()
                     }
 
-                    calendarContract.showExerciseData(toExerciseModel)
+                    calendarContract.showExerciseData(toExerciseModelList)
 
                 }
 
@@ -41,11 +41,11 @@ class CalendarPresenter(
 
         eatRepository.getDataOfTheDay(date, object : EatRepositoryCallback.GetDataOfTheDay {
             override fun onSuccess(list: List<EatEntity>) {
-                val toEatModel = list.map {
+                val toEatModelList = list.map {
                     it.toEatModel()
                 }
 
-                calendarContract.showEatData(toEatModel)
+                calendarContract.showEatData(toEatModelList)
             }
 
             override fun onFailure(msg: String) {

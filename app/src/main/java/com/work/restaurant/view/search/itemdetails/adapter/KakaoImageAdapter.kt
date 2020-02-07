@@ -11,7 +11,7 @@ import com.work.restaurant.util.GlideApp
 
 class KakaoImageAdapter : RecyclerView.Adapter<KakaoImageAdapter.ViewHolder>() {
 
-    private val kakaoList = ArrayList<KakaoImageDocuments>()
+    private val kakaoList = mutableListOf<KakaoImageDocuments>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

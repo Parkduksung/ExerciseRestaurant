@@ -6,9 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -34,7 +32,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     private lateinit var presenter: DiaryPresenter
-    private lateinit var diaryAdapter: DiaryAdapter
+    private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
 
 
@@ -152,17 +150,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.diary_main, container, false).also {
-            diaryAdapter = DiaryAdapter()
-        }
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -241,7 +228,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
         this.activity?.runOnUiThread {
-            Log.d("결과모야?", "4")
             recyclerview_diary.run {
                 diaryAdapter.clearListData()
                 diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })

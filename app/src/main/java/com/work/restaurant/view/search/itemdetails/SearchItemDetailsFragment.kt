@@ -3,16 +3,13 @@ package com.work.restaurant.view.search.itemdetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.search.itemdetails.adapter.KakaoImageAdapter
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
@@ -22,9 +19,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     View.OnClickListener, SearchItemDetailsContract.View {
 
     private lateinit var detailsPresenter: SearchItemDetailsPresenter
-    private lateinit var intent: Intent
-    private lateinit var kakaoImageAdapter: KakaoImageAdapter
-
 
     override fun showKakaoItemInfoDetail(searchList: List<KakaoSearchModel>) {
 
@@ -60,18 +54,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_item_details_fragment, container, false).also {
-            intent = Intent(Intent.ACTION_DIAL)
-            kakaoImageAdapter = KakaoImageAdapter()
-        }
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -90,8 +72,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
         val bundle = arguments
 
-        if (bundle?.getBoolean("toggle") != null) {
-            if (bundle.getBoolean("toggle")) {
+        if (bundle?.getBoolean(TOGGLE) != null) {
+            if (bundle.getBoolean(TOGGLE)) {
 
                 val webSettings = wb_search_item_detail.settings
                 webSettings.javaScriptEnabled = true
@@ -111,10 +93,10 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                         return false
                     }
                 }
-                wb_search_item_detail.loadUrl(bundle.getString("data"))
+                wb_search_item_detail.loadUrl(bundle.getString(DATA))
 
             } else {
-                bundle.getString("data")?.let { detailsPresenter.kakaoItemInfoDetail(it) }
+                bundle.getString(DATA)?.let { detailsPresenter.kakaoItemInfoDetail(it) }
             }
         }
     }
@@ -123,13 +105,16 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     companion object {
         private const val TAG = "SearchOkItemFragment"
 
+        private const val DATA = "data"
+        private const val TOGGLE = "toggle"
+
         fun newInstance(
             data: String,
-            toggle1: Boolean
+            toggle: Boolean
         ) = SearchItemDetailsFragment().apply {
             arguments = Bundle().apply {
-                putString("data", data)
-                putBoolean("toggle", toggle1)
+                putString(DATA, data)
+                putBoolean(TOGGLE, toggle)
             }
         }
 

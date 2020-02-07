@@ -53,17 +53,12 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
     }
 
     override fun showSearch() {
-
         val intent = Intent(this.context, SearchLookForActivity()::class.java)
-        intent.putExtra("data", "")
-        intent.putExtra("toggle", false)
         startActivity(intent)
-
     }
 
 
     companion object {
         private const val TAG = "SearchFragment"
-        const val URL = "https://duksung12.cafe24.com"
     }
 }

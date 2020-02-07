@@ -20,7 +20,6 @@ class DiaryAdapter :
     private lateinit var adapterListener: AdapterDataListener.GetList
     private val diaryList = mutableListOf<DiaryModel>()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             DiaryModel.EAT -> {
@@ -208,8 +207,8 @@ class DiaryAdapter :
     }
 
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetList) {
-        adapterListener = listenerAdapterAdapter
+    fun setItemClickListener(listener: AdapterDataListener.GetList) {
+        adapterListener = listener
     }
 
 

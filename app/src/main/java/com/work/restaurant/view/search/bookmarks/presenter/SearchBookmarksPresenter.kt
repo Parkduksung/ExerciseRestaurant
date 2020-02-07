@@ -33,8 +33,8 @@ class SearchBookmarksPresenter(
         bookmarkRepository.getAllList(object : BookmarkRepositoryCallback.GetAllList {
             override fun onSuccess(list: List<BookmarkEntity>) {
 
-                val toBookmarkModel = list.map { it.toBookmarkModel() }
-                searchBookmarksView.showBookmarksList(toBookmarkModel)
+                val toBookmarkModelList = list.map { it.toBookmarkModel() }
+                searchBookmarksView.showBookmarksList(toBookmarkModelList)
             }
 
             override fun onFailure(msg: String) {

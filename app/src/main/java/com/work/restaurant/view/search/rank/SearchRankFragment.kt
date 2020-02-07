@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
@@ -29,6 +27,11 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
     AdapterDataListener.GetKakaoData {
+
+    private lateinit var presenter: SearchRankPresenter
+    private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
+
+
     override fun showBookmarkResult(msg: String) {
         when (msg) {
             RESULT_SUCCESS -> {
@@ -46,9 +49,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
         }
     }
-
-    private lateinit var presenter: SearchRankPresenter
-    private lateinit var searchRankAdapter: SearchRankAdapter
 
     override fun onClick(v: View?) {
 
@@ -84,17 +84,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
-        return view.also {
-            searchRankAdapter = SearchRankAdapter()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -132,8 +121,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         when (select) {
             SELECT_URL -> {
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra("data", data.placeUrl)
-                intent.putExtra("toggle", true)
+                intent.putExtra(PUT_DATA, data.placeUrl)
+                intent.putExtra(PUT_TOGGLE, true)
                 startActivity(intent)
             }
 
@@ -154,6 +143,9 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         private const val RESULT_SUCCESS = "success"
         private const val RESULT_FAILURE = "error"
+
+        private const val PUT_DATA = "data"
+        private const val PUT_TOGGLE = "toggle"
 
     }
 

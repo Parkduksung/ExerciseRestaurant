@@ -2,9 +2,7 @@ package com.work.restaurant.view.search.bookmarks
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
@@ -22,7 +20,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     View.OnClickListener, AdapterDataListener.GetBookmarkData,
     SearchBookmarksContract.View {
 
-    private lateinit var bookMarkAdapter: BookMarkAdapter
+    private val bookMarkAdapter: BookMarkAdapter by lazy { BookMarkAdapter() }
     private lateinit var presenter: SearchBookmarksPresenter
 
 
@@ -63,15 +61,15 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
     override fun showBookmarksList(bookmarkModelList: List<BookmarkModel>) {
 
-        val bookmarkDeduplicationList = mutableSetOf<BookmarkModel>()
+        val bookmarkDeduplicationSet = mutableSetOf<BookmarkModel>()
 
-        bookmarkDeduplicationList.addAll(bookmarkModelList)
+        bookmarkDeduplicationSet.addAll(bookmarkModelList)
 
         this.activity?.runOnUiThread {
             recyclerview_bookmark.run {
                 this.adapter = bookMarkAdapter
                 bookMarkAdapter.clearListData()
-                bookMarkAdapter.addAllData(bookmarkDeduplicationList.toList())
+                bookMarkAdapter.addAllData(bookmarkDeduplicationSet.toList())
                 layoutManager = LinearLayoutManager(this.context)
             }
         }
@@ -83,16 +81,6 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         }
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_bookmarks_fragment, container, false).also {
-            bookMarkAdapter = BookMarkAdapter()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
