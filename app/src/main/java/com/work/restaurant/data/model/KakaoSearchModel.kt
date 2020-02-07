@@ -8,4 +8,10 @@ data class KakaoSearchModel(
     val placeUrl: String,
     val locationX: String,
     val locationY: String
-)
+) {
+    fun toBookmarkModel(): BookmarkModel =
+        BookmarkModel(
+            placeName,
+            placeUrl
+        )
+}

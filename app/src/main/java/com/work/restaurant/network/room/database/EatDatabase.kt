@@ -26,7 +26,6 @@ abstract class EatDatabase : RoomDatabase() {
                 .also {
                     INSTANCE = it
                 }
-
     }
 
 }

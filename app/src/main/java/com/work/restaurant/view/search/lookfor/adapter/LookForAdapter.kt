@@ -5,11 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
-import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
@@ -17,6 +15,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
     private val searchLookList = ArrayList<KakaoSearchModel>()
 
     private lateinit var adapterListener: AdapterDataListener
+    private lateinit var bookmarkListener: AdapterDataListener.GetKakaoData
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -50,19 +49,16 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
             searchBookmarkCheckbox.setButtonDrawable(R.drawable.selector_checkbox_drawable)
 
-            if (::adapterListener.isInitialized) {
+            if (::adapterListener.isInitialized && ::bookmarkListener.isInitialized) {
                 searchLookName.setOnClickListener {
                     adapterListener.getData(item.placeName)
                 }
 
                 searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
                     if (searchBookmarkCheckbox.isChecked) {
-                        Toast.makeText(App.instance.context(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
-
+                        bookmarkListener.getKakaoData(1, item)
                     } else {
-                        Toast.makeText(App.instance.context(), "즐겨찾기에 제거되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
+                        bookmarkListener.getKakaoData(2, item)
                     }
 
                 }
@@ -73,20 +69,23 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
                 }
+
+                bookmarkListener = object : AdapterDataListener.GetKakaoData {
+                    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                }
                 searchLookName.setOnClickListener {
                     adapterListener.getData(item.placeName)
                 }
 
                 searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
                     if (searchBookmarkCheckbox.isChecked) {
-                        Toast.makeText(App.instance.context(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
-
+                        bookmarkListener.getKakaoData(1, item)
                     } else {
-                        Toast.makeText(App.instance.context(), "즐겨찾기에 제거되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
+                        bookmarkListener.getKakaoData(2, item)
                     }
-
                 }
 
             }
@@ -108,8 +107,12 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
-        adapterListener = listenerAdapterAdapter
+    fun setItemClickListener(itemClickListener: AdapterDataListener) {
+        adapterListener = itemClickListener
+    }
+
+    fun setBookmarkListener(bookmarkAdapterListener: AdapterDataListener.GetKakaoData) {
+        bookmarkListener = bookmarkAdapterListener
     }
 
 }

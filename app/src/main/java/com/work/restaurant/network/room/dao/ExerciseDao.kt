@@ -7,7 +7,7 @@ import com.work.restaurant.network.room.entity.ExerciseEntity
 interface ExerciseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun registerExercise(exerciseEntity: ExerciseEntity)
+    fun registerExercise(exerciseEntity: ExerciseEntity): Long
 
     @Query("SELECT COUNT(*) FROM exercise")
     fun getAllCount(): Int
@@ -21,7 +21,6 @@ interface ExerciseDao {
 
     @Delete
     fun deleteExercise(exerciseEntity: ExerciseEntity)
-
 
 
 }

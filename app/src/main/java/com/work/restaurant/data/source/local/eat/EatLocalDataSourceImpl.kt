@@ -18,10 +18,13 @@ class EatLocalDataSourceImpl(
 
             val deleteEat = eatDatabase.eatDao().deleteEat(data)
 
-            deleteEat.takeIf { true }
-                .apply {
-                    callback.onSuccess("success")
-                } ?: callback.onFailure("error")
+            Log.d("제거됬니?", deleteEat.toString())
+
+            if (deleteEat >= 1) {
+                callback.onSuccess("success")
+            } else {
+                callback.onSuccess("error")
+            }
 
         }
     }
@@ -59,9 +62,7 @@ class EatLocalDataSourceImpl(
 
         appExecutors.diskIO.execute {
 
-
             val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(date)
-
 
             getDataOfTheDay.takeIf { true }
                 .apply {
@@ -83,16 +84,17 @@ class EatLocalDataSourceImpl(
     ) {
         appExecutors.diskIO.execute {
 
-            val eatEntity = EatEntity(date = date, time = time, type = type, memo = memo)
+            val eatEntity =
+                EatEntity(date = date, time = time, type = type, memo = memo)
 
 
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
 
-            registerEat.takeIf { true }
-                .apply {
-                    callback.onSuccess("success")
-                } ?: callback.onFailure("error")
-
+            if (registerEat >= 1) {
+                callback.onSuccess("success")
+            } else {
+                callback.onSuccess("error")
+            }
         }
 
     }

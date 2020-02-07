@@ -11,6 +11,8 @@ import retrofit2.Response
 
 class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoApi) :
     KakaoRemoteDataSource {
+
+
     override fun getKakaoImage(
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoImageCallback

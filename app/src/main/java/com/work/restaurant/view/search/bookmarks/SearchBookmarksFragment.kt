@@ -7,42 +7,75 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
 
 class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment),
-    View.OnClickListener, AdapterDataListener,
+    View.OnClickListener, AdapterDataListener.GetBookmarkData,
     SearchBookmarksContract.View {
 
+    private lateinit var bookMarkAdapter: BookMarkAdapter
+    private lateinit var presenter: SearchBookmarksPresenter
 
-    override fun showBookmarksList(fitnessList: List<FitnessCenterItemResponse>) {
-        recyclerview_bookmark.run {
 
-            this.adapter = bookMarkAdapter
+    override fun showBookmarkDeleteResult(msg: String) {
+        when (msg) {
+            RESULT_SUCCESS -> {
+                this.activity?.runOnUiThread {
+                    Toast.makeText(this.context, "제거성공.", Toast.LENGTH_LONG).show()
+                }
 
-            fitnessList.forEach { fitnessCenterItem ->
-                if (fitnessCenterItem.fitnessCenterLikeCount >= 90) {
-                    bookMarkAdapter.addData(fitnessCenterItem)
+            }
+            RESULT_FAILURE -> {
+                this.activity?.runOnUiThread {
+                    Toast.makeText(this.context, "제거실패.", Toast.LENGTH_LONG).show()
                 }
             }
-            layoutManager = LinearLayoutManager(this.context)
+        }
+
+    }
+
+    override fun getBookmarkData(select: Int, data: BookmarkModel) {
+        when (select) {
+
+            SELECT_URL -> {
+                val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
+                intent.putExtra("data", data.bookmarkUrl)
+                intent.putExtra("toggle", true)
+                startActivity(intent)
+
+            }
+
+            SELECT_DELETE -> {
+                presenter.deleteBookmark(data)
+            }
         }
     }
 
 
-    private lateinit var bookMarkAdapter: BookMarkAdapter
-    private lateinit var presenter: SearchBookmarksPresenter
+    override fun showBookmarksList(bookmarkModelList: List<BookmarkModel>) {
+
+        val bookmarkDeduplicationList = mutableSetOf<BookmarkModel>()
+
+        bookmarkDeduplicationList.addAll(bookmarkModelList)
+
+        this.activity?.runOnUiThread {
+            recyclerview_bookmark.run {
+                this.adapter = bookMarkAdapter
+                bookMarkAdapter.clearListData()
+                bookMarkAdapter.addAllData(bookmarkDeduplicationList.toList())
+                layoutManager = LinearLayoutManager(this.context)
+            }
+        }
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -64,33 +97,30 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = SearchBookmarksPresenter(
-            this, FitnessItemRepositoryImpl.getInstance(
-                FitnessCenterRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        SearchFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideBookmarkRepository()
         )
+
         bookMarkAdapter.setItemClickListener(this)
 
         presenter.getBookmarksList()
 
     }
 
-
-    override fun getData(data: String) {
-
-        val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-        intent.putExtra("data", data)
-        intent.putExtra("toggle", true)
-        startActivity(intent)
-        Toast.makeText(this.context, data, Toast.LENGTH_SHORT).show()
+    override fun onResume() {
+        super.onResume()
+        presenter.getBookmarksList()
     }
 
-
     companion object {
+
         private const val TAG = "SearchLikeFragment"
+
+        private const val SELECT_URL = 1
+        private const val SELECT_DELETE = 2
+        private const val RESULT_SUCCESS = "success"
+        private const val RESULT_FAILURE = "error"
+
     }
 
 

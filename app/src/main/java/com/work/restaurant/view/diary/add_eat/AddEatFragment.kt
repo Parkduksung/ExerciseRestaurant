@@ -60,7 +60,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
             R.id.add_eat_save -> {
 
-                if (radioClick <= 1) {
+                if (radioClick <= 1 && et_add_eat_memo.text.isNotBlank()) {
                     presenter.addEat(
                         tv_add_eat_today.text.toString(),
                         btn_add_eat_time.text.toString(),

@@ -10,7 +10,6 @@ interface ExerciseLocalDataSourceCallback {
     }
 
     interface DeleteExerciseCallback {
-
         fun onSuccess(msg: String)
         fun onFailure(msg: String)
 
@@ -18,7 +17,6 @@ interface ExerciseLocalDataSourceCallback {
 
 
     interface GetAllList {
-
         fun onSuccess(list: List<ExerciseEntity>)
         fun onFailure(msg: String)
 

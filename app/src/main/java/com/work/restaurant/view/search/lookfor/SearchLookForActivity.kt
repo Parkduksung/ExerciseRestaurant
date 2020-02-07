@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
@@ -22,12 +23,54 @@ import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
-class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, AdapterDataListener,
+class SearchLookForActivity : AppCompatActivity(),
+    View.OnClickListener,
+    AdapterDataListener,
+    AdapterDataListener.GetKakaoData,
     SearchLookForContract.View {
 
 
     private lateinit var lookForAdapter: LookForAdapter
     private lateinit var presenter: SearchLookForPresenter
+
+
+    override fun showBookmarkResult(msg: String) {
+        when (msg) {
+            SUCCESS_ADD -> {
+                runOnUiThread {
+                    Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            SUCCESS_DELETE -> {
+                runOnUiThread {
+                    Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            RESULT_FAILURE -> {
+                runOnUiThread {
+                    Toast.makeText(this, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+        when (select) {
+
+            ADD_BOOKMARK -> {
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.addBookmark(toBookmarkModel)
+            }
+
+            DELETE_BOOKMARK -> {
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.deleteBookmark(toBookmarkModel)
+            }
+
+        }
+    }
 
 
     override fun onClick(v: View?) {
@@ -46,10 +89,12 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         setContentView(R.layout.search_look_for_main)
         presenter = SearchLookForPresenter(
             this,
-            Injection.provideKakaoRepository()
+            Injection.provideKakaoRepository(),
+            Injection.provideBookmarkRepository()
         )
         lookForAdapter = LookForAdapter()
         lookForAdapter.setItemClickListener(this)
+        lookForAdapter.setBookmarkListener(this)
         ib_search_item_look.setOnClickListener(this)
         ib_search_look_back.setOnClickListener(this)
 
@@ -168,5 +213,12 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         var toggle = false
 
         private const val TAG = "SearchLookForActivity"
+
+        private const val ADD_BOOKMARK = 1
+        private const val DELETE_BOOKMARK = 2
+        private const val SUCCESS_ADD = "successAdd"
+        private const val SUCCESS_DELETE = "successDelete"
+        private const val RESULT_FAILURE = "error"
+
     }
 }

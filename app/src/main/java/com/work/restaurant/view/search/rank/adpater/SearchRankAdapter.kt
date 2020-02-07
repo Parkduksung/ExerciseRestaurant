@@ -7,13 +7,13 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
 
-    private val kakaoList = ArrayList<KakaoSearchDocuments>()
+    private val kakaoList = ArrayList<KakaoSearchModel>()
 
     private lateinit var adapterListener: AdapterDataListener.GetKakaoData
 
@@ -46,9 +46,9 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
         private val kakaoName: TextView = itemView.findViewById(R.id.kakao_name_tv)
         private val kakaoMoreVert: ImageButton = itemView.findViewById(R.id.ib_more_vert)
 
-        fun bind(item: KakaoSearchDocuments) {
+        fun bind(item: KakaoSearchModel) {
 
-            val kakaoItem: KakaoSearchDocuments = item
+            val kakaoItem: KakaoSearchModel = item
 
             if (::adapterListener.isInitialized) {
 
@@ -80,15 +80,9 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                             when (item?.itemId) {
 
                                 R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(3, kakaoItem.placeName)
+                                    adapterListener.getKakaoData(2, kakaoItem)
                                 }
 
-//                                R.id.kakao_url_item -> {
-//                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
-//                                }
-//                                R.id.kakao_calling_item -> {
-//                                    adapterListener.getKakaoData(2, kakaoItem.phone)
-//                                }
                             }
                             return true
                         }
@@ -101,25 +95,22 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
                 itemView.setOnClickListener {
 
-                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+                    adapterListener.getKakaoData(1, kakaoItem)
                 }
 
 
             } else {
                 adapterListener = object : AdapterDataListener.GetKakaoData {
-                    override fun getKakaoData(select: Int, data: String) {
-
+                    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
+
                 }
                 kakaoMoreVert.setOnClickListener {
 
                     val menuBuilder = MenuBuilder(itemView.context)
                     val inflater = MenuInflater(itemView.context)
                     inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
-
-                    if (kakaoItem.phone == "") {
-//                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
-                    }
 
 
                     menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
@@ -139,16 +130,9 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
                             when (item?.itemId) {
                                 R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(3, kakaoItem.placeName)
+                                    adapterListener.getKakaoData(2, kakaoItem)
                                 }
 
-//
-//                                R.id.kakao_url_item -> {
-//                                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
-//                                }
-//                                R.id.kakao_calling_item -> {
-//                                    adapterListener.getKakaoData(2, kakaoItem.phone)
-//                                }
                             }
                             return true
                         }
@@ -158,7 +142,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
                 itemView.setOnClickListener {
 
-                    adapterListener.getKakaoData(1, kakaoItem.placeUrl)
+                    adapterListener.getKakaoData(1, kakaoItem)
                 }
             }
 
@@ -171,7 +155,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
     }
 
 
-    fun addData(documents: List<KakaoSearchDocuments>) =
+    fun addData(documents: List<KakaoSearchModel>) =
         kakaoList.addAll(documents)
 
 

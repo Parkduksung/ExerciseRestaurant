@@ -21,7 +21,7 @@ data class DiaryModel(
             date,
             time,
             type.toInt(),
-            memo.toString()
+            memo
         )
 
     fun toExerciseEntity(): ExerciseEntity {

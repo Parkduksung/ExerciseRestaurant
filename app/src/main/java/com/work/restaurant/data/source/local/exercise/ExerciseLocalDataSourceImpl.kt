@@ -21,7 +21,6 @@ class ExerciseLocalDataSourceImpl(
                 .apply {
                     callback.onSuccess("success")
                 } ?: callback.onFailure("error")
-
         }
     }
 
@@ -67,10 +66,12 @@ class ExerciseLocalDataSourceImpl(
             )
             val registerExercise = exerciseDatabase.exerciseDao().registerExercise(exerciseEntity)
 
-            registerExercise.takeIf { true }
-                .apply {
-                    callbackLocal.onSuccess("success")
-                } ?: callbackLocal.onFailure("error")
+            if (registerExercise >= 1) {
+                callbackLocal.onSuccess("success")
+            } else {
+                callbackLocal.onFailure("error")
+            }
+
         }
 
     }

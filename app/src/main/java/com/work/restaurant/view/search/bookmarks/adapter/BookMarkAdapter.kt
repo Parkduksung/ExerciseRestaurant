@@ -1,22 +1,21 @@
 package com.work.restaurant.view.search.bookmarks.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.util.GlideApp
+import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
-    private val bookmarkList = ArrayList<FitnessCenterItemResponse>()
+    private val bookmarkList = ArrayList<BookmarkModel>()
 
-    private lateinit var adapterListener: AdapterDataListener
+    private lateinit var adapterListener: AdapterDataListener.GetBookmarkData
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -42,56 +41,55 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         private val bookmarkName: TextView = itemView.findViewById(R.id.tv_bookmark_name)
-        private val bookmarkImage: ImageView = itemView.findViewById(R.id.iv_bookmark_image)
         private val bookmarkCancel: ImageButton = itemView.findViewById(R.id.ib_bookmark_cancel)
 
-
-        fun bind(item: FitnessCenterItemResponse) {
-            val fitnessCenterItemResponse: FitnessCenterItemResponse = item
+        fun bind(item: BookmarkModel) {
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.fitnessCenterName)
+                    adapterListener.getBookmarkData(1, item)
                 }
+                bookmarkCancel.setOnClickListener {
+                    Log.d("삭제과정", "버튼눌렀을때")
+                    adapterListener.getBookmarkData(2, item)
+                    bookmarkList.remove(item)
+                    notifyDataSetChanged()
+                }
+
             } else {
-                adapterListener = object : AdapterDataListener {
-                    override fun getData(data: String) {
+                adapterListener = object : AdapterDataListener.GetBookmarkData {
+                    override fun getBookmarkData(select: Int, data: BookmarkModel) {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
+
                 }
                 itemView.setOnClickListener {
-                    adapterListener.getData(item.fitnessCenterName)
+                    adapterListener.getBookmarkData(1, item)
+                }
+                bookmarkCancel.setOnClickListener {
+                    Log.d("삭제과정", "버튼눌렀을때")
+                    bookmarkList.remove(item)
+                    notifyDataSetChanged()
+                    adapterListener.getBookmarkData(2, item)
                 }
             }
 
-            bookmarkCancel.setOnClickListener {
-                bookmarkList.remove(item)
-                notifyDataSetChanged()
-            }
-
-            bookmarkName.text = fitnessCenterItemResponse.fitnessCenterName
-
-            GlideApp.with(itemView.context)
-                .load(fitnessCenterItemResponse.fitnessCenterImage)
-                .override(100, 100)
-                .into(bookmarkImage)
-
+            bookmarkName.text = item.bookmarkName
         }
-
     }
 
-    fun addAllData(fitnessCenterItemResponse: List<FitnessCenterItemResponse>) =
-        bookmarkList.addAll(fitnessCenterItemResponse)
+    fun addAllData(bookmarkModelList: List<BookmarkModel>) =
+        bookmarkList.addAll(bookmarkModelList)
 
-    fun addData(fitnessCenterItemResponse: FitnessCenterItemResponse) =
-        bookmarkList.add(fitnessCenterItemResponse)
+    fun addData(bookmarkModel: BookmarkModel) =
+        bookmarkList.add(bookmarkModel)
 
     fun clearListData() {
         bookmarkList.clear()
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
+    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener.GetBookmarkData) {
         adapterListener = listenerAdapterAdapter
     }
 

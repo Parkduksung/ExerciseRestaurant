@@ -194,6 +194,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             }
             REGISTER_EXERCISE -> {
                 if (resultCode == Activity.RESULT_OK) {
+
                     this.onResume()
                 }
             }
@@ -240,7 +241,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
         this.activity?.runOnUiThread {
-
+            Log.d("결과모야?", "4")
             recyclerview_diary.run {
                 diaryAdapter.clearListData()
                 diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })

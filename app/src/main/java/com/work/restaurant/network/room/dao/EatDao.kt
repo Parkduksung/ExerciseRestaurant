@@ -6,7 +6,7 @@ import com.work.restaurant.network.room.entity.EatEntity
 @Dao
 interface EatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun registerEat(eatEntity: EatEntity)
+    fun registerEat(eatEntity: EatEntity) : Long
 
     @Query("SELECT COUNT(*) FROM eat")
     fun getAllCount(): Int
@@ -18,6 +18,6 @@ interface EatDao {
     fun getTodayItem(today: String): List<EatEntity>
 
     @Delete
-    fun deleteEat(eatEntity: EatEntity)
+    fun deleteEat(eatEntity: EatEntity) : Int
 
 }

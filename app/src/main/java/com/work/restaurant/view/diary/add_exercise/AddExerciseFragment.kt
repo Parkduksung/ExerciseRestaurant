@@ -26,6 +26,7 @@ import kotlin.collections.ArrayList
 class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     View.OnClickListener, AddExerciseContract.View {
     override fun showAddSuccess() {
+
         requireFragmentManager().beginTransaction()
             .remove(this@AddExerciseFragment)
             .commit().also {

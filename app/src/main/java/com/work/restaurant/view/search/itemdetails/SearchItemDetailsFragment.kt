@@ -114,7 +114,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                 wb_search_item_detail.loadUrl(bundle.getString("data"))
 
             } else {
-
                 bundle.getString("data")?.let { detailsPresenter.kakaoItemInfoDetail(it) }
             }
         }
@@ -123,7 +122,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
     companion object {
         private const val TAG = "SearchOkItemFragment"
-
 
         fun newInstance(
             data: String,

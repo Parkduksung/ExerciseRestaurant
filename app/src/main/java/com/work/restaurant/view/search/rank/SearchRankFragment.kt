@@ -2,7 +2,6 @@ package com.work.restaurant.view.search.rank
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
@@ -30,6 +29,23 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
     AdapterDataListener.GetKakaoData {
+    override fun showBookmarkResult(msg: String) {
+        when (msg) {
+            RESULT_SUCCESS -> {
+                this.activity?.runOnUiThread {
+                    Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+            RESULT_FAILURE -> {
+                this.activity?.runOnUiThread {
+                    Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+                }
+
+            }
+        }
+    }
 
     private lateinit var presenter: SearchRankPresenter
     private lateinit var searchRankAdapter: SearchRankAdapter
@@ -84,7 +100,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         super.onViewCreated(view, savedInstanceState)
         presenter = SearchRankPresenter(
             this,
-            Injection.provideKakaoRepository()
+            Injection.provideKakaoRepository(),
+            Injection.provideBookmarkRepository()
         )
 
         iv_search_settings.setOnClickListener(this)
@@ -101,7 +118,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         Log.d(TAG, "onResume")
     }
 
-    override fun showKakaoList(kakaoList: List<KakaoSearchDocuments>) {
+    override fun showKakaoList(kakaoList: List<KakaoSearchModel>) {
         recyclerview_rank.run {
             this.adapter = searchRankAdapter
             searchRankAdapter.clearListData()
@@ -111,27 +128,18 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     }
 
 
-    override fun getKakaoData(select: Int, data: String) {
+    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
         when (select) {
             SELECT_URL -> {
-
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra("data", data)
+                intent.putExtra("data", data.placeUrl)
                 intent.putExtra("toggle", true)
                 startActivity(intent)
             }
 
-            SELECT_CALLING -> {
-
-
-                val intent = Intent()
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.data = Uri.parse("tel:$data")
-                startActivity(intent)
-            }
-
             SELECT_BOOKMARK -> {
-                Toast.makeText(this.context, "$data 즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.addBookmarkKakaoItem(toBookmarkModel)
             }
         }
     }
@@ -142,8 +150,11 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         private const val REQUEST_CODE = 1
 
         private const val SELECT_URL = 1
-        private const val SELECT_CALLING = 2
-        private const val SELECT_BOOKMARK = 3
+        private const val SELECT_BOOKMARK = 2
+
+        private const val RESULT_SUCCESS = "success"
+        private const val RESULT_FAILURE = "error"
+
     }
 
 
