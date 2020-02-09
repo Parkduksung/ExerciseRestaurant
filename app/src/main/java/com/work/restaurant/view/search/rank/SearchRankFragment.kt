@@ -121,7 +121,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         when (select) {
             SELECT_URL -> {
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra(PUT_DATA, data.placeUrl)
+                intent.putExtra(PUT_DATA, data.placeName)
                 intent.putExtra(PUT_TOGGLE, true)
                 startActivity(intent)
             }

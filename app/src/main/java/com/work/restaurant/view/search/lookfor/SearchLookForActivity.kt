@@ -19,6 +19,7 @@ import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
 import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForContract
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
+import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
@@ -32,6 +33,16 @@ class SearchLookForActivity : AppCompatActivity(),
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
+
+    override fun onBackPressed() {
+
+        if (toggleWebPage) {
+            wb_search_item_detail.goBack()
+        } else {
+            wb_search_item_detail.clearHistory()
+            super.onBackPressed()
+        }
+    }
 
     override fun showBookmarkResult(msg: String) {
         when (msg) {
@@ -112,7 +123,6 @@ class SearchLookForActivity : AppCompatActivity(),
             }
         }
 
-
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -126,9 +136,9 @@ class SearchLookForActivity : AppCompatActivity(),
         val intent = intent
 
         clickData = intent.extras?.getString(GET_DATA).toString()
-        toggle = intent.extras?.getBoolean(GET_TOGGLE) ?: true
+        toggleClickData = intent.extras?.getBoolean(GET_TOGGLE) ?: false
 
-        if (toggle) {
+        if (toggleClickData) {
             getData(clickData)
         }
     }
@@ -136,34 +146,19 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun getData(data: String) {
 
-        if (toggle) {
+        if (toggleClickData) {
             val searchItemDetailsFragment =
-                SearchItemDetailsFragment.newInstance(data, true)
+                SearchItemDetailsFragment.newInstance(data)
             this.supportFragmentManager.beginTransaction()
                 .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
                 .addToBackStack(null)
                 .commit()
             et_search_look_for_item.text.clear()
-            toggle = false
-        } else {
-            val searchItemDetailsFragment =
-                SearchItemDetailsFragment.newInstance(
-                    et_search_look_for_item.text.toString(),
-                    false
-                )
-            this.supportFragmentManager.beginTransaction()
-                .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
-                .addToBackStack(null)
-                .commit()
-
-            et_search_look_for_item.text.clear()
+            toggleClickData = false
         }
-
     }
 
     override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
-
-        this.supportFragmentManager.popBackStack()
 
 
         recyclerview_look.run {
@@ -202,7 +197,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
     companion object {
         var clickData = ""
-        var toggle = false
+        var toggleClickData = false
 
         private const val TAG = "SearchLookForActivity"
 
@@ -214,6 +209,8 @@ class SearchLookForActivity : AppCompatActivity(),
 
         private const val GET_DATA = "data"
         private const val GET_TOGGLE = "toggle"
+
+        var toggleWebPage = false
 
     }
 }

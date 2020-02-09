@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity.Companion.toggleClickData
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
@@ -51,6 +52,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
             if (::adapterListener.isInitialized && ::bookmarkListener.isInitialized) {
                 searchLookName.setOnClickListener {
+                    toggleClickData = true
                     adapterListener.getData(item.placeName)
                 }
 
