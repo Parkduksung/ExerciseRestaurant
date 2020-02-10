@@ -8,9 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
@@ -24,13 +22,34 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
     private lateinit var detailsPresenter: SearchItemDetailsPresenter
 
-    override fun showKakaoItemInfoDetail(searchList: List<KakaoSearchModel>) {
 
-        wb_search_item_detail.loadUrl((searchList[0].placeUrl))
-        val webSettings = wb_search_item_detail.settings
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        detailsPresenter =
+            SearchItemDetailsPresenter(
+                this
+            )
+
+        searchResult()
+    }
+
+
+    private fun searchResult() {
+
+        val bundle = arguments
+        val getData = bundle?.getString(DATA).toString()
+
+        showUrl(wb_search_item_detail, getData)
+    }
+
+
+    private fun showUrl(webview: WebView, url: String) {
+        webview.loadUrl(url)
+        val webSettings = webview.settings
         webSettings.javaScriptEnabled = true
 
-        wb_search_item_detail.webViewClient = object : WebViewClient() {
+        webview.webViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
@@ -46,44 +65,17 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-
-                toggleWebPage = wb_search_item_detail.canGoBack()
-
+                toggleWebPage = webview.canGoBack()
             }
         }
 
-        wb_search_item_detail.setOnKeyListener { _, keyCode, _ ->
+        webview.setOnKeyListener { _, keyCode, _ ->
 
-            if ((keyCode == KeyEvent.KEYCODE_BACK) && wb_search_item_detail.canGoBack()) {
-                wb_search_item_detail.goBack()
+            if ((keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
+                webview.goBack()
                 true
             }
             false
-        }
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        detailsPresenter =
-            SearchItemDetailsPresenter(
-                this,
-                Injection.provideKakaoRepository()
-            )
-
-        searchResult()
-
-    }
-
-
-    private fun searchResult() {
-
-        val bundle = arguments
-        val getData = bundle?.getString(DATA)
-
-        if (getData != null) {
-            detailsPresenter.kakaoItemInfoDetail(getData)
         }
     }
 
@@ -98,6 +90,7 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     companion object {
         private const val TAG = "SearchItemDetailsFragment"
         private const val DATA = "data"
+        private const val Toggle = "toggle"
 
         fun newInstance(
             data: String

@@ -15,10 +15,12 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
 import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForContract
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
+import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
@@ -81,6 +83,51 @@ class SearchLookForActivity : AppCompatActivity(),
         }
     }
 
+    private fun getRecyclerClickData() {
+
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(SearchRankFragment.RECYCLERVIEW_CLICK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(SearchRankFragment.RECYCLERVIEW_CLICK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+                val searchItemDetailsFragment =
+                    SearchItemDetailsFragment.newInstance(getData)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
+
+    private fun getBookmarkData() {
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(SearchBookmarksFragment.BOOKMARK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(SearchBookmarksFragment.BOOKMARK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+                val searchItemDetailsFragment =
+                    SearchItemDetailsFragment.newInstance(getData)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -106,7 +153,9 @@ class SearchLookForActivity : AppCompatActivity(),
         ib_search_item_look.setOnClickListener(this)
         ib_search_look_back.setOnClickListener(this)
 
-        toggleData()
+        getRecyclerClickData()
+        getBookmarkData()
+
         searchItem(et_search_look_for_item)
 
     }
@@ -130,35 +179,19 @@ class SearchLookForActivity : AppCompatActivity(),
         inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
-    private fun toggleData() {
-
-        val intent = intent
-
-        clickData = intent.extras?.getString(GET_DATA).toString()
-        toggleClickData = intent.extras?.getBoolean(GET_TOGGLE) ?: false
-
-        if (toggleClickData) {
-            getData(clickData)
-        }
-    }
-
 
     override fun getData(data: String) {
 
-        if (toggleClickData) {
-            val searchItemDetailsFragment =
-                SearchItemDetailsFragment.newInstance(data)
-            this.supportFragmentManager.beginTransaction()
-                .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
-                .addToBackStack(null)
-                .commit()
-            et_search_look_for_item.text.clear()
-            toggleClickData = false
-        }
+        val searchItemDetailsFragment =
+            SearchItemDetailsFragment.newInstance(data)
+        this.supportFragmentManager.beginTransaction()
+            .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+            .addToBackStack(null)
+            .commit()
+        et_search_look_for_item.text.clear()
     }
 
     override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
-
 
         recyclerview_look.run {
 
@@ -195,8 +228,6 @@ class SearchLookForActivity : AppCompatActivity(),
 
 
     companion object {
-        var clickData = ""
-        var toggleClickData = false
 
         private const val TAG = "SearchLookForActivity"
 
@@ -205,9 +236,6 @@ class SearchLookForActivity : AppCompatActivity(),
         private const val SUCCESS_ADD = "successAdd"
         private const val SUCCESS_DELETE = "successDelete"
         private const val RESULT_FAILURE = "error"
-
-        private const val GET_DATA = "data"
-        private const val GET_TOGGLE = "toggle"
 
         var toggleWebPage = false
 

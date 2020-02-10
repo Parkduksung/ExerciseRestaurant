@@ -94,7 +94,6 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
 
                 itemView.setOnClickListener {
-
                     adapterListener.getKakaoData(1, kakaoItem)
                 }
 
@@ -141,7 +140,6 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                 }
 
                 itemView.setOnClickListener {
-
                     adapterListener.getKakaoData(1, kakaoItem)
                 }
             }

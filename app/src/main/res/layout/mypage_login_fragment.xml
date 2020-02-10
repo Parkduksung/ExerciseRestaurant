@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/login_title"
-            android:textColor="@color/colorMint"
+            android:textColor="@color/colorBlue"
             android:textSize="50dp" />
 
 
@@ -60,25 +60,32 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/login_email_text"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_email"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="15"
-                android:background="@android:color/transparent"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText">
 
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/login_email_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
 
-            </EditText>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
@@ -104,27 +111,33 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/login_pass_text"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_pass"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="15"
-                android:background="@android:color/transparent"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText"
+                app:passwordToggleEnabled="true">
 
-
-            </EditText>
-
-
+                <EditText
+                    android:layout_marginStart="20dp"
+                    android:id="@+id/et_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/login_pass_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
 

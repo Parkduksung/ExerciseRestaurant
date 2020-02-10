@@ -108,6 +108,12 @@
     <string name="hint_add_exercise_kg">kg</string>
     <string name="hint_add_exercise_count">횟수</string>
     <string name="btn_current_location">현위치로</string>
+    <string name="ll_mypage_identity">개인정보 처리방침</string>
+    <string name="ll_mypage_question">문의하기</string>
+    <string name="ll_mypage_notification">공지사항</string>
+    <string name="login_pass_hint">비밀번호를 입력하세요.</string>
+    <string name="login_email_hint">이메일을 입력하세요.</string>
+    <string name="notification_main_tv">공지사항</string>
 
 
 </resources>

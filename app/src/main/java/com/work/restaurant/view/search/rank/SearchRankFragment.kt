@@ -127,8 +127,9 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         when (select) {
             SELECT_URL -> {
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra(PUT_DATA, data.placeName)
-                intent.putExtra(PUT_TOGGLE, true)
+                Log.d("가져왔니", data.placeUrl)
+                intent.putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
+                intent.putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
                 startActivity(intent)
             }
 
@@ -150,8 +151,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         private const val RESULT_SUCCESS = "success"
         private const val RESULT_FAILURE = "error"
 
-        private const val PUT_DATA = "data"
-        private const val PUT_TOGGLE = "toggle"
+        const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
+        const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"
 
     }
 

@@ -43,15 +43,12 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
     override fun getBookmarkData(select: Int, data: BookmarkModel) {
         when (select) {
-
             SELECT_URL -> {
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra("data", data.bookmarkUrl)
-                intent.putExtra("toggle", true)
+                intent.putExtra(BOOKMARK_DATA, data.bookmarkUrl)
+                intent.putExtra(BOOKMARK_TOGGLE, true)
                 startActivity(intent)
-
             }
-
             SELECT_DELETE -> {
                 presenter.deleteBookmark(data)
             }
@@ -108,6 +105,9 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         private const val SELECT_DELETE = 2
         private const val RESULT_SUCCESS = "success"
         private const val RESULT_FAILURE = "error"
+
+        const val BOOKMARK_DATA = "bookmark_data"
+        const val BOOKMARK_TOGGLE = "bookmark_toggle"
 
     }
 

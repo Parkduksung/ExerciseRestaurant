@@ -13,7 +13,7 @@
         android:background="@color/colorWhite"
         android:orientation="vertical"
         android:weightSum="40"
-        tools:ignore="UselessParent,SpUsage,ContentDescription">
+        tools:ignore="UselessParent,SpUsage,ContentDescription, NestedWeights, RtlHardcoded">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,12 +25,11 @@
                 android:layout_height="match_parent"
                 android:gravity="right"
                 android:text="@string/app_version"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorGray"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/login_ll"
@@ -61,7 +60,7 @@
                         android:layout_weight="6"
                         android:gravity="center"
                         android:text="@string/login_text"
-                        android:textColor="@color/colorMint"
+                        android:textColor="@color/colorBlue"
                         android:textSize="45dp" />
 
                     <ImageView
@@ -73,9 +72,7 @@
                         android:visibility="visible"
                         app:srcCompat="@drawable/ic_login" />
 
-
                 </LinearLayout>
-
 
             </FrameLayout>
 
@@ -84,101 +81,145 @@
 
 
         <LinearLayout
+
+            android:id="@+id/login_ok_ll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_page_late_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/bottom_line_2"
-                android:text="@string/recent_view_item"
-                android:textSize="30dp" />
+            android:layout_weight="33"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            android:weightSum="40">
 
 
             <LinearLayout
-                android:id="@+id/login_ok_ll"
+                android:id="@+id/ll_notification"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="80dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="8"
+                    android:gravity="center|left"
+                    android:text="@string/ll_mypage_notification"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:src="@drawable/notification" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_question"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="30dp"
-                android:orientation="vertical"
-                android:visibility="invisible"
-                android:weightSum="40">
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="10">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="8"
+                    android:gravity="center|left"
+                    android:text="@string/ll_mypage_question"
+                    android:textSize="20dp"
+                    tools:ignore="RtlHardcoded" />
 
-                    <!--                    이부분 고민-->
-                    <TextView
-                        android:id="@+id/tv_page_write"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_line_2"
-                        android:text="  내 글"
-                        android:textSize="30dp"></TextView>
-                    <!---->
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="10">
-
-                    <!--                    이부분 고민-->
-                    <TextView
-                        android:id="@+id/tv_page_reply"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_line_2"
-                        android:text="  댓글 쓴 글"
-                        android:textSize="30dp"></TextView>
-                    <!---->
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_weight="10">
-
-                    <TextView
-                        android:id="@+id/tv_page_logout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/bottom_line_2"
-                        android:text="@string/logout"
-                        android:textSize="30dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="10"
-                    android:gravity="right"
-                    tools:ignore="RtlHardcoded">
-
-                    <TextView
-                        android:id="@+id/tv_page_withdrawal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/bottom_line_2"
-                        android:text="@string/withdraw"
-                        android:textSize="15dp" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:src="@drawable/question" />
+            </LinearLayout>
 
 
-                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_identity"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="8"
+                    android:gravity="center|left"
+                    android:text="@string/ll_mypage_identity"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:src="@drawable/identity" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_logout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="100dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="8"
+                    android:gravity="center|left"
+                    android:text="@string/logout"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:src="@drawable/logout" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                android:layout_weight="10"
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/tv_page_withdrawal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bottom_line_2"
+                    android:text="@string/withdraw"
+                    android:textSize="15dp" />
 
 
             </LinearLayout>

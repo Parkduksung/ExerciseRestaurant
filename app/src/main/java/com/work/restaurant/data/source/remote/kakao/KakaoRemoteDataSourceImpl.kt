@@ -90,7 +90,6 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                             }
                         }
 
-
                         callback.onSuccess(toSortDocuments)
                     } else {
                         callback.onFailure(response.message())

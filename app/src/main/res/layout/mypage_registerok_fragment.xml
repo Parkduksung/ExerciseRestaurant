@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/register_ok_title"
-                android:textColor="@color/colorMint"
+                android:textColor="@color/colorBlue"
                 android:textSize="40dp" />
 
 

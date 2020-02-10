@@ -37,6 +37,8 @@ class FitnessCenterRemoteDataSourceImpl private constructor(private val fitnessC
 
     }
 
+
+
     companion object {
 
         private var instance: FitnessCenterRemoteDataSourceImpl? = null
@@ -48,5 +50,6 @@ class FitnessCenterRemoteDataSourceImpl private constructor(private val fitnessC
 
 
     }
+
 
 }
