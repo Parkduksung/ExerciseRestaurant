@@ -10,12 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.dong
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.gunGu
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.rank.adpater.SearchRankAdapter
@@ -96,14 +95,21 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         iv_search_settings.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
-        presenter.getKakaoList()
+        tv_search_locate.text = App.prefs.myEditText
+
+
+        presenter.getCurrentLocation(tv_search_locate.text.toString())
 
     }
 
 
     override fun onResume() {
         super.onResume()
-        tv_search_locate.text = "$si $gunGu $dong"
+
+        if (selectAll.trim() != "") {
+            tv_search_locate.text = selectAll
+            presenter.getCurrentLocation(tv_search_locate.text.toString())
+        }
         Log.d(TAG, "onResume")
     }
 

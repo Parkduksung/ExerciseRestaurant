@@ -14,10 +14,11 @@ interface SearchRankContract {
 
     interface Presenter {
 
-        fun getKakaoList()
+        fun getKakaoList(currentX: Double, currentY: Double)
 
         fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel)
 
+        fun getCurrentLocation(addressName: String)
     }
 
 

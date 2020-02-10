@@ -16,4 +16,9 @@ interface KakaoRepository {
         placeName: String,
         callback: KakaoRepositoryCallback.KakaoImageCallback
     )
+
+    fun getKakaoAddressLocation(
+        addressName: String,
+        callback: KakaoRepositoryCallback.KakaoAddressCallback
+    )
 }

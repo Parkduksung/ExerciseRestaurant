@@ -1,5 +1,6 @@
 package com.work.restaurant.network.api
 
+import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import retrofit2.Call
@@ -30,6 +31,12 @@ interface KakaoApi {
     fun kakaoItemSearch(
         @Query("query") keyword: String
     ): Call<KakaoSearchResponse>
+
+    @Headers(HEADERS)
+    @GET("v2/local/search/address.json")
+    fun kakaoAddressSearch(
+        @Query("query") keyword: String
+    ): Call<KakaoAddressSearch>
 
 
     companion object {

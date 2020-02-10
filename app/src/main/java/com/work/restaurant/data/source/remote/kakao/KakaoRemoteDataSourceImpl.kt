@@ -1,7 +1,7 @@
 package com.work.restaurant.data.source.remote.kakao
 
 import com.work.restaurant.network.api.KakaoApi
-import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
+import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
@@ -11,6 +11,30 @@ import retrofit2.Response
 
 class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoApi) :
     KakaoRemoteDataSource {
+    override fun getKakaoAddressLocation(
+        addressName: String,
+        callback: KakaoRemoteDataSourceCallback.KakaoAddressCallback
+    ) {
+        kakaoApi.kakaoAddressSearch(addressName).enqueue(object : Callback<KakaoAddressSearch> {
+            override fun onFailure(call: Call<KakaoAddressSearch>?, t: Throwable?) {
+                callback.onFailure("${t?.message}")
+            }
+
+            override fun onResponse(
+                call: Call<KakaoAddressSearch>?,
+                response: Response<KakaoAddressSearch>?
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        val list = response.body().documents
+                        callback.onSuccess(list)
+                    } else {
+                        callback.onFailure(response.message())
+                    }
+                }
+            }
+        })
+    }
 
 
     override fun getKakaoImage(
@@ -30,17 +54,9 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                 if (response != null) {
                     if (response.isSuccessful) {
 
-
                         val list = response.body().kakaoImageDocuments
 
-                        val toKakaoDocuments = mutableSetOf<KakaoImageDocuments>()
-
-                        list.forEach {
-
-                            toKakaoDocuments.add(it)
-
-                        }
-                        callback.onSuccess(toKakaoDocuments.toList())
+                        callback.onSuccess(list)
                     } else {
                         callback.onFailure(response.message())
                     }

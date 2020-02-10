@@ -18,6 +18,11 @@ interface KakaoRemoteDataSource {
         callback: KakaoRemoteDataSourceCallback.KakaoImageCallback
     )
 
+    fun getKakaoAddressLocation(
+        addressName: String,
+        callback: KakaoRemoteDataSourceCallback.KakaoAddressCallback
+
+    )
 
 
 

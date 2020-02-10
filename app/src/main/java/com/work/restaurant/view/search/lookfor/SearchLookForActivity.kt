@@ -39,7 +39,6 @@ class SearchLookForActivity : AppCompatActivity(),
         if (toggleWebPage) {
             wb_search_item_detail.goBack()
         } else {
-            wb_search_item_detail.clearHistory()
             super.onBackPressed()
         }
     }

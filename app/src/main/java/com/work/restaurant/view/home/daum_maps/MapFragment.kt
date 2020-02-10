@@ -3,6 +3,7 @@ package com.work.restaurant.view.home.daum_maps
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.Geocoder
 import android.location.LocationManager
@@ -17,11 +18,13 @@ import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
 import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import kotlinx.android.synthetic.main.map.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -30,15 +33,81 @@ import java.util.*
 
 
 class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventListener,
-    MapContract.View {
+    MapView.POIItemEventListener,
+    MapContract.View, View.OnClickListener {
+    override fun onClick(v: View?) {
+        when (v?.id) {
+
+            R.id.btn_current_location -> {
+                selectCurrentLocation()
+            }
+        }
+    }
+
+    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
+
+
+        if (currentPOIItem.itemName == p1?.itemName || selectPOIItem.itemName == p1?.itemName) {
+
+        } else {
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+            alertDialog.setTitle(p1?.itemName)
+            alertDialog.setMessage("상세페이지로 이동하시겠습니까?")
+            alertDialog.setPositiveButton(
+                "확인",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        val intent =
+                            Intent(activity?.application, SearchLookForActivity()::class.java)
+                        intent.putExtra(PUT_DATA, p1?.itemName)
+                        intent.putExtra(PUT_TOGGLE, true)
+                        startActivity(intent)
+                    }
+                })
+            alertDialog.setNegativeButton("취소",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                    }
+                })
+            alertDialog.show()
+
+        }
+
+
+    }
+
+    override fun onCalloutBalloonOfPOIItemTouched(
+        p0: MapView?,
+        p1: MapPOIItem?,
+        p2: MapPOIItem.CalloutBalloonButtonType?
+    ) {
+
+    }
+
+    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+
+    }
+
+    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+
+
+    }
 
     private lateinit var mapView: MapView
-    //주소선택하고나서 그 위치 나타내는 마커
-    private lateinit var selectPOIItem: MapPOIItem
-    //현재 위치 나타내는 마커
-    private lateinit var currentPOIItem: MapPOIItem
-    //카카오 위치들 나타내는 마커
-    private lateinit var kakaoPOIItem: MapPOIItem
+
+    private val selectPOIItem: MapPOIItem by lazy { MapPOIItem() }
+
+    private val currentPOIItem: MapPOIItem by lazy { MapPOIItem() }
+
+    private val kakaoMarkerList = mutableSetOf<MapPOIItem>()
+
     private lateinit var presenter: MapPresenter
 
 
@@ -47,23 +116,30 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
         if (!toggleMap) {
             Log.d("카카오결과", list.size.toString())
+            mapView.removePOIItem(currentPOIItem)
             val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
             showCurrentMarker(currentPOIItem, currentMapPoint)
-
+            mapView.currentLocationTrackingMode =
+                MapView.CurrentLocationTrackingMode.TrackingModeOff
+            mapView.setShowCurrentLocationMarker(false)
         } else {
+            mapView.removePOIItem(selectPOIItem)
             val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
             showCurrentMarker(selectPOIItem, currentMapPoint)
+            toggleMap = false
         }
 
         list.forEach {
-            //            Log.d("카카오결과", it.placeName)
-
-            Log.d("카카오결과", it.placeUrl)
             val mapPoint =
                 MapPoint.mapPointWithGeoCoord(it.locationY.toDouble(), it.locationX.toDouble())
-            showKakaoDataList(kakaoPOIItem, it.placeName, mapPoint)
+            showKakaoDataList(it.placeName, mapPoint)
         }
 
+        mapView.addPOIItems(kakaoMarkerList.toTypedArray())
+
+//        kakaoMarkerList.forEach {
+//            mapView.addPOIItem(it)
+//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,19 +150,25 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             this,
             Injection.provideKakaoRepository()
         )
+
+        btn_current_location.setOnClickListener(this)
+
+
     }
 
-    private fun showKakaoDataList(mapPOIItem: MapPOIItem, name: String, mapPoint: MapPoint) {
+    private fun showKakaoDataList(name: String, mapPoint: MapPoint) {
+        val mapPOIItem = MapPOIItem()
         mapPOIItem.apply {
             this.itemName = name
             this.markerType = MapPOIItem.MarkerType.BluePin
             this.mapPoint = mapPoint
             this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
         }
-        mapView.addPOIItem(mapPOIItem)
+        kakaoMarkerList.add(mapPOIItem)
     }
 
     private fun showCurrentMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
+
 
         if (mapPOIItem == currentPOIItem) {
 
@@ -102,7 +184,10 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
                 Log.d("내위치결과", address[0].getAddressLine(0))
             }
 
-//            selectAll = address[0].getAddressLine(0)
+            val splitAddress = address[0].getAddressLine(0).split(" ")
+
+            App.prefs.myEditText =
+                "${splitAddress[1].subSequence(0, 2)} ${splitAddress[2]} ${splitAddress[3]}"
 
             mapPOIItem.itemName = "내위치"
         } else {
@@ -117,29 +202,19 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         mapView.addPOIItem(mapPOIItem)
         mapView.selectPOIItem(mapPOIItem, true)
         mapView.setMapCenterPoint(mapPoint, true)
+
+
     }
 
 
     override fun onCurrentLocationUpdate(p0: MapView?, p1: MapPoint?, p2: Float) {
-
-        //if-else로 나눈 이유는 처음 켰을시 좌표에서 고정되는게 아니고 움직일 시에 계속적으로 변화되게 하기 위해서이다.
-        if (::currentPOIItem.isInitialized) {
-            mapView.removePOIItem(currentPOIItem)
-            p1?.let {
-                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
-            }
-        } else {
-            currentPOIItem = MapPOIItem()
-            kakaoPOIItem = MapPOIItem()
-            p1?.let {
-                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
-            }
-//            currentPOIItem.tag = 0
+        p1?.let {
+            presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
         }
-
     }
 
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
+
 
     }
 
@@ -166,7 +241,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
             mapView.currentLocationTrackingMode =
                 MapView.CurrentLocationTrackingMode.TrackingModeOff
-//            mapView.removePOIItem(currentPOIItem)
 
             val geoCoder = Geocoder(context, Locale.getDefault())
 
@@ -225,7 +299,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
         mapView = MapView(this.context)
         mapView.setCurrentLocationEventListener(this)
-
+        mapView.setPOIItemEventListener(this)
         map_view.addView(mapView)
     }
 
@@ -286,10 +360,9 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
                     checkPermission()
                 } else {
                     if (toggleMap) {
-                        selectPOIItem = MapPOIItem()
                         mapView.removePOIItem(selectPOIItem)
-//                        mapView.currentLocationTrackingMode =
-//                            MapView.CurrentLocationTrackingMode.TrackingModeOff
+                        mapView.currentLocationTrackingMode =
+                            MapView.CurrentLocationTrackingMode.TrackingModeOff
                         mapView.setShowCurrentLocationMarker(false)
                         getLocation(selectAll)
                     } else {
@@ -304,6 +377,9 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
         private const val GPS_ENABLE_REQUEST_CODE = 1
         var toggleMap = false
+
+        private const val PUT_DATA = "data"
+        private const val PUT_TOGGLE = "toggle"
 
     }
 }

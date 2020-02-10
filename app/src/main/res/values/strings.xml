@@ -107,6 +107,7 @@
     <string name="hint_add_exercise_name">운동종목을 입력하세요</string>
     <string name="hint_add_exercise_kg">kg</string>
     <string name="hint_add_exercise_count">횟수</string>
+    <string name="btn_current_location">현위치로</string>
 
 
 </resources>

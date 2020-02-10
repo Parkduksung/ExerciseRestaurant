@@ -4,6 +4,7 @@ import android.util.Log
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSource
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceCallback
 import com.work.restaurant.ext.isConnectedToNetwork
+import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
 import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.util.App
@@ -11,6 +12,21 @@ import com.work.restaurant.util.App
 class KakaoRepositoryImpl private constructor(
     private val kakaoRemoteDataSource: KakaoRemoteDataSource
 ) : KakaoRepository {
+    override fun getKakaoAddressLocation(
+        addressName: String,
+        callback: KakaoRepositoryCallback.KakaoAddressCallback
+    ) {
+        kakaoRemoteDataSource.getKakaoAddressLocation(addressName, object : KakaoRemoteDataSourceCallback.KakaoAddressCallback{
+            override fun onSuccess(item: List<KakaoAddressDocument>) {
+                callback.onSuccess(item)
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
+            }
+        })
+    }
+
     override fun getKakaoImage(
         placeName: String,
         callback: KakaoRepositoryCallback.KakaoImageCallback
