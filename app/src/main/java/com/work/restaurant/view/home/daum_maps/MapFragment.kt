@@ -2,8 +2,8 @@ package com.work.restaurant.view.home.daum_maps
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Context.LOCATION_SERVICE
-import android.content.DialogInterface
 import android.content.Intent
 import android.location.Geocoder
 import android.location.LocationManager
@@ -22,9 +22,9 @@ import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.home.MapInterface
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
 import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
-import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import kotlinx.android.synthetic.main.map.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -33,72 +33,8 @@ import java.util.*
 
 
 class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventListener,
-    MapView.POIItemEventListener,
+    MapView.POIItemEventListener, MapView.MapViewEventListener,
     MapContract.View, View.OnClickListener {
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
-            R.id.btn_current_location -> {
-                selectCurrentLocation()
-            }
-        }
-    }
-
-    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
-
-
-        if (currentPOIItem.itemName == p1?.itemName || selectPOIItem.itemName == p1?.itemName) {
-
-        } else {
-            val alertDialog =
-                AlertDialog.Builder(
-                    ContextThemeWrapper(
-                        activity,
-                        R.style.Theme_AppCompat_Light_Dialog
-                    )
-                )
-            alertDialog.setTitle(p1?.itemName)
-            alertDialog.setMessage("상세페이지로 이동하시겠습니까?")
-            alertDialog.setPositiveButton(
-                "확인",
-                object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                        val intent =
-                            Intent(activity?.application, SearchLookForActivity()::class.java)
-                        intent.putExtra(PUT_DATA, p1?.itemName)
-                        intent.putExtra(PUT_TOGGLE, true)
-                        startActivity(intent)
-                    }
-                })
-            alertDialog.setNegativeButton("취소",
-                object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                    }
-                })
-            alertDialog.show()
-
-        }
-
-
-    }
-
-    override fun onCalloutBalloonOfPOIItemTouched(
-        p0: MapView?,
-        p1: MapPOIItem?,
-        p2: MapPOIItem.CalloutBalloonButtonType?
-    ) {
-
-    }
-
-    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
-
-    }
-
-    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-
-
-    }
 
     private lateinit var mapView: MapView
 
@@ -110,7 +46,185 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
     private lateinit var presenter: MapPresenter
 
+    private lateinit var mapInterface: MapInterface.CurrentLocationClickListener
 
+    private lateinit var markerInterface: MapInterface.SelectMarkerListener
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+
+            R.id.btn_current_location -> {
+                selectCurrentLocation()
+            }
+
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (parentFragment is MapInterface.CurrentLocationClickListener) {
+            mapInterface = parentFragment as MapInterface.CurrentLocationClickListener
+        }
+        if (parentFragment is MapInterface.SelectMarkerListener) {
+            markerInterface = parentFragment as MapInterface.SelectMarkerListener
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkPermission()
+
+        presenter = MapPresenter(
+            this,
+            Injection.provideKakaoRepository()
+        )
+
+        btn_current_location.setOnClickListener(this)
+
+    }
+
+
+    private fun loadMap() {
+        Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+        mapView = MapView(this.context)
+        mapView.setCurrentLocationEventListener(this)
+        mapView.setMapViewEventListener(this)
+        mapView.setPOIItemEventListener(this)
+        map_view.addView(mapView)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            GPS_ENABLE_REQUEST_CODE ->
+                //사용자가 GPS 활성 시켰는지 검사
+                if (checkLocationServicesStatus()) {
+                    mapView = MapView(this.requireContext())
+                    map_view.addView(mapView)
+                    Toast.makeText(context, "GPS 활성화 되었습니다", Toast.LENGTH_SHORT).show()
+
+                    return
+                }
+        }
+    }
+
+
+    //MapViewEventListener
+    override fun showMarkerData(list: List<KakaoSearchModel>) {
+
+        if (list.isNotEmpty()) {
+
+            if (::markerInterface.isInitialized) {
+                markerInterface.getMarkerData(list[0])
+                mapInterface.click(true)
+            } else {
+
+                markerInterface = object : MapInterface.SelectMarkerListener {
+                    override fun getMarkerData(data: KakaoSearchModel) {
+
+                    }
+                }
+                markerInterface.getMarkerData(list[0])
+                mapInterface.click(true)
+            }
+
+        }
+
+    }
+    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
+
+    }
+    override fun onMapViewInitialized(p0: MapView?) {
+
+    }
+    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
+
+        if (p0 != null) {
+            if (::mapInterface.isInitialized) {
+                mapInterface.click(false)
+            } else {
+                mapInterface = object : MapInterface.CurrentLocationClickListener {
+                    override fun click(clickData: Boolean) {
+                    }
+                }
+                mapInterface.click(false)
+            }
+        }
+
+    }
+    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
+
+    }
+    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+
+    }
+    override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
+
+    }
+    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
+
+    }
+    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
+
+    }
+    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+
+    //POIItemEventListener
+    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
+
+    }
+    override fun onCalloutBalloonOfPOIItemTouched(
+        p0: MapView?,
+        p1: MapPOIItem?,
+        p2: MapPOIItem.CalloutBalloonButtonType?
+    ) {
+
+    }
+    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+
+    }
+    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+
+        if (p0 != null && p1 != null) {
+
+            if (::mapInterface.isInitialized) {
+
+                presenter.getMarkerData(p1.itemName)
+            } else {
+                mapInterface = object : MapInterface.CurrentLocationClickListener {
+                    override fun click(clickData: Boolean) {
+                    }
+                }
+                presenter.getMarkerData(p1.itemName)
+            }
+
+        }
+
+
+    }
+
+    //CurrentLocationEventListener
+    override fun onCurrentLocationUpdate(p0: MapView?, p1: MapPoint?, p2: Float) {
+        p1?.let {
+            presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
+        }
+    }
+    override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
+
+
+    }
+    override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
+
+    }
+    override fun onCurrentLocationUpdateFailed(p0: MapView?) {
+
+    }
+
+
+    //Marker 표현하는거 관련
     override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoSearchModel>) {
         //currentX  =  longitude  , currentY  =  latitude
 
@@ -137,25 +251,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
         mapView.addPOIItems(kakaoMarkerList.toTypedArray())
 
-//        kakaoMarkerList.forEach {
-//            mapView.addPOIItem(it)
-//        }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        checkPermission()
-
-        presenter = MapPresenter(
-            this,
-            Injection.provideKakaoRepository()
-        )
-
-        btn_current_location.setOnClickListener(this)
-
-
-    }
-
     private fun showKakaoDataList(name: String, mapPoint: MapPoint) {
         val mapPOIItem = MapPOIItem()
         mapPOIItem.apply {
@@ -166,7 +262,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
         kakaoMarkerList.add(mapPOIItem)
     }
-
     private fun showCurrentMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
 
 
@@ -206,27 +301,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
     }
 
-
-    override fun onCurrentLocationUpdate(p0: MapView?, p1: MapPoint?, p2: Float) {
-        p1?.let {
-            presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
-        }
-    }
-
-    override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
-
-
-    }
-
-    override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
-
-    }
-
-    override fun onCurrentLocationUpdateFailed(p0: MapView?) {
-
-    }
-
-
+    //CurrentLocationEventListener 활성하 on/off
     private fun selectCurrentLocation() {
         if (::mapView.isInitialized) {
             mapView.currentLocationTrackingMode =
@@ -235,6 +310,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     }
 
 
+    //주소 변경한 위치 좌표얻어오는것
     private fun getLocation(location: String) {
 
         AppExecutors().diskIO.execute {
@@ -258,15 +334,13 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     }
 
 
-    //Gps잡히는지 확인하는것.
+    //Gps잡히는지 확인하는것. 등 GPS관련
     private fun checkLocationServicesStatus(): Boolean {
         val locationManager = context?.getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
     }
-
-
     private fun checkPermission() {
         TedPermission.with(context)
             .setPermissionListener(permissionListener)
@@ -276,7 +350,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 //            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
-
     private val permissionListener: PermissionListener = object : PermissionListener {
 
         override fun onPermissionGranted() {
@@ -294,16 +367,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
 
     }
-
-    private fun loadMap() {
-        Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-        mapView = MapView(this.context)
-        mapView.setCurrentLocationEventListener(this)
-        mapView.setPOIItemEventListener(this)
-        map_view.addView(mapView)
-    }
-
-
     private fun showDialogForLocationServiceSetting() {
         val alertDialog =
             AlertDialog.Builder(
@@ -333,20 +396,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            GPS_ENABLE_REQUEST_CODE ->
-                //사용자가 GPS 활성 시켰는지 검사
-                if (checkLocationServicesStatus()) {
-                    mapView = MapView(this.requireContext())
-                    map_view.addView(mapView)
-                    Toast.makeText(context, "GPS 활성화 되었습니다", Toast.LENGTH_SHORT).show()
-
-                    return
-                }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -378,8 +427,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         private const val GPS_ENABLE_REQUEST_CODE = 1
         var toggleMap = false
 
-        private const val PUT_DATA = "data"
-        private const val PUT_TOGGLE = "toggle"
 
     }
 }

@@ -9,6 +9,23 @@ class MapPresenter(
     private val mapView: MapContract.View,
     private val kakaoRepository: KakaoRepository
 ) : MapContract.Presenter {
+    override fun getMarkerData(markerName: String) {
+        kakaoRepository.getKakaoItemInfo(markerName,
+            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
+                override fun onSuccess(item: List<KakaoSearchDocuments>) {
+                    val toKakaoSearchModel = item.map { it.toKakaoModel() }
+
+                    if (toKakaoSearchModel.isNotEmpty()) {
+                        mapView.showMarkerData(toKakaoSearchModel)
+                    }
+                }
+
+                override fun onFailure(message: String) {
+
+                }
+            })
+    }
+
     override fun getKakaoData(currentX: Double, currentY: Double) {
         kakaoRepository.getKakaoResult(
             currentX,

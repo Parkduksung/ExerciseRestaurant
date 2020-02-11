@@ -10,13 +10,15 @@ import com.work.restaurant.view.calendar.CalendarFragment
 import com.work.restaurant.view.diary.main.DiaryFragment
 import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
+import com.work.restaurant.view.mypage.notification.NotificationDataListener
 import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ExerciseRestaurantActivity : AppCompatActivity(),
-    ExerciseRestaurantContract.View, NotificationDataListener {
+    ExerciseRestaurantContract.View,
+    NotificationDataListener {
 
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter

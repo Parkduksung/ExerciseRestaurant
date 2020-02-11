@@ -15,6 +15,7 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
 import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
@@ -61,6 +62,7 @@ class SearchLookForActivity : AppCompatActivity(),
         }
     }
 
+
     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
         when (select) {
 
@@ -99,6 +101,30 @@ class SearchLookForActivity : AppCompatActivity(),
             }
         }
     }
+
+    private fun getMarkerData() {
+
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(HomeFragment.MARKER_CLICK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(HomeFragment.MARKER_CLICK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+                val searchItemDetailsFragment =
+                    SearchItemDetailsFragment.newInstance(getData)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
+
 
     private fun getBookmarkData() {
         val intent = intent
@@ -149,6 +175,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
         getRecyclerClickData()
         getBookmarkData()
+        getMarkerData()
 
         searchItem(et_search_look_for_item)
 
