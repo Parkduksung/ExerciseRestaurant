@@ -15,8 +15,9 @@
         android:autoSizeMaxTextSize="20dp"
         android:autoSizeMinTextSize="10dp"
         android:autoSizeTextType="uniform"
-        tools:ignore="SpUsage,UnusedAttribute"
+        tools:ignore="SpUsage"
         tools:text="인천시" />
+
 </LinearLayout>
 
 

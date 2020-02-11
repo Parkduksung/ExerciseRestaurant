@@ -1,9 +1,11 @@
 package com.work.restaurant.view.mypage.main
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.R
@@ -39,6 +41,23 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             }
 
             R.id.ll_identity -> {
+
+                val alertDialog =
+                    AlertDialog.Builder(
+                        this.context
+                    )
+
+                alertDialog.setView(
+                    LayoutInflater.from(context).inflate(
+                        R.layout.identify_item,
+                        null
+                    )
+                )
+                alertDialog.setTitle("개인정보 처리방침")
+                alertDialog.setPositiveButton(
+                    "확인"
+                ) { _, _ -> }
+                alertDialog.show()
 
             }
 
@@ -76,7 +95,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         ll_identity.setOnClickListener(this)
         ll_notification.setOnClickListener(this)
         ll_question.setOnClickListener(this)
-
 
         loginState()
 

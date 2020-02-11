@@ -100,6 +100,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
+
         diaryModel.addAll(getDiaryModel)
 
 
@@ -173,6 +174,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             layoutManager = LinearLayoutManager(this.context)
         }
 
+        load()
 
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)

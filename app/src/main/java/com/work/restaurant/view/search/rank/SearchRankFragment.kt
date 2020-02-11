@@ -31,12 +31,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
 
-    interface ClickNotificationData{
-        fun getData(data:String)
-    }
-
-    private lateinit var clickNotificationData : ClickNotificationData
-
     override fun showBookmarkResult(msg: Boolean) {
         when (msg) {
             RESULT_SUCCESS -> {
@@ -97,7 +91,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         searchRankAdapter.setItemClickListener(this)
 
         tv_search_locate.text = App.prefs.myEditText
-
 
         presenter.getCurrentLocation(tv_search_locate.text.toString())
 
