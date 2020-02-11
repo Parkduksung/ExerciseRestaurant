@@ -4,17 +4,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.calendar.CalendarFragment
 import com.work.restaurant.view.diary.main.DiaryFragment
 import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
+import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ExerciseRestaurantActivity : AppCompatActivity(),
-    ExerciseRestaurantContract.View {
+    ExerciseRestaurantContract.View, NotificationDataListener {
 
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
@@ -26,6 +28,26 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             this.supportFragmentManager,
             fragmentMap
         )
+    }
+
+    override fun getNotificationData(data: NotificationModel) {
+
+        val myPageNotificationDetailsFragment =
+            MyPageNotificationDetailsFragment
+                .newInstance(
+                    data.notificationDate,
+                    data.notificationSubject,
+                    data.notificationContent
+                )
+
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.mypage_main_container,
+                myPageNotificationDetailsFragment
+            )
+            .addToBackStack(null)
+            .commit()
+
     }
 
 
@@ -58,6 +80,8 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
         vp_main.adapter = adapter
         vp_main.offscreenPageLimit = 5
 
+        vp_main.setSwipePagingEnabled(false)
+
         tl_main.run {
             setupWithViewPager(vp_main)
             getTabAt(0)?.setIcon(R.drawable.ic_home)
@@ -66,6 +90,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             getTabAt(3)?.setIcon(R.drawable.calendar)
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
+
 
     }
 

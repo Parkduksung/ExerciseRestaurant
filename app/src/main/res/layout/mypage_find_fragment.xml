@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/pass_find_title"
-            android:textColor="@color/colorMint"
+            android:textColor="@color/colorBlue"
             android:textSize="50dp"
             tools:ignore="SpUsage" />
 
@@ -54,31 +54,35 @@
         android:orientation="horizontal"
         android:weightSum="20">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="5"
             android:gravity="center"
             android:text="@string/pass_find_email"
             android:textSize="20dp"
             tools:ignore="NestedWeights,SpUsage" />
 
-        <EditText
-            android:id="@+id/et_change_pass"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="15"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:hint="@string/pass_find_hint"
-            android:textColorHint="@color/colorBlack"
-            android:textSize="19dp"
-            tools:ignore="Autofill,SpUsage,TextFields">
+            app:hintTextAppearance="@style/HintText">
 
-        </EditText>
+            <EditText
+                android:id="@+id/et_change_pass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="@string/pass_find_hint"
+                android:textColorHint="@color/colorBlack"
+                android:textSize="19dp"
+                tools:ignore="Autofill,SpUsage,TextFields" />
 
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

@@ -2,7 +2,6 @@ package com.work.restaurant.view.home.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
@@ -21,12 +20,10 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener 
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         et_home.setOnClickListener(this)
         startMaps()
-
 
     }
 
@@ -42,50 +39,8 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener 
 
     }
 
-
-
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-
-    }
-
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
-
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
-    }
-
     companion object {
-        var togglesetting = false
+
         private const val TAG = "HomeFragment"
     }
 

@@ -6,62 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginTop="40dp"
-    android:orientation="vertical"
-    android:weightSum="40">
+    android:orientation="horizontal"
+    android:weightSum="10"
+    tools:ignore="ContentDescription, SpUsage">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="39"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            tools:ignore="NestedWeights">
-
-            <ImageView
-                android:id="@+id/iv_search_look_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:ignore="ContentDescription" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8">
-
-            <TextView
-                android:id="@+id/tv_search_look_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                tools:ignore="SpUsage" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="4dp"
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/colorGray" />
+        android:gravity="center"
+        android:src="@drawable/dumbell" />
+
+
+    <TextView
+        android:id="@+id/tv_search_look_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_weight="8"
+        android:gravity="center|left"
+        android:textSize="20dp"
+        tools:ignore="RtlHardcoded" />
+
+    <CheckBox
+        android:id="@+id/cb_search_add_bookmark"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.7"
+        android:button="@drawable/selector_checkbox_drawable"
+        android:gravity="center" />
 
 </LinearLayout>
+
+
 
 
 

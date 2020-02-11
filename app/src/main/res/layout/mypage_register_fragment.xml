@@ -38,7 +38,7 @@
             android:layout_marginTop="2dp"
             android:gravity="center"
             android:text="@string/register_title"
-            android:textColor="@color/colorMint"
+            android:textColor="@color/colorBlue"
             android:textSize="45dp" />
 
 
@@ -66,25 +66,32 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/register_nickname"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_register_nickname"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="13"
-                android:background="@android:color/transparent"
-                android:hint="@string/register_nickname_hint"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText">
 
-            </EditText>
+                <EditText
+                    android:id="@+id/et_register_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/register_nickname_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/iv_nickname_state"
@@ -120,25 +127,33 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/register_email"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_register_email"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="13"
-                android:background="@android:color/transparent"
-                android:hint="@string/register_email_hint"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText">
 
-            </EditText>
+                <EditText
+                    android:id="@+id/et_register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/register_email_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <ImageView
                 android:id="@+id/iv_email_state"
@@ -174,25 +189,34 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/register_pass"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_register_pass"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="13"
-                android:background="@android:color/transparent"
-                android:hint="@string/register_pass_hint"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText"
+                app:passwordToggleEnabled="true">
 
-            </EditText>
+                <EditText
+                    android:id="@+id/et_register_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/register_pass_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <ImageView
                 android:id="@+id/iv_pass_state"
@@ -229,25 +253,34 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="@string/register_pass_ok"
                 android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/et_register_pass_ok"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="13"
-                android:background="@android:color/transparent"
-                android:hint="@string/register_pass_ok_hint"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionSearch"
-                android:lines="1"
-                android:singleLine="true"
-                tools:ignore="Autofill,LabelFor,TextFields">
+                app:hintTextAppearance="@style/HintText"
+                app:passwordToggleEnabled="true">
 
-            </EditText>
+                <EditText
+                    android:id="@+id/et_register_pass_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/register_pass_ok_hint"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor,TextFields" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/iv_pass_ok_state"

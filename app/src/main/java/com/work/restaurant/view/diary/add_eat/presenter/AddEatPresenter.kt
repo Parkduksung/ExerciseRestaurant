@@ -9,12 +9,12 @@ class AddEatPresenter(
 ) : AddEatContract.Presenter {
     override fun addEat(date: String, time: String, type: Int, memo: String) {
         eatRepository.addEat(date, time, type, memo, object : EatRepositoryCallback.AddEatCallback {
-            override fun onSuccess(msg: String) {
-                addEatView.showAddResult(msg)
+            override fun onSuccess() {
+                addEatView.showAddSuccess()
             }
 
-            override fun onFailure(msg: String) {
-                addEatView.showAddResult(msg)
+            override fun onFailure() {
+
             }
         })
     }

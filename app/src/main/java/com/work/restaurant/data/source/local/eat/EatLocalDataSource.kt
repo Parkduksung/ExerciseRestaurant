@@ -1,5 +1,7 @@
 package com.work.restaurant.data.source.local.eat
 
+import com.work.restaurant.network.room.entity.EatEntity
+
 interface EatLocalDataSource {
 
     fun addEat(
@@ -11,7 +13,7 @@ interface EatLocalDataSource {
     )
 
     fun deleteEat(
-        date: String,
+        data: EatEntity,
         callback: EatLocalDataSourceCallback.DeleteEatCallback
     )
 
@@ -20,9 +22,11 @@ interface EatLocalDataSource {
         callback: EatLocalDataSourceCallback.GetDataOfTheDay
     )
 
+
     fun getAllList(
 
         callback: EatLocalDataSourceCallback.GetAllList
     )
+
 
 }

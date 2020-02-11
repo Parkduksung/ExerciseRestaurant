@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:weightSum="40"
+    tools:ignore="ContentDescription,SpUsage.NestedWeights,RtlHardcoded, SpUsage">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:layout_weight="3">
+
+        <ImageButton
+            android:id="@+id/ib_notification_detail_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/ic_back" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:gravity="center|left">
+
+        <TextView
+            android:id="@+id/tv_notification_detail_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_notification_detail_date"
+            android:textColor="@color/colorGray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            >
+        </TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_notification_detail_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30" />
+</LinearLayout>
+
+

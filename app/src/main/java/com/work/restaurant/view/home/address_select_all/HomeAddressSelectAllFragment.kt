@@ -29,6 +29,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
                 toggleMap = true
                 requireFragmentManager().beginTransaction().remove(this).commit()
                 activity?.finish()
+
             }
         }
     }

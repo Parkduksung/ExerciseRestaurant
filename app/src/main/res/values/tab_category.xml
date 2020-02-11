@@ -25,4 +25,13 @@
         <item>영양일지</item>
     </string-array>
 
+    <string-array name="add_exercise_part">
+        <item>가슴</item>
+        <item>등</item>
+        <item>어깨</item>
+        <item>팔</item>
+        <item>다리</item>
+    </string-array>
+
+
 </resources>

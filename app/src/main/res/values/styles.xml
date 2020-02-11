@@ -12,14 +12,25 @@
         <item name="android:textSize">10dp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
-<!--        <item name="textInputStyle">@style/TextAppearance.MyApp.Headline1</item>-->
+        <!--        <item name="textInputStyle">@style/TextAppearance.MyApp.Headline1</item>-->
 
     </style>
 
-<!--    <style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">-->
-<!--        <item name="android:textStyle">normal</item>-->
-<!--        <item name="android:textSize">1dp</item>-->
-<!--    </style>-->
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@color/colorBlue</item>
+        <item name="colorPrimary">@color/colorBlue</item>
+    </style>
+
+    <!--    <style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">-->
+    <!--        <item name="android:textStyle">normal</item>-->
+    <!--        <item name="android:textSize">1dp</item>-->
+    <!--    </style>-->
+
+
+    <style name="HintText" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorBlue</item>
+    </style>
 
 
 </resources>

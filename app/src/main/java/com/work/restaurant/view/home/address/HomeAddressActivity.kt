@@ -61,6 +61,8 @@ class HomeAddressActivity : AppCompatActivity(),
             val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
                 selectAddress
             )
+
+
             this.supportFragmentManager.beginTransaction()
                 .replace(R.id.address_main_container, homeAddressSelectAllFragment).commit()
         }

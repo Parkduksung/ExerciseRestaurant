@@ -3,61 +3,24 @@ package com.work.restaurant.view.search.itemdetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
-import com.work.restaurant.util.GlideApp
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
 import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
-import com.work.restaurant.view.search.main.SearchFragment
+import com.work.restaurant.view.search.lookfor.SearchLookForActivity.Companion.toggleWebPage
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
 class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment),
-    View.OnClickListener, SearchItemDetailsContract.View {
+    SearchItemDetailsContract.View {
 
 
     private lateinit var detailsPresenter: SearchItemDetailsPresenter
-    private lateinit var intent: Intent
-
-
-    override fun onClick(v: View?) {
-
-        when (v?.id) {
-
-            R.id.review_ll -> {
-
-                Toast.makeText(context, "click1", Toast.LENGTH_LONG).show()
-            }
-
-            R.id.search_item_calling -> {
-                detailsPresenter.call(callNumber)
-            }
-
-            R.id.search_item_book_mark_check_ib -> {
-                search_item_book_mark_check_ib.setImageResource(R.drawable.ic_book_mark_check_ok)
-            }
-
-        }
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_item_details_fragment, container, false).also {
-            intent = Intent(Intent.ACTION_DIAL)
-        }
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,63 +28,78 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
         detailsPresenter =
             SearchItemDetailsPresenter(
-                this, FitnessItemRepositoryImpl.getInstance(
-                    FitnessCenterRemoteDataSourceImpl.getInstance(
-                        RetrofitInstance.getInstance(
-                            SearchFragment.URL
-                        )
-                    )
-                )
+                this
             )
-        review_ll.setOnClickListener(this)
-        search_item_calling.setOnClickListener(this)
-        search_item_book_mark_check_ib.setOnClickListener(this)
-    }
 
-    fun setSelectItem(data: String) {
-        detailsPresenter =
-            SearchItemDetailsPresenter(
-                this, FitnessItemRepositoryImpl.getInstance(
-                    FitnessCenterRemoteDataSourceImpl.getInstance(
-                        RetrofitInstance.getInstance(
-                            SearchFragment.URL
-                        )
-                    )
-                )
-            )
-        detailsPresenter.itemInfoDetail(data)
+        searchResult()
     }
 
 
-    override fun showItemInfoDetail(fitnessList: FitnessCenterItemResponse) {
-        search_item_name_tv.text = fitnessList.fitnessCenterName
-        search_item_time_tv.text = fitnessList.fitnessCenterTime
-        search_item_best_part_tv.text = fitnessList.fitnessCenterBestPart
-        search_item_like_count_tv.text = fitnessList.fitnessCenterLikeCount.toString()
-        search_item_parking_tv.text = fitnessList.fitnessCenterParking
-        search_item_pay_tv.text = fitnessList.fitnessCenterPrice
-        search_item_parking_tv.text = fitnessList.fitnessCenterParking
+    private fun searchResult() {
 
-        callNumber = fitnessList.fitnessCenterCalling
+        val bundle = arguments
+        val getData = bundle?.getString(DATA).toString()
 
-        GlideApp.with(context!!)
-            .load(fitnessList.fitnessCenterImage)
-            .into(search_item_image_iv)
-
-
+        showUrl(wb_search_item_detail, getData)
     }
 
-    override fun showCall(callNum: String) {
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.data = Uri.parse("tel:$callNumber")
-        startActivity(intent)
+
+    private fun showUrl(webview: WebView, url: String) {
+        webview.loadUrl(url)
+        val webSettings = webview.settings
+        webSettings.javaScriptEnabled = true
+
+        webview.webViewClient = object : WebViewClient() {
+
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                if (url != null) {
+                    if (url.startsWith("tel:")) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+                        startActivity(intent)
+                        return true
+                    }
+                }
+                return false
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                toggleWebPage = webview.canGoBack()
+            }
+        }
+
+        webview.setOnKeyListener { _, keyCode, _ ->
+
+            if ((keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
+                webview.goBack()
+                true
+            }
+            false
+        }
+    }
+
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach")
+        super.onDetach()
+        toggleWebPage = false
     }
 
 
     companion object {
-        private const val TAG = "SearchOkItemFragment"
+        private const val TAG = "SearchItemDetailsFragment"
+        private const val DATA = "data"
 
-        private var callNumber = ""
+        fun newInstance(
+            data: String
+        ) = SearchItemDetailsFragment().apply {
+            arguments = Bundle().apply {
+                putString(DATA, data)
+            }
+        }
+
+
     }
 
 

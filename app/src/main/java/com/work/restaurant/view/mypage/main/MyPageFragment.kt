@@ -12,6 +12,8 @@ import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
 import com.work.restaurant.view.mypage.main.presenter.MyPageContract
 import com.work.restaurant.view.mypage.main.presenter.MyPagePresenter
+import com.work.restaurant.view.mypage.notification.MyPageNotificationFragment
+import com.work.restaurant.view.mypage.question.MyPageQuestionFragment
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
 import kotlinx.android.synthetic.main.mypage_fragment.*
 
@@ -28,17 +30,40 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 presenter.logIn()
             }
 
-            R.id.tv_page_late_view -> {
-                presenter.lateView()
-            }
-
-            R.id.tv_page_logout -> {
+            R.id.ll_logout -> {
                 presenter.logOut()
             }
 
             R.id.tv_page_withdrawal -> {
                 presenter.withDraw()
             }
+
+            R.id.ll_identity -> {
+
+            }
+
+            R.id.ll_notification -> {
+                requireFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                        R.id.mypage_main_container,
+                        MyPageNotificationFragment()
+                    )
+                    .addToBackStack(null)
+                    .commit()
+            }
+            R.id.ll_question -> {
+
+                requireFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                        R.id.mypage_main_container,
+                        MyPageQuestionFragment()
+                    )
+                    .addToBackStack(null)
+                    .commit()
+            }
+
         }
     }
 
@@ -46,9 +71,11 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         super.onViewCreated(view, savedInstanceState)
         presenter = MyPagePresenter(this)
         iv_login.setOnClickListener(this)
-        tv_page_logout.setOnClickListener(this)
+        ll_logout.setOnClickListener(this)
         tv_page_withdrawal.setOnClickListener(this)
-        tv_page_late_view.setOnClickListener(this)
+        ll_identity.setOnClickListener(this)
+        ll_notification.setOnClickListener(this)
+        ll_question.setOnClickListener(this)
 
 
         loginState()
@@ -58,13 +85,15 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     private fun loginState() {
         if (loginState) {
-            iv_login.visibility = View.INVISIBLE
+            iv_login.setImageResource(R.drawable.user)
+            iv_login.isClickable = false
             login_ok_ll.visibility = View.VISIBLE
             tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25F)
             tv_login_id.text = "$userId 님 환영합니다"
             tv_login_id.text = "$userNickname 님\n 환영합니다."
         } else {
             login_ok_ll.visibility = View.INVISIBLE
+            iv_login.isClickable = true
         }
     }
 
@@ -108,20 +137,17 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         }
 
-//        if (requestCode == REGISTER) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                val loginEmail = data?.extras?.getString("id")
-//                val loginNickname = data?.extras?.getString("nickname")
-//
-//                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
-//                Log.d("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]", "z")
-//
-//                userId = loginEmail.toString()
-//                userNickname = loginNickname.toString()
-//                loginState = true
-//            }
-//
-//        }
+        if (requestCode == REGISTER) {
+            if (resultCode == Activity.RESULT_OK) {
+                val loginEmail = data?.extras?.getString("id")
+                val loginNickname = data?.extras?.getString("nickname")
+
+                userId = loginEmail.toString()
+                userNickname = loginNickname.toString()
+                loginState = true
+            }
+
+        }
 
 
     }
@@ -134,10 +160,14 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             LOGIN
         )
 
-        this.requireFragmentManager().beginTransaction().replace(
-            R.id.mypage_main_container,
-            myPageLoginFragment
-        ).commit()
+        requireFragmentManager()
+            .beginTransaction()
+            .replace(
+                R.id.mypage_main_container,
+                myPageLoginFragment
+            )
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun showLogOut() {
@@ -149,13 +179,16 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             this,
             LOGOUT
         )
-
-        this.requireFragmentManager().beginTransaction().replace(
-            R.id.main_container,
-            myPageLogoutFragment
-        ).commit().apply {
-            FirebaseAuth.getInstance().signOut()
-        }
+        requireFragmentManager()
+            .beginTransaction()
+            .replace(
+                R.id.main_container,
+                myPageLogoutFragment
+            )
+            .addToBackStack(null)
+            .commit().apply {
+                FirebaseAuth.getInstance().signOut()
+            }
     }
 
     override fun showWithDraw() {
@@ -166,17 +199,25 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             WITHDRAW
         )
 
-        this.requireFragmentManager().beginTransaction().replace(
-            R.id.main_container,
-            myPageWithdrawalFragment
-        ).commit()
+        requireFragmentManager()
+            .beginTransaction()
+            .replace(
+                R.id.main_container,
+                myPageWithdrawalFragment
+            )
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun showLateView() {
-        this.requireFragmentManager().beginTransaction().replace(
-            R.id.main_container,
-            MyPageWithdrawalFragment()
-        ).commit()
+        this.requireFragmentManager()
+            .beginTransaction()
+            .replace(
+                R.id.main_container,
+                MyPageWithdrawalFragment()
+            )
+            .addToBackStack(null)
+            .commit()
     }
 
 

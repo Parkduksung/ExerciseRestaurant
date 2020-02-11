@@ -1,56 +1,72 @@
 package com.work.restaurant.view.search.lookfor.presenter
 
-import com.work.restaurant.data.repository.fitness.FitnessItemRepository
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryCallback
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.data.repository.bookmark.BookmarkRepository
+import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
+import com.work.restaurant.data.repository.kakao.KakaoRepository
+import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 
 class SearchLookForPresenter(
     private val searchLookForView: SearchLookForContract.View,
-    private val fitnessItemRepository: FitnessItemRepository
+    private val kakaoRepository: KakaoRepository,
+    private val bookmarkRepository: BookmarkRepository
 ) :
     SearchLookForContract.Presenter {
+    override fun addBookmark(bookmarkModel: BookmarkModel) {
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.addBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.AddBookmarkCallback {
+                override fun onSuccess() {
+                    searchLookForView.showBookmarkResult(1)
+                }
+
+                override fun onFailure() {
+                    searchLookForView.showBookmarkResult(3)
+                }
+            })
+    }
+
+    override fun deleteBookmark(bookmarkModel: BookmarkModel) {
+
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.deleteBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
+                override fun onSuccess() {
+                    searchLookForView.showBookmarkResult(2)
+                }
+
+                override fun onFailure() {
+                    searchLookForView.showBookmarkResult(3)
+                }
+
+            })
+
+    }
+
     override fun backPage() {
         searchLookForView.showBackPage()
     }
 
     override fun searchLook(searchItem: String) {
 
-        if (searchItem.trim() == "") {
-            searchLookForView.showSearchNoFind()
-        } else {
-
-            fitnessItemRepository.getFitnessResult(object : FitnessItemRepositoryCallback {
-                override fun onSuccess(fitnessList: List<FitnessCenterItemResponse>) {
-
-                    var count = 0
-                    val _fitnessList = mutableListOf<FitnessCenterItemResponse>()
-
-
-                    fitnessList.forEach { fitnessCenterItemModel ->
-                        if (fitnessCenterItemModel.fitnessCenterName.contains(searchItem)) {
-                            _fitnessList.add(fitnessCenterItemModel)
-                            count++
-                        }
+        kakaoRepository.getKakaoItemInfo(searchItem,
+            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
+                override fun onSuccess(item: List<KakaoSearchDocuments>) {
+                    val toKakaoSearchModelList = item.map {
+                        it.toKakaoModel()
                     }
-
-                    if (count == 0) {
-                        searchLookForView.showSearchNoFind()
-                    } else {
-                        searchLookForView.showSearchLook(_fitnessList)
-                        count = 0
-
-                    }
-
+                    searchLookForView.showSearchLook(toKakaoSearchModelList)
                 }
 
                 override fun onFailure(message: String) {
                     searchLookForView.showSearchNoFind()
                 }
             })
-
-
-        }
-
 
     }
 }

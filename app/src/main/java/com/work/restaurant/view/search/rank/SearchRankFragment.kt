@@ -1,30 +1,23 @@
 package com.work.restaurant.view.search.rank
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.dong
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.gunGu
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import com.work.restaurant.view.search.main.SearchFragment
-import com.work.restaurant.view.search.rank.adpater.FitnessRankAdapter
+import com.work.restaurant.view.search.rank.adpater.SearchRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
@@ -32,22 +25,44 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
-    AdapterDataListener {
+    AdapterDataListener.GetKakaoData {
 
     private lateinit var presenter: SearchRankPresenter
-    private lateinit var fitnessRankAdapter: FitnessRankAdapter
+    private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
+
+    interface ClickNotificationData{
+        fun getData(data:String)
+    }
+
+    private lateinit var clickNotificationData : ClickNotificationData
+
+    override fun showBookmarkResult(msg: Boolean) {
+        when (msg) {
+            RESULT_SUCCESS -> {
+                Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+            }
+            RESULT_FAILURE -> {
+
+                Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+
+            }
+        }
+    }
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
             R.id.iv_search_settings -> {
-                presenter.settings()
+                val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
+                homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
+
+                val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
+                startActivity(homeAddressActivity)
             }
 
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -70,109 +85,76 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.search_rank_fragment, container, false)
-        return view.also {
-            fitnessRankAdapter = FitnessRankAdapter()
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = SearchRankPresenter(
-            this, FitnessItemRepositoryImpl.getInstance(
-                FitnessCenterRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        SearchFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideKakaoRepository(),
+            Injection.provideBookmarkRepository()
         )
+
         iv_search_settings.setOnClickListener(this)
-        fitnessRankAdapter.setItemClickListener(this)
-        presenter.getFitnessList()
+        searchRankAdapter.setItemClickListener(this)
+
+        tv_search_locate.text = App.prefs.myEditText
+
+
+        presenter.getCurrentLocation(tv_search_locate.text.toString())
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "onAttach")
-    }
 
     override fun onResume() {
         super.onResume()
 
-        tv_search_locate.text = "$si $gunGu $dong"
+        if (selectAll.trim() != "") {
+            tv_search_locate.text = selectAll
+            presenter.getCurrentLocation(tv_search_locate.text.toString())
+        }
         Log.d(TAG, "onResume")
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
-    }
-
-    override fun showSettings() {
-
-        val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
-        homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
-
-        val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-        startActivity(homeAddressActivity)
-    }
-
-    override fun showFitnessList(fitnessList: List<FitnessCenterItemResponse>) {
+    override fun showKakaoList(kakaoList: List<KakaoSearchModel>) {
         recyclerview_rank.run {
-            this.adapter = fitnessRankAdapter
-            fitnessRankAdapter.addData(fitnessList)
+            this.adapter = searchRankAdapter
+            searchRankAdapter.clearListData()
+            searchRankAdapter.addData(kakaoList)
             layoutManager = LinearLayoutManager(this.context)
         }
     }
 
-    override fun getData(data: String) {
-        val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-        intent.putExtra("data", data)
-        intent.putExtra("toggle", true)
-        startActivity(intent)
+
+    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+        when (select) {
+            SELECT_URL -> {
+                val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
+                Log.d("가져왔니", data.placeUrl)
+                intent.putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
+                intent.putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
+                startActivity(intent)
+            }
+
+            SELECT_BOOKMARK -> {
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.addBookmarkKakaoItem(toBookmarkModel)
+            }
+        }
     }
 
 
     companion object {
         private const val TAG = "SearchRankFragment"
         private const val REQUEST_CODE = 1
+
+        private const val SELECT_URL = 1
+        private const val SELECT_BOOKMARK = 2
+
+        private const val RESULT_SUCCESS = true
+        private const val RESULT_FAILURE = false
+
+        const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
+        const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"
+
     }
 
 

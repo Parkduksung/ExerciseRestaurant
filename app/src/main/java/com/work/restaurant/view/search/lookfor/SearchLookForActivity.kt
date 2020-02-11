@@ -2,35 +2,125 @@ package com.work.restaurant.view.search.lookfor
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryImpl
-import com.work.restaurant.data.source.remote.fitness.FitnessCenterRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.search.adapter.LookForAdapter
+import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
+import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForContract
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
-import com.work.restaurant.view.search.main.SearchFragment
+import com.work.restaurant.view.search.rank.SearchRankFragment
+import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
-class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, AdapterDataListener,
+class SearchLookForActivity : AppCompatActivity(),
+    View.OnClickListener,
+    AdapterDataListener,
+    AdapterDataListener.GetKakaoData,
     SearchLookForContract.View {
 
 
-    private lateinit var lookForAdapter: LookForAdapter
+    private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
+
+
+    override fun onBackPressed() {
+
+        if (toggleWebPage) {
+            wb_search_item_detail.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun showBookmarkResult(msg: Int) {
+        when (msg) {
+            ADD_BOOKMARK -> {
+                Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+            }
+
+            DELETE_BOOKMARK -> {
+                Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
+            }
+
+            RESULT_FAILURE -> {
+                Toast.makeText(this, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+        when (select) {
+
+            ADD_BOOKMARK -> {
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.addBookmark(toBookmarkModel)
+            }
+
+            DELETE_BOOKMARK -> {
+                val toBookmarkModel = data.toBookmarkModel()
+                presenter.deleteBookmark(toBookmarkModel)
+            }
+
+        }
+    }
+
+    private fun getRecyclerClickData() {
+
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(SearchRankFragment.RECYCLERVIEW_CLICK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(SearchRankFragment.RECYCLERVIEW_CLICK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+                val searchItemDetailsFragment =
+                    SearchItemDetailsFragment.newInstance(getData)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
+
+    private fun getBookmarkData() {
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(SearchBookmarksFragment.BOOKMARK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(SearchBookmarksFragment.BOOKMARK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+                val searchItemDetailsFragment =
+                    SearchItemDetailsFragment.newInstance(getData)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
 
 
     override fun onClick(v: View?) {
@@ -48,20 +138,18 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_look_for_main)
         presenter = SearchLookForPresenter(
-            this, FitnessItemRepositoryImpl.getInstance(
-                FitnessCenterRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        SearchFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideKakaoRepository(),
+            Injection.provideBookmarkRepository()
         )
-        lookForAdapter = LookForAdapter()
         lookForAdapter.setItemClickListener(this)
+        lookForAdapter.setBookmarkListener(this)
         ib_search_item_look.setOnClickListener(this)
         ib_search_look_back.setOnClickListener(this)
 
-        toggleData()
+        getRecyclerClickData()
+        getBookmarkData()
+
         searchItem(et_search_look_for_item)
 
     }
@@ -77,7 +165,6 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
             }
         }
 
-
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -86,38 +173,19 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
-    private fun toggleData() {
-
-        val intent = intent
-
-        clickData = intent.extras?.getString("data").toString()
-        toggle = intent.extras?.getBoolean("toggle") ?: true
-
-        if (toggle) {
-            getData(clickData)
-        }
-    }
-
 
     override fun getData(data: String) {
 
-        et_search_look_for_item.text.clear()
-
         val searchItemDetailsFragment =
-            SearchItemDetailsFragment()
-        searchItemDetailsFragment.setSelectItem(data)
-
-
+            SearchItemDetailsFragment.newInstance(data)
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
             .addToBackStack(null)
             .commit()
-
+        et_search_look_for_item.text.clear()
     }
 
-    override fun showSearchLook(fitnessList: MutableList<FitnessCenterItemResponse>) {
-
-        this.supportFragmentManager.popBackStack()
+    override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
 
         recyclerview_look.run {
 
@@ -125,9 +193,7 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
 
             lookForAdapter.clearListData()
 
-            fitnessList.forEach { fitnessCenterItemModel ->
-                lookForAdapter.addData(fitnessCenterItemModel)
-            }
+            lookForAdapter.addAllData(searchKakaoList)
 
             layoutManager = LinearLayoutManager(this.context)
 
@@ -146,12 +212,8 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
         alertDialog.setTitle("검색 실패")
         alertDialog.setMessage("다시 입력해 주세요.")
         alertDialog.setPositiveButton(
-            "확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                }
-            })
+            "확인"
+        ) { _, _ -> }
         alertDialog.show()
     }
 
@@ -160,9 +222,15 @@ class SearchLookForActivity : AppCompatActivity(), View.OnClickListener, Adapter
 
 
     companion object {
-        var clickData = ""
-        var toggle = false
 
         private const val TAG = "SearchLookForActivity"
+
+        private const val ADD_BOOKMARK = 1
+        private const val DELETE_BOOKMARK = 2
+
+        private const val RESULT_FAILURE = 3
+
+        var toggleWebPage = false
+
     }
 }

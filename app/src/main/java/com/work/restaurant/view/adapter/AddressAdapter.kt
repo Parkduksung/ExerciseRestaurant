@@ -11,7 +11,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     private lateinit var adapterListener: AdapterDataListener
 
-    private val addressList = ArrayList<String>()
+    private val addressList = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -59,8 +59,8 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listenerAdapterAdapter: AdapterDataListener) {
-        adapterListener = listenerAdapterAdapter
+    fun setItemClickListener(listener: AdapterDataListener) {
+        adapterListener = listener
     }
 
 

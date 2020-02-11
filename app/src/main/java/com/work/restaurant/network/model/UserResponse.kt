@@ -17,6 +17,4 @@ data class UserResponse(
     fun toUser(): UserModel {
         return UserModel(userNickName + "님", userEmail)
     }
-
-
 }

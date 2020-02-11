@@ -1,27 +1,48 @@
 package com.work.restaurant.view.search.bookmarks.presenter
 
-import android.util.Log
-import com.work.restaurant.data.repository.fitness.FitnessItemRepository
-import com.work.restaurant.data.repository.fitness.FitnessItemRepositoryCallback
-import com.work.restaurant.network.model.FitnessCenterItemResponse
+import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.data.repository.bookmark.BookmarkRepository
+import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
+import com.work.restaurant.network.room.entity.BookmarkEntity
 
 class SearchBookmarksPresenter(
     private val searchBookmarksView: SearchBookmarksContract.View,
-    private val fitnessItemRepository: FitnessItemRepository
+    private val bookmarkRepository: BookmarkRepository
+
 ) : SearchBookmarksContract.Presenter {
 
-    override fun getBookmarksList() {
+    override fun deleteBookmark(bookmarkModel: BookmarkModel) {
 
-        fitnessItemRepository.getFitnessResult(object : FitnessItemRepositoryCallback {
-            override fun onSuccess(fitnessList: List<FitnessCenterItemResponse>) {
-                searchBookmarksView.showBookmarksList(fitnessList)
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.deleteBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
+                override fun onSuccess() {
+                    searchBookmarksView.showBookmarkDeleteResult(true)
+                }
+
+                override fun onFailure() {
+                    searchBookmarksView.showBookmarkDeleteResult(false)
+                }
+            })
+
+    }
+
+    override fun getBookmarksList() {
+        bookmarkRepository.getAllList(object : BookmarkRepositoryCallback.GetAllList {
+            override fun onSuccess(list: List<BookmarkEntity>) {
+
+                val toBookmarkModelList = list.map { it.toBookmarkModel() }
+                searchBookmarksView.showBookmarksList(toBookmarkModelList)
             }
 
-            override fun onFailure(message: String) {
-                Log.d("error", message)
+            override fun onFailure() {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
 
     }
+
 
 }

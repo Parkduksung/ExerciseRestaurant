@@ -1,7 +1,5 @@
 package com.work.restaurant.data.source.local.eat
 
-import android.util.Log
-import com.work.restaurant.network.model.EatResponse
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
@@ -10,27 +8,42 @@ class EatLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val eatDatabase: EatDatabase
 ) : EatLocalDataSource {
+
+    override fun deleteEat(
+        data: EatEntity,
+        callback: EatLocalDataSourceCallback.DeleteEatCallback
+    ) {
+        appExecutors.diskIO.execute {
+
+            val deleteEat = eatDatabase.eatDao().deleteEat(data)
+
+            appExecutors.mainThread.execute {
+                if (deleteEat >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
+
+            }
+
+
+        }
+    }
+
     override fun getAllList(callback: EatLocalDataSourceCallback.GetAllList) {
 
         appExecutors.diskIO.execute {
 
-            val getAllList: List<EatResponse> =
-                eatDatabase.eatDao().getAll().map {
-                    it.toEatResponse()
-                }
+            val getAllList =
+                eatDatabase.eatDao().getAll()
 
-            getAllList.forEach {
-                Log.d("결콰콰", it.date)
-                Log.d("결콰콰", it.memo)
-                Log.d("결콰콰", it.time)
-                Log.d("결콰콰", "${it.type}")
+
+            appExecutors.mainThread.execute {
+                getAllList.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getAllList)
+                    } ?: callback.onFailure()
             }
-
-
-            getAllList.takeIf { true }
-                .apply {
-                    callback.onSuccess(getAllList)
-                } ?: callback.onFailure("error")
 
         }
 
@@ -43,10 +56,20 @@ class EatLocalDataSourceImpl(
         callback: EatLocalDataSourceCallback.GetDataOfTheDay
     ) {
 
-    }
+        appExecutors.diskIO.execute {
 
+            val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(date)
 
-    override fun deleteEat(date: String, callback: EatLocalDataSourceCallback.DeleteEatCallback) {
+            appExecutors.mainThread.execute {
+                getDataOfTheDay.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getDataOfTheDay)
+                    } ?: callback.onFailure()
+
+            }
+
+        }
+
 
     }
 
@@ -60,15 +83,20 @@ class EatLocalDataSourceImpl(
     ) {
         appExecutors.diskIO.execute {
 
-            val eatEntity = EatEntity(date = date, time = time, type = type, memo = memo)
+            val eatEntity =
+                EatEntity(date = date, time = time, type = type, memo = memo)
 
 
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
 
-            registerEat.takeIf { true }
-                .apply {
-                    callback.onSuccess("success")
-                } ?: callback.onFailure("error")
+
+            appExecutors.mainThread.execute {
+                if (registerEat >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
+            }
 
         }
 
