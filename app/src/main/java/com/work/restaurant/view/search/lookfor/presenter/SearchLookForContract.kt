@@ -13,7 +13,7 @@ interface SearchLookForContract {
 
         fun showBackPage()
 
-        fun showBookmarkResult(msg: String)
+        fun showBookmarkResult(msg: Int)
 
 
     }

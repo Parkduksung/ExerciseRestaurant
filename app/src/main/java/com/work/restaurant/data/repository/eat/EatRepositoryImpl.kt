@@ -11,12 +11,12 @@ class EatRepositoryImpl private constructor(
         eatLocalDataSourceImpl.deleteEat(
             data,
             object : EatLocalDataSourceCallback.DeleteEatCallback {
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             }
         )
@@ -30,8 +30,8 @@ class EatRepositoryImpl private constructor(
                     callback.onSuccess(list)
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             })
 
@@ -44,8 +44,8 @@ class EatRepositoryImpl private constructor(
                 callback.onSuccess(list)
             }
 
-            override fun onFailure(msg: String) {
-                callback.onFailure(msg)
+            override fun onFailure() {
+                callback.onFailure()
             }
         })
 
@@ -65,12 +65,12 @@ class EatRepositoryImpl private constructor(
             type,
             memo,
             object : EatLocalDataSourceCallback.AddEatCallback {
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
 
             })

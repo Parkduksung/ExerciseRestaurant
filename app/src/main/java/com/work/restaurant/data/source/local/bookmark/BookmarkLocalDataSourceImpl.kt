@@ -16,11 +16,16 @@ class BookmarkLocalDataSourceImpl(
         appExecutors.diskIO.execute {
 
             val addBookmark = bookmarkDatabase.bookmarkDao().addBookmark(bookmarkEntity)
-            if (addBookmark >= 1) {
-                callback.onSuccess("successAdd")
-            } else {
-                callback.onFailure("error")
+
+
+            appExecutors.mainThread.execute {
+                if (addBookmark >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onFailure()
+                }
             }
+
         }
 
     }
@@ -32,7 +37,13 @@ class BookmarkLocalDataSourceImpl(
             val getAllList =
                 bookmarkDatabase.bookmarkDao().getAll()
 
-            callback.onSuccess(getAllList)
+
+            appExecutors.mainThread.execute {
+                getAllList.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getAllList)
+                    } ?: callback.onFailure()
+            }
         }
     }
 
@@ -46,11 +57,13 @@ class BookmarkLocalDataSourceImpl(
             val deleteBookmark = bookmarkDatabase.bookmarkDao()
                 .deleteBookmark(bookmarkEntity.bookmarkName, bookmarkEntity.bookmarkUrl)
 
-            if (deleteBookmark >= 1) {
-                callback.onSuccess("successDelete")
+            appExecutors.mainThread.execute {
+                if (deleteBookmark >= 1) {
+                    callback.onSuccess()
 
-            } else {
-                callback.onFailure("error")
+                } else {
+                    callback.onFailure()
+                }
             }
 
         }

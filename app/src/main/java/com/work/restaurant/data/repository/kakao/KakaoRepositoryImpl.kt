@@ -86,7 +86,6 @@ class KakaoRepositoryImpl private constructor(
         }
     }
 
-
     companion object {
 
         private var instance: KakaoRepositoryImpl? = null

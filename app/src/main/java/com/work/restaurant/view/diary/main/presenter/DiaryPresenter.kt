@@ -20,13 +20,13 @@ class DiaryPresenter(
         exerciseRepository.deleteEat(
             toExerciseEntity,
             object : ExerciseRepositoryCallback.DeleteExerciseCallback {
-                override fun onSuccess(msg: String) {
-                    diaryView.showResult(msg)
+                override fun onSuccess() {
+                    diaryView.showResult(true)
 
                 }
 
-                override fun onFailure(msg: String) {
-                    diaryView.showResult(msg)
+                override fun onFailure() {
+                    diaryView.showResult(false)
                 }
             })
     }
@@ -36,12 +36,12 @@ class DiaryPresenter(
         val toEatEntity = data.toEatEntity()
 
         eatRepository.deleteEat(toEatEntity, object : EatRepositoryCallback.DeleteEatCallback {
-            override fun onSuccess(msg: String) {
-                diaryView.showResult(msg)
+            override fun onSuccess() {
+                diaryView.showResult(true)
             }
 
-            override fun onFailure(msg: String) {
-                diaryView.showResult(msg)
+            override fun onFailure() {
+                diaryView.showResult(false)
             }
         })
     }
@@ -62,8 +62,8 @@ class DiaryPresenter(
 
                 }
 
-                override fun onFailure(msg: String) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                override fun onFailure() {
+
                 }
             })
     }
@@ -81,8 +81,8 @@ class DiaryPresenter(
 
             }
 
-            override fun onFailure(msg: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onFailure() {
+
             }
         })
 

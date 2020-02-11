@@ -1,6 +1,5 @@
 package com.work.restaurant.view.calendar.presenter
 
-import android.util.Log
 import com.work.restaurant.data.repository.eat.EatRepository
 import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
@@ -30,8 +29,8 @@ class CalendarPresenter(
 
                 }
 
-                override fun onFailure(msg: String) {
-                    Log.d("결과", msg)
+                override fun onFailure() {
+
                 }
             })
 
@@ -48,8 +47,8 @@ class CalendarPresenter(
                 calendarContract.showEatData(toEatModelList)
             }
 
-            override fun onFailure(msg: String) {
-                Log.d("결과", msg)
+            override fun onFailure() {
+
             }
         })
 

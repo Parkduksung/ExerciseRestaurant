@@ -6,25 +6,25 @@ interface ExerciseRepositoryCallback {
 
 
     interface AddExerciseCallback {
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
     }
 
     interface DeleteExerciseCallback {
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
 
     }
 
 
     interface GetAllList {
         fun onSuccess(list: List<ExerciseEntity>)
-        fun onFailure(msg: String)
+        fun onFailure()
     }
 
 
     interface GetDataOfTheDay {
         fun onSuccess(list: List<ExerciseEntity>)
-        fun onFailure(msg: String)
+        fun onFailure()
     }
 }

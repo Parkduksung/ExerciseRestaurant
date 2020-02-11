@@ -14,12 +14,12 @@ class BookmarkRepositoryImpl(
         bookmarkLocalDataSourceImpl.addBookmark(
             bookmarkEntity,
             object : BookmarkLocalDataSourceCallback.AddBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             }
 
@@ -32,8 +32,8 @@ class BookmarkRepositoryImpl(
                 callback.onSuccess(list)
             }
 
-            override fun onFailure(msg: String) {
-                callback.onFailure(msg)
+            override fun onFailure() {
+                callback.onFailure()
             }
         })
     }
@@ -46,12 +46,12 @@ class BookmarkRepositoryImpl(
         bookmarkLocalDataSourceImpl.deleteBookmark(
             bookmarkEntity,
             object : BookmarkLocalDataSourceCallback.DeleteBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             })
     }

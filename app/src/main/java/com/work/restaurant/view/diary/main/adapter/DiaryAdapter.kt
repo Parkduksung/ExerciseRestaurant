@@ -87,7 +87,7 @@ class DiaryAdapter :
             } else {
                 adapterListener = object : AdapterDataListener.GetList {
                     override fun getData(data: DiaryModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
                 }
                 itemView.setOnClickListener {
@@ -170,7 +170,7 @@ class DiaryAdapter :
             } else {
                 adapterListener = object : AdapterDataListener.GetList {
                     override fun getData(data: DiaryModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                 }

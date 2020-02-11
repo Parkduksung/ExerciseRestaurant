@@ -28,18 +28,20 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
                     .addToBackStack(null)
                     .commit()
             }
+            R.id.btn_send_question -> {
+
+                if (et_question_content.text.toString() != "") {
+                    presenter.sendQuestion(et_question_content.text.toString())
+                }
+            }
         }
     }
 
     override fun showResult(message: String) {
         if (message == "success") {
-            this.activity?.runOnUiThread {
-                Toast.makeText(this.context, "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this.context, "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
         } else {
-            this.activity?.runOnUiThread {
-                Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -51,8 +53,8 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
             Injection.provideQuestionRepository()
         )
 
-
         ib_question_back.setOnClickListener(this)
+        btn_send_question.setOnClickListener(this)
 
     }
 }

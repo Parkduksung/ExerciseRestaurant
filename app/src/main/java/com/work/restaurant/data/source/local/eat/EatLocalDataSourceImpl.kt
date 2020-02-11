@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.eat
 
-import android.util.Log
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
@@ -18,13 +17,15 @@ class EatLocalDataSourceImpl(
 
             val deleteEat = eatDatabase.eatDao().deleteEat(data)
 
-            Log.d("제거됬니?", deleteEat.toString())
+            appExecutors.mainThread.execute {
+                if (deleteEat >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
 
-            if (deleteEat >= 1) {
-                callback.onSuccess("success")
-            } else {
-                callback.onSuccess("error")
             }
+
 
         }
     }
@@ -36,18 +37,13 @@ class EatLocalDataSourceImpl(
             val getAllList =
                 eatDatabase.eatDao().getAll()
 
-            getAllList.forEach {
-                Log.d("결콰콰", it.date)
-                Log.d("결콰콰", it.memo)
-                Log.d("결콰콰", it.time)
-                Log.d("결콰콰", "${it.type}")
+
+            appExecutors.mainThread.execute {
+                getAllList.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getAllList)
+                    } ?: callback.onFailure()
             }
-
-
-            getAllList.takeIf { true }
-                .apply {
-                    callback.onSuccess(getAllList)
-                } ?: callback.onFailure("error")
 
         }
 
@@ -64,10 +60,13 @@ class EatLocalDataSourceImpl(
 
             val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(date)
 
-            getDataOfTheDay.takeIf { true }
-                .apply {
-                    callback.onSuccess(getDataOfTheDay)
-                } ?: callback.onFailure("error")
+            appExecutors.mainThread.execute {
+                getDataOfTheDay.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getDataOfTheDay)
+                    } ?: callback.onFailure()
+
+            }
 
         }
 
@@ -90,11 +89,15 @@ class EatLocalDataSourceImpl(
 
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
 
-            if (registerEat >= 1) {
-                callback.onSuccess("success")
-            } else {
-                callback.onSuccess("error")
+
+            appExecutors.mainThread.execute {
+                if (registerEat >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
             }
+
         }
 
     }

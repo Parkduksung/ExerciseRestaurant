@@ -35,9 +35,9 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                 )
             }
 
-        this.activity?.runOnUiThread {
-            Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-        }
+
+        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
     }
 
 

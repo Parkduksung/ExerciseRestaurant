@@ -20,7 +20,7 @@ interface ExerciseDao {
     fun getTodayItem(today: String): List<ExerciseEntity>
 
     @Delete
-    fun deleteExercise(exerciseEntity: ExerciseEntity)
+    fun deleteExercise(exerciseEntity: ExerciseEntity): Int
 
 
 }

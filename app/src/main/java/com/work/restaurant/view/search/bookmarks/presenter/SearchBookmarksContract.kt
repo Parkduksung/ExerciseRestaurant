@@ -6,7 +6,7 @@ interface SearchBookmarksContract {
 
     interface View {
         fun showBookmarksList(bookmarkModelList: List<BookmarkModel>)
-        fun showBookmarkDeleteResult(msg: String)
+        fun showBookmarkDeleteResult(msg: Boolean)
 
     }
 

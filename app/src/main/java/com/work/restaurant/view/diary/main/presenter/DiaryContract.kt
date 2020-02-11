@@ -13,7 +13,7 @@ interface DiaryContract {
 
         fun showExerciseData(data: List<ExerciseModel>)
 
-        fun showResult(msg: String)
+        fun showResult(msg: Boolean)
 
     }
 

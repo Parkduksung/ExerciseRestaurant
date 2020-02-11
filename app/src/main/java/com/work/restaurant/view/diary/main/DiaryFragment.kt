@@ -36,8 +36,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     private val diaryModel = mutableSetOf<DiaryModel>()
 
 
-    override fun showResult(msg: String) {
-        Log.d("결과", msg)
+    override fun showResult(msg: Boolean) {
+        Log.d("결과", msg.toString())
     }
 
     override fun getData(data: DiaryModel) {
@@ -51,7 +51,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         R.style.Theme_AppCompat_Light_Dialog
                     )
                 )
-
             alertDialog.setTitle("삭제")
             alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
             alertDialog.setPositiveButton(
@@ -78,7 +77,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         R.style.Theme_AppCompat_Light_Dialog
                     )
                 )
-
             alertDialog.setTitle("삭제")
             alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
             alertDialog.setPositiveButton(
@@ -95,7 +93,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             ) { _, _ -> }
             alertDialog.show()
         }
-
     }
 
 
@@ -104,6 +101,14 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             it.toDiaryModel()
         }
         diaryModel.addAll(getDiaryModel)
+
+
+        recyclerview_diary.run {
+            diaryAdapter.clearListData()
+            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+        }
+
+
     }
 
 
@@ -112,6 +117,13 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             it.toDiaryModel()
         }
         diaryModel.addAll(getDiaryModel)
+
+
+        recyclerview_diary.run {
+            diaryAdapter.clearListData()
+            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+        }
+
     }
 
     override fun onClick(v: View?) {
@@ -126,7 +138,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                     this,
                     REGISTER_EAT
                 )
-
                 requireFragmentManager().beginTransaction()
                     .replace(R.id.main_container, addEatFragment)
                     .addToBackStack(null)
@@ -140,7 +151,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                     this,
                     REGISTER_EXERCISE
                 )
-
                 requireFragmentManager().beginTransaction()
                     .replace(R.id.main_container, addExerciseFragment)
                     .addToBackStack(null)
@@ -163,7 +173,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             layoutManager = LinearLayoutManager(this.context)
         }
 
-        init()
 
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
@@ -176,20 +185,18 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         when (requestCode) {
             REGISTER_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    this.onResume()
+                    load()
                 }
             }
             REGISTER_EXERCISE -> {
                 if (resultCode == Activity.RESULT_OK) {
-
-                    this.onResume()
+                    load()
                 }
             }
         }
     }
 
-    private fun init() {
-
+    private fun load() {
 
         val currentTime = Calendar.getInstance().time
 
@@ -207,7 +214,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dateArray[3]
             )
 
-
         presenter.todayEatData(
             getString(
                 R.string.current_date,
@@ -216,7 +222,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dateArray[2]
             )
         )
-
         presenter.todayExerciseData(
             getString(
                 R.string.current_date,
@@ -226,26 +231,12 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             )
         )
 
-
-        this.activity?.runOnUiThread {
-            recyclerview_diary.run {
-                diaryAdapter.clearListData()
-                diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
-            }
-        }
-
     }
 
     companion object {
         private const val TAG = "DiaryFragment"
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        init()
     }
 
 }

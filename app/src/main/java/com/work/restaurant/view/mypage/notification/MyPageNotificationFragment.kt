@@ -1,11 +1,13 @@
 package com.work.restaurant.view.mypage.notification
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
+import com.work.restaurant.view.NotificationDataListener
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
@@ -18,7 +20,18 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     MyPageNotificationContract.View, AdapterDataListener.GetNotificationList, View.OnClickListener {
 
     private lateinit var presenter: MyPageNotificationPresenter
+
     private val notificationAdapter: NotificationAdapter by lazy { NotificationAdapter() }
+
+    private lateinit var notificationDataListener: NotificationDataListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is NotificationDataListener) {
+            notificationDataListener = context
+        }
+
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -35,9 +48,9 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
         }
     }
 
-
     override fun getData(data: NotificationModel) {
 
+        notificationDataListener.getNotificationData(data)
     }
 
 

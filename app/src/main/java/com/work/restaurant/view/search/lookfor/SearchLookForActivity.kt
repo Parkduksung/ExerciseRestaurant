@@ -45,24 +45,18 @@ class SearchLookForActivity : AppCompatActivity(),
         }
     }
 
-    override fun showBookmarkResult(msg: String) {
+    override fun showBookmarkResult(msg: Int) {
         when (msg) {
-            SUCCESS_ADD -> {
-                runOnUiThread {
-                    Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
-                }
+            ADD_BOOKMARK -> {
+                Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
             }
 
-            SUCCESS_DELETE -> {
-                runOnUiThread {
-                    Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
-                }
+            DELETE_BOOKMARK -> {
+                Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
             }
 
             RESULT_FAILURE -> {
-                runOnUiThread {
-                    Toast.makeText(this, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -233,9 +227,8 @@ class SearchLookForActivity : AppCompatActivity(),
 
         private const val ADD_BOOKMARK = 1
         private const val DELETE_BOOKMARK = 2
-        private const val SUCCESS_ADD = "successAdd"
-        private const val SUCCESS_DELETE = "successDelete"
-        private const val RESULT_FAILURE = "error"
+
+        private const val RESULT_FAILURE = 3
 
         var toggleWebPage = false
 

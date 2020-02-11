@@ -17,10 +17,15 @@ class ExerciseLocalDataSourceImpl(
 
             val deleteExercise = exerciseDatabase.exerciseDao().deleteExercise(data)
 
-            deleteExercise.takeIf { true }
-                .apply {
-                    callback.onSuccess("success")
-                } ?: callback.onFailure("error")
+
+            appExecutors.mainThread.execute {
+                if (deleteExercise >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
+            }
+
         }
     }
 
@@ -33,10 +38,14 @@ class ExerciseLocalDataSourceImpl(
 
             val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(date)
 
-            getDataOfTheDay.takeIf { true }
-                .apply {
-                    callback.onSuccess(getDataOfTheDay)
-                } ?: callback.onFailure("error")
+
+            appExecutors.mainThread.execute {
+                getDataOfTheDay.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getDataOfTheDay)
+                    } ?: callback.onFailure()
+
+            }
 
         }
     }
@@ -66,12 +75,14 @@ class ExerciseLocalDataSourceImpl(
             )
             val registerExercise = exerciseDatabase.exerciseDao().registerExercise(exerciseEntity)
 
-            if (registerExercise >= 1) {
-                callbackLocal.onSuccess("success")
-            } else {
-                callbackLocal.onFailure("error")
-            }
 
+            appExecutors.mainThread.execute {
+                if (registerExercise >= 1) {
+                    callbackLocal.onSuccess()
+                } else {
+                    callbackLocal.onFailure()
+                }
+            }
         }
 
     }
@@ -84,16 +95,15 @@ class ExerciseLocalDataSourceImpl(
             val getAllList = exerciseDatabase.exerciseDao().getAll()
 
 
-
-            getAllList.takeIf { true }
-                .apply {
-                    callback.onSuccess(getAllList)
-                } ?: callback.onFailure("error")
-
+            appExecutors.mainThread.execute {
+                getAllList.takeIf { true }
+                    .apply {
+                        callback.onSuccess(getAllList)
+                    } ?: callback.onFailure()
+            }
         }
 
     }
-
 
     companion object {
 

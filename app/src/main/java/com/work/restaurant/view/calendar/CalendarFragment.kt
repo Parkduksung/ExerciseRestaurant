@@ -98,11 +98,10 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             workEat = false
             workExercise = false
 
-            this.activity?.runOnUiThread {
-                recyclerview_calendar.run {
-                    diaryAdapter.clearListData()
-                    diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
-                }
+            recyclerview_calendar.run {
+                diaryAdapter.clearListData()
+                diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
+
             }
         }
     }

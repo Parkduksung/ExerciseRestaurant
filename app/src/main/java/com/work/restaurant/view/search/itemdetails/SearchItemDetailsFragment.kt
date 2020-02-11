@@ -90,7 +90,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
     companion object {
         private const val TAG = "SearchItemDetailsFragment"
         private const val DATA = "data"
-        private const val Toggle = "toggle"
 
         fun newInstance(
             data: String

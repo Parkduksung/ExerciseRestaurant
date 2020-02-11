@@ -8,7 +8,7 @@ interface SearchRankContract {
     interface View {
 
         fun showKakaoList(kakaoList: List<KakaoSearchModel>)
-        fun showBookmarkResult(msg: String)
+        fun showBookmarkResult(msg: Boolean)
 
     }
 

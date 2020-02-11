@@ -22,11 +22,11 @@ class SearchRankPresenter(
 
                 override fun onSuccess(item: List<KakaoAddressDocument>) {
 
-                    val currentX = (item[0].x).toDouble()
-                    val currentY = (item[0].y).toDouble()
-
-                    getKakaoList(currentX, currentY)
-
+                    if (item.isNotEmpty()) {
+                        val currentX = (item[0].x).toDouble()
+                        val currentY = (item[0].y).toDouble()
+                        getKakaoList(currentX, currentY)
+                    }
                 }
 
                 override fun onFailure(message: String) {
@@ -42,12 +42,12 @@ class SearchRankPresenter(
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    searchRankView.showBookmarkResult(msg)
+                override fun onSuccess() {
+                    searchRankView.showBookmarkResult(true)
                 }
 
-                override fun onFailure(msg: String) {
-                    searchRankView.showBookmarkResult(msg)
+                override fun onFailure() {
+                    searchRankView.showBookmarkResult(false)
                 }
             })
     }

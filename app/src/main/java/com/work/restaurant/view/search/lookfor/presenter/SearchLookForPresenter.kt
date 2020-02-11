@@ -19,12 +19,12 @@ class SearchLookForPresenter(
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    searchLookForView.showBookmarkResult(msg)
+                override fun onSuccess() {
+                    searchLookForView.showBookmarkResult(1)
                 }
 
-                override fun onFailure(msg: String) {
-                    searchLookForView.showBookmarkResult(msg)
+                override fun onFailure() {
+                    searchLookForView.showBookmarkResult(3)
                 }
             })
     }
@@ -36,12 +36,12 @@ class SearchLookForPresenter(
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    searchLookForView.showBookmarkResult(msg)
+                override fun onSuccess() {
+                    searchLookForView.showBookmarkResult(2)
                 }
 
-                override fun onFailure(msg: String) {
-                    searchLookForView.showBookmarkResult(msg)
+                override fun onFailure() {
+                    searchLookForView.showBookmarkResult(3)
                 }
 
             })

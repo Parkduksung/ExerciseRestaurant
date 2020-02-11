@@ -25,8 +25,12 @@ import kotlin.collections.ArrayList
 
 class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     View.OnClickListener, AddExerciseContract.View {
-    override fun showAddSuccess() {
 
+    private lateinit var viewList: ArrayList<View>
+
+    private lateinit var presenter: AddExercisePresenter
+
+    override fun showAddSuccess() {
         requireFragmentManager().beginTransaction()
             .remove(this@AddExerciseFragment)
             .commit().also {
@@ -38,15 +42,9 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                 )
 
             }
-        this.activity?.runOnUiThread {
-            Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-        }
+        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
     }
-
-
-    private lateinit var viewList: ArrayList<View>
-
-    private lateinit var presenter: AddExercisePresenter
 
     override fun onClick(v: View?) {
 
@@ -65,7 +63,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             R.id.iv_remove_exercise -> {
 
                 if (viewList.size != 0) {
-
                     ll_add_remove_exercise.removeView(viewList[viewList.size - 1])
                     viewList.removeAt(viewList.size - 1)
                 }
@@ -75,7 +72,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             R.id.btn_add_exercise_category -> {
                 getMenuClick()
             }
-
 
             R.id.btn_add_exercise_time -> {
                 getTimePicker()
@@ -93,7 +89,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                 if (btn_add_exercise_category.text != null && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
 
                     val setList = mutableListOf<ExerciseSet>()
-
 
                     viewList.forEach {
 
@@ -172,7 +167,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
         btn_add_exercise_time.text =
             getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
-
 
     }
 
@@ -287,10 +281,5 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
     }
 
-
-    override fun onResume() {
-        super.onResume()
-
-    }
 
 }

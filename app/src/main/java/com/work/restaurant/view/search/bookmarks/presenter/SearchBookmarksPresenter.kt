@@ -18,12 +18,12 @@ class SearchBookmarksPresenter(
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
-                override fun onSuccess(msg: String) {
-                    searchBookmarksView.showBookmarkDeleteResult(msg)
+                override fun onSuccess() {
+                    searchBookmarksView.showBookmarkDeleteResult(true)
                 }
 
-                override fun onFailure(msg: String) {
-                    searchBookmarksView.showBookmarkDeleteResult(msg)
+                override fun onFailure() {
+                    searchBookmarksView.showBookmarkDeleteResult(false)
                 }
             })
 
@@ -37,8 +37,8 @@ class SearchBookmarksPresenter(
                 searchBookmarksView.showBookmarksList(toBookmarkModelList)
             }
 
-            override fun onFailure(msg: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onFailure() {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
 

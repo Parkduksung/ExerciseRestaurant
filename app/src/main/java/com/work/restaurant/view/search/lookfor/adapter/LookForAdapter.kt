@@ -60,19 +60,18 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                     } else {
                         bookmarkListener.getKakaoData(2, item)
                     }
-
                 }
 
             } else {
                 adapterListener = object : AdapterDataListener {
                     override fun getData(data: String) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
                 }
 
                 bookmarkListener = object : AdapterDataListener.GetKakaoData {
                     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                 }

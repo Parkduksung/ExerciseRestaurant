@@ -15,12 +15,12 @@ class ExerciseRepositoryImpl(
         exerciseLocalDataSourceImpl.deleteEat(
             data,
             object : ExerciseLocalDataSourceCallback.DeleteExerciseCallback {
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             })
     }
@@ -31,8 +31,8 @@ class ExerciseRepositoryImpl(
                 callback.onSuccess(list)
             }
 
-            override fun onFailure(msg: String) {
-                callback.onFailure(msg)
+            override fun onFailure() {
+                callback.onFailure()
             }
         })
     }
@@ -54,12 +54,12 @@ class ExerciseRepositoryImpl(
             list,
             object : ExerciseLocalDataSourceCallback.AddExerciseCallback {
 
-                override fun onSuccess(msg: String) {
-                    callback.onSuccess(msg)
+                override fun onSuccess() {
+                    callback.onSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             })
 
@@ -77,8 +77,8 @@ class ExerciseRepositoryImpl(
                     callback.onSuccess(list)
                 }
 
-                override fun onFailure(msg: String) {
-                    callback.onFailure(msg)
+                override fun onFailure() {
+                    callback.onFailure()
                 }
             })
     }

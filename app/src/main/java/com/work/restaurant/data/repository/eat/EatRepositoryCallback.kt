@@ -5,25 +5,25 @@ import com.work.restaurant.network.room.entity.EatEntity
 interface EatRepositoryCallback {
 
     interface AddEatCallback {
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
 
     }
 
 
     interface GetAllList {
         fun onSuccess(list: List<EatEntity>)
-        fun onFailure(msg: String)
+        fun onFailure()
     }
 
     interface GetDataOfTheDay {
         fun onSuccess(list: List<EatEntity>)
-        fun onFailure(msg: String)
+        fun onFailure()
     }
 
     interface DeleteEatCallback {
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
 
     }
 

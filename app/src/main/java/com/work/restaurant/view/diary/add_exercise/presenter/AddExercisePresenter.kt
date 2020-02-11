@@ -1,6 +1,5 @@
 package com.work.restaurant.view.diary.add_exercise.presenter
 
-import android.util.Log
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
 import com.work.restaurant.data.repository.exercise.ExerciseRepositoryCallback
@@ -26,12 +25,12 @@ class AddExercisePresenter(
             exerciseName,
             list,
             object : ExerciseRepositoryCallback.AddExerciseCallback {
-                override fun onSuccess(msg: String) {
+                override fun onSuccess() {
                     addExerciseView.showAddSuccess()
                 }
 
-                override fun onFailure(msg: String) {
-                    Log.d("오류", msg)
+                override fun onFailure() {
+
                 }
             })
 

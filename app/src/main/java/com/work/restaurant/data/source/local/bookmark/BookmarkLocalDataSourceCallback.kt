@@ -5,22 +5,22 @@ import com.work.restaurant.network.room.entity.BookmarkEntity
 interface BookmarkLocalDataSourceCallback {
 
     interface AddBookmarkCallback {
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
 
     }
 
     interface DeleteBookmarkCallback {
 
-        fun onSuccess(msg: String)
-        fun onFailure(msg: String)
+        fun onSuccess()
+        fun onFailure()
 
     }
 
     interface GetAllList {
 
         fun onSuccess(list: List<BookmarkEntity>)
-        fun onFailure(msg: String)
+        fun onFailure()
 
     }
 

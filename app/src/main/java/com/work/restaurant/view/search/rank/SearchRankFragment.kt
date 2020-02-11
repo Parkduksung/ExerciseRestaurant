@@ -31,19 +31,20 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
 
-    override fun showBookmarkResult(msg: String) {
+    interface ClickNotificationData{
+        fun getData(data:String)
+    }
+
+    private lateinit var clickNotificationData : ClickNotificationData
+
+    override fun showBookmarkResult(msg: Boolean) {
         when (msg) {
             RESULT_SUCCESS -> {
-                this.activity?.runOnUiThread {
-                    Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
-                }
-
+                Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
             }
-
             RESULT_FAILURE -> {
-                this.activity?.runOnUiThread {
-                    Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
-                }
+
+                Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
 
             }
         }
@@ -148,8 +149,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         private const val SELECT_URL = 1
         private const val SELECT_BOOKMARK = 2
 
-        private const val RESULT_SUCCESS = "success"
-        private const val RESULT_FAILURE = "error"
+        private const val RESULT_SUCCESS = true
+        private const val RESULT_FAILURE = false
 
         const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
         const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"

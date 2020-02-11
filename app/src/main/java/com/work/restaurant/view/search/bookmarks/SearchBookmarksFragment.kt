@@ -24,18 +24,13 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     private lateinit var presenter: SearchBookmarksPresenter
 
 
-    override fun showBookmarkDeleteResult(msg: String) {
+    override fun showBookmarkDeleteResult(msg: Boolean) {
         when (msg) {
             RESULT_SUCCESS -> {
-                this.activity?.runOnUiThread {
-                    Toast.makeText(this.context, "제거성공.", Toast.LENGTH_LONG).show()
-                }
-
+                Toast.makeText(this.context, "제거성공.", Toast.LENGTH_LONG).show()
             }
             RESULT_FAILURE -> {
-                this.activity?.runOnUiThread {
-                    Toast.makeText(this.context, "제거실패.", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this.context, "제거실패.", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -62,14 +57,13 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
         bookmarkDeduplicationSet.addAll(bookmarkModelList)
 
-        this.activity?.runOnUiThread {
-            recyclerview_bookmark.run {
-                this.adapter = bookMarkAdapter
-                bookMarkAdapter.clearListData()
-                bookMarkAdapter.addAllData(bookmarkDeduplicationSet.toList())
-                layoutManager = LinearLayoutManager(this.context)
-            }
+        recyclerview_bookmark.run {
+            this.adapter = bookMarkAdapter
+            bookMarkAdapter.clearListData()
+            bookMarkAdapter.addAllData(bookmarkDeduplicationSet.toList())
+            layoutManager = LinearLayoutManager(this.context)
         }
+
     }
 
     override fun onClick(v: View?) {
@@ -103,8 +97,8 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
         private const val SELECT_URL = 1
         private const val SELECT_DELETE = 2
-        private const val RESULT_SUCCESS = "success"
-        private const val RESULT_FAILURE = "error"
+        private const val RESULT_SUCCESS = true
+        private const val RESULT_FAILURE = false
 
         const val BOOKMARK_DATA = "bookmark_data"
         const val BOOKMARK_TOGGLE = "bookmark_toggle"

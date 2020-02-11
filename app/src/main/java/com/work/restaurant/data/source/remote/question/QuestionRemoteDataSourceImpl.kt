@@ -26,7 +26,7 @@ class QuestionRemoteDataSourceImpl(private val questionApi: QuestionApi) :
                     if (result) {
                         callback.onSuccess("success")
                     } else {
-                        callback.onFailure("error")
+                        callback.onFailure(response.message())
                     }
                 }
             }
