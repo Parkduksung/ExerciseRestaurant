@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.notification.MyPageNotificationFragment
 import kotlinx.android.synthetic.main.mypage_notification_detail_fragment.*
 
 class MyPageNotificationDetailsFragment :
@@ -13,15 +12,7 @@ class MyPageNotificationDetailsFragment :
         when (v?.id) {
 
             R.id.ib_notification_detail_back -> {
-
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(
-                        R.id.mypage_main_container,
-                        MyPageNotificationFragment()
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                activity?.onBackPressed()
             }
         }
     }

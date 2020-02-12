@@ -17,9 +17,6 @@ class MyPageRegisterPresenter(
         return matcher.matches()
     }
 
-    override fun backPage() {
-        myPageRegisterView.showBackPage()
-    }
 
     override fun register(nickName: String, email: String, pass: String) {
 

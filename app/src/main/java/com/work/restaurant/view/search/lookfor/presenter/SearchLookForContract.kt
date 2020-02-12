@@ -11,8 +11,6 @@ interface SearchLookForContract {
 
         fun showSearchNoFind()
 
-        fun showBackPage()
-
         fun showBookmarkResult(msg: Int)
 
 
@@ -21,8 +19,6 @@ interface SearchLookForContract {
     interface Presenter {
 
         fun searchLook(searchItem: String)
-
-        fun backPage()
 
         fun addBookmark(bookmarkModel: BookmarkModel)
 

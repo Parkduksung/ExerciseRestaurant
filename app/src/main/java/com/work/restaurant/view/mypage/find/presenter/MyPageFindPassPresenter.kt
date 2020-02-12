@@ -21,7 +21,5 @@ class MyPageFindPassPresenter(
         })
     }
 
-    override fun backPage() {
-        myPageFindPassView.showBackPage()
-    }
+
 }

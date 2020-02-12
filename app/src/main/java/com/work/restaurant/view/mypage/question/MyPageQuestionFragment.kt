@@ -6,7 +6,6 @@ import android.widget.Toast
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionContract
 import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionPresenter
 import kotlinx.android.synthetic.main.mypage_question_fragment.*
@@ -19,14 +18,7 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_question_back -> {
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(
-                        R.id.mypage_main_container,
-                        MyPageFragment()
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                activity?.onBackPressed()
             }
             R.id.btn_send_question -> {
 

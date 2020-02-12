@@ -25,7 +25,7 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_find_back -> {
-                presenter.backPage()
+                activity?.onBackPressed()
             }
 
             R.id.btn_request_change_pass -> {
@@ -101,11 +101,6 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
         alertDialog.show()
     }
 
-    override fun showBackPage() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this
-        ).commit()
-    }
 
     companion object {
         private const val TAG = "MyPageFindFragment"

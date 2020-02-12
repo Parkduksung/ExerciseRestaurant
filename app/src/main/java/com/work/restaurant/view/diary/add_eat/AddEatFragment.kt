@@ -4,12 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
@@ -35,11 +39,25 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                 )
             }
 
-
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
+        }
+    }
 
     override fun onClick(v: View?) {
 

@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.work.restaurant.R
+import com.work.restaurant.util.App
+
 
 abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPressedListener {
+
     override fun onBackPressed() {
-        requireFragmentManager().beginTransaction().remove(this).commit()
+
     }
 
     override fun onCreateView(
@@ -17,13 +22,15 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(layoutId, container, false)
+        view.setBackgroundColor(ContextCompat.getColor(App.instance.context(), R.color.colorWhite))
         view?.setOnTouchListener { _, _ ->
             true
         }
         return view
     }
-    
+
 }
 
 

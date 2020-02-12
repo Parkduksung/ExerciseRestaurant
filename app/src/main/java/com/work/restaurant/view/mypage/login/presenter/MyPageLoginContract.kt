@@ -8,8 +8,6 @@ interface MyPageLoginContract {
 
         fun showLoginNo()
 
-        fun showBackPage()
-
         fun showRegisterPage()
 
         fun showFindPassPage()
@@ -20,8 +18,6 @@ interface MyPageLoginContract {
     interface Presenter {
 
         fun login(email: String, pass: String)
-
-        fun backPage()
 
         fun registerPage()
 

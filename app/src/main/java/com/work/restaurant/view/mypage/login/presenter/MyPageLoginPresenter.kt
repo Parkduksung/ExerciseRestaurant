@@ -8,9 +8,7 @@ class MyPageLoginPresenter(
     private val userRepository: UserRepository
 ) :
     MyPageLoginContract.Presenter {
-    override fun backPage() {
-        myPageLoginView.showBackPage()
-    }
+
 
     override fun registerPage() {
         myPageLoginView.showRegisterPage()

@@ -10,6 +10,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
@@ -44,6 +45,22 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             }
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
+        }
     }
 
     override fun onClick(v: View?) {

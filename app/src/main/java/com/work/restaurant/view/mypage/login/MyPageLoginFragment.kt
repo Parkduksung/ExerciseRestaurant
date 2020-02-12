@@ -33,7 +33,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             }
 
             R.id.ib_login_back -> {
-                presenter.backPage()
+                activity?.onBackPressed()
             }
 
             R.id.tv_login_register -> {
@@ -43,7 +43,6 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             R.id.tv_login_find -> {
                 presenter.findPass()
             }
-
         }
     }
 
@@ -115,18 +114,28 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
                                 data
                             )
                         }
+
+//                    requireFragmentManager()
+//                        .beginTransaction()
+//                        .remove(
+//                            this@MyPageLoginFragment
+//                        ).addToBackStack(null).commit().also {
+//                            val data = Intent()
+//                            data.putExtra("id", et_email.text.toString())
+//                            data.putExtra("nickname", nickName)
+//                            targetFragment?.onActivityResult(
+//                                targetRequestCode,
+//                                Activity.RESULT_OK,
+//                                data
+//                            )
+//                        }
+
                 }
             })
         alertDialog.show()
 
     }
 
-
-    override fun showBackPage() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this
-        ).addToBackStack(null).commit()
-    }
 
     override fun showRegisterPage() {
 

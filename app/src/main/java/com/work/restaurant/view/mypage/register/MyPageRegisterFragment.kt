@@ -14,7 +14,6 @@ import com.work.restaurant.data.repository.user.UserRepositoryImpl
 import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
@@ -36,7 +35,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         when (v?.id) {
 
             R.id.ib_register_back -> {
-                presenter.backPage()
+                activity?.onBackPressed()
             }
 
             R.id.btn_register -> {
@@ -239,14 +238,6 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         alertDialog.show()
     }
 
-    override fun showBackPage() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this
-        ).replace(
-            R.id.mypage_main_container,
-            MyPageLoginFragment()
-        ).addToBackStack(null).commit()
-    }
 
     companion object {
         private const val TAG = "MyPageRegisterFragment"

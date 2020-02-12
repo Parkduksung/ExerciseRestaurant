@@ -75,7 +75,7 @@ class HomeAddressActivity : AppCompatActivity(),
 
         when (v?.id) {
             R.id.ib_home_address_back -> {
-                presenter.backPage()
+                this@HomeAddressActivity.finish()
             }
 
             R.id.tv_address1 -> {
@@ -133,10 +133,6 @@ class HomeAddressActivity : AppCompatActivity(),
         }
     }
 
-    override fun showBackPage() {
-        this@HomeAddressActivity.finish()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.address_main)
@@ -182,6 +178,7 @@ class HomeAddressActivity : AppCompatActivity(),
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
+
         }
 
     }

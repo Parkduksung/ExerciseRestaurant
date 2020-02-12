@@ -9,15 +9,13 @@ interface MyPageFindPassContract {
 
         fun showResetNo(message: String)
 
-        fun showBackPage()
-
     }
 
     interface Presenter {
 
         fun resetPass(email: String)
 
-        fun backPage()
+
     }
 
 }

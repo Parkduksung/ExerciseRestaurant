@@ -29,20 +29,20 @@
 
 
                 <ImageButton
-                    android:backgroundTint="@color/colorWhite"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:backgroundTint="@color/colorWhite"
                     app:srcCompat="@drawable/ic_search"
                     tools:ignore="ContentDescription" />
 
 
                 <EditText
-                    android:background="@color/colorWhite"
                     android:id="@+id/et_search_look"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
+                    android:background="@color/colorWhite"
                     android:focusableInTouchMode="false"
                     android:hint="@string/search_hint"
                     tools:ignore="Autofill,TextFields" />
@@ -75,8 +75,8 @@
                         android:id="@+id/tl_search"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:theme="@style/TapTheme">
-
+                        android:theme="@style/TapTheme"
+                        app:tabIndicatorHeight="0dp">
 
                     </com.google.android.material.tabs.TabLayout>
 

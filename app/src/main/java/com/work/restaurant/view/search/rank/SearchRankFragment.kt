@@ -27,6 +27,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     SearchRankContract.View,
     AdapterDataListener.GetKakaoData {
 
+
+
     private lateinit var presenter: SearchRankPresenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 

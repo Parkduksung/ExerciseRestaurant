@@ -148,14 +148,10 @@ class SearchLookForActivity : AppCompatActivity(),
         }
     }
 
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_search_look_back -> {
-                presenter.backPage()
-            }
-            R.id.ib_search_item_look -> {
-                presenter.searchLook(et_search_look_for_item.text.toString())
+                this@SearchLookForActivity.finish()
             }
         }
     }
@@ -170,7 +166,6 @@ class SearchLookForActivity : AppCompatActivity(),
         )
         lookForAdapter.setItemClickListener(this)
         lookForAdapter.setBookmarkListener(this)
-        ib_search_item_look.setOnClickListener(this)
         ib_search_look_back.setOnClickListener(this)
 
         getRecyclerClickData()
@@ -191,7 +186,6 @@ class SearchLookForActivity : AppCompatActivity(),
                 false
             }
         }
-
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -243,9 +237,6 @@ class SearchLookForActivity : AppCompatActivity(),
         ) { _, _ -> }
         alertDialog.show()
     }
-
-    override fun showBackPage() =
-        this@SearchLookForActivity.finish()
 
 
     companion object {

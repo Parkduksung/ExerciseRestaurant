@@ -9,7 +9,6 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.notification.adapter.NotificationAdapter
 import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationContract
 import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationPresenter
@@ -35,14 +34,7 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_notification_back -> {
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(
-                        R.id.mypage_main_container,
-                        MyPageFragment()
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                activity?.onBackPressed()
             }
         }
     }
