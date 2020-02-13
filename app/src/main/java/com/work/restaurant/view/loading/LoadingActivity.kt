@@ -40,7 +40,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
     @SuppressLint("MissingPermission")
     private fun saveCurrentLocation() {
 
-
         val locationListener = object : LocationListener {
 
             override fun onLocationChanged(location: Location) {
@@ -83,12 +82,8 @@ class LoadingActivity : Activity(), LoadingContract.View {
     private val permissionListener: PermissionListener = object : PermissionListener {
 
         override fun onPermissionGranted() {
-            if (checkLocationServicesStatus()) {
 
-                saveCurrentLocation()
-            } else {
-                Toast.makeText(App.instance.context(), "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-            }
+            saveCurrentLocation()
         }
 
         override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
@@ -100,15 +95,7 @@ class LoadingActivity : Activity(), LoadingContract.View {
                 .show()
             finish()
         }
-
     }
-
-    private fun checkLocationServicesStatus(): Boolean {
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
-
 
     private fun start() {
 

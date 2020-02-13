@@ -73,6 +73,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
         presenter = ExerciseRestaurantPresenter(this)
         start()
 
+
     }
 
     private fun start() {

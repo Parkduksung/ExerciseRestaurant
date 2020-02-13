@@ -56,62 +56,10 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
 
     private fun compressCity(city: String): String {
-
-        when (city) {
-            "서울특별시" -> {
-                return "서울"
-            }
-            "대구광역시" -> {
-                return "대구"
-            }
-            "대전광역시" -> {
-                return "대전"
-            }
-            "부산광역시" -> {
-                return "부산"
-            }
-            "울산광역시" -> {
-                return "울산"
-            }
-            "인천광역시" -> {
-                return "인천"
-            }
-            "광주광역시" -> {
-                return "광주"
-            }
-            "강원도" -> {
-                return "강원"
-            }
-            "경기도" -> {
-                return "경기"
-            }
-            "경상남도" -> {
-                return "경남"
-            }
-            "경상북도" -> {
-                return "경북"
-            }
-            "전라남도" -> {
-                return "전남"
-            }
-            "전라북도" -> {
-                return "전북"
-            }
-            "충청남도" -> {
-                return "충남"
-            }
-            "충청북도" -> {
-                return "충북"
-            }
-
-            "제주특별자치도" -> {
-                return "제주"
-            }
-            "세종특별자치시" -> {
-                return "세종"
-            }
-
-            else -> return ""
+        return if (city.contains("남") || city.contains("북")) {
+            "${city[0]}${city[2]}"
+        } else {
+            city.slice(IntRange(0, 1))
         }
     }
 
