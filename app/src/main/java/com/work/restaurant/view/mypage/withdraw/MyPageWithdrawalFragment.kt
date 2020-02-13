@@ -6,11 +6,15 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.work.restaurant.R
 import com.work.restaurant.data.repository.user.UserRepositoryImpl
 import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
@@ -36,6 +40,22 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
             R.id.btn_withdraw_ok -> {
                 presenter.withdraw(userNickname, userId)
             }
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
         }
     }
 

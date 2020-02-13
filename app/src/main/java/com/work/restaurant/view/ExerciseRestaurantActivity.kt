@@ -1,6 +1,7 @@
 package com.work.restaurant.view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
@@ -31,6 +32,18 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             fragmentMap
         )
     }
+
+    private var mBackWait: Long = 0
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - mBackWait >= 2000) {
+            mBackWait = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
+        } else {
+            finish()
+        }
+    }
+
 
     override fun getNotificationData(data: NotificationModel) {
 

@@ -29,7 +29,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_login -> {
-                presenter.login(et_email.text.toString(), et_pass.text.toString())
+                presenter.login(et_email.text.toString().trim(), et_pass.text.toString().trim())
             }
 
             R.id.ib_login_back -> {
@@ -77,6 +77,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     Log.d("1111", "실패")
+                    et_pass.text.clear()
                 }
             })
         alertDialog.show()
@@ -99,6 +100,8 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             "확인",
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
+
+
                     this@MyPageLoginFragment.requireFragmentManager()
                         .beginTransaction()
                         .replace(
@@ -114,6 +117,10 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
                                 data
                             )
                         }
+
+
+                    et_email.text.clear()
+                    et_pass.text.clear()
 
 //                    requireFragmentManager()
 //                        .beginTransaction()

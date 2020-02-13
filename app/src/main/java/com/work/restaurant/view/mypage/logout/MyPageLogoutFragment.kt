@@ -4,8 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
@@ -28,6 +32,22 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
                 presenter.logoutOk()
             }
 
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
         }
     }
 

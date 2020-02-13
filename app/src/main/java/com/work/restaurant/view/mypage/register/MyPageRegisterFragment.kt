@@ -52,9 +52,9 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
             iv_pass_ok_state.tag == R.drawable.ic_ok
         ) {
             presenter.register(
-                et_register_nickname.text.toString(),
-                et_register_email.text.toString(),
-                et_register_pass.text.toString()
+                et_register_nickname.text.toString().trim(),
+                et_register_email.text.toString().trim(),
+                et_register_pass.text.toString().trim()
             )
         } else {
             val alertDialog =
@@ -77,6 +77,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         }
 
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

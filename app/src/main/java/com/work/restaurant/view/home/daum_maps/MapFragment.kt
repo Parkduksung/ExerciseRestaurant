@@ -290,18 +290,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 
 
         if (mapPOIItem == currentPOIItem) {
-
-            val geoCoder = Geocoder(context, Locale.getDefault())
-
-            val address = geoCoder.getFromLocation(
-                mapPoint.mapPointGeoCoord.latitude,
-                mapPoint.mapPointGeoCoord.longitude,
-                1
-            )
-
-            if (address.isNotEmpty()) {
-                mapPOIItem.itemName = "내위치"
-            }
+            mapPOIItem.itemName = "내위치"
         } else {
             mapPOIItem.itemName = selectAll
         }
@@ -325,7 +314,6 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
                 MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
         }
     }
-
 
     //주소 변경한 위치 좌표얻어오는것
     private fun getLocation(location: String) {
