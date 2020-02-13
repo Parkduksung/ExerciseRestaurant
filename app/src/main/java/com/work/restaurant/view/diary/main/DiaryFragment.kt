@@ -13,6 +13,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -200,37 +201,24 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun load() {
 
-        val currentTime = Calendar.getInstance().time
 
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-EE", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
+        val dayOfTheWeek =
+            SimpleDateFormat("EE", Locale.getDefault())
+                .format(Calendar.getInstance().time)
 
         tv_today.text =
             getString(
-                R.string.diary_main_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2],
-                dateArray[3]
+                R.string.diary_main_date1,
+                App.prefs.current_date,
+                dayOfTheWeek
             )
 
+
         presenter.todayEatData(
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
+            App.prefs.current_date
         )
         presenter.todayExerciseData(
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
+            App.prefs.current_date
         )
 
     }

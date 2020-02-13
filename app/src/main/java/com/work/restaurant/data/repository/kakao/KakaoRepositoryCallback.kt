@@ -2,6 +2,7 @@ package com.work.restaurant.data.repository.kakao
 
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
 import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 
 interface KakaoRepositoryCallback {
@@ -31,6 +32,12 @@ interface KakaoRepositoryCallback {
         fun onFailure(message: String)
 
     }
+
+    interface KakaoLocationToAddress {
+        fun onSuccess(item: List<KakaoLocationToAddressDocument>)
+        fun onFailure(message: String)
+    }
+
 
 
 }

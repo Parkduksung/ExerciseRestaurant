@@ -19,9 +19,6 @@ import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
 import kotlinx.android.synthetic.main.diary_add_exercise.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
@@ -173,17 +170,17 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
     private fun init() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
+//        val currentTime = Calendar.getInstance().time
+//
+//        val dateTextAll =
+//            SimpleDateFormat("a-h-mm", Locale.getDefault()).format(currentTime)
+//
+//        val dateArray = dateTextAll.split("-")
 
         tv_add_exercise_today.text =
-            getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
+            App.prefs.current_date
         btn_add_exercise_time.text =
-            getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
+            App.prefs.current_time
 
     }
 

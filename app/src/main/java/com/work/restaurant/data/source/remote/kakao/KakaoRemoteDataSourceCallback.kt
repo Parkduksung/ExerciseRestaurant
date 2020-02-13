@@ -2,6 +2,7 @@ package com.work.restaurant.data.source.remote.kakao
 
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
 import com.work.restaurant.network.model.kakaoImage.KakaoImageDocuments
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 
 interface KakaoRemoteDataSourceCallback {
@@ -29,5 +30,10 @@ interface KakaoRemoteDataSourceCallback {
         fun onFailure(message: String)
     }
 
+
+    interface KakaoLocationToAddress {
+        fun onSuccess(item: List<KakaoLocationToAddressDocument>)
+        fun onFailure(message: String)
+    }
 
 }

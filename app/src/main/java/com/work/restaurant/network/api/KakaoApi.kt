@@ -2,6 +2,7 @@ package com.work.restaurant.network.api
 
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -37,6 +38,13 @@ interface KakaoApi {
     fun kakaoAddressSearch(
         @Query("query") keyword: String
     ): Call<KakaoAddressSearch>
+
+    @Headers(HEADERS)
+    @GET("v2/local/geo/coord2regioncode.json")
+    fun kakaoLocationToAddress(
+        @Query("x") x: Double,
+        @Query("y") y: Double
+    ): Call<KakaoLocationToAddressResponse>
 
 
     companion object {

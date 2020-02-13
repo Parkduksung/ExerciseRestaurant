@@ -8,7 +8,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
@@ -18,7 +18,6 @@ import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
-import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
@@ -131,12 +130,15 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
 
     }
+
     override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
 
     }
+
     override fun onMapViewInitialized(p0: MapView?) {
 
     }
+
     override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
 
         if (p0 != null) {
@@ -152,21 +154,34 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
 
     }
+
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
 
     }
+
     override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
 
     }
+
     override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
+        dragMap = true
+        Handler().postDelayed({
+            p1?.let {
+                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
+            }
+
+        }, 3000L)
 
     }
+
     override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
 
     }
+
     override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
 
     }
+
     override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
 
     }
@@ -176,6 +191,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
 
     }
+
     override fun onCalloutBalloonOfPOIItemTouched(
         p0: MapView?,
         p1: MapPOIItem?,
@@ -183,9 +199,11 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     ) {
 
     }
+
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
 
     }
+
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
 
         if (p0 != null && p1 != null) {
@@ -212,13 +230,16 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
         }
     }
+
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
 
 
     }
+
     override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
 
     }
+
     override fun onCurrentLocationUpdateFailed(p0: MapView?) {
 
     }
@@ -228,19 +249,20 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
     override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoSearchModel>) {
         //currentX  =  longitude  , currentY  =  latitude
 
-        if (!toggleMap) {
-            Log.d("카카오결과", list.size.toString())
-            mapView.removePOIItem(currentPOIItem)
-            val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
-            showCurrentMarker(currentPOIItem, currentMapPoint)
-            mapView.currentLocationTrackingMode =
-                MapView.CurrentLocationTrackingMode.TrackingModeOff
-            mapView.setShowCurrentLocationMarker(false)
-        } else {
-            mapView.removePOIItem(selectPOIItem)
-            val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
-            showCurrentMarker(selectPOIItem, currentMapPoint)
-            toggleMap = false
+        if (!dragMap) {
+            if (!toggleMap) {
+                mapView.removePOIItem(currentPOIItem)
+                val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
+                showCurrentMarker(currentPOIItem, currentMapPoint)
+                mapView.currentLocationTrackingMode =
+                    MapView.CurrentLocationTrackingMode.TrackingModeOff
+                mapView.setShowCurrentLocationMarker(false)
+            } else {
+                mapView.removePOIItem(selectPOIItem)
+                val currentMapPoint = MapPoint.mapPointWithGeoCoord(currentY, currentX)
+                showCurrentMarker(selectPOIItem, currentMapPoint)
+                toggleMap = false
+            }
         }
 
         list.forEach {
@@ -252,6 +274,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         mapView.addPOIItems(kakaoMarkerList.toTypedArray())
 
     }
+
     private fun showKakaoDataList(name: String, mapPoint: MapPoint) {
         val mapPOIItem = MapPOIItem()
         mapPOIItem.apply {
@@ -262,6 +285,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
         kakaoMarkerList.add(mapPOIItem)
     }
+
     private fun showCurrentMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
 
 
@@ -276,15 +300,8 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             )
 
             if (address.isNotEmpty()) {
-                Log.d("내위치결과", address[0].getAddressLine(0))
+                mapPOIItem.itemName = "내위치"
             }
-
-            val splitAddress = address[0].getAddressLine(0).split(" ")
-
-            App.prefs.myEditText =
-                "${splitAddress[1].subSequence(0, 2)} ${splitAddress[2]} ${splitAddress[3]}"
-
-            mapPOIItem.itemName = "내위치"
         } else {
             mapPOIItem.itemName = selectAll
         }
@@ -341,6 +358,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
             LocationManager.NETWORK_PROVIDER
         )
     }
+
     private fun checkPermission() {
         TedPermission.with(context)
             .setPermissionListener(permissionListener)
@@ -350,6 +368,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
 //            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
+
     private val permissionListener: PermissionListener = object : PermissionListener {
 
         override fun onPermissionGranted() {
@@ -367,6 +386,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         }
 
     }
+
     private fun showDialogForLocationServiceSetting() {
         val alertDialog =
             AlertDialog.Builder(
@@ -427,6 +447,7 @@ class MapFragment : BaseFragment(R.layout.map), MapView.CurrentLocationEventList
         private const val GPS_ENABLE_REQUEST_CODE = 1
         var toggleMap = false
 
+        var dragMap = false
 
     }
 }

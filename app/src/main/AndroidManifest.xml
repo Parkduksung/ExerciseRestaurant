@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
 
     <application
@@ -19,14 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_map_api_key" />
 
-        <activity android:name="com.work.restaurant.view.loading.LoadingActivity">
+        <activity
+            android:name="com.work.restaurant.view.loading.LoadingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,20 +40,24 @@
 
         <activity
             android:name=".view.ExerciseRestaurantActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <!-- 로딩 보기 귀찮을때 사용해라.-->
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
 
         </activity>
 
 
-        <activity android:name="com.work.restaurant.view.home.address.HomeAddressActivity" />
+        <activity
+            android:name="com.work.restaurant.view.home.address.HomeAddressActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.work.restaurant.view.search.lookfor.SearchLookForActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan" />
     </application>
 

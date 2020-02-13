@@ -3,6 +3,7 @@ package com.work.restaurant.data.source.remote.kakao
 import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import retrofit2.Call
@@ -11,6 +12,35 @@ import retrofit2.Response
 
 class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoApi) :
     KakaoRemoteDataSource {
+
+    override fun getKakaoLocationToAddress(
+        currentX: Double,
+        currentY: Double,
+        callback: KakaoRemoteDataSourceCallback.KakaoLocationToAddress
+    ) {
+
+        kakaoApi.kakaoLocationToAddress(currentX, currentY)
+            .enqueue(object : Callback<KakaoLocationToAddressResponse> {
+                override fun onFailure(call: Call<KakaoLocationToAddressResponse>?, t: Throwable?) {
+                    callback.onFailure("${t?.message}")
+                }
+
+                override fun onResponse(
+                    call: Call<KakaoLocationToAddressResponse>?,
+                    response: Response<KakaoLocationToAddressResponse>?
+                ) {
+                    if (response != null) {
+                        if (response.isSuccessful) {
+                            val list = response.body().documents
+                            callback.onSuccess(list)
+                        } else {
+                            callback.onFailure(response.message())
+                        }
+                    }
+                }
+            })
+    }
+
     override fun getKakaoAddressLocation(
         addressName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoAddressCallback

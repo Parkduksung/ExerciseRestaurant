@@ -21,4 +21,12 @@ interface KakaoRepository {
         addressName: String,
         callback: KakaoRepositoryCallback.KakaoAddressCallback
     )
+
+    fun getKakaoLocationToAddress(
+        currentX: Double,
+        currentY: Double,
+        callback: KakaoRepositoryCallback.KakaoLocationToAddress
+    )
+
+
 }

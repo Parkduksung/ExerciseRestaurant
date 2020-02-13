@@ -66,5 +66,7 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.0.0'
     implementation files('libs\\libDaumMapAndroid.jar')
 
+    //prolificinteractive calendarview
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 
 }

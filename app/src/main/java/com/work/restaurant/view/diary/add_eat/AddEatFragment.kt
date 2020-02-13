@@ -18,8 +18,6 @@ import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
 import kotlinx.android.synthetic.main.diary_add_eat.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
@@ -132,19 +130,19 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
     private fun init() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
-
+//        val currentTime = Calendar.getInstance().time
+//
+//        val dateTextAll =
+//            SimpleDateFormat("a-h-mm", Locale.getDefault()).format(currentTime)
+//
+//        val dateArray = dateTextAll.split("-")
+//
 
 
         tv_add_eat_today.text =
-            getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
+            App.prefs.current_date
         btn_add_eat_time.text =
-            getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
+            App.prefs.current_time
         getRadioClickNum(add_eat_radio_group)
     }
 

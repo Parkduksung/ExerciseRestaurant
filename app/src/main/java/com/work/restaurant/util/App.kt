@@ -11,9 +11,10 @@ class App : Application() {
     }
 
     override fun onCreate() {
-        prefs = MySharedPreferences(applicationContext)
+
         super.onCreate()
         instance = this
+        prefs = MySharedPreferences(applicationContext)
 
     }
 

@@ -7,6 +7,7 @@ import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 
 class SearchRankPresenter(
@@ -15,6 +16,28 @@ class SearchRankPresenter(
     private val bookmarkRepository: BookmarkRepository
 ) :
     SearchRankContract.Presenter {
+    override fun getCurrentAddress(currentX: Double, currentY: Double) {
+        kakaoRepository.getKakaoLocationToAddress(
+            currentX,
+            currentY,
+            object : KakaoRepositoryCallback.KakaoLocationToAddress {
+                override fun onSuccess(item: List<KakaoLocationToAddressDocument>) {
+                    if (item.isNotEmpty()) {
+                        val toKakaoLocationToAddressModel =
+                            item.map { it.toKakaoLocationToAddressModel() }
+
+                        searchRankView.showCurrentLocation(toKakaoLocationToAddressModel[0].addressName)
+                    }
+                }
+
+                override fun onFailure(message: String) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
+
+
+    }
+
     override fun getCurrentLocation(addressName: String) {
 
         kakaoRepository.getKakaoAddressLocation(addressName,

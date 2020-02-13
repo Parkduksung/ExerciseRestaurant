@@ -2,9 +2,11 @@ package com.work.restaurant.view.calendar
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CalendarView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
@@ -15,6 +17,8 @@ import com.work.restaurant.view.calendar.presenter.CalendarContract
 import com.work.restaurant.view.calendar.presenter.CalendarPresenter
 import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarFragment : BaseFragment(R.layout.calendar_main),
     CalendarContract.View {
@@ -69,24 +73,70 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         }
 
 
+        initCalendar()
+
         clickDate(calender_view)
+
+        monthChange(calender_view)
+
     }
 
-    private fun clickDate(calendarView: CalendarView) {
+    private fun initCalendar() {
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        val lastDayOfMonth = Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH)
+
+        val getYearAndMonth =
+            SimpleDateFormat("yyyy-M", Locale.getDefault()).format(Calendar.getInstance().time)
+
+        val dateArray = getYearAndMonth.split("-")
+
+        CalendarDay.from(
+            dateArray[0].toInt(),
+            dateArray[1].toInt(),
+            lastDayOfMonth
+        )
+
+        calender_view.state().edit()
+            .isCacheCalendarPositionEnabled(true)
+            .setMaximumDate(
+                CalendarDay.from(
+                    dateArray[0].toInt(),
+                    (dateArray[1].toInt() - 1),
+                    lastDayOfMonth
+                )
+            )
+            .setCalendarDisplayMode(CalendarMode.MONTHS)
+            .commit()
+
+    }
+
+
+    private fun clickDate(calendarView: MaterialCalendarView) {
+
+        calendarView.setOnDateChangedListener { widget, date, selected ->
 
             val msg = getString(
                 R.string.current_date,
-                year.toString(),
-                (month + 1).toString(),
-                dayOfMonth.toString()
+                date.year.toString(),
+                (date.month + 1).toString(),
+                date.day.toString()
             )
             Toast.makeText(this.context, msg, Toast.LENGTH_SHORT).show()
 
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
+
         }
+
+
+    }
+
+    private fun monthChange(calendarView: MaterialCalendarView) {
+
+        calendarView.setOnMonthChangedListener { widget, date ->
+
+        }
+
     }
 
     private fun showDayOfData() {
@@ -101,7 +151,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             recyclerview_calendar.run {
                 diaryAdapter.clearListData()
                 diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
-
             }
         }
     }

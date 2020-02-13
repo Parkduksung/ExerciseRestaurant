@@ -90,6 +90,8 @@
     <string name="time_picker_main">시간 변경</string>
 
 
+    <string name="diary_main_date1">%s %s요일</string>
+
     <string name="diary_main_date">%s년 %s월 %s일 %s요일</string>
     <string name="current_date">%s년 %s월 %s일</string>
     <string name="current_time">%s %s시 %s분</string>

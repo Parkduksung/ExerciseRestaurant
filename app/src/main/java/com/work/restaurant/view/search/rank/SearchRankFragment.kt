@@ -27,10 +27,20 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     SearchRankContract.View,
     AdapterDataListener.GetKakaoData {
 
-
-
     private lateinit var presenter: SearchRankPresenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
+
+
+    override fun showCurrentLocation(addressName: String) {
+
+        val splitAddressName = addressName.split(" ")
+
+        val convertAddressName =
+            "${compressCity(splitAddressName[0])} ${splitAddressName[1]} ${splitAddressName[2]}"
+
+        tv_search_locate.text = convertAddressName
+        presenter.getCurrentLocation(addressName)
+    }
 
 
     override fun showBookmarkResult(msg: Boolean) {
@@ -39,12 +49,72 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
             }
             RESULT_FAILURE -> {
-
                 Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
-
             }
         }
     }
+
+
+    private fun compressCity(city: String): String {
+
+        when (city) {
+            "서울특별시" -> {
+                return "서울"
+            }
+            "대구광역시" -> {
+                return "대구"
+            }
+            "대전광역시" -> {
+                return "대전"
+            }
+            "부산광역시" -> {
+                return "부산"
+            }
+            "울산광역시" -> {
+                return "울산"
+            }
+            "인천광역시" -> {
+                return "인천"
+            }
+            "광주광역시" -> {
+                return "광주"
+            }
+            "강원도" -> {
+                return "강원"
+            }
+            "경기도" -> {
+                return "경기"
+            }
+            "경상남도" -> {
+                return "경남"
+            }
+            "경상북도" -> {
+                return "경북"
+            }
+            "전라남도" -> {
+                return "전남"
+            }
+            "전라북도" -> {
+                return "전북"
+            }
+            "충청남도" -> {
+                return "충남"
+            }
+            "충청북도" -> {
+                return "충북"
+            }
+
+            "제주특별자치도" -> {
+                return "제주"
+            }
+            "세종특별자치시" -> {
+                return "세종"
+            }
+
+            else -> return ""
+        }
+    }
+
 
     override fun onClick(v: View?) {
 
@@ -92,9 +162,13 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         iv_search_settings.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
-        tv_search_locate.text = App.prefs.myEditText
+        if (selectAll == "") {
 
-        presenter.getCurrentLocation(tv_search_locate.text.toString())
+            presenter.getCurrentAddress(
+                App.prefs.current_location_long.toDouble(),
+                App.prefs.current_location_lat.toDouble()
+            )
+        }
 
     }
 
@@ -123,7 +197,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         when (select) {
             SELECT_URL -> {
                 val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                Log.d("가져왔니", data.placeUrl)
                 intent.putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
                 intent.putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
                 startActivity(intent)

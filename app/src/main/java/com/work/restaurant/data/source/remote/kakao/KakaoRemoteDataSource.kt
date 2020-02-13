@@ -24,6 +24,11 @@ interface KakaoRemoteDataSource {
 
     )
 
+    fun getKakaoLocationToAddress(
+        currentX: Double,
+        currentY: Double,
+        callback: KakaoRemoteDataSourceCallback.KakaoLocationToAddress
+    )
 
 
 }
