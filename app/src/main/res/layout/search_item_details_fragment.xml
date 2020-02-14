@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,12 +8,21 @@
     android:weightSum="20"
     tools:ignore="NestedWeights,SpUsage,ContentDescription,DisableBaselineAlignment">
 
+
+    <ProgressBar
+        android:id="@+id/pb_item_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorBlue"
+        android:padding="150dp"
+        android:visibility="visible" />
+
     <WebView
         android:id="@+id/wb_search_item_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 
-
-</LinearLayout>
+</RelativeLayout>
 

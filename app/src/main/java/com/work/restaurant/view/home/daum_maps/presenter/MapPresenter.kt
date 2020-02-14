@@ -30,6 +30,7 @@ class MapPresenter(
         kakaoRepository.getKakaoResult(
             currentX,
             currentY,
+            "accuracy",
             object : KakaoRepositoryCallback {
                 override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -31,6 +30,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                 this
             )
 
+        pb_item_details.bringToFront()
+
         searchResult()
     }
 
@@ -41,6 +42,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         val getData = bundle?.getString(DATA).toString()
 
         showUrl(wb_search_item_detail, getData)
+
+
     }
 
 
@@ -51,39 +54,41 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
         webview.webViewClient = object : WebViewClient() {
 
+
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                pb_item_details.visibility = View.VISIBLE
 
                 if (url != null) {
                     if (url.startsWith("tel:")) {
                         val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
                         startActivity(intent)
+                        pb_item_details.visibility = View.GONE
                         return true
                     }
                 }
+
                 return false
+
             }
 
+
+            //페이지가 켜졌을때
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+
+                pb_item_details.visibility = View.GONE
                 toggleWebPage = webview.canGoBack()
             }
         }
 
-        webview.setOnKeyListener { _, keyCode, _ ->
 
-            if ((keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
-                webview.goBack()
-                true
-            }
-            false
-        }
     }
 
 
     override fun onDetach() {
         Log.d(TAG, "onDetach")
         super.onDetach()
-        toggleWebPage = false
     }
 
 

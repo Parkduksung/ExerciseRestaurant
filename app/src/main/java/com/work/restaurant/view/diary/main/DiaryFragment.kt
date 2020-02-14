@@ -201,7 +201,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun load() {
 
-
         val dayOfTheWeek =
             SimpleDateFormat("EE", Locale.getDefault())
                 .format(Calendar.getInstance().time)

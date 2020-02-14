@@ -4,6 +4,7 @@ interface KakaoRepository {
     fun getKakaoResult(
         currentX: Double,
         currentY: Double,
+        sort: String,
         callback: KakaoRepositoryCallback
     )
 

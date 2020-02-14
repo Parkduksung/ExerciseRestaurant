@@ -24,7 +24,7 @@ class EatDecorator(
         view?.addSpan(
             CustomEatSpan(
                 10f,
-                ContextCompat.getColor(App.instance.context(), R.color.colorPurple)
+                ContextCompat.getColor(App.instance.context(), R.color.colorLowPurple)
             )
         )
 

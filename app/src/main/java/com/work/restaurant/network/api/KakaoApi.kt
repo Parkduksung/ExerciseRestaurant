@@ -17,7 +17,7 @@ interface KakaoApi {
         @Query("x") x: Double,
         @Query("y") y: Double,
         @Query("radius") radius: Int = 20000,
-        @Query("sort") sort: String = "accuracy"
+        @Query("sort") sort: String
     ): Call<KakaoSearchResponse>
 
     @Headers(HEADERS)

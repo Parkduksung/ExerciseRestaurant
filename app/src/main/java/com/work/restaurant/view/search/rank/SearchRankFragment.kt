@@ -4,8 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -75,6 +80,46 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 startActivity(homeAddressActivity)
             }
 
+            R.id.iv_search_filter -> {
+                val menuBuilder = MenuBuilder(this.context)
+                val inflater = MenuInflater(this.context)
+                inflater.inflate(R.menu.exercise_list_sort_menu, menuBuilder)
+
+                val optionMenu =
+                    MenuPopupHelper(this.context!!, menuBuilder, iv_search_filter)
+                optionMenu.setForceShowIcon(true)
+                optionMenu.gravity = Gravity.CENTER
+                menuBuilder.setCallback(object : MenuBuilder.Callback {
+                    override fun onMenuModeChange(menu: MenuBuilder?) {
+                    }
+
+                    override fun onMenuItemSelected(
+                        menu: MenuBuilder?,
+                        item: MenuItem?
+                    ): Boolean {
+                        when (item?.itemId) {
+                            R.id.exercise_list_accuracy_sort -> {
+
+                                presenter.getSortKakaoList(
+                                    tv_search_locate.text.toString(),
+                                    SORT_ACCURANCY
+                                )
+                            }
+                            R.id.exercise_list_distance_sort -> {
+                                presenter.getSortKakaoList(
+                                    tv_search_locate.text.toString(),
+                                    SORT_DISTANCE
+                                )
+                            }
+                        }
+                        return true
+                    }
+                })
+
+                optionMenu.show()
+
+            }
+
         }
     }
 
@@ -108,6 +153,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         )
 
         iv_search_settings.setOnClickListener(this)
+        iv_search_filter.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
         if (selectAll == "") {
@@ -116,6 +162,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 App.prefs.current_location_long.toDouble(),
                 App.prefs.current_location_lat.toDouble()
             )
+
         }
 
     }
@@ -167,6 +214,10 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         private const val RESULT_SUCCESS = true
         private const val RESULT_FAILURE = false
+
+        private const val SORT_DISTANCE = "distance"
+
+        private const val SORT_ACCURANCY = "accuracy"
 
         const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
         const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"

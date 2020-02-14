@@ -16,6 +16,26 @@ class SearchRankPresenter(
     private val bookmarkRepository: BookmarkRepository
 ) :
     SearchRankContract.Presenter {
+    override fun getSortKakaoList(addressName: String, sort: String) {
+        kakaoRepository.getKakaoAddressLocation(addressName,
+            object : KakaoRepositoryCallback.KakaoAddressCallback {
+
+                override fun onSuccess(item: List<KakaoAddressDocument>) {
+
+                    if (item.isNotEmpty()) {
+                        val currentX = (item[0].x).toDouble()
+                        val currentY = (item[0].y).toDouble()
+
+                        getKakaoList(currentX, currentY, sort)
+                    }
+                }
+
+                override fun onFailure(message: String) {
+                    Log.d("error", message)
+                }
+            })
+    }
+
     override fun getCurrentAddress(currentX: Double, currentY: Double) {
         kakaoRepository.getKakaoLocationToAddress(
             currentX,
@@ -48,7 +68,7 @@ class SearchRankPresenter(
                     if (item.isNotEmpty()) {
                         val currentX = (item[0].x).toDouble()
                         val currentY = (item[0].y).toDouble()
-                        getKakaoList(currentX, currentY)
+                        getKakaoList(currentX, currentY, "accuracy")
                     }
                 }
 
@@ -76,11 +96,12 @@ class SearchRankPresenter(
     }
 
 
-    override fun getKakaoList(currentX: Double, currentY: Double) {
+    override fun getKakaoList(currentX: Double, currentY: Double, sort: String) {
 
         kakaoRepository.getKakaoResult(
             currentX,
             currentY,
+            sort,
             object : KakaoRepositoryCallback {
                 override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
                     val toKakaoSearchModelList = kakaoList.map { it.toKakaoModel() }

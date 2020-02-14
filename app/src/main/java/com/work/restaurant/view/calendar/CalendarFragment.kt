@@ -13,6 +13,7 @@ import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.util.App
+import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.calendar.decorator.EatDecorator
 import com.work.restaurant.view.calendar.decorator.ExerciseDecorator
@@ -88,6 +89,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 toHashSetCalendarDayEat.add(toCalendarDay)
             }
         }
+
+
+        App
 
         dotExercise = true
         showDotAndWeekend()
@@ -179,29 +183,45 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private fun showDotAndWeekend() {
 
         if (dotEat && dotExercise) {
-
-            val toHashSetCalendarDayCompound = HashSet<CalendarDay>()
-
-            toHashSetCalendarDayCompound.addAll(toHashSetCalendarDayEat)
-            toHashSetCalendarDayCompound.addAll(toHashSetCalendarDayExercise)
-
             calender_view.removeDecorators()
 
-            calender_view.addDecorator(
-                EatDecorator(
-                    toHashSetCalendarDayEat
-                )
-            )
-            calender_view.addDecorator(
-                ExerciseDecorator(
-                    toHashSetCalendarDayExercise
-                )
-            )
-            calender_view.addDecorator(SaturdayDecorator())
-            calender_view.addDecorator(SundayDecorator())
+            AppExecutors().diskIO.execute {
+
+                val eatDecorator = EatDecorator(toHashSetCalendarDayEat)
+                val exerciseDecorator = ExerciseDecorator(toHashSetCalendarDayExercise)
+                val saturdayDecorator = SaturdayDecorator()
+                val sundayDecorator = SundayDecorator()
+
+
+                AppExecutors().mainThread.execute {
+                    calender_view.addDecorator(eatDecorator)
+                    calender_view.addDecorator(exerciseDecorator)
+                    calender_view.addDecorator(saturdayDecorator)
+                    calender_view.addDecorator(sundayDecorator)
+                }
+            }
 
             dotExercise = false
             dotEat = false
+
+
+//            calender_view.removeDecorators()
+//
+//            calender_view.addDecorator(
+//                EatDecorator(
+//                    toHashSetCalendarDayEat
+//                )
+//            )
+//            calender_view.addDecorator(
+//                ExerciseDecorator(
+//                    toHashSetCalendarDayExercise
+//                )
+//            )
+//            calender_view.addDecorator(SaturdayDecorator())
+//            calender_view.addDecorator(SundayDecorator())
+
+//            dotExercise = false
+//            dotEat = false
         }
     }
 
@@ -216,10 +236,13 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 (date.month + 1).toString(),
                 date.day.toString()
             )
-            Toast.makeText(this.context, msg, Toast.LENGTH_SHORT).show()
 
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
+
+
+
+
 
         }
 
@@ -258,6 +281,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     }
 
     companion object {
+
         private const val TAG = "CalendarFragment"
 
         var workEat = false

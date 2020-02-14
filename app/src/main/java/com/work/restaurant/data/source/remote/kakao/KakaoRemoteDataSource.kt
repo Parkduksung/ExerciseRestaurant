@@ -5,6 +5,7 @@ interface KakaoRemoteDataSource {
     fun getData(
         currentX: Double,
         currentY: Double,
+        sort: String,
         callback: KakaoRemoteDataSourceCallback
     )
 

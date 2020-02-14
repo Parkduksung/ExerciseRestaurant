@@ -61,7 +61,6 @@
                 app:srcCompat="@drawable/more_vert"
                 tools:ignore="NestedWeights,RtlHardcoded" />
 
-
         </LinearLayout>
 
     </LinearLayout>

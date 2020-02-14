@@ -89,12 +89,14 @@ class KakaoRepositoryImpl private constructor(
     override fun getKakaoResult(
         currentX: Double,
         currentY: Double,
+        sort: String,
         callback: KakaoRepositoryCallback
     ) {
         if (App.instance.context().isConnectedToNetwork()) {
             kakaoRemoteDataSource.getData(
                 currentX,
                 currentY,
+                sort,
                 object : KakaoRemoteDataSourceCallback {
                     override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
                         callback.onSuccess(kakaoList)

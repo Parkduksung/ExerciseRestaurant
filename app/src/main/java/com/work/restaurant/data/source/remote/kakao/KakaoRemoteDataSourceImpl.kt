@@ -132,9 +132,10 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
     override fun getData(
         currentX: Double,
         currentY: Double,
+        sort: String,
         callback: KakaoRemoteDataSourceCallback
     ) {
-        kakaoApi.keywordSearch("헬스장", currentX, currentY).enqueue(object :
+        kakaoApi.keywordSearch("헬스장", currentX, currentY, 2000, sort).enqueue(object :
             Callback<KakaoSearchResponse> {
             override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
                 callback.onFailure("${t?.message}")

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
@@ -36,14 +37,27 @@ class SearchLookForActivity : AppCompatActivity(),
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
+    private var mBackWait: Long = 0
 
     override fun onBackPressed() {
 
         if (toggleWebPage) {
             wb_search_item_detail.goBack()
         } else {
-            super.onBackPressed()
+
+            if (toggleSearch) {
+                super.onBackPressed()
+            } else {
+                if (System.currentTimeMillis() - mBackWait >= 2000) {
+                    mBackWait = System.currentTimeMillis()
+                    Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
+                } else {
+                    this@SearchLookForActivity.finish()
+                }
+            }
         }
+
+
     }
 
     override fun showBookmarkResult(msg: Int) {
@@ -208,17 +222,29 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
 
-        recyclerview_look.run {
+        if (searchKakaoList.isNotEmpty()) {
+            recyclerview_look.run {
 
-            this.adapter = lookForAdapter
+                this.adapter = lookForAdapter
 
-            lookForAdapter.clearListData()
+                lookForAdapter.clearListData()
 
-            lookForAdapter.addAllData(searchKakaoList)
+                lookForAdapter.addAllData(searchKakaoList)
 
-            layoutManager = LinearLayoutManager(this.context)
+                layoutManager = LinearLayoutManager(this.context)
 
+            }
+        } else {
+            Toast.makeText(
+                App.instance.context(),
+                "검색한 헬스장이 없습니다. 다시 한번 입력해주세요",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+
+        toggleSearch = true
+        supportFragmentManager.popBackStack()
+
     }
 
     override fun showSearchNoFind() {
@@ -238,6 +264,10 @@ class SearchLookForActivity : AppCompatActivity(),
         alertDialog.show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        toggleSearch = false
+    }
 
     companion object {
 
@@ -247,6 +277,8 @@ class SearchLookForActivity : AppCompatActivity(),
         private const val DELETE_BOOKMARK = 2
 
         private const val RESULT_FAILURE = 3
+
+        private var toggleSearch = false
 
         var toggleWebPage = false
 
