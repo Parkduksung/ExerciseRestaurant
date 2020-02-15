@@ -12,12 +12,15 @@ import com.work.restaurant.data.repository.notification.NotificationRepository
 import com.work.restaurant.data.repository.notification.NotificationRepositoryImpl
 import com.work.restaurant.data.repository.question.QuestionRepository
 import com.work.restaurant.data.repository.question.QuestionRepositoryImpl
+import com.work.restaurant.data.repository.user.UserRepository
+import com.work.restaurant.data.repository.user.UserRepositoryImpl
 import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSourceImpl
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceImpl
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceImpl
 import com.work.restaurant.data.source.remote.notification.NotificationRemoteDataSourceImpl
 import com.work.restaurant.data.source.remote.question.QuestionRemoteDataSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
 import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.room.database.BookmarkDatabase
 import com.work.restaurant.network.room.database.EatDatabase
@@ -78,6 +81,15 @@ object Injection {
     fun provideQuestionRepository(): QuestionRepository =
         QuestionRepositoryImpl.getInstance(
             QuestionRemoteDataSourceImpl.getInstance(
+                RetrofitInstance.getInstance(
+                    WEB_URL
+                )
+            )
+        )
+
+    fun provideUserRepository(): UserRepository =
+        UserRepositoryImpl.getInstance(
+            UserRemoteDataSourceImpl.getInstance(
                 RetrofitInstance.getInstance(
                     WEB_URL
                 )

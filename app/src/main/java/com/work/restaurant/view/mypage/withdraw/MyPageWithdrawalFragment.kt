@@ -10,10 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
@@ -62,13 +60,8 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = MyPageWithdrawalPresenter(
-            this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        MyPageFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideUserRepository()
         )
         btn_withdraw_cancel.setOnClickListener(this)
         btn_withdraw_ok.setOnClickListener(this)

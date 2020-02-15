@@ -14,8 +14,9 @@ import com.work.restaurant.util.App
 abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPressedListener {
 
     override fun onBackPressed() {
-
+//        fragmentManager?.popBackStack()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

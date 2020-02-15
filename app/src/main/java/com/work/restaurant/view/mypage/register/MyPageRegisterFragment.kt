@@ -9,12 +9,9 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
@@ -83,13 +80,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageRegisterPresenter(
-            this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        MyPageFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideUserRepository()
         )
         ib_register_back.setOnClickListener(this)
         btn_register.setOnClickListener(this)
@@ -202,7 +194,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
     override fun showRegisterOk(nickName: String) {
 
-        this@MyPageRegisterFragment.requireFragmentManager()
+        requireFragmentManager()
             .beginTransaction()
             .replace(
                 R.id.mypage_main_container,
@@ -219,8 +211,9 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                 userId = et_register_email.text.toString()
                 userNickname = nickName
                 loginState = true
-
             }
+        activity?.onBackPressed()
+        activity?.onBackPressed()
     }
 
     override fun showRegisterNo() {

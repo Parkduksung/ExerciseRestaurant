@@ -43,7 +43,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
         showUrl(wb_search_item_detail, getData)
 
-
     }
 
 
@@ -57,7 +56,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
-                pb_item_details.visibility = View.VISIBLE
+                Log.d("뒤로가기갑지가하면왜죽지?", "ㅁㄴㅇㄹ")
+//                pb_item_details.visibility = View.VISIBLE
 
                 if (url != null) {
                     if (url.startsWith("tel:")) {
@@ -76,9 +76,12 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
             //페이지가 켜졌을때
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                Log.d("뒤로가기갑지가하면왜죽지?", "ㅁㄴㅇㄹ")
 
-                pb_item_details.visibility = View.GONE
+//                pb_item_details.visibility = View.GONE
                 toggleWebPage = webview.canGoBack()
+
+
             }
         }
 

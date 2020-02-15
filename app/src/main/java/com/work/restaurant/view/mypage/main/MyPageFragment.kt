@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -21,23 +22,80 @@ import kotlinx.android.synthetic.main.mypage_fragment.*
 
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
+//    override fun onBackPressed() {
+//        Log.d("뒤로가기눌림", requireFragmentManager().backStackEntryCount.toString())
+//
+//        if (requireFragmentManager().backStackEntryCount == 0) {
+//            activity?.finish()
+//        } else {
+//            requireFragmentManager().popBackStack()
+//        }
+//
+//    }
+//
 
 
     private lateinit var presenter: MyPageContract.Presenter
 
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        fragmentManager?.popBackStack()
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
+
             R.id.iv_login -> {
-                presenter.logIn()
+                val myPageLoginFragment = MyPageLoginFragment()
+                myPageLoginFragment.setTargetFragment(
+                    this,
+                    LOGIN
+                )
+                requireFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                        R.id.mypage_main_container,
+                        myPageLoginFragment
+                    )
+                    .addToBackStack(null)
+                    .commit()
             }
 
             R.id.ll_logout -> {
-                presenter.logOut()
+                val myPageLogoutFragment = MyPageLogoutFragment()
+
+                myPageLogoutFragment.setTargetFragment(
+                    this,
+                    LOGOUT
+                )
+                requireFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                        R.id.main_container,
+                        myPageLogoutFragment
+                    )
+                    .addToBackStack(null)
+                    .commit().apply {
+                        FirebaseAuth.getInstance().signOut()
+                    }
             }
 
             R.id.tv_page_withdrawal -> {
-                presenter.withDraw()
+                val myPageWithdrawalFragment =
+                    MyPageWithdrawalFragment()
+                myPageWithdrawalFragment.setTargetFragment(
+                    this,
+                    WITHDRAW
+                )
+
+                requireFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                        R.id.main_container,
+                        myPageWithdrawalFragment
+                    )
+                    .commit()
             }
 
             R.id.ll_identity -> {
@@ -97,7 +155,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         ll_question.setOnClickListener(this)
 
         loginState()
-
     }
 
 
@@ -111,6 +168,9 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             tv_login_id.text = "$userNickname 님\n 환영합니다."
         } else {
             login_ok_ll.visibility = View.INVISIBLE
+            tv_login_id.text = "로그인"
+            iv_login.setImageResource(R.drawable.ic_login)
+            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40F)
             iv_login.isClickable = true
         }
     }
@@ -121,35 +181,38 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         if (requestCode == LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id")
-                val loginNickname = data?.extras?.getString("nickname")
+                val loginEmail = data?.extras?.getString("id").orEmpty()
+                val loginNickname = data?.extras?.getString("nickname").orEmpty()
 
-                userId = loginEmail.toString()
-                userNickname = loginNickname.toString()
+                userId = loginEmail
+                userNickname = loginNickname
                 loginState = true
+
+                loginState()
             }
         }
 
         if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id")
-                val loginNickname = data?.extras?.getString("nickname")
+                Log.d("하하하", "1 ${fragmentManager?.backStackEntryCount}")
 
+                val loginEmail = data?.extras?.getString("id").orEmpty()
+                val loginNickname = data?.extras?.getString("nickname").orEmpty()
 
-                userId = loginEmail.toString()
-                userNickname = loginNickname.toString()
+                userId = loginEmail
+                userNickname = loginNickname
                 loginState = false
+                loginState()
             }
         }
 
         if (requestCode == WITHDRAW) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id")
-                val loginNickname = data?.extras?.getString("nickname")
+                val loginEmail = data?.extras?.getString("id").orEmpty()
+                val loginNickname = data?.extras?.getString("nickname").orEmpty()
 
-
-                userId = loginEmail.toString()
-                userNickname = loginNickname.toString()
+                userId = loginEmail
+                userNickname = loginNickname
                 loginState = false
             }
 
@@ -157,85 +220,14 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         if (requestCode == REGISTER) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id")
-                val loginNickname = data?.extras?.getString("nickname")
+                val loginEmail = data?.extras?.getString("id").orEmpty()
+                val loginNickname = data?.extras?.getString("nickname").orEmpty()
 
-                userId = loginEmail.toString()
-                userNickname = loginNickname.toString()
+                userId = loginEmail
+                userNickname = loginNickname
                 loginState = true
             }
-
         }
-
-
-    }
-
-    override fun showLogIn() {
-
-        val myPageLoginFragment = MyPageLoginFragment()
-        myPageLoginFragment.setTargetFragment(
-            this,
-            LOGIN
-        )
-
-        requireFragmentManager()
-            .beginTransaction()
-            .replace(
-                R.id.mypage_main_container,
-                myPageLoginFragment
-            )
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun showLogOut() {
-
-
-        val myPageLogoutFragment = MyPageLogoutFragment()
-
-        myPageLogoutFragment.setTargetFragment(
-            this,
-            LOGOUT
-        )
-        requireFragmentManager()
-            .beginTransaction()
-            .replace(
-                R.id.main_container,
-                myPageLogoutFragment
-            )
-            .addToBackStack(null)
-            .commit().apply {
-                FirebaseAuth.getInstance().signOut()
-            }
-    }
-
-    override fun showWithDraw() {
-        val myPageWithdrawalFragment =
-            MyPageWithdrawalFragment()
-        myPageWithdrawalFragment.setTargetFragment(
-            this,
-            WITHDRAW
-        )
-
-        requireFragmentManager()
-            .beginTransaction()
-            .replace(
-                R.id.main_container,
-                myPageWithdrawalFragment
-            )
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun showLateView() {
-        this.requireFragmentManager()
-            .beginTransaction()
-            .replace(
-                R.id.main_container,
-                MyPageWithdrawalFragment()
-            )
-            .addToBackStack(null)
-            .commit()
     }
 
 
@@ -243,8 +235,9 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         var loginState = false
         var userId = ""
         var userNickname = ""
+
         private const val TAG = "MyPageFragment"
-        const val URL = "https://duksung12.cafe24.com"
+
         private const val LOGIN = 1
         private const val LOGOUT = 2
         private const val WITHDRAW = 3

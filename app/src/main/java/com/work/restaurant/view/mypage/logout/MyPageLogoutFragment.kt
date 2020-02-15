@@ -13,7 +13,6 @@ import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 
 class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
@@ -25,8 +24,9 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_logout_cancel -> {
-                presenter.logoutCancel()
+                activity?.onBackPressed()
             }
+
 
             R.id.btn_logout_ok -> {
                 presenter.logoutOk()
@@ -60,31 +60,43 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     }
 
-    override fun showLogoutCancel() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this@MyPageLogoutFragment
-        ).commit()
-    }
 
     override fun showLogoutOk() {
 
-        this.requireFragmentManager().beginTransaction().remove(
-            this@MyPageLogoutFragment
-        ).replace(
-            R.id.mypage_main_container,
-            MyPageFragment()
-        ).commit().also {
-            val data = Intent()
-            data.putExtra("id", "")
-            data.putExtra("nickname", "")
-            targetFragment?.onActivityResult(
-                targetRequestCode,
-                Activity.RESULT_OK,
-                data
-            )
-        }
+        val data = Intent()
+        data.putExtra("id", "")
+        data.putExtra("nickname", "")
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            data
+        )
+
+        activity?.onBackPressed()
+
+//        fragmentManager?.beginTransaction()
+//            ?.replace(
+//                R.id.main_container,
+//                MyPageFragment()
+//            )
+//            ?.commit()
 
 
+//        val data = Intent()
+//        data.putExtra("id", "")
+//        data.putExtra("nickname", "")
+//        targetFragment?.onActivityResult(
+//            targetRequestCode,
+//            Activity.RESULT_OK,
+//            data
+//        )
+//
+//        activity?.onBackPressed()
+
+
+//        fragmentManager?.beginTransaction()
+//            ?.remove(this@MyPageLogoutFragment)
+//            ?.commit()
     }
 
 

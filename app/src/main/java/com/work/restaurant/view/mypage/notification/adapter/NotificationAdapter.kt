@@ -57,7 +57,7 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
             } else {
                 adapterListener = object : AdapterDataListener.GetNotificationList {
                     override fun getData(data: NotificationModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                 }

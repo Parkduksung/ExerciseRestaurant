@@ -37,23 +37,15 @@ class SearchLookForActivity : AppCompatActivity(),
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
-    private var mBackWait: Long = 0
-
     override fun onBackPressed() {
 
         if (toggleWebPage) {
             wb_search_item_detail.goBack()
         } else {
-
             if (toggleSearch) {
                 super.onBackPressed()
             } else {
-                if (System.currentTimeMillis() - mBackWait >= 2000) {
-                    mBackWait = System.currentTimeMillis()
-                    Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
-                } else {
-                    this@SearchLookForActivity.finish()
-                }
+                this@SearchLookForActivity.finish()
             }
         }
 
@@ -192,7 +184,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
     private fun searchItem(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard(editText)
                 presenter.searchLook(editText.text.toString())
                 true

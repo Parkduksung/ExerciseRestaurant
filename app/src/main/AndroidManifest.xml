@@ -30,7 +30,8 @@
 
         <activity
             android:name="com.work.restaurant.view.loading.LoadingActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/LoadingStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +52,6 @@
             <!--            </intent-filter>-->
 
         </activity>
-
 
         <activity
             android:name="com.work.restaurant.view.home.address.HomeAddressActivity"

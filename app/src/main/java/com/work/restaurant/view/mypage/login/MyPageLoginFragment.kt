@@ -8,16 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginContract
 import com.work.restaurant.view.mypage.login.presenter.MyPageLoginPresenter
-import com.work.restaurant.view.mypage.main.MyPageFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.URL
 import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import kotlinx.android.synthetic.main.mypage_login_fragment.*
 
@@ -50,9 +46,8 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
         super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageLoginPresenter(
-            this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceImpl.getInstance(RetrofitInstance.getInstance(URL))
-            )
+            this,
+            Injection.provideUserRepository()
         )
         btn_login.setOnClickListener(this)
         ib_login_back.setOnClickListener(this)
@@ -101,41 +96,27 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
+                    val data = Intent()
+                    data.putExtra("id", et_email.text.toString())
+                    data.putExtra("nickname", nickName)
+                    targetFragment?.onActivityResult(
+                        targetRequestCode,
+                        Activity.RESULT_OK,
+                        data
+                    )
+                    activity?.onBackPressed()
 
-                    this@MyPageLoginFragment.requireFragmentManager()
-                        .beginTransaction()
-                        .replace(
-                            R.id.mypage_main_container,
-                            MyPageFragment()
-                        ).addToBackStack(null).commit().also {
-                            val data = Intent()
-                            data.putExtra("id", et_email.text.toString())
-                            data.putExtra("nickname", nickName)
-                            targetFragment?.onActivityResult(
-                                targetRequestCode,
-                                Activity.RESULT_OK,
-                                data
-                            )
-                        }
+//                    fragmentManager?.beginTransaction()
+//                        ?.remove(
+//                            MyPageFragment()
+//                        )?.commit()
 
 
                     et_email.text.clear()
                     et_pass.text.clear()
 
-//                    requireFragmentManager()
-//                        .beginTransaction()
-//                        .remove(
-//                            this@MyPageLoginFragment
-//                        ).addToBackStack(null).commit().also {
-//                            val data = Intent()
-//                            data.putExtra("id", et_email.text.toString())
-//                            data.putExtra("nickname", nickName)
-//                            targetFragment?.onActivityResult(
-//                                targetRequestCode,
-//                                Activity.RESULT_OK,
-//                                data
-//                            )
-//                        }
+//                    activity?.onBackPressed()
+
 
                 }
             })

@@ -27,12 +27,34 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
     private val locationManager: LocationManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
 
+    private val permissionListener: PermissionListener by lazy {
+        object : PermissionListener {
+
+            override fun onPermissionGranted() {
+
+                saveCurrentLocation()
+            }
+
+            override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+                Toast.makeText(
+                    App.instance.context(),
+                    "권한이 거부되었습니다.\n\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                finish()
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading_fragment)
         presenter = LoadingPresenter(this)
         presenter.randomText(resources.getStringArray(R.array.load_string))
 
+//        this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorPurple)
         checkPermission()
 
     }
@@ -79,23 +101,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
             .check()
     }
 
-    private val permissionListener: PermissionListener = object : PermissionListener {
-
-        override fun onPermissionGranted() {
-
-            saveCurrentLocation()
-        }
-
-        override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-            Toast.makeText(
-                App.instance.context(),
-                "권한이 거부되었습니다.\n\n$deniedPermissions",
-                Toast.LENGTH_SHORT
-            )
-                .show()
-            finish()
-        }
-    }
 
     private fun start() {
 

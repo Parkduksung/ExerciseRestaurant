@@ -58,6 +58,7 @@
         android:layout_weight="12">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/recyclerview_exercise_set"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

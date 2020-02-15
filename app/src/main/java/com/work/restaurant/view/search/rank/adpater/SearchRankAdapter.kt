@@ -101,7 +101,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
             } else {
                 adapterListener = object : AdapterDataListener.GetKakaoData {
                     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                 }

@@ -50,6 +50,25 @@ class MapFragment : BaseFragment(R.layout.map),
 
     private lateinit var markerInterface: MapInterface.SelectMarkerListener
 
+    private val permissionListener: PermissionListener by lazy {
+        object : PermissionListener {
+
+            override fun onPermissionGranted() {
+                if (checkLocationServicesStatus()) {
+                    loadMap()
+                } else {
+                    showDialogForLocationServiceSetting()
+                    Toast.makeText(context, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
+                Toast.makeText(context, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
 
@@ -221,6 +240,8 @@ class MapFragment : BaseFragment(R.layout.map),
     //Marker 표현하는거 관련
     override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoSearchModel>) {
         //currentX  =  longitude  , currentY  =  latitude
+
+        mapView.removePOIItems(kakaoMarkerList.toTypedArray())
         makeKakaoDataListMarker(list)
     }
 
@@ -317,23 +338,6 @@ class MapFragment : BaseFragment(R.layout.map),
             .check()
     }
 
-    private val permissionListener: PermissionListener = object : PermissionListener {
-
-        override fun onPermissionGranted() {
-            if (checkLocationServicesStatus()) {
-                loadMap()
-            } else {
-                showDialogForLocationServiceSetting()
-                Toast.makeText(context, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-            Toast.makeText(context, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
-                .show()
-        }
-
-    }
 
     private fun showDialogForLocationServiceSetting() {
         val alertDialog =
