@@ -37,8 +37,6 @@ class MapPresenter(
                     val toKakaoModelList = kakaoList.map { it.toKakaoModel() }
 
                     mapView.showKakaoData(
-                        currentX,
-                        currentY,
                         toKakaoModelList
                     )
                 }

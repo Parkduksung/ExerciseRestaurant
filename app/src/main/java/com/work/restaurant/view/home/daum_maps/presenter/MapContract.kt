@@ -6,8 +6,6 @@ interface MapContract {
 
     interface View {
         fun showKakaoData(
-            currentX: Double,
-            currentY: Double,
             list: List<KakaoSearchModel>
         )
 

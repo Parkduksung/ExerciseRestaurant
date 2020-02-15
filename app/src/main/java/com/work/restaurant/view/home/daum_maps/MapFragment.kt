@@ -236,33 +236,63 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-
     //Marker 표현하는거 관련
-    override fun showKakaoData(currentX: Double, currentY: Double, list: List<KakaoSearchModel>) {
-        //currentX  =  longitude  , currentY  =  latitude
-
-        mapView.removePOIItems(kakaoMarkerList.toTypedArray())
+    override fun showKakaoData(list: List<KakaoSearchModel>) {
         makeKakaoDataListMarker(list)
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {
 
         AppExecutors().diskIO.execute {
-            list.forEach {
-                val mapPoint =
-                    MapPoint.mapPointWithGeoCoord(it.locationY.toDouble(), it.locationX.toDouble())
-
-                val mapPOIItem = MapPOIItem()
-                mapPOIItem.apply {
-                    this.itemName = it.placeName
-                    this.markerType = MapPOIItem.MarkerType.BluePin
-                    this.mapPoint = mapPoint
-                    this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+            if (kakaoMarkerList.size == 0) {
+                list.forEach {
+                    val mapPoint =
+                        MapPoint.mapPointWithGeoCoord(
+                            it.locationY.toDouble(),
+                            it.locationX.toDouble()
+                        )
+                    val mapPOIItem = MapPOIItem()
+                    mapPOIItem.apply {
+                        this.itemName = it.placeName
+                        this.markerType = MapPOIItem.MarkerType.BluePin
+                        this.mapPoint = mapPoint
+                        this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                    }
+                    kakaoMarkerList.add(mapPOIItem)
                 }
-                kakaoMarkerList.add(mapPOIItem)
-            }
-            AppExecutors().mainThread.execute {
-                mapView.addPOIItems(kakaoMarkerList.toTypedArray())
+                AppExecutors().mainThread.execute {
+                    mapView.addPOIItems(kakaoMarkerList.toTypedArray())
+                }
+            } else {
+
+                val getNotOverlapList = mutableSetOf<MapPOIItem>()
+
+                getNotOverlapList.addAll(kakaoMarkerList)
+
+                list.forEach {
+                    val mapPoint =
+                        MapPoint.mapPointWithGeoCoord(
+                            it.locationY.toDouble(),
+                            it.locationX.toDouble()
+                        )
+
+                    val mapPOIItem = MapPOIItem()
+                    mapPOIItem.apply {
+                        this.itemName = it.placeName
+                        this.markerType = MapPOIItem.MarkerType.BluePin
+                        this.mapPoint = mapPoint
+                        this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                    }
+                    getNotOverlapList.add(mapPOIItem)
+                }
+
+                getNotOverlapList.removeAll(kakaoMarkerList)
+
+                kakaoMarkerList.addAll(getNotOverlapList)
+
+                AppExecutors().mainThread.execute {
+                    mapView.addPOIItems(getNotOverlapList.toTypedArray())
+                }
             }
         }
     }
