@@ -87,6 +87,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
         const val MARKER_CLICK_DATA = "marker_click_data"
         const val MARKER_CLICK_TOGGLE = "marker_click_toggle"
 
+
     }
 
 }

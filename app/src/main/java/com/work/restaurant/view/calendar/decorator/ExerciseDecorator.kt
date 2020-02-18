@@ -20,14 +20,12 @@ class ExerciseDecorator(
         dates.contains(day)
 
     override fun decorate(view: DayViewFacade?) {
-
         view?.addSpan(
             CustomExerciseSpan(
                 10f,
                 ContextCompat.getColor(App.instance.context(), R.color.colorYellow)
             )
         )
-
     }
 }
 

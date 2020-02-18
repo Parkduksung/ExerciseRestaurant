@@ -10,6 +10,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.work.restaurant.R
 import com.work.restaurant.util.App
+import java.util.*
 
 class EatDecorator(
     private val dates: HashSet<CalendarDay>
@@ -19,17 +20,19 @@ class EatDecorator(
     override fun shouldDecorate(day: CalendarDay?): Boolean =
         dates.contains(day)
 
+
     override fun decorate(view: DayViewFacade?) {
-
-        view?.addSpan(
-            CustomEatSpan(
-                10f,
-                ContextCompat.getColor(App.instance.context(), R.color.colorLowPurple)
+        view?.areDaysDisabled().let {
+            view?.addSpan(
+                CustomEatSpan(
+                    10f,
+                    ContextCompat.getColor(App.instance.context(), R.color.colorLowPurple)
+                )
             )
-        )
-
+        }
     }
 }
+
 
 class CustomEatSpan(private val radius: Float, private var color: Int) :
     LineBackgroundSpan {

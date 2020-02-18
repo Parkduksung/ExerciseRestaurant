@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.work.restaurant.R
@@ -38,6 +39,8 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
 
     private fun searchResult() {
 
+        pb_item_details.visibility = View.VISIBLE
+
         val bundle = arguments
         val getData = bundle?.getString(DATA).toString()
 
@@ -52,11 +55,30 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
         webSettings.javaScriptEnabled = true
 
         webview.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                Log.d("뒤로가기갑지가하면왜죽지", "shouldOverrideUrlLoading11")
+                return super.shouldOverrideUrlLoading(view, request)
 
+
+            }
+
+            override fun onScaleChanged(view: WebView?, oldScale: Float, newScale: Float) {
+                super.onScaleChanged(view, oldScale, newScale)
+                Log.d("뒤로가기갑지가하면왜죽지?", "onScaleChanged")
+            }
+
+            override fun onPageCommitVisible(view: WebView?, url: String?) {
+                super.onPageCommitVisible(view, url)
+                pb_item_details.visibility = View.GONE
+                Log.d("뒤로가기갑지가하면왜죽지?", "onPageCommitVisible")
+            }
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
-                Log.d("뒤로가기갑지가하면왜죽지?", "ㅁㄴㅇㄹ")
+                Log.d("뒤로가기갑지가하면왜죽지?", "shouldOverrideUrlLoading")
 //                pb_item_details.visibility = View.VISIBLE
 
                 if (url != null) {
@@ -76,7 +98,7 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
             //페이지가 켜졌을때
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                Log.d("뒤로가기갑지가하면왜죽지?", "ㅁㄴㅇㄹ")
+                Log.d("뒤로가기갑지가하면왜죽지?", "onPageFinished")
 
 //                pb_item_details.visibility = View.GONE
                 toggleWebPage = webview.canGoBack()

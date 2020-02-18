@@ -74,11 +74,11 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/recyclerview_calendar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="12" />
+            android:layout_weight="12"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 

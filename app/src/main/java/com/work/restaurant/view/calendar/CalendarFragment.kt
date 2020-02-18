@@ -1,11 +1,13 @@
 package com.work.restaurant.view.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -38,6 +40,15 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
     private val eat = mutableSetOf<DiaryModel>()
     private val exercise = mutableSetOf<DiaryModel>()
+
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+
+        if (isMenuVisible && isResumed) {
+            Log.d("여기보여짐", "CalendarFragment")
+        }
+
+    }
 
 
     override fun showAllDayIncludeExerciseData(list: Set<String>) {
@@ -161,6 +172,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         val dateArray = getYearAndMonth.split("-")
 
         calender_view.selectedDate = CalendarDay.today()
+
         calender_view.state().edit()
             .isCacheCalendarPositionEnabled(true)
             .setMaximumDate(
@@ -170,12 +182,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                     lastDayOfMonth
                 )
             )
+
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
-
-
-        presenter.getDataOfTheDayEatData(App.prefs.current_date)
-        presenter.getDataOfTheDayExerciseData(App.prefs.current_date)
 
 
     }
@@ -193,11 +202,17 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 val sundayDecorator = SundayDecorator()
 
 
+                val decoratorList = mutableListOf<DayViewDecorator>()
+
+                decoratorList.add(eatDecorator)
+                decoratorList.add(exerciseDecorator)
+                decoratorList.add(saturdayDecorator)
+                decoratorList.add(sundayDecorator)
+
+
                 AppExecutors().mainThread.execute {
-                    calender_view.addDecorator(eatDecorator)
-                    calender_view.addDecorator(exerciseDecorator)
-                    calender_view.addDecorator(saturdayDecorator)
-                    calender_view.addDecorator(sundayDecorator)
+
+                    calender_view.addDecorators(decoratorList)
                 }
             }
 
@@ -205,23 +220,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             dotEat = false
 
 
-//            calender_view.removeDecorators()
-//
-//            calender_view.addDecorator(
-//                EatDecorator(
-//                    toHashSetCalendarDayEat
-//                )
-//            )
-//            calender_view.addDecorator(
-//                ExerciseDecorator(
-//                    toHashSetCalendarDayExercise
-//                )
-//            )
-//            calender_view.addDecorator(SaturdayDecorator())
-//            calender_view.addDecorator(SundayDecorator())
-
-//            dotExercise = false
-//            dotEat = false
         }
     }
 
@@ -240,15 +238,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
 
-
-
-
-
         }
 
-
     }
-
 
     private fun showDayOfData() {
         if (workEat && workExercise) {
@@ -263,7 +255,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT).show()
             }
 
-
             recyclerview_calendar.run {
                 diaryAdapter.clearListData()
                 if (dayOfSet.size != 0)
@@ -276,8 +267,10 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     override fun onResume() {
         super.onResume()
 
-        presenter.getAllExerciseData()
+        calender_view.removeDecorators()
         presenter.getAllEatData()
+        presenter.getAllExerciseData()
+
     }
 
     companion object {
@@ -290,6 +283,8 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         var dotEat = false
         var dotExercise = false
+
+
     }
 
 }

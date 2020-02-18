@@ -34,6 +34,16 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 //    }
 //
 
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+
+        if (isMenuVisible && isResumed) {
+            Log.d("여기보여짐", "MyPageFragment")
+        }
+
+    }
+
+
 
     private lateinit var presenter: MyPageContract.Presenter
 
@@ -242,6 +252,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         private const val LOGOUT = 2
         private const val WITHDRAW = 3
         private const val REGISTER = 4
+
+
     }
 
 }

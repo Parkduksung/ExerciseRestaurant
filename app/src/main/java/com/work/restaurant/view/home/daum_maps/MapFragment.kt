@@ -238,12 +238,14 @@ class MapFragment : BaseFragment(R.layout.map),
 
     //Marker 표현하는거 관련
     override fun showKakaoData(list: List<KakaoSearchModel>) {
+
         makeKakaoDataListMarker(list)
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {
 
         AppExecutors().diskIO.execute {
+
             if (kakaoMarkerList.size == 0) {
                 list.forEach {
                     val mapPoint =
@@ -260,14 +262,14 @@ class MapFragment : BaseFragment(R.layout.map),
                     }
                     kakaoMarkerList.add(mapPOIItem)
                 }
+
                 AppExecutors().mainThread.execute {
                     mapView.addPOIItems(kakaoMarkerList.toTypedArray())
                 }
             } else {
 
                 val getNotOverlapList = mutableSetOf<MapPOIItem>()
-
-                getNotOverlapList.addAll(kakaoMarkerList)
+                val _getNotOverlapList = mutableSetOf<MapPOIItem>()
 
                 list.forEach {
                     val mapPoint =
@@ -284,14 +286,21 @@ class MapFragment : BaseFragment(R.layout.map),
                         this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
                     }
                     getNotOverlapList.add(mapPOIItem)
+                    _getNotOverlapList.add(mapPOIItem)
                 }
 
-                getNotOverlapList.removeAll(kakaoMarkerList)
 
-                kakaoMarkerList.addAll(getNotOverlapList)
+                getNotOverlapList.forEach { getNotOverlapMarker ->
+                    kakaoMarkerList.forEach { kakaoMarker ->
+                        if (getNotOverlapMarker.itemName == kakaoMarker.itemName) {
+                            _getNotOverlapList.remove(getNotOverlapMarker)
+                        }
+                    }
+                }
 
                 AppExecutors().mainThread.execute {
-                    mapView.addPOIItems(getNotOverlapList.toTypedArray())
+                    kakaoMarkerList.addAll(_getNotOverlapList)
+                    mapView.addPOIItems(_getNotOverlapList.toTypedArray())
                 }
             }
         }
@@ -413,9 +422,10 @@ class MapFragment : BaseFragment(R.layout.map),
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
                         toggleSelectLoction = false
-                    } else {
-                        showCurrentLocation()
                     }
+//                    else {
+//                        showCurrentLocation()
+//                    }
                 }
             }
         }

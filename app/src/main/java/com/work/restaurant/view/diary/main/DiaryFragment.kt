@@ -226,6 +226,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         private const val TAG = "DiaryFragment"
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
+
     }
 
 }
