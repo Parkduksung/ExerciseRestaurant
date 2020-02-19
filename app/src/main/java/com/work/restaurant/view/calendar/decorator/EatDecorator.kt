@@ -22,6 +22,7 @@ class EatDecorator(
 
 
     override fun decorate(view: DayViewFacade?) {
+
         view?.areDaysDisabled().let {
             view?.addSpan(
                 CustomEatSpan(

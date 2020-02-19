@@ -2,7 +2,6 @@ package com.work.restaurant.view.search.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
@@ -17,15 +16,6 @@ import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListener,
     SearchContract.View {
-
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-
-        if (isMenuVisible && isResumed) {
-            Log.d("여기보여짐", "SearchFragment")
-        }
-
-    }
 
     private lateinit var presenter: SearchPresenter
 
@@ -60,11 +50,6 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
         tl_search.setupWithViewPager(vp_search)
         tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
         tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("여기보여짐", "onResume")
     }
 
     override fun showSearch() {

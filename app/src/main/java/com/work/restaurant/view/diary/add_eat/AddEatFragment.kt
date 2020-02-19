@@ -116,12 +116,10 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             when (checkedId) {
 
                 R.id.rb_meal -> {
-                    Toast.makeText(this.context, "0", Toast.LENGTH_SHORT).show()
                     radioClick = 0
                 }
 
                 R.id.rb_snack -> {
-                    Toast.makeText(this.context, "1", Toast.LENGTH_SHORT).show()
                     radioClick = 1
                 }
             }
@@ -129,15 +127,6 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     }
 
     private fun init() {
-
-//        val currentTime = Calendar.getInstance().time
-//
-//        val dateTextAll =
-//            SimpleDateFormat("a-h-mm", Locale.getDefault()).format(currentTime)
-//
-//        val dateArray = dateTextAll.split("-")
-//
-
 
         tv_add_eat_today.text =
             App.prefs.current_date

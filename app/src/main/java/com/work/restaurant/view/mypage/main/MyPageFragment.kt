@@ -22,28 +22,6 @@ import kotlinx.android.synthetic.main.mypage_fragment.*
 
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
-//    override fun onBackPressed() {
-//        Log.d("뒤로가기눌림", requireFragmentManager().backStackEntryCount.toString())
-//
-//        if (requireFragmentManager().backStackEntryCount == 0) {
-//            activity?.finish()
-//        } else {
-//            requireFragmentManager().popBackStack()
-//        }
-//
-//    }
-//
-
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-
-        if (isMenuVisible && isResumed) {
-            Log.d("여기보여짐", "MyPageFragment")
-        }
-
-    }
-
-
 
     private lateinit var presenter: MyPageContract.Presenter
 

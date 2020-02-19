@@ -3,7 +3,6 @@ package com.work.restaurant.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.view.adapter.ViewPagerAdapter
@@ -19,7 +18,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class ExerciseRestaurantActivity : AppCompatActivity(),
     ExerciseRestaurantContract.View,
-    NotificationDataListener {
+    NotificationDataListener,
+    DiaryFragment.OnMyListener {
+
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -32,6 +33,7 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
         )
     }
 
+
     override fun onBackPressed() {
 
         if (supportFragmentManager.backStackEntryCount == 0) {
@@ -40,6 +42,16 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             supportFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onReceivedData(msg: Boolean) {
+        if (msg) {
+            supportFragmentManager.fragments.forEach {
+                if (it is CalendarFragment) {
+                    it.renewDot()
+                }
+            }
+        }
     }
 
 
@@ -71,7 +83,6 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
 
         presenter = ExerciseRestaurantPresenter(this)
         start()
-
 
     }
 
@@ -105,25 +116,6 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
             getTabAt(3)?.setIcon(R.drawable.calendar)
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
-
-        vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-
-                fragmentMap.getValue(resources.getStringArray(R.array.tab_main)[position]).setMenuVisibility(true)
-
-            }
-        })
 
     }
 

@@ -2,11 +2,12 @@ package com.work.restaurant.view.diary.main
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -33,12 +34,32 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     private lateinit var presenter: DiaryPresenter
+    private lateinit var onMyListener: OnMyListener
+
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
 
 
+    interface OnMyListener {
+        fun onReceivedData(msg: Boolean)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (activity != null && activity is OnMyListener) {
+            onMyListener = activity as OnMyListener
+        }
+
+    }
+
     override fun showResult(msg: Boolean) {
-        Log.d("결과", msg.toString())
+        if (msg) {
+            renewDot()
+            Toast.makeText(this.context, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this.context, "삭제되지않았습니다.", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun getData(data: DiaryModel) {
@@ -189,13 +210,29 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             REGISTER_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     load()
+                    renewDot()
                 }
             }
             REGISTER_EXERCISE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     load()
+                    renewDot()
                 }
             }
+        }
+    }
+
+
+    private fun renewDot() {
+        if (::onMyListener.isInitialized) {
+            onMyListener.onReceivedData(true)
+        } else {
+            onMyListener = object : OnMyListener {
+                override fun onReceivedData(msg: Boolean) {
+
+                }
+            }
+            onMyListener.onReceivedData(true)
         }
     }
 

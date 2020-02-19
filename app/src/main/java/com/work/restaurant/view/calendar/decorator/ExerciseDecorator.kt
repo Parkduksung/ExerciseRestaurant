@@ -15,7 +15,6 @@ class ExerciseDecorator(
     private val dates: HashSet<CalendarDay>
 ) : DayViewDecorator {
 
-
     override fun shouldDecorate(day: CalendarDay?): Boolean =
         dates.contains(day)
 
