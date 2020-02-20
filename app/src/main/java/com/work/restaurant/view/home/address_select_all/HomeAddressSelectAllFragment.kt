@@ -1,12 +1,12 @@
 package com.work.restaurant.view.home.address_select_all
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.daum_maps.MapFragment
@@ -34,23 +34,18 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false).also {
-            val address = it.findViewById<TextView>(R.id.tv_address_select)
-            val bundle = arguments
-            address.text = bundle?.getString("Address")
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
         }
     }
 
@@ -59,6 +54,9 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
 
         btn_address_change_no.setOnClickListener(this)
         btn_address_change_ok.setOnClickListener(this)
+        val bundle = arguments
+        tv_address_select.text = bundle?.getString(ADDRESS)
+
     }
 
 
@@ -72,7 +70,6 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
                 arguments = Bundle().apply {
                     putString(ADDRESS, selectAddress)
                 }
-
             }
 
     }

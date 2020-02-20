@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ExerciseRestaurantActivity : AppCompatActivity(),
     ExerciseRestaurantContract.View,
     NotificationDataListener,
-    DiaryFragment.OnMyListener {
+    DiaryFragment.RenewDataListener {
 
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
@@ -57,18 +57,15 @@ class ExerciseRestaurantActivity : AppCompatActivity(),
 
     override fun getNotificationData(data: NotificationModel) {
 
-        val myPageNotificationDetailsFragment =
-            MyPageNotificationDetailsFragment
-                .newInstance(
-                    data.notificationDate,
-                    data.notificationSubject,
-                    data.notificationContent
-                )
-
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.mypage_main_container,
-                myPageNotificationDetailsFragment
+                MyPageNotificationDetailsFragment
+                    .newInstance(
+                        data.notificationDate,
+                        data.notificationSubject,
+                        data.notificationContent
+                    )
             )
             .addToBackStack(null)
             .commit()

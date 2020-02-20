@@ -31,7 +31,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
         object : PermissionListener {
 
             override fun onPermissionGranted() {
-
                 saveCurrentLocation()
             }
 
@@ -54,7 +53,6 @@ class LoadingActivity : Activity(), LoadingContract.View {
         presenter = LoadingPresenter(this)
         presenter.randomText(resources.getStringArray(R.array.load_string))
 
-//        this.window.statusBarColor = ContextCompat.getColor(this, R.color.colorPurple)
         checkPermission()
 
     }
@@ -66,11 +64,13 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
             override fun onLocationChanged(location: Location) {
 
-                App.prefs.current_location_long = location.longitude.toString()
-                App.prefs.current_location_lat = location.latitude.toString()
+                if (location.isFromMockProvider) {
+                    App.prefs.current_location_long = location.longitude.toString()
+                    App.prefs.current_location_lat = location.latitude.toString()
 
-                locationManager.removeUpdates(this)
-                start()
+                    locationManager.removeUpdates(this)
+                    start()
+                }
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {

@@ -34,20 +34,20 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     private lateinit var presenter: DiaryPresenter
-    private lateinit var onMyListener: OnMyListener
+    private lateinit var renewDataListener: RenewDataListener
 
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
 
 
-    interface OnMyListener {
+    interface RenewDataListener {
         fun onReceivedData(msg: Boolean)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity != null && activity is OnMyListener) {
-            onMyListener = activity as OnMyListener
+        if (activity != null && activity is RenewDataListener) {
+            renewDataListener = activity as RenewDataListener
         }
 
     }
@@ -224,15 +224,15 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
 
     private fun renewDot() {
-        if (::onMyListener.isInitialized) {
-            onMyListener.onReceivedData(true)
+        if (::renewDataListener.isInitialized) {
+            renewDataListener.onReceivedData(true)
         } else {
-            onMyListener = object : OnMyListener {
+            renewDataListener = object : RenewDataListener {
                 override fun onReceivedData(msg: Boolean) {
 
                 }
             }
-            onMyListener.onReceivedData(true)
+            renewDataListener.onReceivedData(true)
         }
     }
 

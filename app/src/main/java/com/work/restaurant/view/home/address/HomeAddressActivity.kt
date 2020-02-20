@@ -58,13 +58,14 @@ class HomeAddressActivity : AppCompatActivity(),
         } else if (address1 && address2 && address3) {
             dong = data
             selectAddress = "$si $gunGu $dong"
-            val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
-                selectAddress
-            )
 
 
             this.supportFragmentManager.beginTransaction()
-                .replace(R.id.address_main_container, homeAddressSelectAllFragment).commit()
+                .replace(
+                    R.id.address_main_container, HomeAddressSelectAllFragment.newInstance(
+                        selectAddress
+                    )
+                ).commit()
         }
     }
 

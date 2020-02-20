@@ -97,10 +97,12 @@ class SearchLookForActivity : AppCompatActivity(),
 
         if (getToggle != null) {
             if (getToggle) {
-                val searchItemDetailsFragment =
-                    SearchItemDetailsFragment.newInstance(getData)
+
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
                     .addToBackStack(null)
                     .commit()
                 et_search_look_for_item.text.clear()
@@ -120,10 +122,12 @@ class SearchLookForActivity : AppCompatActivity(),
 
         if (getToggle != null) {
             if (getToggle) {
-                val searchItemDetailsFragment =
-                    SearchItemDetailsFragment.newInstance(getData)
+
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
                     .addToBackStack(null)
                     .commit()
                 et_search_look_for_item.text.clear()
@@ -143,10 +147,12 @@ class SearchLookForActivity : AppCompatActivity(),
 
         if (getToggle != null) {
             if (getToggle) {
-                val searchItemDetailsFragment =
-                    SearchItemDetailsFragment.newInstance(getData)
+
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
                     .addToBackStack(null)
                     .commit()
                 et_search_look_for_item.text.clear()
@@ -203,10 +209,8 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun getData(data: String) {
 
-        val searchItemDetailsFragment =
-            SearchItemDetailsFragment.newInstance(data)
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.search_look_sub_container, SearchItemDetailsFragment.newInstance(data))
             .addToBackStack(null)
             .commit()
         et_search_look_for_item.text.clear()

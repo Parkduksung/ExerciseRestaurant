@@ -32,11 +32,11 @@
             android:name="com.work.restaurant.view.loading.LoadingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoadingStatusBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                            <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                            <category android:name="android.intent.category.LAUNCHER" />-->
+<!--                        </intent-filter>-->
         </activity>
 
 
@@ -45,11 +45,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <!-- 로딩 보기 귀찮을때 사용해라.-->
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+                        <intent-filter>
+                            <action android:name="android.intent.action.MAIN" />
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+                            <category android:name="android.intent.category.LAUNCHER" />
+                        </intent-filter>
 
         </activity>
 

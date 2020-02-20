@@ -30,11 +30,13 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import java.util.*
+import kotlin.math.pow
 
 
 class MapFragment : BaseFragment(R.layout.map),
     MapView.POIItemEventListener, MapView.MapViewEventListener,
     MapContract.View, View.OnClickListener {
+
 
     private lateinit var mapView: MapView
 
@@ -238,8 +240,17 @@ class MapFragment : BaseFragment(R.layout.map),
 
     //Marker 표현하는거 관련
     override fun showKakaoData(list: List<KakaoSearchModel>) {
-
+        autoZoomLevel(list[0].distance.toInt())
         makeKakaoDataListMarker(list)
+    }
+
+    private fun autoZoomLevel(firstDistance: Int) {
+
+        for (i in 0..8) {
+            if (((2.0).pow(i) * 100) <= firstDistance && firstDistance <= ((2.0).pow(i + 1) * 100)) {
+                mapView.setZoomLevel(i + 1, true)
+            }
+        }
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {

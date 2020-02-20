@@ -1,6 +1,5 @@
 package com.work.restaurant.view.home.daum_maps.presenter
 
-import android.util.Log
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
@@ -30,7 +29,7 @@ class MapPresenter(
         kakaoRepository.getKakaoResult(
             currentX,
             currentY,
-            "accuracy",
+            "distance",
             object : KakaoRepositoryCallback {
                 override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
 
@@ -42,7 +41,7 @@ class MapPresenter(
                 }
 
                 override fun onFailure(message: String) {
-                    Log.d("카카오결과", message)
+
                 }
             }
         )

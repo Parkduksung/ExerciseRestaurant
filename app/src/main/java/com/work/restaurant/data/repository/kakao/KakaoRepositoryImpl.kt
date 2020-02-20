@@ -1,6 +1,5 @@
 package com.work.restaurant.data.repository.kakao
 
-import android.util.Log
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSource
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceCallback
 import com.work.restaurant.ext.isConnectedToNetwork
@@ -100,7 +99,6 @@ class KakaoRepositoryImpl private constructor(
                 object : KakaoRemoteDataSourceCallback {
                     override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
                         callback.onSuccess(kakaoList)
-                        Log.d("카카오결과", "3")
                     }
 
                     override fun onFailure(message: String) {

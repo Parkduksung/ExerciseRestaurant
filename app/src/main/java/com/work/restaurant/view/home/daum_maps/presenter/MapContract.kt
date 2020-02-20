@@ -12,6 +12,7 @@ interface MapContract {
         fun showMarkerData(
             list: List<KakaoSearchModel>
         )
+
     }
 
 
