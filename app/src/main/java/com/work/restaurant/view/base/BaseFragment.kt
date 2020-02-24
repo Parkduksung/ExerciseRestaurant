@@ -9,12 +9,20 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.util.App
+import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
 
 
 abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPressedListener {
 
-    override fun onBackPressed() {
-//        fragmentManager?.popBackStack()
+    override fun onBackPressed(): Boolean {
+
+        requireFragmentManager().fragments.forEach {
+            if (it is MyPageRegisterOkFragment) {
+                requireFragmentManager().popBackStack()
+            }
+        }
+        return fragmentManager?.backStackEntryCount != 0
+
     }
 
 

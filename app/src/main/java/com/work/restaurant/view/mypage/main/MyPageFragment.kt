@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import com.google.firebase.auth.FirebaseAuth
+import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.data.model.LoginModel
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.login.MyPageLoginFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
@@ -25,10 +25,23 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     private lateinit var presenter: MyPageContract.Presenter
 
+    override fun showFirebaseLogin(loginId: String, loginNickname: String) {
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        fragmentManager?.popBackStack()
+        userId = loginId
+        userNickname = loginNickname
+
+        loginState = true
+        loginState()
+    }
+
+    override fun showInit() {
+        loginState()
+    }
+
+    override fun showLoginState(model: LoginModel) {
+
+        presenter.loginFirebase(model.loginId, model.loginPw, model.loginNickname)
+
     }
 
     override fun onClick(v: View?) {
@@ -40,6 +53,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     this,
                     LOGIN
                 )
+
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
@@ -64,9 +78,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                         myPageLogoutFragment
                     )
                     .addToBackStack(null)
-                    .commit().apply {
-                        FirebaseAuth.getInstance().signOut()
-                    }
+                    .commit()
             }
 
             R.id.tv_page_withdrawal -> {
@@ -76,13 +88,13 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     this,
                     WITHDRAW
                 )
-
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
                         R.id.main_container,
                         myPageWithdrawalFragment
                     )
+                    .addToBackStack(null)
                     .commit()
             }
 
@@ -134,7 +146,11 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = MyPagePresenter(this)
+        presenter = MyPagePresenter(
+            this,
+            Injection.provideLoginRepository(),
+            Injection.provideUserRepository()
+        )
         iv_login.setOnClickListener(this)
         ll_logout.setOnClickListener(this)
         tv_page_withdrawal.setOnClickListener(this)
@@ -142,7 +158,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         ll_notification.setOnClickListener(this)
         ll_question.setOnClickListener(this)
 
-        loginState()
+
+        presenter.getLoginState()
     }
 
 
@@ -163,6 +180,11 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         }
     }
 
+    fun registerOk(registerId: String) {
+        presenter.getLoginState()
+        userId = registerId
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -175,14 +197,12 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 userId = loginEmail
                 userNickname = loginNickname
                 loginState = true
-
                 loginState()
             }
         }
 
         if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("하하하", "1 ${fragmentManager?.backStackEntryCount}")
 
                 val loginEmail = data?.extras?.getString("id").orEmpty()
                 val loginNickname = data?.extras?.getString("nickname").orEmpty()
@@ -202,22 +222,19 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 userId = loginEmail
                 userNickname = loginNickname
                 loginState = false
+                loginState()
             }
 
         }
 
-        if (requestCode == REGISTER) {
-            if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id").orEmpty()
-                val loginNickname = data?.extras?.getString("nickname").orEmpty()
 
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = true
-            }
-        }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        loginState = false
+
+    }
 
     companion object {
         var loginState = false
@@ -229,7 +246,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         private const val LOGIN = 1
         private const val LOGOUT = 2
         private const val WITHDRAW = 3
-        private const val REGISTER = 4
+
 
 
     }

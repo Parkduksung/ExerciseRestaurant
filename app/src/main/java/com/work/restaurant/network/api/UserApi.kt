@@ -36,4 +36,11 @@ interface UserApi {
     ): Call<ResultResponse>
 
 
+    @GET("/update.php")
+    fun update(
+        @Query("userEmail") userEmail: String,
+        @Query("userPass") userPass: String
+    ): Call<ResultResponse>
+
+
 }

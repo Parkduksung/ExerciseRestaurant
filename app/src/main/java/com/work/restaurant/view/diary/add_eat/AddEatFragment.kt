@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.diary_add_eat.*
 class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
 
+
     private lateinit var presenter: AddEatPresenter
 
     override fun showAddSuccess() {
@@ -68,9 +69,8 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             }
 
             R.id.add_eat_cancel -> {
-                requireFragmentManager().beginTransaction()
-                    .remove(this@AddEatFragment)
-                    .commit()
+
+                requireFragmentManager().popBackStack()
 
             }
 

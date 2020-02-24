@@ -3,20 +3,24 @@ package com.work.restaurant.view.mypage.logout
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
+import com.work.restaurant.view.mypage.main.MyPageFragment
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 
 class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
     MyPageLogoutContract.View {
+
 
     private lateinit var presenter: MyPageLogoutContract.Presenter
 
@@ -24,12 +28,15 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_logout_cancel -> {
-                activity?.onBackPressed()
+                requireFragmentManager().popBackStack()
             }
 
 
             R.id.btn_logout_ok -> {
-                presenter.logoutOk()
+
+                if (MyPageFragment.userId != "") {
+                    presenter.logoutOk(MyPageFragment.userId)
+                }
             }
 
         }
@@ -53,15 +60,18 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = MyPageLogoutPresenter(this)
+        presenter = MyPageLogoutPresenter(
+            this,
+            Injection.provideLoginRepository()
+        )
         btn_logout_cancel.setOnClickListener(this)
         btn_logout_ok.setOnClickListener(this)
 
-
     }
 
-
     override fun showLogoutOk() {
+
+        FirebaseAuth.getInstance().signOut()
 
         val data = Intent()
         data.putExtra("id", "")
@@ -71,68 +81,11 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
             Activity.RESULT_OK,
             data
         )
-
-        activity?.onBackPressed()
-
-//        fragmentManager?.beginTransaction()
-//            ?.replace(
-//                R.id.main_container,
-//                MyPageFragment()
-//            )
-//            ?.commit()
-
-
-//        val data = Intent()
-//        data.putExtra("id", "")
-//        data.putExtra("nickname", "")
-//        targetFragment?.onActivityResult(
-//            targetRequestCode,
-//            Activity.RESULT_OK,
-//            data
-//        )
-//
-//        activity?.onBackPressed()
-
-
-//        fragmentManager?.beginTransaction()
-//            ?.remove(this@MyPageLogoutFragment)
-//            ?.commit()
+        requireFragmentManager().popBackStack()
     }
 
-
-    override fun onStart() {
-        Log.d(TAG, "onStart")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d(TAG, "onResume")
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d(TAG, "onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, "onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.d(TAG, "onDetach")
-        super.onDetach()
+    override fun showLogoutNo() {
+        Toast.makeText(App.instance.context(), "로그아웃을 실패하였습니다.", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

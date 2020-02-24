@@ -36,15 +36,15 @@
         android:layout_weight="7"
         android:gravity="center|left"
         android:text="@string/notification_main_tv"
-        android:textSize="40dp"
+        android:textSize="40sp"
         tools:ignore="RtlHardcoded,SpUsage" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
         android:id="@+id/recyclerview_notification"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30" />
+        android:layout_weight="30"
+        android:overScrollMode="never" />
 
 </LinearLayout>
 

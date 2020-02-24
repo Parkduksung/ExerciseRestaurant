@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
     MapInterface.CurrentLocationClickListener, MapInterface.SelectMarkerListener {
+
     override fun getMarkerData(data: KakaoSearchModel) {
         tv_marker_place_address.text = data.addressName
         tv_marker_place_name.text = data.placeName

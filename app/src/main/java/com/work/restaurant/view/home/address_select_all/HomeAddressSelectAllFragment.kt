@@ -27,7 +27,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
             R.id.btn_address_change_ok -> {
                 selectAll = tv_address_select.text.toString()
                 requireFragmentManager().beginTransaction().remove(this).commit()
-                activity?.finish()
+//                activity?.finish()
                 MapFragment.toggleSelectLoction = true
 
             }

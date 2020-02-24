@@ -32,12 +32,16 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     DiaryContract.View,
     AdapterDataListener.GetList {
 
-
     private lateinit var presenter: DiaryPresenter
     private lateinit var renewDataListener: RenewDataListener
 
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
+
+
+    override fun onBackPressed(): Boolean {
+        return fragmentManager?.backStackEntryCount != 0
+    }
 
 
     interface RenewDataListener {
@@ -49,7 +53,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         if (activity != null && activity is RenewDataListener) {
             renewDataListener = activity as RenewDataListener
         }
-
     }
 
     override fun showResult(msg: Boolean) {

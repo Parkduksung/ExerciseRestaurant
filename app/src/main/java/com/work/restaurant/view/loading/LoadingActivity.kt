@@ -2,7 +2,6 @@ package com.work.restaurant.view.loading
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -16,12 +15,13 @@ import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity
+import com.work.restaurant.view.base.BaseActivity
 import kotlinx.android.synthetic.main.loading_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LoadingActivity : Activity(), LoadingContract.View {
+class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
 
     private lateinit var presenter: LoadingContract.Presenter
 
@@ -49,7 +49,7 @@ class LoadingActivity : Activity(), LoadingContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.loading_fragment)
+
         presenter = LoadingPresenter(this)
         presenter.randomText(resources.getStringArray(R.array.load_string))
 

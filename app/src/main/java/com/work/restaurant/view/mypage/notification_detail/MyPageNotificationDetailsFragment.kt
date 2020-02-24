@@ -12,7 +12,7 @@ class MyPageNotificationDetailsFragment :
         when (v?.id) {
 
             R.id.ib_notification_detail_back -> {
-                activity?.onBackPressed()
+                requireFragmentManager().popBackStack()
             }
         }
     }

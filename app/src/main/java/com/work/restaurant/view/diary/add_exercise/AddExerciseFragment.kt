@@ -92,9 +92,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             }
 
             R.id.add_exercise_cancel -> {
-                requireFragmentManager().beginTransaction()
-                    .remove(this@AddExerciseFragment)
-                    .commit()
+                requireFragmentManager().popBackStack()
             }
 
             R.id.add_exercise_save -> {
@@ -169,13 +167,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
 
     private fun init() {
-
-//        val currentTime = Calendar.getInstance().time
-//
-//        val dateTextAll =
-//            SimpleDateFormat("a-h-mm", Locale.getDefault()).format(currentTime)
-//
-//        val dateArray = dateTextAll.split("-")
 
         tv_add_exercise_today.text =
             App.prefs.current_date

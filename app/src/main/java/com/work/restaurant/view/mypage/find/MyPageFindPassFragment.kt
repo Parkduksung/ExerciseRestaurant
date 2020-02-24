@@ -3,11 +3,12 @@ package com.work.restaurant.view.mypage.find
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.Toast
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassPresenter
@@ -22,11 +23,14 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_find_back -> {
-                activity?.onBackPressed()
+                requireFragmentManager().popBackStack()
             }
 
             R.id.btn_request_change_pass -> {
-                presenter.resetPass(et_change_pass.text.toString())
+                pb_find_email.bringToFront()
+                pb_find_email.visibility = View.VISIBLE
+                btn_request_change_pass.isClickable = false
+                presenter.resetPass(et_change_pass.text.toString().trim())
             }
         }
     }
@@ -44,53 +48,52 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
     }
 
 
-    override fun showResetOk(nickName: String) {
+    override fun showResetOk() {
 
-        val alertDialog =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
+        if (pb_find_email != null) {
+            pb_find_email.visibility = View.GONE
+            btn_request_change_pass.isClickable = true
+            Toast.makeText(
+                App.instance.context(),
+                "등록된 메일에서 비밀번호 초기화 할 수 있습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
 
-        alertDialog.setTitle("비밀번호 초기화 성공")
-        alertDialog.setMessage(nickName + "님, 등록된 메일에서 비밀번호 초기화 할 수 있습니다.")
-        alertDialog.setPositiveButton(
-            "확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    this@MyPageFindPassFragment.requireFragmentManager().beginTransaction().replace(
-                        R.id.main_container,
-                        MyPageFindOkFragment()
-                    ).commit()
-                }
-            })
-        alertDialog.show()
+            requireFragmentManager().beginTransaction().replace(
+                R.id.mypage_find_container,
+                MyPageFindOkFragment()
+            ).commit()
 
+        }
 
     }
 
     override fun showResetNo(message: String) {
 
-        val alertDialog =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
+        if (pb_find_email != null) {
+            pb_find_email.visibility = View.GONE
+            btn_request_change_pass.isClickable = true
 
-        alertDialog.setTitle("비밀번호 초기화 실패")
-        alertDialog.setMessage(message)
-        alertDialog.setPositiveButton(
-            "확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    Log.d("1111", "실패")
-                }
-            })
-        alertDialog.show()
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("비밀번호 초기화 실패")
+            alertDialog.setMessage("등록된 이메일이 없습니다.")
+            alertDialog.setPositiveButton(
+                "확인",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                    }
+                })
+            alertDialog.show()
+
+        }
     }
 
 

@@ -8,6 +8,8 @@ import com.work.restaurant.data.repository.exercise.ExerciseRepository
 import com.work.restaurant.data.repository.exercise.ExerciseRepositoryImpl
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryImpl
+import com.work.restaurant.data.repository.login.LoginRepository
+import com.work.restaurant.data.repository.login.LoginRepositoryImpl
 import com.work.restaurant.data.repository.notification.NotificationRepository
 import com.work.restaurant.data.repository.notification.NotificationRepositoryImpl
 import com.work.restaurant.data.repository.question.QuestionRepository
@@ -17,6 +19,7 @@ import com.work.restaurant.data.repository.user.UserRepositoryImpl
 import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSourceImpl
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceImpl
+import com.work.restaurant.data.source.local.login.LoginLocalDataSourceImpl
 import com.work.restaurant.data.source.remote.kakao.KakaoRemoteDataSourceImpl
 import com.work.restaurant.data.source.remote.notification.NotificationRemoteDataSourceImpl
 import com.work.restaurant.data.source.remote.question.QuestionRemoteDataSourceImpl
@@ -25,6 +28,7 @@ import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.network.room.database.BookmarkDatabase
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.database.ExerciseDatabase
+import com.work.restaurant.network.room.database.LoginDatabase
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 
@@ -92,6 +96,16 @@ object Injection {
             UserRemoteDataSourceImpl.getInstance(
                 RetrofitInstance.getInstance(
                     WEB_URL
+                )
+            )
+        )
+
+    fun provideLoginRepository(): LoginRepository =
+        LoginRepositoryImpl.getInstance(
+            LoginLocalDataSourceImpl.getInstance(
+                AppExecutors(),
+                LoginDatabase.getInstance(
+                    App.instance.context()
                 )
             )
         )

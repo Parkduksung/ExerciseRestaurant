@@ -34,7 +34,7 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_notification_back -> {
-                activity?.onBackPressed()
+                requireFragmentManager().popBackStack()
             }
         }
     }

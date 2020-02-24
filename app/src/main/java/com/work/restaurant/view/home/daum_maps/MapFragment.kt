@@ -189,7 +189,7 @@ class MapFragment : BaseFragment(R.layout.map),
             p1?.let {
                 presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
             }
-        }, 3000L)
+        }, 2000L)
     }
 
     override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
@@ -421,6 +421,7 @@ class MapFragment : BaseFragment(R.layout.map),
 
     override fun onResume() {
         super.onResume()
+
         if (::mapView.isInitialized) {
             if (!checkLocationServicesStatus()) {
                 map_view.removeView(mapView)
@@ -429,6 +430,10 @@ class MapFragment : BaseFragment(R.layout.map),
                 if (map_view.isEmpty()) {
                     checkPermission()
                 } else {
+
+                    if (::mapInterface.isInitialized) {
+                        mapInterface.click(false)
+                    }
                     if (toggleSelectLoction) {
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)

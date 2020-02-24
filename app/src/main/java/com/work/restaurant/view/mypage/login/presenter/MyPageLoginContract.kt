@@ -6,6 +6,8 @@ interface MyPageLoginContract {
 
         fun showLoginOk(nickName: String)
 
+        fun showLoginStateOk(nickName: String)
+
         fun showLoginNo()
 
         fun showRegisterPage()
@@ -22,6 +24,8 @@ interface MyPageLoginContract {
         fun registerPage()
 
         fun findPass()
+        //
+        fun changeState(userId: String,  userNickname:String)
     }
 
 }

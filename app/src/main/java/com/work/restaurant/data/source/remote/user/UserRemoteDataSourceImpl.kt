@@ -18,41 +18,62 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
         callbackRemoteSource: UserRemoteDataSourceCallback
     ) {
 
-        userApi.login(email, pass).enqueue(object :
-            Callback<ResultResponse> {
-            override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callbackRemoteSource.onFailure("${t?.message}")
-            }
+        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
+            if (it.isSuccessful) {
 
-            override fun onResponse(
-                call: Call<ResultResponse>?,
-                response: Response<ResultResponse>?
-            ) {
+                userApi.login(email, pass).enqueue(object :
+                    Callback<ResultResponse> {
+                    override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
+//
+                        userApi.update(email, pass).enqueue(object : Callback<ResultResponse> {
+                            override fun onFailure(
+                                call: Call<ResultResponse>?,
+                                t: Throwable?
+                            ) {
+                                callbackRemoteSource.onFailure("${t?.message}")
+                            }
 
-                val result = response?.body()?.result
+                            override fun onResponse(
+                                call: Call<ResultResponse>?,
+                                response: Response<ResultResponse>?
+                            ) {
+                                val result = response?.body()?.result
+                                val resultNickname = response?.body()?.resultNickname
 
-                val resultNickname = response?.body()?.resultNickname
+                                if (result != null && resultNickname != null) {
+                                    if (result) {
+                                        callbackRemoteSource.onSuccess(resultNickname)
+                                    } else {
+                                        callbackRemoteSource.onFailure("쿼리실패...")
+                                    }
+                                }
+                            }
+                        })
+                    }
 
-                if (result != null && resultNickname != null) {
-                    if (result) {
+                    override fun onResponse(
+                        call: Call<ResultResponse>?,
+                        response: Response<ResultResponse>?
+                    ) {
+                        val result = response?.body()?.result
+                        val resultNickname = response?.body()?.resultNickname
 
-                        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
-                            if (it.isSuccessful) {
+                        if (result != null && resultNickname != null) {
+                            if (result) {
                                 callbackRemoteSource.onSuccess(resultNickname)
                             } else {
-                                callbackRemoteSource.onFailure("로그인 실패")
+                                callbackRemoteSource.onFailure("쿼리실패...")
                             }
                         }
 
-                    } else {
-                        callbackRemoteSource.onFailure("등록된 아이디가 없습니다.")
                     }
-                } else {
-                    callbackRemoteSource.onFailure("로그인 실패")
-                }
+                })
 
+            } else {
+                callbackRemoteSource.onFailure(it.exception.toString())
             }
-        })
+        }
+
 
     }
 
@@ -63,38 +84,37 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
         callbackRemoteSource: UserRemoteDataSourceCallback
     ) {
 
-        userApi.register(
-            nickName,
-            email,
-            pass
-        ).enqueue(object : Callback<ResultResponse> {
-            override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callbackRemoteSource.onFailure("${t?.message}")
-            }
+        firebaseAuth.createUserWithEmailAndPassword(email, pass)
+            .addOnCompleteListener { Task ->
+                if (Task.isSuccessful) {
+                    userApi.register(
+                        nickName,
+                        email,
+                        pass
+                    ).enqueue(object : Callback<ResultResponse> {
+                        override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
+                            callbackRemoteSource.onFailure("${t?.message}")
+                        }
 
-            override fun onResponse(
-                call: Call<ResultResponse>?,
-                response: Response<ResultResponse>?
-            ) {
-                val result = response?.body()?.result
+                        override fun onResponse(
+                            call: Call<ResultResponse>?,
+                            response: Response<ResultResponse>?
+                        ) {
+                            val result = response?.body()?.result
 
-                result?.let {
-                    if (it) {
-                        firebaseAuth.createUserWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener { Task ->
-                                if (Task.isSuccessful) {
+                            result?.let {
+                                if (it) {
                                     callbackRemoteSource.onSuccess(nickName)
                                 } else {
-                                    callbackRemoteSource.onFailure("실패")
+                                    callbackRemoteSource.onFailure(response.message())
                                 }
                             }
-
-                    }
-
+                        }
+                    })
+                } else {
+                    callbackRemoteSource.onFailure(Task.exception.toString())
                 }
-
             }
-        })
 
 
     }
@@ -105,40 +125,34 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
         callbackRemoteSource: UserRemoteDataSourceCallback
     ) {
 
-        userApi.delete(userNickname, userEmail).enqueue(object :
-            Callback<ResultResponse> {
-            override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callbackRemoteSource.onFailure("${t?.message}")
-            }
+        firebaseAuth.currentUser?.delete()?.addOnCompleteListener {
+            if (it.isSuccessful) {
+                userApi.delete(userNickname, userEmail).enqueue(object :
+                    Callback<ResultResponse> {
+                    override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
+                        callbackRemoteSource.onFailure("${t?.message}")
+                    }
 
-            override fun onResponse(
-                call: Call<ResultResponse>?,
-                response: Response<ResultResponse>?
-            ) {
+                    override fun onResponse(
+                        call: Call<ResultResponse>?,
+                        response: Response<ResultResponse>?
+                    ) {
 
-                val result = response?.body()?.result
-
-                if (result != null) {
-                    if (result) {
-
-                        firebaseAuth.currentUser?.delete()?.addOnCompleteListener {
-                            if (it.isSuccessful) {
+                        val result = response?.body()?.result
+                        if (result != null) {
+                            if (result) {
                                 callbackRemoteSource.onSuccess(userNickname)
                             } else {
                                 callbackRemoteSource.onFailure("삭제 실패")
                             }
                         }
-
-
-                    } else {
-                        callbackRemoteSource.onFailure("삭제 실패")
                     }
-                } else {
-                    callbackRemoteSource.onFailure("로그인 실패")
-                }
-
+                })
+            } else {
+                callbackRemoteSource.onFailure(it.exception.toString())
             }
-        })
+        }
+
     }
 
 

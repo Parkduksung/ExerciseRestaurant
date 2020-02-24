@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="left"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:layout_weight="3">
 
         <ImageButton
@@ -32,35 +32,33 @@
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_weight="7"
-        android:orientation="vertical"
-        android:gravity="center|left">
+        android:gravity="center|left"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_notification_detail_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_notification_detail_date"
-            android:textColor="@color/colorGray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            >
-        </TextView>
+            android:textColor="@color/colorGray"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_notification_detail_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:textSize="15dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30" />
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_weight="30"
+        android:textSize="15sp" />
 </LinearLayout>
 
 

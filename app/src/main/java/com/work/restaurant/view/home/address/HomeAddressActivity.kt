@@ -6,7 +6,6 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
@@ -18,13 +17,14 @@ import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
 import com.work.restaurant.view.home.address.presenter.HomeAddressPresenter
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import kotlinx.android.synthetic.main.address_main.*
 
 
-class HomeAddressActivity : AppCompatActivity(),
+class HomeAddressActivity : BaseActivity(R.layout.address_main),
     HomeAddressContract.View, View.OnClickListener,
     AdapterDataListener {
     override fun showRoadItem(address: TextView, list: List<String>) {
@@ -136,9 +136,6 @@ class HomeAddressActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.address_main)
-
-
 
         presenter = HomeAddressPresenter(
             this, RoadRepositoryImpl.getInstance(
@@ -158,7 +155,6 @@ class HomeAddressActivity : AppCompatActivity(),
         tv_address3.setOnClickListener(this)
 
         initView()
-
 
     }
 

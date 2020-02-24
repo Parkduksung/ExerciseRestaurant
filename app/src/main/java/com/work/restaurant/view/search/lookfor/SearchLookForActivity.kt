@@ -9,13 +9,13 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
-class SearchLookForActivity : AppCompatActivity(),
+class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     View.OnClickListener,
     AdapterDataListener,
     AdapterDataListener.GetKakaoData,
@@ -170,7 +170,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_look_for_main)
+
         presenter = SearchLookForPresenter(
             this,
             Injection.provideKakaoRepository(),

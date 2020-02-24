@@ -14,7 +14,6 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
 import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
@@ -24,9 +23,12 @@ import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
 class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragment),
     View.OnClickListener, MyPageWithdrawalContract.View {
 
-
     private lateinit var presenter: MyPageWithdrawalContract.Presenter
 
+    override fun onBackPressed(): Boolean {
+        requireFragmentManager().popBackStack()
+        return super.onBackPressed()
+    }
 
     override fun onClick(v: View?) {
 
@@ -36,7 +38,12 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
             }
 
             R.id.btn_withdraw_ok -> {
+                pb_withdrawal.bringToFront()
+                pb_withdrawal.visibility = View.VISIBLE
+                btn_withdraw_cancel.isClickable = false
+                btn_withdraw_ok.isClickable = false
                 presenter.withdraw(userNickname, userId)
+                presenter.withdrawLogin(userNickname, userId)
             }
         }
     }
@@ -61,7 +68,8 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
         super.onViewCreated(view, savedInstanceState)
         presenter = MyPageWithdrawalPresenter(
             this,
-            Injection.provideUserRepository()
+            Injection.provideUserRepository(),
+            Injection.provideLoginRepository()
         )
         btn_withdraw_cancel.setOnClickListener(this)
         btn_withdraw_ok.setOnClickListener(this)
@@ -70,67 +78,126 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
     }
 
 
-    override fun showWithdrawNo() {
-        val alertDialog =
-            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
+    override fun showWithdrawCancel() {
+        requireFragmentManager().popBackStack()
+    }
 
-        alertDialog.setTitle("실패")
-        alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
-        alertDialog.setPositiveButton("확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
+    private fun withdrawOk(userNickname: String) {
 
-                }
-            })
-        alertDialog.show()
+        if (toggleWithdraw && toggleWithdrawLogin) {
+            if (pb_withdrawal != null) {
+                pb_withdrawal.visibility = View.GONE
+                btn_withdraw_cancel.isClickable = true
+                btn_withdraw_ok.isClickable = true
+
+                val data = Intent()
+                data.putExtra("id", "")
+                data.putExtra("nickname", "")
+                targetFragment?.onActivityResult(
+                    targetRequestCode,
+                    Activity.RESULT_OK,
+                    data
+                )
+
+                requireFragmentManager().popBackStack()
+                requireFragmentManager().popBackStack()
+
+                val alertDialog =
+                    AlertDialog.Builder(
+                        ContextThemeWrapper(
+                            activity,
+                            R.style.Theme_AppCompat_Light_Dialog
+                        )
+                    )
+
+                alertDialog.setTitle("성공")
+                alertDialog.setMessage(userNickname + "님이 정상적으로 탈퇴 되었습니다.")
+                alertDialog.setPositiveButton(
+                    "확인",
+                    object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                        }
+                    })
+                alertDialog.show()
+            }
+
+            toggleWithdraw = false
+            toggleWithdrawLogin = false
+        }
 
     }
 
-    override fun showWithdrawCancel() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this@MyPageWithdrawalFragment
-        ).commit()
+    override fun showWithdrawLoginOk(userNickname: String) {
+        toggleWithdrawLogin = true
+        withdrawOk(userNickname)
     }
 
     override fun showWithdrawOk(userNickname: String) {
-        val alertDialog =
-            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-
-        alertDialog.setTitle("성공")
-        alertDialog.setMessage(userNickname + "님이 정상적으로 탈퇴 되었습니다.")
-        alertDialog.setPositiveButton(
-            "확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-
-                    this@MyPageWithdrawalFragment.requireFragmentManager()
-                        .beginTransaction()
-                        .remove(
-                            this@MyPageWithdrawalFragment
-                        ).replace(
-                            R.id.mypage_main_container,
-                            MyPageFragment()
-                        ).commit().also {
-                            val data = Intent()
-                            data.putExtra("id", "")
-                            data.putExtra("nickname", "")
-                            targetFragment?.onActivityResult(
-                                targetRequestCode,
-                                Activity.RESULT_OK,
-                                data
-                            )
-                        }
-                }
-
-            })
-
-        alertDialog.show()
-
-
+        toggleWithdraw = true
+        withdrawOk(userNickname)
     }
+
+    override fun showWithdrawNo(sort: Int) {
+        if (sort == 0) {
+            if (pb_withdrawal != null) {
+                pb_withdrawal.visibility = View.GONE
+                btn_withdraw_cancel.isClickable = true
+                btn_withdraw_ok.isClickable = true
+
+                val alertDialog =
+                    AlertDialog.Builder(
+                        ContextThemeWrapper(
+                            activity,
+                            R.style.Theme_AppCompat_Light_Dialog
+                        )
+                    )
+
+                alertDialog.setTitle("실패")
+                alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
+                alertDialog.setPositiveButton("확인",
+                    object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                        }
+                    })
+                alertDialog.show()
+
+            }
+        } else {
+            if (pb_withdrawal != null) {
+                pb_withdrawal.visibility = View.GONE
+                btn_withdraw_cancel.isClickable = true
+                btn_withdraw_ok.isClickable = true
+
+                val alertDialog =
+                    AlertDialog.Builder(
+                        ContextThemeWrapper(
+                            activity,
+                            R.style.Theme_AppCompat_Light_Dialog
+                        )
+                    )
+
+                alertDialog.setTitle("실패")
+                alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
+                alertDialog.setPositiveButton("확인",
+                    object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                        }
+                    })
+                alertDialog.show()
+
+            }
+        }
+    }
+
 
     companion object {
         private const val TAG = "MyPageWithdrawalFragment"
+
+        private var toggleWithdraw = false
+        private var toggleWithdrawLogin = false
+
     }
 
 }

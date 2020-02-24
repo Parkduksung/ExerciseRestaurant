@@ -6,12 +6,13 @@ interface MyPageLogoutContract {
 
         fun showLogoutOk()
 
+        fun showLogoutNo()
+
     }
 
     interface Presenter {
 
-
-        fun logoutOk()
+        fun logoutOk(userId: String)
 
     }
 }

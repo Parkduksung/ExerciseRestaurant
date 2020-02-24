@@ -12,7 +12,10 @@ class MyPageFindPassPresenter(
 
         userRepository.resetPass(email, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
-                myPageFindPassView.showResetOk(resultNickname)
+
+                if (resultNickname.isNotEmpty()) {
+                    myPageFindPassView.showResetOk()
+                }
             }
 
             override fun onFailure(message: String) {

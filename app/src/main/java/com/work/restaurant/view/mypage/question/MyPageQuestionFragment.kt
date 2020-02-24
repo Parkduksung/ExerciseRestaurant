@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionContract
 import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionPresenter
@@ -18,22 +19,36 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_question_back -> {
-                activity?.onBackPressed()
+                requireFragmentManager().popBackStack()
             }
             R.id.btn_send_question -> {
 
                 if (et_question_content.text.toString() != "") {
+                    pb_question.bringToFront()
+                    pb_question.visibility = View.VISIBLE
+                    btn_send_question.isClickable = false
                     presenter.sendQuestion(et_question_content.text.toString())
+                } else {
+                    Toast.makeText(App.instance.context(), "정확한 입력을 부탁드립니다!", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
 
     override fun showResult(message: String) {
-        if (message == "success") {
-            Toast.makeText(this.context, "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
+        if (pb_question != null) {
+
+            pb_question.visibility = View.GONE
+            btn_send_question.isClickable = true
+            if (message == "success") {
+
+                Toast.makeText(App.instance.context(), "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
+                requireFragmentManager().popBackStack()
+            } else {
+                Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
