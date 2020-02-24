@@ -27,16 +27,15 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     private lateinit var presenter: AddEatPresenter
 
     override fun showAddSuccess() {
-        requireFragmentManager().beginTransaction()
-            .remove(this@AddEatFragment)
-            .commit().also {
-                val data = Intent()
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
-            }
+
+        val data = Intent()
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            data
+        )
+
+        requireFragmentManager().popBackStack()
 
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 

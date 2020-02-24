@@ -1,9 +1,11 @@
 package com.work.restaurant.view.base
 
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
+
 
 abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
 
@@ -33,5 +35,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
+
+        Fabric.with(this, Crashlytics())
     }
 }

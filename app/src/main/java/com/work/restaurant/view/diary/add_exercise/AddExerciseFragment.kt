@@ -29,17 +29,16 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     private lateinit var presenter: AddExercisePresenter
 
     override fun showAddSuccess() {
-        requireFragmentManager().beginTransaction()
-            .remove(this@AddExerciseFragment)
-            .commit().also {
-                val data = Intent()
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
 
-            }
+        val data = Intent()
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            data
+        )
+
+        requireFragmentManager().popBackStack()
+
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
     }

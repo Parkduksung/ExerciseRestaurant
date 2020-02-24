@@ -98,12 +98,12 @@ class LoginLocalDataSourceImpl(
 
             val loginListOfTrue1 = loginDatabase.loginDao().getAllList()
 
-            loginListOfTrue1.forEach {
-                Log.d("결과가머더냐아이디들?", it.loginId)
-
-            }
-
+//            loginListOfTrue1.forEach {
+//                Log.d("결과가머더냐아이디들?", it.loginId)
 //
+//            }
+//
+////
 //            loginDatabase.loginDao().delete(loginListOfTrue1)
 //
 //            if (loginDatabase.loginDao().delete(loginListOfTrue) == 1) {
