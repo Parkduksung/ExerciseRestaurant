@@ -34,9 +34,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             Activity.RESULT_OK,
             data
         )
-
-        requireFragmentManager().popBackStack()
-
+        fragmentManager?.popBackStack()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
@@ -72,7 +70,7 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
             R.id.add_eat_cancel -> {
 
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
 
             }
 

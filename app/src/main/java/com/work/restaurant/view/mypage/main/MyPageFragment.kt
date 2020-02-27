@@ -191,8 +191,10 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         if (requestCode == LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id").orEmpty()
-                val loginNickname = data?.extras?.getString("nickname").orEmpty()
+                val loginEmail =
+                    data?.extras?.getString(MyPageLoginFragment.LOGIN_ID).orEmpty()
+                val loginNickname =
+                    data?.extras?.getString(MyPageLoginFragment.LOGIN_NICKNAME).orEmpty()
 
                 userId = loginEmail
                 userNickname = loginNickname
@@ -204,8 +206,10 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
 
-                val loginEmail = data?.extras?.getString("id").orEmpty()
-                val loginNickname = data?.extras?.getString("nickname").orEmpty()
+                val loginEmail =
+                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_ID).orEmpty()
+                val loginNickname =
+                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_NICKNAME).orEmpty()
 
                 userId = loginEmail
                 userNickname = loginNickname
@@ -216,8 +220,10 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         if (requestCode == WITHDRAW) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail = data?.extras?.getString("id").orEmpty()
-                val loginNickname = data?.extras?.getString("nickname").orEmpty()
+                val loginEmail =
+                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_ID).orEmpty()
+                val loginNickname =
+                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_NICKNAME).orEmpty()
 
                 userId = loginEmail
                 userNickname = loginNickname
@@ -246,7 +252,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         private const val LOGIN = 1
         private const val LOGOUT = 2
         private const val WITHDRAW = 3
-
 
 
     }

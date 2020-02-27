@@ -86,12 +86,15 @@ class MapFragment : BaseFragment(R.layout.map),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is MapInterface.CurrentLocationClickListener) {
-            mapInterface = parentFragment as MapInterface.CurrentLocationClickListener
+
+        (parentFragment as? MapInterface.CurrentLocationClickListener)?.let {
+            mapInterface = it
         }
-        if (parentFragment is MapInterface.SelectMarkerListener) {
-            markerInterface = parentFragment as MapInterface.SelectMarkerListener
+
+        (parentFragment as? MapInterface.SelectMarkerListener)?.let {
+            markerInterface = it
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -19,11 +19,11 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_question_back -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
             R.id.btn_send_question -> {
 
-                if (et_question_content.text.toString() != "") {
+                if (et_question_content.text.toString().isNotEmpty()) {
                     pb_question.bringToFront()
                     pb_question.visibility = View.VISIBLE
                     btn_send_question.isClickable = false
@@ -44,7 +44,7 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
             if (message == "success") {
 
                 Toast.makeText(App.instance.context(), "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             } else {
                 Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }

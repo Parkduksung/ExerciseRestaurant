@@ -50,9 +50,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity != null && activity is RenewDataListener) {
-            renewDataListener = activity as RenewDataListener
+
+        (activity as? RenewDataListener)?.let {
+            renewDataListener = it
         }
+
     }
 
     override fun showResult(msg: Boolean) {
@@ -229,13 +231,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     private fun renewDot() {
         if (::renewDataListener.isInitialized) {
             renewDataListener.onReceivedData(true)
-        } else {
-            renewDataListener = object : RenewDataListener {
-                override fun onReceivedData(msg: Boolean) {
-
-                }
-            }
-            renewDataListener.onReceivedData(true)
         }
     }
 
@@ -266,7 +261,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         private const val TAG = "DiaryFragment"
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
-
     }
 
 }

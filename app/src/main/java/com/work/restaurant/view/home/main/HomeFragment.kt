@@ -71,9 +71,10 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
             R.id.iv_marker_url -> {
                 if (getMarkerUrl != "") {
                     val intent =
-                        Intent(activity?.application, SearchLookForActivity()::class.java)
-                    intent.putExtra(MARKER_CLICK_DATA, getMarkerUrl)
-                    intent.putExtra(MARKER_CLICK_TOGGLE, true)
+                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                            putExtra(MARKER_CLICK_DATA, getMarkerUrl)
+                            putExtra(MARKER_CLICK_TOGGLE, true)
+                        }
                     startActivity(intent)
                 } else {
                     Toast.makeText(this.context, "접속할 수 없습니다.", Toast.LENGTH_SHORT).show()

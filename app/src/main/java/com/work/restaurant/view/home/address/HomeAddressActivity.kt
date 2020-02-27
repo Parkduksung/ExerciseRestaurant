@@ -33,8 +33,9 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     override fun sendData(data: String) {
 
         val addressAllIntent =
-            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java)
-        addressAllIntent.putExtra(ADDRESS, data)
+            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java).apply {
+                putExtra(ADDRESS, data)
+            }
         setResult(RESULT_OK, addressAllIntent)
         finish()
     }

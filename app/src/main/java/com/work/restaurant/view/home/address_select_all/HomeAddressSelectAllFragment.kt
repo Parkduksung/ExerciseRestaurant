@@ -26,8 +26,9 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity != null && activity is AddressAllDataListener) {
-            addressAllDataListener = activity as AddressAllDataListener
+
+        (activity as? AddressAllDataListener)?.let {
+            addressAllDataListener = it
         }
     }
 
@@ -46,7 +47,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
                     bundle?.let {
                         it.getString(ADDRESS)?.let { addressAll ->
                             addressAllDataListener.sendData(addressAll)
-                            requireFragmentManager().popBackStack()
+                            fragmentManager?.popBackStack()
                             selectAll = tv_address_select.text.toString()
                         }
                     }
@@ -92,7 +93,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
 
-        const val ADDRESS = "Address"
+        const val ADDRESS = "address"
 
         fun newInstance(selectAddress: String) =
             HomeAddressSelectAllFragment().apply {

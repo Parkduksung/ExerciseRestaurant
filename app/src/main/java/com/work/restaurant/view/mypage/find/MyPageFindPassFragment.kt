@@ -23,7 +23,7 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_find_back -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
 
             R.id.btn_request_change_pass -> {

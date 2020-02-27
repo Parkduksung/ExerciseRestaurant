@@ -26,8 +26,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_login -> {
-
-                if (et_email.text.toString() != "" && et_pass.text.toString() != "") {
+                if (et_email.text.toString().isNotEmpty() && et_pass.text.toString().isNotEmpty()) {
                     pb_login.bringToFront()
                     pb_login.visibility = View.VISIBLE
                     btn_login.isClickable = false
@@ -42,7 +41,7 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
             }
 
             R.id.ib_login_back -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
 
             R.id.tv_login_register -> {
@@ -118,9 +117,10 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
                 }
             })
 
-        val data = Intent()
-        data.putExtra("id", et_email.text.toString())
-        data.putExtra("nickname", nickName)
+        val data = Intent().apply {
+            putExtra(LOGIN_ID, et_email.text.toString())
+            putExtra(LOGIN_NICKNAME, nickName)
+        }
         targetFragment?.onActivityResult(
             targetRequestCode,
             Activity.RESULT_OK,
@@ -129,13 +129,14 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
         et_email.text.clear()
         et_pass.text.clear()
 
+
         pb_login.visibility = View.GONE
         btn_login.isClickable = true
         ib_login_back.isClickable = true
         tv_login_register.isClickable = true
         tv_login_find.isClickable = true
 
-        requireFragmentManager().popBackStack()
+        fragmentManager?.popBackStack()
 
         alertDialog.show()
     }
@@ -169,6 +170,8 @@ class MyPageLoginFragment : BaseFragment(R.layout.mypage_login_fragment), View.O
     companion object {
         private const val TAG = "MyPageLoginFragment"
 
+        const val LOGIN_ID = "id"
+        const val LOGIN_NICKNAME = "nickname"
     }
 
 

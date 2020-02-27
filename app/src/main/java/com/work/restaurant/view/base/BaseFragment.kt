@@ -18,7 +18,7 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
 
         requireFragmentManager().fragments.forEach {
             if (it is MyPageRegisterOkFragment) {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
         }
         return fragmentManager?.backStackEntryCount != 0

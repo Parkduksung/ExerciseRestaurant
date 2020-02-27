@@ -35,8 +35,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity != null && activity is RegisterListener) {
-            registerListener = activity as RegisterListener
+        (activity as? RegisterListener)?.let {
+            registerListener = it
         }
     }
 
@@ -47,7 +47,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         when (v?.id) {
 
             R.id.ib_register_back -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
 
             R.id.btn_register -> {
@@ -188,11 +188,11 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                     })
 
                 } else {
-                    if (editText.text.toString() != "") {
+                    if (editText.text.toString().isNotEmpty()) {
                         imageView.setImageResource(R.drawable.ic_ok)
                         imageView.tag = R.drawable.ic_ok
 
-                        if (et_register_pass_ok.text.toString() != "") {
+                        if (et_register_pass_ok.text.toString().isNotEmpty()) {
 
                             if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
                                 iv_pass_ok_state.setImageResource(R.drawable.ic_ok)

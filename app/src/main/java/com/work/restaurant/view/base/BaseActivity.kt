@@ -12,11 +12,9 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
 
     override fun onBackPressed() {
 
-        val fragmentList = supportFragmentManager.fragments
-
         var handled = false
 
-        for (fragment in fragmentList) {
+        for (fragment in supportFragmentManager.fragments) {
             if (fragment is BaseFragment) {
                 handled = fragment.onBackPressed()
                 if (handled) {

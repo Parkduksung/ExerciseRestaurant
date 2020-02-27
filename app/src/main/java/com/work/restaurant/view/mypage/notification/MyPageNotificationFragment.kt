@@ -25,8 +25,9 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is NotificationDataListener) {
-            notificationDataListener = context
+
+        (context as NotificationDataListener).let {
+            notificationDataListener = it
         }
 
     }
@@ -34,7 +35,7 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_notification_back -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
         }
     }

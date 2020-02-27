@@ -25,11 +25,6 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
     private lateinit var presenter: MyPageWithdrawalContract.Presenter
 
-    override fun onBackPressed(): Boolean {
-        requireFragmentManager().popBackStack()
-        return super.onBackPressed()
-    }
-
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -82,7 +77,7 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
 
     override fun showWithdrawCancel() {
-        requireFragmentManager().popBackStack()
+        fragmentManager?.popBackStack()
     }
 
     private fun withdrawOk(userNickname: String) {
@@ -93,17 +88,16 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
                 btn_withdraw_cancel.isClickable = true
                 btn_withdraw_ok.isClickable = true
 
-                val data = Intent()
-                data.putExtra("id", "")
-                data.putExtra("nickname", "")
+                val data = Intent().apply {
+                    putExtra(WITHDRAW_ID, "")
+                    putExtra(WITHDRAW_NICKNAME, "")
+                }
                 targetFragment?.onActivityResult(
                     targetRequestCode,
                     Activity.RESULT_OK,
                     data
                 )
 
-                requireFragmentManager().popBackStack()
-                requireFragmentManager().popBackStack()
 
                 val alertDialog =
                     AlertDialog.Builder(
@@ -126,6 +120,9 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
             toggleWithdraw = false
             toggleWithdrawLogin = false
+
+            fragmentManager?.popBackStack()
+
         }
 
     }
@@ -200,6 +197,10 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
         private var toggleWithdraw = false
         private var toggleWithdrawLogin = false
+
+
+        const val WITHDRAW_ID = "id"
+        const val WITHDRAW_NICKNAME = "nickname"
 
     }
 

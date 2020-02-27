@@ -30,7 +30,7 @@ class MyPageRegisterOkFragment : BaseFragment(R.layout.mypage_registerok_fragmen
     }
 
     override fun showRegisterOk() {
-        requireFragmentManager().popBackStack()
+        fragmentManager?.popBackStack()
         activity?.onBackPressed()
     }
 

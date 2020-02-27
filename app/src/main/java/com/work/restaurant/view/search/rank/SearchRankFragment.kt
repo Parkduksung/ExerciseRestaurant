@@ -176,9 +176,11 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
         when (select) {
             SELECT_URL -> {
-                val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
-                intent.putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
+                val intent =
+                    Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                        putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
+                        putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
+                    }
                 startActivity(intent)
             }
             SELECT_BOOKMARK -> {
@@ -237,7 +239,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                     val totalItemCount = searchRankAdapter.itemCount
 
                     if (lastVisible >= totalItemCount - 1) {
-                        if (tv_search_locate.text.toString() != "") {
+                        if (tv_search_locate.text.toString().isNotEmpty()) {
                             if (!toggleSort) {
                                 presenter.getCurrentLocation(
                                     tv_search_locate.text.toString(),
@@ -257,7 +259,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             })
         }
 
-        if (tv_search_locate.text.toString() == "") {
+        if (tv_search_locate.text.toString().isEmpty()) {
             presenter.getCurrentAddress(
                 App.prefs.current_location_long.toDouble(),
                 App.prefs.current_location_lat.toDouble()

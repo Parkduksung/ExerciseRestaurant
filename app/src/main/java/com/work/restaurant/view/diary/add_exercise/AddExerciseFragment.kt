@@ -37,7 +37,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             data
         )
 
-        requireFragmentManager().popBackStack()
+        fragmentManager?.popBackStack()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
@@ -92,7 +92,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             }
 
             R.id.add_exercise_cancel -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
 
             R.id.add_exercise_save -> {
@@ -109,7 +109,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                         val addExerciseCount: EditText =
                             it.findViewById(R.id.et_add_exercise_count)
 
-                        if (addExerciseKg.text.toString() != "" && addExerciseCount.text.toString() != "") {
+                        if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
                             val exerciseSet = ExerciseSet(
                                 addExerciseKg.text.toString(),
                                 addExerciseCount.text.toString()

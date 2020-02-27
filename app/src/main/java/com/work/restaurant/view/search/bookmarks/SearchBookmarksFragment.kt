@@ -39,9 +39,11 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     override fun getBookmarkData(select: Int, data: BookmarkModel) {
         when (select) {
             SELECT_URL -> {
-                val intent = Intent(activity?.application, SearchLookForActivity()::class.java)
-                intent.putExtra(BOOKMARK_DATA, data.bookmarkUrl)
-                intent.putExtra(BOOKMARK_TOGGLE, true)
+                val intent =
+                    Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                        putExtra(BOOKMARK_DATA, data.bookmarkUrl)
+                        putExtra(BOOKMARK_TOGGLE, true)
+                    }
                 startActivity(intent)
             }
             SELECT_DELETE -> {

@@ -28,7 +28,7 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_logout_cancel -> {
-                requireFragmentManager().popBackStack()
+                fragmentManager?.popBackStack()
             }
 
 
@@ -76,15 +76,16 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
         FirebaseAuth.getInstance().signOut()
 
-        val data = Intent()
-        data.putExtra("id", "")
-        data.putExtra("nickname", "")
+        val data = Intent().apply {
+            putExtra(LOGOUT_ID, "")
+            putExtra(LOGOUT_NICKNAME, "")
+        }
         targetFragment?.onActivityResult(
             targetRequestCode,
             Activity.RESULT_OK,
             data
         )
-        requireFragmentManager().popBackStack()
+        fragmentManager?.popBackStack()
     }
 
     override fun showLogoutNo() {
@@ -93,6 +94,10 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     companion object {
         private const val TAG = "MyPageLogoutFragment"
+
+        const val LOGOUT_ID = "id"
+        const val LOGOUT_NICKNAME = "nickname"
+
     }
 
 }
