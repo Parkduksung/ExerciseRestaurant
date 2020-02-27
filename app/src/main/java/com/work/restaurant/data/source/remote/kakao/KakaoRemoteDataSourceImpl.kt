@@ -2,7 +2,6 @@ package com.work.restaurant.data.source.remote.kakao
 
 import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
-import com.work.restaurant.network.model.kakaoImage.KakaoImageResponse
 import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressResponse
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
@@ -67,35 +66,6 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
     }
 
 
-    override fun getKakaoImage(
-        placeName: String,
-        callback: KakaoRemoteDataSourceCallback.KakaoImageCallback
-    ) {
-
-        kakaoApi.kakaoItemImage(placeName).enqueue(object : Callback<KakaoImageResponse> {
-            override fun onFailure(call: Call<KakaoImageResponse>?, t: Throwable?) {
-                callback.onFailure("${t?.message}")
-            }
-
-            override fun onResponse(
-                call: Call<KakaoImageResponse>?,
-                response: Response<KakaoImageResponse>?
-            ) {
-                if (response != null) {
-                    if (response.isSuccessful) {
-
-                        val list = response.body().kakaoImageDocuments
-
-                        callback.onSuccess(list)
-                    } else {
-                        callback.onFailure(response.message())
-                    }
-                }
-            }
-        })
-
-    }
-
     override fun getKakaoItemInfo(
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
@@ -132,10 +102,11 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
     override fun getData(
         currentX: Double,
         currentY: Double,
+        page: Int,
         sort: String,
         callback: KakaoRemoteDataSourceCallback
     ) {
-        kakaoApi.keywordSearch("헬스장", currentX, currentY, 20000, sort).enqueue(object :
+        kakaoApi.keywordSearch(currentX, currentY, page, sort).enqueue(object :
             Callback<KakaoSearchResponse> {
             override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
                 callback.onFailure("${t?.message}")
@@ -145,12 +116,11 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                 call: Call<KakaoSearchResponse>?,
                 response: Response<KakaoSearchResponse>?
             ) {
-
-//                Log.d("카카오결과1", response?.code().toString())
-//                Log.d("카카오결과1", response?.message())
                 if (response != null) {
                     if (response.isSuccessful) {
-                        callback.onSuccess(response.body().documents)
+                        callback.onSuccess(
+                            response.body()
+                        )
                     } else {
                         callback.onFailure(response.message())
                     }

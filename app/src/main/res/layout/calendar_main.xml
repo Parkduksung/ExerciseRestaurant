@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center|top"
     android:orientation="vertical"
-    tools:ignore="NestedWeights ,DisableBaselineAlignment, ,UselessLeaf,UseCompoundDrawables">
+    tools:ignore="NestedWeights ,DisableBaselineAlignment, ,UselessLeaf,UseCompoundDrawables, ContentDescription">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calender_view"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:mcv_selectionColor="@color/transparentColorGreen"
         app:mcv_showOtherDates="other_months"
-        app:mcv_tileHeight="40dp" />
+        app:mcv_tileHeight="40sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:text="운동" />
+                    android:text="@string/tv_calendar_main_exercise" />
 
             </LinearLayout>
 
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:text="식단" />
+                    android:text="@string/tv_calendar_main_eat" />
 
             </LinearLayout>
 

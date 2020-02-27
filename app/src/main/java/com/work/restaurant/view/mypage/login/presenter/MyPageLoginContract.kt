@@ -24,7 +24,7 @@ interface MyPageLoginContract {
         fun registerPage()
 
         fun findPass()
-        //
+
         fun changeState(userId: String,  userNickname:String)
     }
 

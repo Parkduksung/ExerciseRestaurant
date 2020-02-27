@@ -61,6 +61,9 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
                     R.color.transparent
                 )
             )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
         }
     }
 

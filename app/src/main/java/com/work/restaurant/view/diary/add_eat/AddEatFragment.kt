@@ -54,6 +54,9 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
                     R.color.transparent
                 )
             )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
         }
     }
 

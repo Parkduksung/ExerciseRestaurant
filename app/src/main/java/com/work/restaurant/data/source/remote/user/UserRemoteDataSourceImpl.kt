@@ -24,7 +24,7 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                 userApi.login(email, pass).enqueue(object :
                     Callback<ResultResponse> {
                     override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-//
+
                         userApi.update(email, pass).enqueue(object : Callback<ResultResponse> {
                             override fun onFailure(
                                 call: Call<ResultResponse>?,

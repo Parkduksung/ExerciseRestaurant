@@ -3,7 +3,6 @@ package com.work.restaurant.view.search.rank
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,11 +11,12 @@ import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.App
-import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
+import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
@@ -32,6 +32,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     SearchRankContract.View,
     AdapterDataListener.GetKakaoData {
 
+
     private lateinit var presenter: SearchRankPresenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
@@ -39,12 +40,10 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     override fun showCurrentLocation(addressName: String) {
 
         val splitAddressName = addressName.split(" ")
-
         val convertAddressName =
             "${compressCity(splitAddressName[0])} ${splitAddressName[1]} ${splitAddressName[2]}"
-
         tv_search_locate.text = convertAddressName
-        presenter.getCurrentLocation(addressName)
+        presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURANCY)
     }
 
 
@@ -68,18 +67,38 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                val getAddressData = data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
+                getAddressData?.let {
+
+                    tv_search_locate.text = getAddressData
+
+                    initData()
+                    toggleSort = false
+
+                    presenter.getCurrentLocation(
+                        tv_search_locate.text.toString(),
+                        searchRankAdapter.itemCount,
+                        SORT_ACCURANCY
+                    )
+                }
+            }
+        }
+    }
+
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
             R.id.iv_search_settings -> {
-                val homeAddressSelectAllFragment = HomeAddressSelectAllFragment()
-                homeAddressSelectAllFragment.setTargetFragment(this, REQUEST_CODE)
-
                 val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-                startActivity(homeAddressActivity)
+                startActivityForResult(homeAddressActivity, REQUEST_CODE)
             }
-
             R.id.iv_search_filter -> {
                 val menuBuilder = MenuBuilder(this.context)
                 val inflater = MenuInflater(this.context)
@@ -99,15 +118,22 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                     ): Boolean {
                         when (item?.itemId) {
                             R.id.exercise_list_accuracy_sort -> {
+                                initData()
+                                toggleSort = false
 
-                                presenter.getSortKakaoList(
+                                presenter.getCurrentLocation(
                                     tv_search_locate.text.toString(),
+                                    searchRankAdapter.itemCount,
                                     SORT_ACCURANCY
                                 )
                             }
                             R.id.exercise_list_distance_sort -> {
-                                presenter.getSortKakaoList(
+                                initData()
+                                toggleSort = true
+
+                                presenter.getCurrentLocation(
                                     tv_search_locate.text.toString(),
+                                    searchRankAdapter.itemCount,
                                     SORT_DISTANCE
                                 )
                             }
@@ -123,27 +149,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val address = data?.extras?.getString("address")
-                tv_search_locate.text = address
-                Toast.makeText(this.context, "$address", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        if (requestCode == 12345) {
-            if (resultCode == Activity.RESULT_OK) {
-                val address = data?.extras?.getString("address")
-                tv_search_locate.text = address
-                Toast.makeText(this.context, "$address", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = SearchRankPresenter(
@@ -156,37 +161,17 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         iv_search_filter.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
-        if (selectAll == "") {
+        setup()
 
-            presenter.getCurrentAddress(
-                App.prefs.current_location_long.toDouble(),
-                App.prefs.current_location_lat.toDouble()
-            )
-
-        }
-
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-
-        if (selectAll.trim() != "") {
-            tv_search_locate.text = selectAll
-            presenter.getCurrentLocation(tv_search_locate.text.toString())
-        }
-        Log.d(TAG, "onResume")
     }
 
     override fun showKakaoList(kakaoList: List<KakaoSearchModel>) {
-        recyclerview_rank.run {
-            this.adapter = searchRankAdapter
-            searchRankAdapter.clearListData()
-            searchRankAdapter.addData(kakaoList)
-            layoutManager = LinearLayoutManager(this.context)
+        AppExecutors().mainThread.execute {
+            recyclerview_rank.run {
+                searchRankAdapter.addAllData(kakaoList)
+            }
         }
     }
-
 
     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
         when (select) {
@@ -196,7 +181,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 intent.putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
                 startActivity(intent)
             }
-
             SELECT_BOOKMARK -> {
                 val toBookmarkModel = data.toBookmarkModel()
                 presenter.addBookmarkKakaoItem(toBookmarkModel)
@@ -204,10 +188,94 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
+    override fun showLoad() {
+        if (pb_search_rank != null) {
+            pb_search_rank.bringToFront()
+            pb_search_rank.visibility = View.VISIBLE
+            pb_search_rank.isIndeterminate = true
+        }
+    }
+
+    override fun showKakaoResult(sort: Int) {
+
+        AppExecutors().mainThread.execute {
+            when (sort) {
+                0 -> {
+                    Toast.makeText(context, "현재 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                1 -> {
+                    Toast.makeText(context, "데이터를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                2 -> {
+                    Toast.makeText(context, "더이상 결과가 없습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+
+        if (pb_search_rank != null) {
+            pb_search_rank.visibility = View.GONE
+            pb_search_rank.isIndeterminate = false
+        }
+    }
+
+
+    private fun setup() {
+        recyclerview_rank.run {
+            this.adapter = searchRankAdapter
+            layoutManager = LinearLayoutManager(this.context)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val lastVisible =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
+                    val totalItemCount = searchRankAdapter.itemCount
+
+                    if (lastVisible >= totalItemCount - 1) {
+                        if (tv_search_locate.text.toString() != "") {
+                            if (!toggleSort) {
+                                presenter.getCurrentLocation(
+                                    tv_search_locate.text.toString(),
+                                    totalItemCount,
+                                    SORT_ACCURANCY
+                                )
+                            } else {
+                                presenter.getCurrentLocation(
+                                    tv_search_locate.text.toString(),
+                                    totalItemCount,
+                                    SORT_DISTANCE
+                                )
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        if (tv_search_locate.text.toString() == "") {
+            presenter.getCurrentAddress(
+                App.prefs.current_location_long.toDouble(),
+                App.prefs.current_location_lat.toDouble()
+            )
+        }
+    }
+
+    private fun initData() {
+        presenter.resetData()
+        AppExecutors().mainThread.execute {
+            searchRankAdapter.clearListData()
+        }
+    }
+
 
     companion object {
         private const val TAG = "SearchRankFragment"
-        private const val REQUEST_CODE = 1
+        private const val REQUEST_CODE = 2
 
         private const val SELECT_URL = 1
         private const val SELECT_BOOKMARK = 2
@@ -215,12 +283,15 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         private const val RESULT_SUCCESS = true
         private const val RESULT_FAILURE = false
 
-        private const val SORT_DISTANCE = "distance"
+        private const val INIT_COUNT = 15
 
+        private var toggleSort = false
+        private const val SORT_DISTANCE = "distance"
         private const val SORT_ACCURANCY = "accuracy"
 
         const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
         const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"
+
 
     }
 

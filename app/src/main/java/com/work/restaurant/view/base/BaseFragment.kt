@@ -34,7 +34,7 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
 
         val view = inflater.inflate(layoutId, container, false)
         view.setBackgroundColor(ContextCompat.getColor(App.instance.context(), R.color.colorWhite))
-        view?.setOnTouchListener { _, _ ->
+        view.setOnTouchListener { _, _ ->
             true
         }
         return view

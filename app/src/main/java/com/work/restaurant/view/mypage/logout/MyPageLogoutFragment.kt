@@ -55,6 +55,9 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
                     R.color.transparent
                 )
             )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
         }
     }
 

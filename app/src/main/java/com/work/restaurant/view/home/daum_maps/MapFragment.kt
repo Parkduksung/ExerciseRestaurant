@@ -9,6 +9,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
@@ -23,6 +24,7 @@ import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.MapInterface
+import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.ADDRESS
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
 import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
 import kotlinx.android.synthetic.main.map.*
@@ -75,6 +77,7 @@ class MapFragment : BaseFragment(R.layout.map),
         when (v?.id) {
 
             R.id.btn_current_location -> {
+
                 showCurrentLocation()
             }
 
@@ -101,6 +104,16 @@ class MapFragment : BaseFragment(R.layout.map),
         )
 
         btn_current_location.setOnClickListener(this)
+
+        val bundle = arguments
+        if (bundle != null) {
+            val c = bundle.getString(ADDRESS)
+
+            c?.let {
+                Log.d("전달됨..", bundle.getString(ADDRESS)!!)
+            }
+        }
+
 
     }
 
@@ -354,17 +367,19 @@ class MapFragment : BaseFragment(R.layout.map),
 
 
     //주소 변경한 위치 좌표얻어오는것
-    private fun getLocation(location: String) {
+    fun getLocation(location: String) {
+        if (::mapView.isInitialized) {
+            mapView.removePOIItem(selectPOIItem)
+            AppExecutors().diskIO.execute {
 
-        AppExecutors().diskIO.execute {
+                val geoCoder = Geocoder(context, Locale.getDefault())
 
-            val geoCoder = Geocoder(context, Locale.getDefault())
+                val addresses = geoCoder.getFromLocationName(location, 1)
 
-            val addresses = geoCoder.getFromLocationName(location, 1)
-
-            if (addresses.isNotEmpty()) {
-                presenter.getKakaoData(addresses[0].longitude, addresses[0].latitude)
-                showSelectLocation(addresses[0].longitude, addresses[0].latitude)
+                if (addresses.isNotEmpty()) {
+                    presenter.getKakaoData(addresses[0].longitude, addresses[0].latitude)
+                    showSelectLocation(addresses[0].longitude, addresses[0].latitude)
+                }
             }
         }
     }
@@ -434,6 +449,7 @@ class MapFragment : BaseFragment(R.layout.map),
                     if (::mapInterface.isInitialized) {
                         mapInterface.click(false)
                     }
+
                     if (toggleSelectLoction) {
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
@@ -450,6 +466,16 @@ class MapFragment : BaseFragment(R.layout.map),
 
     companion object {
 
+
+        fun newInstance(selectAddress: String) =
+            MapFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ADDRESS, selectAddress)
+                }
+            }
+
+
+        var receiveAddress = ""
         var toggleSelectLoction = false
         private const val GPS_ENABLE_REQUEST_CODE = 1
     }

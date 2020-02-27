@@ -5,6 +5,7 @@ interface KakaoRemoteDataSource {
     fun getData(
         currentX: Double,
         currentY: Double,
+        page: Int,
         sort: String,
         callback: KakaoRemoteDataSourceCallback
     )
@@ -12,11 +13,6 @@ interface KakaoRemoteDataSource {
     fun getKakaoItemInfo(
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
-    )
-
-    fun getKakaoImage(
-        placeName: String,
-        callback: KakaoRemoteDataSourceCallback.KakaoImageCallback
     )
 
     fun getKakaoAddressLocation(

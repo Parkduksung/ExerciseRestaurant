@@ -3,6 +3,7 @@ package com.work.restaurant.view.home.daum_maps.presenter
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 
 class MapPresenter(
     private val mapView: MapContract.View,
@@ -20,7 +21,6 @@ class MapPresenter(
                 }
 
                 override fun onFailure(message: String) {
-
                 }
             })
     }
@@ -29,21 +29,25 @@ class MapPresenter(
         kakaoRepository.getKakaoResult(
             currentX,
             currentY,
-            "distance",
+            PAGENUM,
+            SORT_DISTANCE,
             object : KakaoRepositoryCallback {
-                override fun onSuccess(kakaoList: List<KakaoSearchDocuments>) {
-
-                    val toKakaoModelList = kakaoList.map { it.toKakaoModel() }
-
+                override fun onSuccess(kakaoList: KakaoSearchResponse) {
+                    val toKakaoModelList = kakaoList.documents.map { it.toKakaoModel() }
                     mapView.showKakaoData(
                         toKakaoModelList
                     )
                 }
 
                 override fun onFailure(message: String) {
-
                 }
             }
         )
+    }
+
+
+    companion object {
+        private const val PAGENUM = 1
+        private const val SORT_DISTANCE = "distance"
     }
 }

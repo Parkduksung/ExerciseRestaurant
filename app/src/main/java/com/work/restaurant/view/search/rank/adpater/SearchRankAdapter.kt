@@ -131,7 +131,6 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                                 R.id.kakao_bookmark_item -> {
                                     adapterListener.getKakaoData(2, kakaoItem)
                                 }
-
                             }
                             return true
                         }
@@ -144,17 +143,31 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                 }
             }
 
-            kakaoDistance.text = kakaoItem.distance + "M"
+            if (kakaoItem.distance.toInt() >= 1000) {
+                val convertKm = kakaoItem.distance.toInt() / 1000
+                val convertM = (kakaoItem.distance.toInt() - (convertKm * 1000))
+
+                if (convertM / 100 > 0) {
+                    val decimalPoint = ((kakaoItem.distance.toInt() % 1000).toString())[0]
+                    kakaoDistance.text = "$convertKm" + "." + "${decimalPoint}Km"
+                } else {
+                    kakaoDistance.text = "$convertKm" + ".0Km"
+                }
+            } else {
+                kakaoDistance.text = kakaoItem.distance + "M"
+            }
+
             kakaoName.text = kakaoItem.placeName
 
         }
 
-
     }
 
 
-    fun addData(documents: List<KakaoSearchModel>) =
+    fun addAllData(documents: List<KakaoSearchModel>) {
         kakaoList.addAll(documents)
+        notifyItemInserted(kakaoList.lastIndex)
+    }
 
 
     fun clearListData() {
@@ -166,5 +179,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
     fun setItemClickListener(listener: AdapterDataListener.GetKakaoData) {
         adapterListener = listener
     }
+
+
 }
 

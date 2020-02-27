@@ -44,7 +44,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
         }
     }
 
-
     override fun onReceivedData(msg: Boolean) {
         if (msg) {
             supportFragmentManager.fragments.forEach {
@@ -79,13 +78,11 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
         presenter = ExerciseRestaurantPresenter(this)
         start()
-
     }
 
     private fun start() {
         presenter.init()
     }
-
 
     override fun showInit() {
 
@@ -112,14 +109,12 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
             getTabAt(3)?.setIcon(R.drawable.calendar)
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
-
     }
 
     companion object {
 
         var selectAll = ""
     }
-
 
 }
 

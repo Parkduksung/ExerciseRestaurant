@@ -136,4 +136,6 @@
     </string>
     <string name="exercise_sort_accuracy">정확도순</string>
     <string name="exercise_sort_distance">거리순</string>
+    <string name="tv_calendar_main_exercise">운동</string>
+    <string name="tv_calendar_main_eat">식단</string>
 </resources>

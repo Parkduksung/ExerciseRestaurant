@@ -38,9 +38,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         )
 
         requireFragmentManager().popBackStack()
-
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onCreateView(
@@ -56,6 +54,9 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                     R.color.transparent
                 )
             )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
         }
     }
 

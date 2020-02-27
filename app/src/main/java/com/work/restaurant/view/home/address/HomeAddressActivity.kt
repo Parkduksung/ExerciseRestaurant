@@ -1,5 +1,6 @@
 package com.work.restaurant.view.home.address
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
@@ -15,6 +16,7 @@ import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
+import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.base.BaseActivity
@@ -26,7 +28,17 @@ import kotlinx.android.synthetic.main.address_main.*
 
 class HomeAddressActivity : BaseActivity(R.layout.address_main),
     HomeAddressContract.View, View.OnClickListener,
-    AdapterDataListener {
+    AdapterDataListener,
+    HomeAddressSelectAllFragment.AddressAllDataListener {
+    override fun sendData(data: String) {
+
+        val addressAllIntent =
+            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java)
+        addressAllIntent.putExtra(ADDRESS, data)
+        setResult(RESULT_OK, addressAllIntent)
+        finish()
+    }
+
     override fun showRoadItem(address: TextView, list: List<String>) {
 
         select(address, list.toTypedArray())
@@ -60,12 +72,14 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
             selectAddress = "$si $gunGu $dong"
 
 
-            this.supportFragmentManager.beginTransaction()
+            supportFragmentManager.beginTransaction()
                 .replace(
                     R.id.address_main_container, HomeAddressSelectAllFragment.newInstance(
                         selectAddress
                     )
-                ).commit()
+                )
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -226,5 +240,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         var dong = ""
         var selectAddress = ""
 
+        const val ADDRESS = "address"
     }
 }
