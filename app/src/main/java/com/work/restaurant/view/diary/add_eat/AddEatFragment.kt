@@ -1,26 +1,22 @@
 package com.work.restaurant.view.diary.add_eat
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
 import kotlinx.android.synthetic.main.diary_add_eat.*
 
 
-class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
+class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
 
 
@@ -28,50 +24,27 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
     override fun showAddSuccess() {
 
-        val data = Intent()
         targetFragment?.onActivityResult(
             targetRequestCode,
             Activity.RESULT_OK,
-            data
+            null
         )
-        fragmentManager?.popBackStack()
+        dismiss()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        return super.onCreateView(inflater, container, savedInstanceState).also {
-            it?.setBackgroundColor(
-                ContextCompat.getColor(
-                    App.instance.context(),
-                    R.color.transparent
-                )
-            )
-            it?.setOnTouchListener { _, _ ->
-                true
-            }
-        }
-    }
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
 
             R.id.btn_add_eat_time -> {
-
                 getTimePicker()
-
             }
 
             R.id.add_eat_cancel -> {
-
-                fragmentManager?.popBackStack()
-
+                dismiss()
             }
 
             R.id.add_eat_save -> {
@@ -151,16 +124,13 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
         alertDialog.setView(dialogView)
             .setPositiveButton("변경") { _, _ ->
 
-
                 if (timePicker.minute / 10 == 0) {
                     val changedTime =
                         "${getAmPm(timePicker.hour)} 0${timePicker.minute}분"
-
                     btn_add_eat_time.text = changedTime
                 } else {
                     val changedTime =
                         "${getAmPm(timePicker.hour)} ${timePicker.minute}분"
-
                     btn_add_eat_time.text = changedTime
                 }
 
@@ -173,17 +143,20 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     }
 
     private fun getAmPm(hour: Int): String {
+
         return if (hour > 12) {
             "오후 ${hour - 12}시"
         } else {
             "오전 ${hour}시"
         }
+
     }
 
 
     companion object {
-        private const val TAG = "AddEatFragment"
-        var radioClick = 2
+        const val TAG = "AddEatFragment"
+        private var radioClick = 2
+
 
     }
 

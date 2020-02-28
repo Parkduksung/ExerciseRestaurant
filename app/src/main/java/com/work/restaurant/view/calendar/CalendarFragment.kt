@@ -3,6 +3,7 @@ package com.work.restaurant.view.calendar
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -90,10 +91,8 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             }
         }
 
-
         dotExercise = true
         showDotAndWeekend()
-
     }
 
     override fun showEatData(data: List<EatModel>) {
@@ -145,6 +144,8 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         clickDate(calender_view)
 
+        showExplain()
+
     }
 
     private fun initCalendar() {
@@ -169,10 +170,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
 
-
-        presenter.getDataOfTheDayEatData(App.prefs.current_date)
-        presenter.getDataOfTheDayExerciseData(App.prefs.current_date)
-
+        toggleExplain = true
 
     }
 
@@ -213,6 +211,10 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         presenter.getAllEatData()
         presenter.getAllExerciseData()
+        presenter.getDataOfTheDayEatData(App.prefs.current_date)
+        presenter.getDataOfTheDayExerciseData(App.prefs.current_date)
+        calender_view.selectedDate = CalendarDay.today()
+        toggleMessage = true
 
     }
 
@@ -226,11 +228,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 (date.month + 1).toString(),
                 date.day.toString()
             )
-
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
         }
-
 
     }
 
@@ -241,20 +241,43 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             val dayOfSet = mutableSetOf<DiaryModel>()
             dayOfSet.addAll(eat)
             dayOfSet.addAll(exercise)
+
+            val toSortDayOfSet = dayOfSet.map { it.toSortDiaryModel() }
+
+
             workEat = false
             workExercise = false
 
+
             if (dayOfSet.size == 0) {
-                Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT).show()
+                if (!toggleExplain) {
+                    toggleExplain = true
+                    showExplain()
+                }
+
+                if (!toggleMessage) {
+                    Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    toggleMessage = false
+                }
+
+            } else {
+                recyclerview_calendar.run {
+                    diaryAdapter.clearListData()
+                    if (dayOfSet.size != 0)
+                        diaryAdapter.addAllData(toSortDayOfSet.toList().sortedBy { it.time })
+                }
+                toggleExplain = false
+                showExplain()
             }
 
-
-            recyclerview_calendar.run {
-                diaryAdapter.clearListData()
-                if (dayOfSet.size != 0)
-                    diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
-            }
         }
+    }
+
+    private fun showExplain() {
+        et_calendar_main_context.isVisible = toggleExplain
+        recyclerview_calendar.isVisible = !toggleExplain
     }
 
 
@@ -262,13 +285,14 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         private const val TAG = "CalendarFragment"
 
-        var workEat = false
-        var workExercise = false
+        private var workEat = false
+        private var workExercise = false
 
+        private var toggleExplain = true
+        private var toggleMessage = false
 
-        var dotEat = false
-        var dotExercise = false
-
+        private var dotEat = false
+        private var dotExercise = false
 
     }
 

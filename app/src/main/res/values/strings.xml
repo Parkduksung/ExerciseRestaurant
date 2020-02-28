@@ -138,4 +138,5 @@
     <string name="exercise_sort_distance">거리순</string>
     <string name="tv_calendar_main_exercise">운동</string>
     <string name="tv_calendar_main_eat">식단</string>
+    <string name="et_calendar_main_context">날짜를 클릭하면 기록을 볼 수 있어요!</string>
 </resources>

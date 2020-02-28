@@ -17,7 +17,6 @@ class BookmarkLocalDataSourceImpl(
 
             val addBookmark = bookmarkDatabase.bookmarkDao().addBookmark(bookmarkEntity)
 
-
             appExecutors.mainThread.execute {
                 if (addBookmark >= 1) {
                     callback.onSuccess()

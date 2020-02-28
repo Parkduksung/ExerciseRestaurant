@@ -2,7 +2,6 @@ package com.work.restaurant.view.diary.add_exercise
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
@@ -10,18 +9,17 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
-import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.util.App
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
 import kotlinx.android.synthetic.main.diary_add_exercise.*
 
 
-class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
+class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
     View.OnClickListener, AddExerciseContract.View {
 
     private lateinit var viewList: ArrayList<View>
@@ -30,35 +28,15 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
     override fun showAddSuccess() {
 
-        val data = Intent()
         targetFragment?.onActivityResult(
             targetRequestCode,
             Activity.RESULT_OK,
-            data
+            null
         )
-
-        fragmentManager?.popBackStack()
+        dismiss()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        return super.onCreateView(inflater, container, savedInstanceState).also {
-            it?.setBackgroundColor(
-                ContextCompat.getColor(
-                    App.instance.context(),
-                    R.color.transparent
-                )
-            )
-            it?.setOnTouchListener { _, _ ->
-                true
-            }
-        }
-    }
 
     override fun onClick(v: View?) {
 
@@ -92,7 +70,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             }
 
             R.id.add_exercise_cancel -> {
-                fragmentManager?.popBackStack()
+                dismiss()
             }
 
             R.id.add_exercise_save -> {
@@ -103,7 +81,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                     val setList = mutableListOf<ExerciseSet>()
 
                     viewList.forEach {
-
                         val addExerciseKg: EditText =
                             it.findViewById(R.id.et_add_exercise_kg)
                         val addExerciseCount: EditText =
@@ -137,7 +114,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                 }
             }
 
-
         }
     }
 
@@ -161,7 +137,6 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         btn_add_exercise_time.setOnClickListener(this)
         add_exercise_cancel.setOnClickListener(this)
         add_exercise_save.setOnClickListener(this)
-
 
     }
 
@@ -280,10 +255,8 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
         optionMenu.show()
     }
 
-
     companion object {
-        private const val TAG = "CalendarFragment"
-
+        const val TAG = "AddExerciseFragment"
     }
 
 

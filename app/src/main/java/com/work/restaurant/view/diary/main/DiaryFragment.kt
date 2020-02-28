@@ -96,7 +96,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.show()
 
         } else {
-
             val alertDialog =
                 AlertDialog.Builder(
                     ContextThemeWrapper(
@@ -130,10 +129,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
         diaryModel.addAll(getDiaryModel)
 
+        val toSortDiaryModel = diaryModel.map { it.toSortDiaryModel() }
 
         recyclerview_diary.run {
             diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+            diaryAdapter.addAllData(toSortDiaryModel.toList().sortedBy { it.time })
         }
 
 
@@ -144,12 +144,14 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
+
         diaryModel.addAll(getDiaryModel)
 
+        val toSortDiaryModel = diaryModel.map { it.toSortDiaryModel() }
 
         recyclerview_diary.run {
             diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+            diaryAdapter.addAllData(toSortDiaryModel.toList().sortedBy { it.time })
         }
 
     }
@@ -161,15 +163,13 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.btn_add_eat -> {
 
                 val addEatFragment = AddEatFragment()
-
                 addEatFragment.setTargetFragment(
                     this,
                     REGISTER_EAT
                 )
-                requireFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, addEatFragment)
-                    .addToBackStack(null)
-                    .commit()
+                fragmentManager?.let {
+                    addEatFragment.show(it, AddEatFragment.TAG)
+                }
             }
 
             R.id.btn_add_exercise -> {
@@ -179,10 +179,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                     this,
                     REGISTER_EXERCISE
                 )
-                requireFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, addExerciseFragment)
-                    .addToBackStack(null)
-                    .commit()
+
+                fragmentManager?.let {
+                    addExerciseFragment.show(it, AddExerciseFragment.TAG)
+                }
+
             }
 
         }

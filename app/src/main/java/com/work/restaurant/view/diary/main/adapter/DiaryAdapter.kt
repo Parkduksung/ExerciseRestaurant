@@ -95,11 +95,10 @@ class DiaryAdapter :
                 }
             }
 
-
             var i = 0
             addType.text = "운동"
             addExerciseType.text = item.type
-            addTime.text = item.time
+            addTime.text = showConvertTime(item.time)
             addName.text = item.exerciseSetName
 
             when (item.type) {
@@ -180,7 +179,7 @@ class DiaryAdapter :
             }
 
             addType.text = type[item.type.toInt()]
-            addTime.text = item.time
+            addTime.text = showConvertTime(item.time)
             addMemo.text = item.memo
 
         }
@@ -190,11 +189,6 @@ class DiaryAdapter :
     fun addAllData(diaryModel: List<DiaryModel>) =
         diaryList.addAll(diaryModel.sortedBy { it.time })
 
-
-    fun addData(diaryModel: DiaryModel) {
-        diaryList.add(diaryModel)
-        notifyDataSetChanged()
-    }
 
     fun clearListData() {
         diaryList.clear()
@@ -211,6 +205,25 @@ class DiaryAdapter :
         adapterListener = listener
     }
 
+
+    private fun showConvertTime(time: String): String {
+
+        val getAmPm = time.substring(0, 2)
+        val getHour =
+            if (time.substring(2, 4).toInt() > 12) {
+                "${time.substring(2, 4).toInt() - 12}"
+            } else {
+                if (time.substring(2, 4).toInt() / 10 == 0) {
+                    "${time[3]}"
+                } else {
+                    "${time.substring(2, 4).toInt()}"
+                }
+            }
+
+        val getMinute = time.substring(4)
+
+        return "$getAmPm $getHour" + "시 " + getMinute + "분"
+    }
 
 }
 

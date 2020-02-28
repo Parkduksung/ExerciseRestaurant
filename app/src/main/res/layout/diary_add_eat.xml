@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingTop="100dp"
     android:paddingRight="20dp"
-    android:paddingBottom="100dp"
+    android:paddingBottom="120dp"
     tools:ignore="SpUsage, NestedWeights, DisableBaselineAlignment">
 
     <LinearLayout

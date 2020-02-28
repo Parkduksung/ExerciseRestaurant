@@ -65,7 +65,6 @@ class EatLocalDataSourceImpl(
                     .apply {
                         callback.onSuccess(getDataOfTheDay)
                     } ?: callback.onFailure()
-
             }
 
         }

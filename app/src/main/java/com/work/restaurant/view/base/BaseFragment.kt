@@ -25,7 +25,6 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

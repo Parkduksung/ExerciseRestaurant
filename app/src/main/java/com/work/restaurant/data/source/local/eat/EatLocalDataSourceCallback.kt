@@ -11,17 +11,13 @@ interface EatLocalDataSourceCallback {
     }
 
     interface DeleteEatCallback {
-
         fun onSuccess()
         fun onFailure()
-
     }
 
     interface GetDataOfTheDay {
-
         fun onSuccess(list: List<EatEntity>)
         fun onFailure()
-
     }
 
     interface GetAllList {

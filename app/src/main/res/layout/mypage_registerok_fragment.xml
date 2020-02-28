@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="8"
-                android:src="@drawable/arms" />
+                android:src="@drawable/lets" />
 
             <ImageView
                 android:layout_width="0dp"
@@ -66,7 +66,6 @@
                 android:layout_height="100dp"
                 android:layout_weight="9"
                 android:src="@drawable/lets" />
-
 
         </LinearLayout>
 
@@ -105,8 +104,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
                 android:text="@string/register_ok_start"
-                android:textSize="40dp"
-                />
+                android:textSize="40dp" />
 
         </LinearLayout>
 

@@ -38,6 +38,47 @@ data class DiaryModel(
         )
     }
 
+    fun toSortDiaryModel(): DiaryModel {
+
+        val splitTime = time.split(" ")
+
+        val hour = if (splitTime[1].substring(
+                0,
+                splitTime[1].length - 1
+            ).toInt() / 10 == 0
+        ) {
+            "0${splitTime[1].substring(
+                0,
+                splitTime[1].length - 1
+            )}"
+        } else {
+            splitTime[1].substring(
+                0,
+                splitTime[1].length - 1
+            )
+        }
+
+        val minute = splitTime[2].substring(
+            0,
+            splitTime[2].length - 1
+        )
+
+        val convertTime = splitTime[0] + hour + minute
+
+        return DiaryModel(
+            eatNum,
+            exerciseNum,
+            kind,
+            date,
+            convertTime,
+            type,
+            memo,
+            exerciseSetName,
+            exerciseSet
+        )
+
+    }
+
 
     companion object {
         const val EAT = 0
