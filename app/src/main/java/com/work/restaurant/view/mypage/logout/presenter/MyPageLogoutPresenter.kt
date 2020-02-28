@@ -1,13 +1,25 @@
 package com.work.restaurant.view.mypage.logout.presenter
 
-class MyPageLogoutPresenter(private val myPageLogoutView: MyPageLogoutContract.View) :
-    MyPageLogoutContract.Presenter {
-    override fun logoutCancel() {
-        myPageLogoutView.showLogoutCancel()
-    }
+import com.work.restaurant.data.repository.login.LoginRepository
+import com.work.restaurant.data.repository.login.LoginRepositoryCallback
 
-    override fun logoutOk() {
-        myPageLogoutView.showLogoutOk()
+class MyPageLogoutPresenter(
+    private val myPageLogoutView: MyPageLogoutContract.View,
+    private val loginRepository: LoginRepository
+) :
+    MyPageLogoutContract.Presenter {
+
+    override fun logoutOk(userId: String) {
+
+        loginRepository.changeState(userId, false, object : LoginRepositoryCallback.ChangeState {
+            override fun onSuccess() {
+                myPageLogoutView.showLogoutOk()
+            }
+
+            override fun onFailure() {
+                myPageLogoutView.showLogoutNo()
+            }
+        })
     }
 
 

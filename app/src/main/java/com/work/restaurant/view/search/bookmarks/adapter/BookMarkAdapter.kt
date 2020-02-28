@@ -59,7 +59,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
             } else {
                 adapterListener = object : AdapterDataListener.GetBookmarkData {
                     override fun getBookmarkData(select: Int, data: BookmarkModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                 }

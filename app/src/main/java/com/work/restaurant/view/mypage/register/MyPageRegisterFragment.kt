@@ -1,6 +1,7 @@
 package com.work.restaurant.view.mypage.register
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -9,16 +10,9 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.user.UserRepositoryImpl
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
-import com.work.restaurant.network.RetrofitInstance
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.login.MyPageLoginFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.loginState
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterContract
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterPresenter
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
@@ -28,7 +22,24 @@ import kotlinx.android.synthetic.main.mypage_register_fragment.*
 class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
     View.OnClickListener, MyPageRegisterContract.View {
 
+
     private lateinit var presenter: MyPageRegisterContract.Presenter
+
+    private lateinit var registerListener: RegisterListener
+
+
+    interface RegisterListener {
+        fun registerOk(state: Boolean, userId: String)
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as? RegisterListener)?.let {
+            registerListener = it
+        }
+    }
+
 
     override fun onClick(v: View?) {
 
@@ -36,7 +47,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         when (v?.id) {
 
             R.id.ib_register_back -> {
-                presenter.backPage()
+                fragmentManager?.popBackStack()
             }
 
             R.id.btn_register -> {
@@ -52,11 +63,17 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
             iv_pass_state.tag == R.drawable.ic_ok &&
             iv_pass_ok_state.tag == R.drawable.ic_ok
         ) {
+            pb_register.bringToFront()
+            pb_register.visibility = View.VISIBLE
+            btn_register.isClickable = false
+            ib_register_back.isClickable = false
+
             presenter.register(
-                et_register_nickname.text.toString(),
-                et_register_email.text.toString(),
-                et_register_pass.text.toString()
+                et_register_nickname.text.toString().trim(),
+                et_register_email.text.toString().trim(),
+                et_register_pass.text.toString().trim()
             )
+
         } else {
             val alertDialog =
                 AlertDialog.Builder(
@@ -75,21 +92,21 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                     }
                 })
             alertDialog.show()
+
+            btn_register.isClickable = true
+            ib_register_back.isClickable = true
         }
 
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         presenter = MyPageRegisterPresenter(
-            this, UserRepositoryImpl.getInstance(
-                UserRemoteDataSourceImpl.getInstance(
-                    RetrofitInstance.getInstance(
-                        MyPageFragment.URL
-                    )
-                )
-            )
+            this,
+            Injection.provideUserRepository(),
+            Injection.provideLoginRepository()
         )
         ib_register_back.setOnClickListener(this)
         btn_register.setOnClickListener(this)
@@ -99,6 +116,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         inputState(et_register_email, iv_email_state)
         inputState(et_register_pass, iv_pass_state)
         inputState(et_register_pass_ok, iv_pass_ok_state)
+
+
     }
 
     private fun inputState(editText: EditText, imageView: ImageView) {
@@ -169,11 +188,11 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                     })
 
                 } else {
-                    if (editText.text.toString() != "") {
+                    if (editText.text.toString().isNotEmpty()) {
                         imageView.setImageResource(R.drawable.ic_ok)
                         imageView.tag = R.drawable.ic_ok
 
-                        if (et_register_pass_ok.text.toString() != "") {
+                        if (et_register_pass_ok.text.toString().isNotEmpty()) {
 
                             if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
                                 iv_pass_ok_state.setImageResource(R.drawable.ic_ok)
@@ -199,54 +218,100 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         }
     }
 
+    override fun showLoginState() {
+
+        registerOk()
+
+    }
+
+    override fun showRegisterState() {
+        presenter.registerLogin(
+            et_register_nickname.text.toString().trim(),
+            et_register_email.text.toString().trim(),
+            et_register_pass.text.toString().trim(),
+            true
+        )
+
+    }
+
 
     override fun showRegisterOk(nickName: String) {
 
-        this@MyPageRegisterFragment.requireFragmentManager()
+        registerListener.registerOk(
+            true,
+            et_register_email.text.toString().trim()
+        )
+
+        pb_register.visibility = View.GONE
+        btn_register.isClickable = true
+        ib_register_back.isClickable = true
+
+        requireFragmentManager()
             .beginTransaction()
             .replace(
-                R.id.mypage_main_container,
+                R.id.mypage_register_container,
                 MyPageRegisterOkFragment()
-            ).commit().also {
-                //                val data = Intent()
-//                data.putExtra("id", et_register_email.text.toString())
-//                data.putExtra("nickname", et_register_nickname.text.toString())
-//                targetFragment?.onActivityResult(
-//                    targetRequestCode,
-//                    Activity.RESULT_OK,
-//                    data
-//                )
-                userId = et_register_email.text.toString()
-                userNickname = nickName
-                loginState = true
-
-            }
+            ).commit()
     }
 
-    override fun showRegisterNo() {
 
-        val alertDialog =
-            AlertDialog.Builder(ContextThemeWrapper(activity, R.style.Theme_AppCompat_Light_Dialog))
-
-        alertDialog.setTitle("회원가입 실패")
-        alertDialog.setMessage("회원 탈퇴를 실패하였습니다.")
-        alertDialog.setPositiveButton("확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                }
-
-            })
-        alertDialog.show()
+    private fun registerOk() {
+        presenter.loginForRegister(
+            et_register_email.text.toString().trim(),
+            et_register_pass.text.toString().trim()
+        )
     }
 
-    override fun showBackPage() {
-        this.requireFragmentManager().beginTransaction().remove(
-            this
-        ).replace(
-            R.id.mypage_main_container,
-            MyPageLoginFragment()
-        ).addToBackStack(null).commit()
+
+    override fun showRegisterNo(sort: Int) {
+
+        if (sort == 0) {
+            pb_register.visibility = View.GONE
+            btn_register.isClickable = true
+            ib_register_back.isClickable = true
+
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("회원가입 실패")
+            alertDialog.setMessage(" 이미 가입된 이메일입니다. \n 다른 이메일을 입력해주세요.")
+            alertDialog.setPositiveButton("확인",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        et_register_email.text.clear()
+                    }
+                })
+            alertDialog.show()
+        } else {
+            pb_register.visibility = View.GONE
+            btn_register.isClickable = true
+            ib_register_back.isClickable = true
+
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        activity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("회원가입 실패")
+            alertDialog.setMessage(" 저장할 수 없는 이메일입니다. \n 다른 이메일을 입력해주세요.")
+            alertDialog.setPositiveButton("확인",
+                object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        et_register_email.text.clear()
+                    }
+                })
+            alertDialog.show()
+        }
     }
+
 
     companion object {
         private const val TAG = "MyPageRegisterFragment"

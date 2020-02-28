@@ -1,144 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mypage_find_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
-    android:weightSum="40"
-    tools:ignore="ContentDescription,SpUsage.NestedWeights">
+    android:orientation="vertical">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="left"
-        android:layout_marginTop="10dp"
-        android:layout_weight="3"
-        tools:ignore="RtlHardcoded">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        tools:ignore="ContentDescription,SpUsage,NestedWeights">
 
-        <ImageButton
-            android:id="@+id/ib_find_back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@color/colorWhite"
-            app:srcCompat="@drawable/ic_back" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-
-        >
-
-        <TextView
+        <ProgressBar
+            android:id="@+id/pb_find_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/pass_find_title"
-            android:textColor="@color/colorBlue"
-            android:textSize="50dp"
-            tools:ignore="SpUsage" />
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorBlue"
+            android:padding="150dp"
+            android:visibility="visible" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:background="@drawable/bottom_line_2"
-        android:orientation="horizontal"
-        android:weightSum="20">
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="5"
-            android:gravity="center"
-            android:text="@string/pass_find_email"
-            android:textSize="20dp"
-            tools:ignore="NestedWeights,SpUsage" />
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:weightSum="40"
+            tools:ignore="ContentDescription,SpUsage.NestedWeights">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="15"
-            app:hintTextAppearance="@style/HintText">
-
-            <EditText
-                android:id="@+id/et_change_pass"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
+                android:layout_height="0dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                tools:ignore="RtlHardcoded">
+
+                <ImageButton
+                    android:id="@+id/ib_find_back"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/colorWhite"
+                    app:srcCompat="@drawable/ic_back" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/pass_find_title"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="50dp"
+                    tools:ignore="SpUsage" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:background="@drawable/bottom_line_2"
+                android:orientation="horizontal"
+                android:weightSum="20">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="@string/pass_find_email"
+                    android:textSize="20dp"
+                    tools:ignore="NestedWeights,SpUsage" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15"
+                    app:hintTextAppearance="@style/HintText">
+
+                    <EditText
+                        android:id="@+id/et_change_pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/pass_find_hint"
+                        android:textColorHint="@color/colorBlack"
+                        android:textSize="19dp"
+                        tools:ignore="Autofill,SpUsage,TextFields" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="4"
                 android:gravity="center"
-                android:hint="@string/pass_find_hint"
-                android:textColorHint="@color/colorBlack"
-                android:textSize="19dp"
-                tools:ignore="Autofill,SpUsage,TextFields" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="4"
-        android:gravity="center"
-        android:orientation="vertical">
+                android:orientation="vertical">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/pass_find_explain1"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pass_find_explain1"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/pass_find_explain2"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="8"
-        android:baselineAligned="false"
-        android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pass_find_explain2"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
 
 
-        <Button
-            android:id="@+id/btn_request_change_pass"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/button_round_style"
-            android:text="@string/pass_find_ok"
-            android:textColor="@color/colorWhite"
-            android:textSize="40dp"
-            tools:ignore="SpUsage" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="8"
+                android:baselineAligned="false"
+                android:gravity="center">
 
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/btn_request_change_pass"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/button_round_style"
+                    android:text="@string/pass_find_ok"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="40dp"
+                    tools:ignore="SpUsage" />
 
 
-</LinearLayout>
+            </LinearLayout>
 
 
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -4,18 +4,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:background="@drawable/button_round">
 
     <Button
         android:id="@+id/btn_address_item"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        tools:text="인천시"
-        tools:ignore="SpUsage" />
-
+        android:layout_height="50dp"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeTextType="uniform"
+        tools:ignore="SpUsage,UnusedAttribute"
+        tools:text="인천시" />
 </LinearLayout>
 
 

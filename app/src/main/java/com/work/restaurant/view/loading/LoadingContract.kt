@@ -5,6 +5,7 @@ interface LoadingContract {
         fun showStartText(text: String)
         fun showDelay()
     }
+
     interface Presenter {
         fun randomText(loadingTextArrayList: Array<String>)
         fun delayTime()

@@ -8,7 +8,9 @@ interface MyPageWithdrawalContract {
 
         fun showWithdrawOk(userNickname: String)
 
-        fun showWithdrawNo()
+        fun showWithdrawLoginOk(userNickname: String)
+
+        fun showWithdrawNo(sort : Int)
     }
 
     interface Presenter{
@@ -16,6 +18,8 @@ interface MyPageWithdrawalContract {
         fun withdrawCancel()
 
         fun withdraw(userNickname: String, userEmail: String)
+
+        fun withdrawLogin(userNickname: String, userEmail: String)
 
     }
 }

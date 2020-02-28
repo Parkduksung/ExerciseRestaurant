@@ -6,9 +6,9 @@ interface MyPageLoginContract {
 
         fun showLoginOk(nickName: String)
 
-        fun showLoginNo()
+        fun showLoginStateOk(nickName: String)
 
-        fun showBackPage()
+        fun showLoginNo()
 
         fun showRegisterPage()
 
@@ -21,11 +21,11 @@ interface MyPageLoginContract {
 
         fun login(email: String, pass: String)
 
-        fun backPage()
-
         fun registerPage()
 
         fun findPass()
+
+        fun changeState(userId: String,  userNickname:String)
     }
 
 }

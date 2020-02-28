@@ -10,6 +10,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
@@ -18,9 +19,6 @@ import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
 import kotlinx.android.synthetic.main.diary_add_exercise.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
@@ -31,19 +29,35 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
     private lateinit var presenter: AddExercisePresenter
 
     override fun showAddSuccess() {
-        requireFragmentManager().beginTransaction()
-            .remove(this@AddExerciseFragment)
-            .commit().also {
-                val data = Intent()
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
 
-            }
+        val data = Intent()
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            data
+        )
+
+        fragmentManager?.popBackStack()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -78,9 +92,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
             }
 
             R.id.add_exercise_cancel -> {
-                requireFragmentManager().beginTransaction()
-                    .remove(this@AddExerciseFragment)
-                    .commit()
+                fragmentManager?.popBackStack()
             }
 
             R.id.add_exercise_save -> {
@@ -97,7 +109,7 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
                         val addExerciseCount: EditText =
                             it.findViewById(R.id.et_add_exercise_count)
 
-                        if (addExerciseKg.text.toString() != "" && addExerciseCount.text.toString() != "") {
+                        if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
                             val exerciseSet = ExerciseSet(
                                 addExerciseKg.text.toString(),
                                 addExerciseCount.text.toString()
@@ -156,17 +168,10 @@ class AddExerciseFragment : BaseFragment(R.layout.diary_add_exercise),
 
     private fun init() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
-
         tv_add_exercise_today.text =
-            getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
+            App.prefs.current_date
         btn_add_exercise_time.text =
-            getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
+            App.prefs.current_time
 
     }
 

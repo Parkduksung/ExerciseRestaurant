@@ -2,17 +2,19 @@ package com.work.restaurant.view.diary.main
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -30,14 +32,39 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     DiaryContract.View,
     AdapterDataListener.GetList {
 
-
     private lateinit var presenter: DiaryPresenter
+    private lateinit var renewDataListener: RenewDataListener
+
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
 
 
+    override fun onBackPressed(): Boolean {
+        return fragmentManager?.backStackEntryCount != 0
+    }
+
+
+    interface RenewDataListener {
+        fun onReceivedData(msg: Boolean)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as? RenewDataListener)?.let {
+            renewDataListener = it
+        }
+
+    }
+
     override fun showResult(msg: Boolean) {
-        Log.d("결과", msg.toString())
+        if (msg) {
+            renewDot()
+            Toast.makeText(this.context, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this.context, "삭제되지않았습니다.", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun getData(data: DiaryModel) {
@@ -100,6 +127,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
+
         diaryModel.addAll(getDiaryModel)
 
 
@@ -173,6 +201,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             layoutManager = LinearLayoutManager(this.context)
         }
 
+        load()
 
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
@@ -186,49 +215,44 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             REGISTER_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     load()
+                    renewDot()
                 }
             }
             REGISTER_EXERCISE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     load()
+                    renewDot()
                 }
             }
         }
     }
 
+
+    private fun renewDot() {
+        if (::renewDataListener.isInitialized) {
+            renewDataListener.onReceivedData(true)
+        }
+    }
+
     private fun load() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-EE", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
+        val dayOfTheWeek =
+            SimpleDateFormat("EE", Locale.getDefault())
+                .format(Calendar.getInstance().time)
 
         tv_today.text =
             getString(
-                R.string.diary_main_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2],
-                dateArray[3]
+                R.string.diary_main_date1,
+                App.prefs.current_date,
+                dayOfTheWeek
             )
 
+
         presenter.todayEatData(
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
+            App.prefs.current_date
         )
         presenter.todayExerciseData(
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
+            App.prefs.current_date
         )
 
     }

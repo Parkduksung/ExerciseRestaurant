@@ -15,31 +15,27 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="3"
+        android:background="@drawable/border_only_round"
         android:orientation="horizontal"
         android:weightSum="20">
-
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="7"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:text="@string/rank_title"
-            android:textColor="@color/colorWhite"
-            android:textSize="25dp" />
 
 
         <TextView
             android:id="@+id/tv_search_locate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="11"
+            android:layout_weight="16"
             android:gravity="center"
-            android:textColor="@color/colorGray"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textColor="@color/colorBlack"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/iv_search_filter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="2"
+            app:srcCompat="@drawable/filter" />
 
 
         <ImageView
@@ -56,7 +52,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/button_background"
+            android:gravity="center"
+            android:text="TOP 15"
+            android:textColor="@color/colorWhite"
+            android:textSize="15dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -69,12 +77,28 @@
     </LinearLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_rank"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="32" />
+        android:layout_weight="32">
 
+        <ProgressBar
+            android:id="@+id/pb_search_rank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorBlue"
+            android:padding="150dp"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_rank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>
 
+    <!--    android:overScrollMode="never"-->

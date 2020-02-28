@@ -4,6 +4,8 @@ interface KakaoRepository {
     fun getKakaoResult(
         currentX: Double,
         currentY: Double,
+        page: Int,
+        sort: String,
         callback: KakaoRepositoryCallback
     )
 
@@ -12,13 +14,16 @@ interface KakaoRepository {
         callback: KakaoRepositoryCallback.KakaoItemInfoCallback
     )
 
-    fun getKakaoImage(
-        placeName: String,
-        callback: KakaoRepositoryCallback.KakaoImageCallback
-    )
-
     fun getKakaoAddressLocation(
         addressName: String,
         callback: KakaoRepositoryCallback.KakaoAddressCallback
     )
+
+    fun getKakaoLocationToAddress(
+        currentX: Double,
+        currentY: Double,
+        callback: KakaoRepositoryCallback.KakaoLocationToAddress
+    )
+
+
 }

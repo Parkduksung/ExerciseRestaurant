@@ -1,28 +1,25 @@
 package com.work.restaurant.view.mypage.main.presenter
 
+import com.work.restaurant.data.model.LoginModel
+
 interface MyPageContract {
 
     interface View {
 
-        fun showLogIn()
+        fun showLoginState(model: LoginModel)
 
-        fun showLogOut()
+        fun showFirebaseLogin(loginId: String, loginNickname: String)
 
-        fun showWithDraw()
-
-        fun showLateView()
+        fun showInit()
 
     }
 
     interface Presenter {
 
-        fun logIn()
+        fun getLoginState()
 
-        fun logOut()
+        fun loginFirebase(userId: String, userPass: String, userNickname: String)
 
-        fun withDraw()
-
-        fun lateView()
     }
 
 

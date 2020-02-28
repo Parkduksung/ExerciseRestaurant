@@ -9,9 +9,6 @@ class HomeAddressPresenter(
     private val roadRepository: RoadRepository
 ) :
     HomeAddressContract.Presenter {
-    override fun backPage() {
-        homeAddressView.showBackPage()
-    }
 
     override fun getRoadItem(address: TextView, clickData: String, area: String, zone: String) {
 
@@ -21,7 +18,7 @@ class HomeAddressPresenter(
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
         })
     }

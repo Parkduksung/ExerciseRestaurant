@@ -21,5 +21,6 @@ data class ExerciseModel(
             exerciseSetName,
             exerciseSet
         )
+
 }
 

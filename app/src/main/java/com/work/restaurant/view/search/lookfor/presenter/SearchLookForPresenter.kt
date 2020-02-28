@@ -48,9 +48,6 @@ class SearchLookForPresenter(
 
     }
 
-    override fun backPage() {
-        searchLookForView.showBackPage()
-    }
 
     override fun searchLook(searchItem: String) {
 

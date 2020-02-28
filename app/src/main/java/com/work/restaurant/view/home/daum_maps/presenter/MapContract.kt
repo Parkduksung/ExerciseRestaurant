@@ -6,9 +6,13 @@ interface MapContract {
 
     interface View {
         fun showKakaoData(
-            currentX: Double,
-            currentY: Double, list: List<KakaoSearchModel>
+            list: List<KakaoSearchModel>
         )
+
+        fun showMarkerData(
+            list: List<KakaoSearchModel>
+        )
+
     }
 
 
@@ -17,6 +21,10 @@ interface MapContract {
         fun getKakaoData(
             currentX: Double,
             currentY: Double
+        )
+
+        fun getMarkerData(
+            markerName: String
         )
     }
 }

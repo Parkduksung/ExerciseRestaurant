@@ -30,9 +30,7 @@ class MyPageFindOkFragment : BaseFragment(R.layout.mypage_find_ok_fragment), Vie
 
 
     override fun showOk() {
-        requireFragmentManager().beginTransaction()
-            .remove(this)
-            .commit()
+        fragmentManager?.popBackStack()
     }
 
     companion object {

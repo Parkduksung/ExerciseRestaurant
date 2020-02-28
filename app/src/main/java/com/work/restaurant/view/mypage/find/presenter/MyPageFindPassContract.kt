@@ -5,11 +5,9 @@ interface MyPageFindPassContract {
     interface View {
 
 
-        fun showResetOk(nickName: String)
+        fun showResetOk()
 
         fun showResetNo(message: String)
-
-        fun showBackPage()
 
     }
 
@@ -17,7 +15,7 @@ interface MyPageFindPassContract {
 
         fun resetPass(email: String)
 
-        fun backPage()
+
     }
 
 }

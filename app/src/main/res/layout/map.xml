@@ -6,24 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <!--    <Button-->
-    <!--        android:id="@+id/btn_location"-->
-    <!--        android:layout_width="50dp"-->
-    <!--        android:layout_height="50dp"-->
-    <!--        android:background="@drawable/my_location" />-->
-
     <Button
-        android:backgroundTint="@color/colorGrayBasic"
         android:id="@+id/btn_current_location"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
         android:layout_gravity="top|right"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
-        android:drawableStart="@drawable/my_location"
-        android:text="@string/btn_current_location"
-        tools:ignore="RtlHardcoded" />
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:drawableTop="@drawable/current_location"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
 </FrameLayout>
 

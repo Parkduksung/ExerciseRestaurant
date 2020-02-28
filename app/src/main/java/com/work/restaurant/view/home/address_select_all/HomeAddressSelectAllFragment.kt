@@ -1,20 +1,36 @@
 package com.work.restaurant.view.home.address_select_all
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.home.daum_maps.MapFragment.Companion.toggleMap
 import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
 
 class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_all_fragment),
     View.OnClickListener {
+
+
+    private lateinit var addressAllDataListener: AddressAllDataListener
+
+
+    interface AddressAllDataListener {
+        fun sendData(data: String)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as? AddressAllDataListener)?.let {
+            addressAllDataListener = it
+        }
+    }
 
 
     override fun onClick(v: View?) {
@@ -25,21 +41,19 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
             }
 
             R.id.btn_address_change_ok -> {
-                selectAll = tv_address_select.text.toString()
-                toggleMap = true
-                requireFragmentManager().beginTransaction().remove(this).commit()
-                activity?.finish()
 
+                if (::addressAllDataListener.isInitialized) {
+                    val bundle = arguments
+                    bundle?.let {
+                        it.getString(ADDRESS)?.let { addressAll ->
+                            addressAllDataListener.sendData(addressAll)
+                            fragmentManager?.popBackStack()
+                            selectAll = tv_address_select.text.toString()
+                        }
+                    }
+                }
             }
         }
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate")
-        super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -48,9 +62,15 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false).also {
-            val address = it.findViewById<TextView>(R.id.tv_address_select)
-            val bundle = arguments
-            address.text = bundle?.getString("Address")
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
         }
     }
 
@@ -59,20 +79,27 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
 
         btn_address_change_no.setOnClickListener(this)
         btn_address_change_ok.setOnClickListener(this)
+        showSelectAddress()
+    }
+
+    private fun showSelectAddress() {
+        val bundle = arguments
+        if (bundle != null) {
+            tv_address_select.text = bundle.getString(ADDRESS)
+        }
     }
 
 
     companion object {
         private const val TAG = "HomeAddressSelectAllFragment"
 
-        private const val ADDRESS = "Address"
+        const val ADDRESS = "address"
 
         fun newInstance(selectAddress: String) =
             HomeAddressSelectAllFragment().apply {
                 arguments = Bundle().apply {
                     putString(ADDRESS, selectAddress)
                 }
-
             }
 
     }

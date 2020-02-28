@@ -9,12 +9,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.base.BaseActivity
+import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment
 import com.work.restaurant.view.search.lookfor.adapter.LookForAdapter
@@ -25,7 +27,7 @@ import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
 
 
-class SearchLookForActivity : AppCompatActivity(),
+class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     View.OnClickListener,
     AdapterDataListener,
     AdapterDataListener.GetKakaoData,
@@ -35,14 +37,19 @@ class SearchLookForActivity : AppCompatActivity(),
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
-
     override fun onBackPressed() {
 
         if (toggleWebPage) {
             wb_search_item_detail.goBack()
         } else {
-            super.onBackPressed()
+            if (toggleSearch) {
+                super.onBackPressed()
+            } else {
+                this@SearchLookForActivity.finish()
+            }
         }
+
+
     }
 
     override fun showBookmarkResult(msg: Int) {
@@ -60,6 +67,7 @@ class SearchLookForActivity : AppCompatActivity(),
             }
         }
     }
+
 
     override fun getKakaoData(select: Int, data: KakaoSearchModel) {
         when (select) {
@@ -89,16 +97,44 @@ class SearchLookForActivity : AppCompatActivity(),
 
         if (getToggle != null) {
             if (getToggle) {
-                val searchItemDetailsFragment =
-                    SearchItemDetailsFragment.newInstance(getData)
+
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
                     .addToBackStack(null)
                     .commit()
                 et_search_look_for_item.text.clear()
             }
         }
     }
+
+    private fun getMarkerData() {
+
+        val intent = intent
+
+        val getData =
+            intent.extras?.getString(HomeFragment.MARKER_CLICK_DATA).toString()
+
+        val getToggle =
+            intent.extras?.getBoolean(HomeFragment.MARKER_CLICK_TOGGLE)
+
+        if (getToggle != null) {
+            if (getToggle) {
+
+                supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
+                    .addToBackStack(null)
+                    .commit()
+                et_search_look_for_item.text.clear()
+            }
+        }
+    }
+
 
     private fun getBookmarkData() {
         val intent = intent
@@ -111,10 +147,12 @@ class SearchLookForActivity : AppCompatActivity(),
 
         if (getToggle != null) {
             if (getToggle) {
-                val searchItemDetailsFragment =
-                    SearchItemDetailsFragment.newInstance(getData)
+
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+                    .replace(
+                        R.id.search_look_sub_container,
+                        SearchItemDetailsFragment.newInstance(getData)
+                    )
                     .addToBackStack(null)
                     .commit()
                 et_search_look_for_item.text.clear()
@@ -122,21 +160,17 @@ class SearchLookForActivity : AppCompatActivity(),
         }
     }
 
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_search_look_back -> {
-                presenter.backPage()
-            }
-            R.id.ib_search_item_look -> {
-                presenter.searchLook(et_search_look_for_item.text.toString())
+                this@SearchLookForActivity.finish()
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_look_for_main)
+
         presenter = SearchLookForPresenter(
             this,
             Injection.provideKakaoRepository(),
@@ -144,11 +178,11 @@ class SearchLookForActivity : AppCompatActivity(),
         )
         lookForAdapter.setItemClickListener(this)
         lookForAdapter.setBookmarkListener(this)
-        ib_search_item_look.setOnClickListener(this)
         ib_search_look_back.setOnClickListener(this)
 
         getRecyclerClickData()
         getBookmarkData()
+        getMarkerData()
 
         searchItem(et_search_look_for_item)
 
@@ -156,7 +190,7 @@ class SearchLookForActivity : AppCompatActivity(),
 
     private fun searchItem(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard(editText)
                 presenter.searchLook(editText.text.toString())
                 true
@@ -164,7 +198,6 @@ class SearchLookForActivity : AppCompatActivity(),
                 false
             }
         }
-
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -176,10 +209,8 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun getData(data: String) {
 
-        val searchItemDetailsFragment =
-            SearchItemDetailsFragment.newInstance(data)
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.search_look_sub_container, searchItemDetailsFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.search_look_sub_container, SearchItemDetailsFragment.newInstance(data))
             .addToBackStack(null)
             .commit()
         et_search_look_for_item.text.clear()
@@ -187,17 +218,29 @@ class SearchLookForActivity : AppCompatActivity(),
 
     override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
 
-        recyclerview_look.run {
+        if (searchKakaoList.isNotEmpty()) {
+            recyclerview_look.run {
 
-            this.adapter = lookForAdapter
+                this.adapter = lookForAdapter
 
-            lookForAdapter.clearListData()
+                lookForAdapter.clearListData()
 
-            lookForAdapter.addAllData(searchKakaoList)
+                lookForAdapter.addAllData(searchKakaoList)
 
-            layoutManager = LinearLayoutManager(this.context)
+                layoutManager = LinearLayoutManager(this.context)
 
+            }
+        } else {
+            Toast.makeText(
+                App.instance.context(),
+                "검색한 헬스장이 없습니다. 다시 한번 입력해주세요",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+
+        toggleSearch = true
+        supportFragmentManager.popBackStack()
+
     }
 
     override fun showSearchNoFind() {
@@ -217,9 +260,10 @@ class SearchLookForActivity : AppCompatActivity(),
         alertDialog.show()
     }
 
-    override fun showBackPage() =
-        this@SearchLookForActivity.finish()
-
+    override fun onDestroy() {
+        super.onDestroy()
+        toggleSearch = false
+    }
 
     companion object {
 
@@ -229,6 +273,8 @@ class SearchLookForActivity : AppCompatActivity(),
         private const val DELETE_BOOKMARK = 2
 
         private const val RESULT_FAILURE = 3
+
+        private var toggleSearch = false
 
         var toggleWebPage = false
 

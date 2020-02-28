@@ -1,105 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:weightSum="10"
-    tools:ignore="NestedWeights,SpUsage">
+    tools:ignore="ContentDescription,SpUsage,NestedWeights">
+
+
+    <ProgressBar
+        android:id="@+id/pb_withdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorBlue"
+        android:padding="150dp"
+        android:visibility="invisible" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:background="@color/transparent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@color/colorWhite"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10">
+        android:weightSum="10"
+        tools:ignore="NestedWeights,SpUsage">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/withdrawal_question"
-                android:textColor="@color/colorBlack"
-                android:textSize="38dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            android:layout_weight="7"
+            android:background="@color/transparent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/withdrawal_explain"
-                android:textColor="@color/colorGray"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_weight="3"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:weightSum="10">
 
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
                 android:gravity="center">
 
-                <Button
-                    android:id="@+id/btn_withdraw_cancel"
-                    android:layout_width="120dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:background="@drawable/button_round"
-                    android:text="@string/withdrawal_cancel"
-                    android:textSize="25dp" />
+                    android:gravity="center"
+                    android:text="@string/withdrawal_question"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="38dp"
+                    android:textStyle="bold" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/withdrawal_explain"
+                    android:textColor="@color/colorGray"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <Button
-                    android:id="@+id/btn_withdraw_ok"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:background="@drawable/button_logout"
-                    android:text="@string/withdrawal_ok"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="25dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_withdraw_cancel"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:background="@drawable/button_round"
+                        android:text="@string/withdrawal_cancel"
+                        android:textSize="25dp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_withdraw_ok"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="30dp"
+                        android:background="@drawable/button_logout"
+                        android:text="@string/withdrawal_ok"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="25dp" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -111,8 +134,5 @@
     </LinearLayout>
 
 
-</LinearLayout>
 
-
-
-
+</RelativeLayout>

@@ -11,6 +11,10 @@ interface CalendarContract {
 
         fun showExerciseData(data: List<ExerciseModel>)
 
+        fun showAllDayIncludeEatData(list: Set<String>)
+
+        fun showAllDayIncludeExerciseData(list: Set<String>)
+
 
     }
 
@@ -20,6 +24,10 @@ interface CalendarContract {
         fun getDataOfTheDayExerciseData(date: String)
 
         fun getDataOfTheDayEatData(date: String)
+
+        fun getAllEatData()
+
+        fun getAllExerciseData()
 
     }
 

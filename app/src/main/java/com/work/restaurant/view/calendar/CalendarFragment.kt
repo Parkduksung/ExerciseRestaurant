@@ -2,23 +2,37 @@ package com.work.restaurant.view.calendar
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CalendarView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.util.App
+import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.calendar.decorator.EatDecorator
+import com.work.restaurant.view.calendar.decorator.ExerciseDecorator
+import com.work.restaurant.view.calendar.decorator.SaturdayDecorator
+import com.work.restaurant.view.calendar.decorator.SundayDecorator
 import com.work.restaurant.view.calendar.presenter.CalendarContract
 import com.work.restaurant.view.calendar.presenter.CalendarPresenter
 import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashSet
 
 class CalendarFragment : BaseFragment(R.layout.calendar_main),
     CalendarContract.View {
 
+    private lateinit var toHashSetCalendarDayEat: HashSet<CalendarDay>
+    private lateinit var toHashSetCalendarDayExercise: HashSet<CalendarDay>
 
     private lateinit var presenter: CalendarPresenter
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
@@ -26,6 +40,61 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private val eat = mutableSetOf<DiaryModel>()
     private val exercise = mutableSetOf<DiaryModel>()
 
+    override fun showAllDayIncludeExerciseData(list: Set<String>) {
+
+        toHashSetCalendarDayExercise = HashSet()
+
+        list.forEach {
+
+            val splitList = it.split(" ")
+            if (splitList.size == 3) {
+                val year = splitList[0].substring(0, splitList[0].length - 1).toInt()
+                val month = splitList[1].substring(0, splitList[1].length - 1).toInt()
+                val day = splitList[2].substring(0, splitList[2].length - 1).toInt()
+
+                val toCalendarDay = CalendarDay.from(
+                    year,
+                    (month - 1),
+                    day
+                )
+                toHashSetCalendarDayExercise.add(toCalendarDay)
+            }
+        }
+
+        dotEat = true
+
+        showDotAndWeekend()
+
+    }
+
+    override fun showAllDayIncludeEatData(list: Set<String>) {
+
+        toHashSetCalendarDayEat = HashSet()
+
+        list.forEach {
+
+            val splitList = it.split(" ")
+
+            if (splitList.size == 3) {
+                val year = splitList[0].substring(0, splitList[0].length - 1).toInt()
+                val month = splitList[1].substring(0, splitList[1].length - 1).toInt()
+                val day = splitList[2].substring(0, splitList[2].length - 1).toInt()
+
+
+                val toCalendarDay = CalendarDay.from(
+                    year,
+                    (month - 1),
+                    day
+                )
+                toHashSetCalendarDayEat.add(toCalendarDay)
+            }
+        }
+
+
+        dotExercise = true
+        showDotAndWeekend()
+
+    }
 
     override fun showEatData(data: List<EatModel>) {
 
@@ -53,9 +122,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         showDayOfData()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         presenter = CalendarPresenter(
             this,
@@ -69,25 +138,102 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         }
 
 
+        presenter.getAllEatData()
+        presenter.getAllExerciseData()
+
+        initCalendar()
+
         clickDate(calender_view)
+
     }
 
-    private fun clickDate(calendarView: CalendarView) {
+    private fun initCalendar() {
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        val lastDayOfMonth = Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH)
+
+        val getYearAndMonth =
+            SimpleDateFormat("yyyy-M-d", Locale.getDefault()).format(Calendar.getInstance().time)
+
+        val dateArray = getYearAndMonth.split("-")
+
+        calender_view.selectedDate = CalendarDay.today()
+        calender_view.state().edit()
+            .isCacheCalendarPositionEnabled(true)
+            .setMaximumDate(
+                CalendarDay.from(
+                    dateArray[0].toInt(),
+                    (dateArray[1].toInt() - 1),
+                    lastDayOfMonth
+                )
+            )
+            .setCalendarDisplayMode(CalendarMode.MONTHS)
+            .commit()
+
+
+        presenter.getDataOfTheDayEatData(App.prefs.current_date)
+        presenter.getDataOfTheDayExerciseData(App.prefs.current_date)
+
+
+    }
+
+    private fun showDotAndWeekend() {
+
+        if (dotEat && dotExercise) {
+            calender_view.removeDecorators()
+
+            AppExecutors().diskIO.execute {
+
+
+                val decoratorList = mutableListOf<DayViewDecorator>()
+
+                val eatDecorator = EatDecorator(toHashSetCalendarDayEat)
+                val exerciseDecorator = ExerciseDecorator(toHashSetCalendarDayExercise)
+                val saturdayDecorator = SaturdayDecorator()
+                val sundayDecorator = SundayDecorator()
+
+                decoratorList.add(eatDecorator)
+                decoratorList.add(exerciseDecorator)
+                decoratorList.add(saturdayDecorator)
+                decoratorList.add(sundayDecorator)
+
+                AppExecutors().mainThread.execute {
+                    calender_view.addDecorators(decoratorList)
+
+                }
+            }
+
+            dotExercise = false
+            dotEat = false
+
+        }
+    }
+
+
+    fun renewDot() {
+
+        presenter.getAllEatData()
+        presenter.getAllExerciseData()
+
+    }
+
+    private fun clickDate(calendarView: MaterialCalendarView) {
+
+        calendarView.setOnDateChangedListener { _, date, _ ->
 
             val msg = getString(
                 R.string.current_date,
-                year.toString(),
-                (month + 1).toString(),
-                dayOfMonth.toString()
+                date.year.toString(),
+                (date.month + 1).toString(),
+                date.day.toString()
             )
-            Toast.makeText(this.context, msg, Toast.LENGTH_SHORT).show()
 
             presenter.getDataOfTheDayEatData(msg)
             presenter.getDataOfTheDayExerciseData(msg)
         }
+
+
     }
+
 
     private fun showDayOfData() {
         if (workEat && workExercise) {
@@ -98,19 +244,32 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             workEat = false
             workExercise = false
 
+            if (dayOfSet.size == 0) {
+                Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+
             recyclerview_calendar.run {
                 diaryAdapter.clearListData()
-                diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
-
+                if (dayOfSet.size != 0)
+                    diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
             }
         }
     }
 
+
     companion object {
+
         private const val TAG = "CalendarFragment"
 
         var workEat = false
         var workExercise = false
+
+
+        var dotEat = false
+        var dotExercise = false
+
+
     }
 
 }

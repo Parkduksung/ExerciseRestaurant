@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    tools:ignore="SpUsage">
 
 
     <LinearLayout
 
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -16,6 +18,8 @@
         tools:ignore="UselessParent,NestedWeights,TextFields">
 
         <LinearLayout
+            android:elevation="10dp"
+            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -39,11 +43,11 @@
                 android:layout_weight="8">
 
                 <EditText
-                    android:layout_marginStart="20dp"
-                    android:backgroundTint="@color/colorWhite"
                     android:id="@+id/et_home"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:backgroundTint="@color/colorWhite"
                     android:focusableInTouchMode="false"
                     android:hint="@string/search_address_hint"
                     android:importantForAutofill="no" />
@@ -54,13 +58,89 @@
         </LinearLayout>
 
 
-        <FrameLayout
-            android:id="@+id/maps_fl"
+        <RelativeLayout
+            android:id="@+id/rl_ll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10">
 
-        </FrameLayout>
+            <FrameLayout
+                android:id="@+id/maps_fl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ll_marker_details"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="40dp"
+                android:background="@color/colorWhite"
+                android:visibility="invisible"
+                android:weightSum="4"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    tools:ignore="DisableBaselineAlignment">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/tv_marker_place_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/tv_marker_place_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="17dp"
+                            tools:ignore="SpUsage" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_marker_url"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/homepage"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>

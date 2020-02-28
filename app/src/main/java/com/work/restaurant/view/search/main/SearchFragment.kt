@@ -38,10 +38,9 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
 
 
     override fun showInit() {
-        val searchRankFragment = SearchRankFragment()
-        searchRankFragment.setTargetFragment(this, 12343)
+
         val fragmentMap: Map<String, Fragment> = mapOf(
-            resources.getStringArray(R.array.tab_search)[0] to searchRankFragment,
+            resources.getStringArray(R.array.tab_search)[0] to SearchRankFragment(),
             resources.getStringArray(R.array.tab_search)[1] to SearchBookmarksFragment()
         )
 
@@ -60,5 +59,6 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
 
     companion object {
         private const val TAG = "SearchFragment"
+
     }
 }

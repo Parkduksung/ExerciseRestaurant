@@ -1,12 +1,12 @@
 package com.work.restaurant.view.home.address
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
@@ -16,17 +16,30 @@ import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
+import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
+import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
 import com.work.restaurant.view.home.address.presenter.HomeAddressPresenter
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import kotlinx.android.synthetic.main.address_main.*
 
 
-class HomeAddressActivity : AppCompatActivity(),
+class HomeAddressActivity : BaseActivity(R.layout.address_main),
     HomeAddressContract.View, View.OnClickListener,
-    AdapterDataListener {
+    AdapterDataListener,
+    HomeAddressSelectAllFragment.AddressAllDataListener {
+    override fun sendData(data: String) {
+
+        val addressAllIntent =
+            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java).apply {
+                putExtra(ADDRESS, data)
+            }
+        setResult(RESULT_OK, addressAllIntent)
+        finish()
+    }
+
     override fun showRoadItem(address: TextView, list: List<String>) {
 
         select(address, list.toTypedArray())
@@ -58,13 +71,16 @@ class HomeAddressActivity : AppCompatActivity(),
         } else if (address1 && address2 && address3) {
             dong = data
             selectAddress = "$si $gunGu $dong"
-            val homeAddressSelectAllFragment = HomeAddressSelectAllFragment.newInstance(
-                selectAddress
-            )
 
 
-            this.supportFragmentManager.beginTransaction()
-                .replace(R.id.address_main_container, homeAddressSelectAllFragment).commit()
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.address_main_container, HomeAddressSelectAllFragment.newInstance(
+                        selectAddress
+                    )
+                )
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -75,7 +91,7 @@ class HomeAddressActivity : AppCompatActivity(),
 
         when (v?.id) {
             R.id.ib_home_address_back -> {
-                presenter.backPage()
+                this@HomeAddressActivity.finish()
             }
 
             R.id.tv_address1 -> {
@@ -133,15 +149,8 @@ class HomeAddressActivity : AppCompatActivity(),
         }
     }
 
-    override fun showBackPage() {
-        this@HomeAddressActivity.finish()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.address_main)
-
-
 
         presenter = HomeAddressPresenter(
             this, RoadRepositoryImpl.getInstance(
@@ -162,7 +171,6 @@ class HomeAddressActivity : AppCompatActivity(),
 
         initView()
 
-
     }
 
     private fun initView() {
@@ -182,6 +190,7 @@ class HomeAddressActivity : AppCompatActivity(),
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, 3)
+
         }
 
     }
@@ -232,5 +241,6 @@ class HomeAddressActivity : AppCompatActivity(),
         var dong = ""
         var selectAddress = ""
 
+        const val ADDRESS = "address"
     }
 }

@@ -4,42 +4,59 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
 import kotlinx.android.synthetic.main.diary_add_eat.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
 
+
     private lateinit var presenter: AddEatPresenter
 
     override fun showAddSuccess() {
-        requireFragmentManager().beginTransaction()
-            .remove(this@AddEatFragment)
-            .commit().also {
-                val data = Intent()
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
-            }
 
-
+        val data = Intent()
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            data
+        )
+        fragmentManager?.popBackStack()
         Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        return super.onCreateView(inflater, container, savedInstanceState).also {
+            it?.setBackgroundColor(
+                ContextCompat.getColor(
+                    App.instance.context(),
+                    R.color.transparent
+                )
+            )
+            it?.setOnTouchListener { _, _ ->
+                true
+            }
+        }
+    }
 
     override fun onClick(v: View?) {
 
@@ -52,9 +69,8 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             }
 
             R.id.add_eat_cancel -> {
-                requireFragmentManager().beginTransaction()
-                    .remove(this@AddEatFragment)
-                    .commit()
+
+                fragmentManager?.popBackStack()
 
             }
 
@@ -100,12 +116,10 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
             when (checkedId) {
 
                 R.id.rb_meal -> {
-                    Toast.makeText(this.context, "0", Toast.LENGTH_SHORT).show()
                     radioClick = 0
                 }
 
                 R.id.rb_snack -> {
-                    Toast.makeText(this.context, "1", Toast.LENGTH_SHORT).show()
                     radioClick = 1
                 }
             }
@@ -114,19 +128,10 @@ class AddEatFragment : BaseFragment(R.layout.diary_add_eat),
 
     private fun init() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
-
-
-
         tv_add_eat_today.text =
-            getString(R.string.current_date, dateArray[0], dateArray[1], dateArray[2])
+            App.prefs.current_date
         btn_add_eat_time.text =
-            getString(R.string.current_time, dateArray[3], dateArray[4], dateArray[5])
+            App.prefs.current_time
         getRadioClickNum(add_eat_radio_group)
     }
 

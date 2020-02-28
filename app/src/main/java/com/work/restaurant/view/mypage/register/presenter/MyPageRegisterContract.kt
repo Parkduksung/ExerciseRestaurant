@@ -6,9 +6,11 @@ interface MyPageRegisterContract {
 
         fun showRegisterOk(nickName: String)
 
-        fun showRegisterNo()
+        fun showRegisterState()
 
-        fun showBackPage()
+        fun showRegisterNo(sort: Int)
+
+        fun showLoginState()
 
     }
 
@@ -16,10 +18,11 @@ interface MyPageRegisterContract {
 
         fun register(nickName: String, email: String, pass: String)
 
-        fun backPage()
-
         fun isEmailValid(email: String): Boolean
 
+        fun registerLogin(nickName: String, email: String, pass: String, state: Boolean)
+
+        fun loginForRegister(userId: String, userPass: String)
 
     }
 

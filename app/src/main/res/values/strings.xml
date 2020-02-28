@@ -55,7 +55,7 @@
     <string name="search_item_time">이용시간</string>
     <string name="search_item_best_part">이집 잘해요!</string>
     <string name="bookmarks_title">추가 목록</string>
-    <string name="rank_title">Top 10</string>
+    <string name="rank_title">현재위치</string>
     <string name="register_nickname_hint">본명 권장</string>
     <string name="register_email_hint">로그인 시 필요</string>
     <string name="register_pass_hint">6자리 이상</string>
@@ -90,6 +90,8 @@
     <string name="time_picker_main">시간 변경</string>
 
 
+    <string name="diary_main_date1">%s %s요일</string>
+
     <string name="diary_main_date">%s년 %s월 %s일 %s요일</string>
     <string name="current_date">%s년 %s월 %s일</string>
     <string name="current_time">%s %s시 %s분</string>
@@ -118,6 +120,22 @@
     <string name="question_main_text3">불편 및 개선사항을 자유롭게 말씀해주세요. \n  (ex. 운동 목록을 더 추가해주세요.)</string>
     <string name="question_main_text1">어떤 점이 불편하셨나요?</string>
     <string name="question_main_text4">의견 보내기</string>
-
-
+    <string name="identify_content">\n\n\n본 개인정보처리방침의 목차는 아래와 같습니다. \n\n\n\n
+        일부는 관계법령이 개인정보처리방침의 작성에 있어 요구하는 필수 사항을 포함하였고,\n\n\n
+        나머지는 "운동맛집" 에서 자체적으로 이용자의 개인정보 보호에 있어 중요하다 판단하는 내용을 추가하였습니다. \n\n\n\n\n\n
+        1.개인정보처리방침의 의의 \n\n\n
+        2.수집하는 개인정보 (필수 안내사항) \n\n\n
+        3.수집한 개인정보의 이용 (필수 안내사항) \n\n\n
+        4.개인정보의 제공 및 위탁 (필수 안내사항)\n\n\n
+        5.개인정보의 파기 (필수 안내사항) \n\n\n
+        6.이용자 및 법정대리인의 권리와 행사 방법 \n(필수 안내사항)\n\n\n
+        7.개인정보보호를 위한 "운동맛집" 의 노력 \n\n\n
+        8.개인정보 보호책임자 및 담당자 안내 \n(필수 안내사항)\n\n\n
+        9.본 개인정보처리방침의 적용 범위 \n\n\n
+        10.개정 전 고지 의무\n\n\n\n\n\n
+    </string>
+    <string name="exercise_sort_accuracy">정확도순</string>
+    <string name="exercise_sort_distance">거리순</string>
+    <string name="tv_calendar_main_exercise">운동</string>
+    <string name="tv_calendar_main_eat">식단</string>
 </resources>

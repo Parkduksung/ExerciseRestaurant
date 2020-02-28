@@ -4,20 +4,15 @@ interface MyPageLogoutContract {
 
     interface View {
 
-        fun showLogoutCancel()
-
         fun showLogoutOk()
 
+        fun showLogoutNo()
 
     }
 
     interface Presenter {
 
-
-        fun logoutCancel()
-
-
-        fun logoutOk()
+        fun logoutOk(userId: String)
 
     }
 }
