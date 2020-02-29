@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ExerciseRestaurant</string>
+    <string name="app_name">Exercise\nRestaurant</string>
     <string name="app_version">v.1.1.1</string>
-    <string name="app_update">Update 2019.10.18</string>
+    <string name="app_update">Update 2020.02.29</string>
     <string name="search_look_hint">오늘은 어디에서?</string>
     <string name="address_title">주소 설정</string>
     <string name="address_select1">광역시/도</string>
@@ -139,4 +139,5 @@
     <string name="tv_calendar_main_exercise">운동</string>
     <string name="tv_calendar_main_eat">식단</string>
     <string name="et_calendar_main_context">날짜를 클릭하면 기록을 볼 수 있어요!</string>
+    <string name="btn_rank_main_context">주변맛집</string>
 </resources>

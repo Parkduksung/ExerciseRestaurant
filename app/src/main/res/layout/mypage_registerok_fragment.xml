@@ -35,37 +35,37 @@
             android:layout_weight="10"
             android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="50">
+            android:weightSum="5">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="11"
-                android:src="@drawable/sholder" />
+                android:layout_weight="1"
+                android:src="@drawable/ic_shoulder_foreground" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="12"
-                android:src="@drawable/legs" />
+                android:layout_weight="1"
+                android:src="@drawable/ic_legs_foreground" />
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="8"
-                android:src="@drawable/lets" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_arms_foreground" />
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="10"
-                android:src="@drawable/chest" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_chest_foreground" />
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="9"
-                android:src="@drawable/lets" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_lets_foreground" />
 
         </LinearLayout>
 

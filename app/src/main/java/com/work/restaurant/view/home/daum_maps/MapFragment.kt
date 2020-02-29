@@ -77,7 +77,6 @@ class MapFragment : BaseFragment(R.layout.map),
         when (v?.id) {
 
             R.id.btn_current_location -> {
-
                 showCurrentLocation()
             }
 
@@ -131,10 +130,6 @@ class MapFragment : BaseFragment(R.layout.map),
 
         showCurrentLocation()
 
-        presenter.getKakaoData(
-            App.prefs.current_location_long.toDouble(),
-            App.prefs.current_location_lat.toDouble()
-        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -255,24 +250,31 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     //Marker 표현하는거 관련
-    override fun showKakaoData(list: List<KakaoSearchModel>) {
+    override fun showKakaoData(
+        list: List<KakaoSearchModel>
+    ) {
         autoZoomLevel(list[0].distance.toInt())
         makeKakaoDataListMarker(list)
     }
 
-    private fun autoZoomLevel(firstDistance: Int) {
+    private fun autoZoomLevel(
+        firstDistance: Int
+    ) {
+
+        var level = 0
 
         for (i in 0..8) {
             if (((2.0).pow(i) * 100) <= firstDistance && firstDistance <= ((2.0).pow(i + 1) * 100)) {
-                mapView.setZoomLevel(i + 1, true)
+                level = i
+                break
             }
         }
+        mapView.setZoomLevel(level + 1, true)
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {
 
         AppExecutors().diskIO.execute {
-
             if (kakaoMarkerList.size == 0) {
                 list.forEach {
                     val mapPoint =
@@ -356,7 +358,13 @@ class MapFragment : BaseFragment(R.layout.map),
                 App.prefs.current_location_lat.toDouble(),
                 App.prefs.current_location_long.toDouble()
             )
-            showCurrentOrSelectMarker(currentPOIItem, currentPosition)
+            AppExecutors().diskIO.execute {
+                presenter.getKakaoData(
+                    App.prefs.current_location_long.toDouble(),
+                    App.prefs.current_location_lat.toDouble()
+                )
+                showCurrentOrSelectMarker(currentPOIItem, currentPosition)
+            }
         }
     }
 
@@ -368,17 +376,13 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-
     //주소 변경한 위치 좌표얻어오는것
-    fun getLocation(location: String) {
+    private fun getLocation(location: String) {
         if (::mapView.isInitialized) {
             mapView.removePOIItem(selectPOIItem)
             AppExecutors().diskIO.execute {
-
                 val geoCoder = Geocoder(context, Locale.getDefault())
-
                 val addresses = geoCoder.getFromLocationName(location, 1)
-
                 if (addresses.isNotEmpty()) {
                     presenter.getKakaoData(addresses[0].longitude, addresses[0].latitude)
                     showSelectLocation(addresses[0].longitude, addresses[0].latitude)

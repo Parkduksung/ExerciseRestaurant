@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            app:srcCompat="@drawable/dumbell" />
+            app:srcCompat="@drawable/ic_dumbbell_foreground" />
 
     </LinearLayout>
 
@@ -63,10 +63,10 @@
         android:layout_weight="14">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/recyclerview_add_exercise"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 

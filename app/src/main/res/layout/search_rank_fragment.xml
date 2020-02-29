@@ -62,7 +62,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/button_background"
             android:gravity="center"
-            android:text="TOP 15"
+            android:text="@string/btn_rank_main_context"
             android:textColor="@color/colorWhite"
             android:textSize="15dp" />
 

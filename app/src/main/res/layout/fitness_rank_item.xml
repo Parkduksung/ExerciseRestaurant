@@ -29,8 +29,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:layout_weight="0.5"
-                app:srcCompat="@drawable/distance"
+                app:srcCompat="@drawable/ic_distance_foreground"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -52,12 +53,12 @@
 
             <ImageButton
                 android:id="@+id/ib_more_vert"
-                android:backgroundTint="@color/colorWhite"
-                android:background="@drawable/button_round"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right"
                 android:layout_weight="0.5"
+                android:background="@drawable/button_round"
+                android:backgroundTint="@color/colorWhite"
                 app:srcCompat="@drawable/more_vert"
                 tools:ignore="NestedWeights,RtlHardcoded" />
 

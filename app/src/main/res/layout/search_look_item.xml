@@ -10,14 +10,13 @@
     android:weightSum="10"
     tools:ignore="ContentDescription, SpUsage">
 
-
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:src="@drawable/dumbell" />
-
+        android:src="@drawable/ic_gym_foreground" />
 
     <TextView
         android:id="@+id/tv_search_look_name"

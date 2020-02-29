@@ -222,6 +222,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         calendarView.setOnDateChangedListener { _, date, _ ->
 
+            toggleMessage = false
             val msg = getString(
                 R.string.current_date,
                 date.year.toString(),
@@ -258,8 +259,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 if (!toggleMessage) {
                     Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT)
                         .show()
-                } else {
-                    toggleMessage = false
                 }
 
             } else {
