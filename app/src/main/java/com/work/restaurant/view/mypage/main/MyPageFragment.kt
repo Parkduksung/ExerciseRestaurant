@@ -29,7 +29,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     private lateinit var presenter: MyPageContract.Presenter
 
-
     override fun showProgress() {
         pb_login.bringToFront()
         pb_login.visibility = View.VISIBLE

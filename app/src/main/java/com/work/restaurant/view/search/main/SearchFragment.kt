@@ -22,16 +22,30 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.et_search_look -> {
-                presenter.search()
+                startSearchLook()
+            }
+            R.id.ll_search_look -> {
+                startSearchLook()
+            }
+            R.id.iv_search_look -> {
+                startSearchLook()
             }
         }
     }
+
+    private fun startSearchLook() {
+        val intent = Intent(this.context, SearchLookForActivity()::class.java)
+        startActivity(intent)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         presenter = SearchPresenter(this)
         presenter.init()
         et_search_look.setOnClickListener(this)
+        ll_search_look.setOnClickListener(this)
+        iv_search_look.setOnClickListener(this)
     }
 
 
@@ -48,12 +62,6 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
         tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
         tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
     }
-
-    override fun showSearch() {
-        val intent = Intent(this.context, SearchLookForActivity()::class.java)
-        startActivity(intent)
-    }
-
 
     companion object {
         private const val TAG = "SearchFragment"

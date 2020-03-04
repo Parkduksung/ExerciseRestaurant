@@ -21,21 +21,22 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/ll_search_look"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
-
-                <ImageButton
+                <ImageView
+                    android:id="@+id/iv_search_look"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="2"
                     android:backgroundTint="@color/colorWhite"
                     app:srcCompat="@drawable/ic_search"
                     tools:ignore="ContentDescription" />
-
 
                 <EditText
                     android:id="@+id/et_search_look"

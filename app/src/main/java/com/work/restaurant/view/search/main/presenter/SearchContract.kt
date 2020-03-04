@@ -2,19 +2,15 @@ package com.work.restaurant.view.search.main.presenter
 
 interface SearchContract {
 
-    interface View{
+    interface View {
 
         fun showInit()
 
-        fun showSearch()
-
     }
 
-    interface Presenter{
+    interface Presenter {
 
         fun init()
-
-        fun search()
 
     }
 }

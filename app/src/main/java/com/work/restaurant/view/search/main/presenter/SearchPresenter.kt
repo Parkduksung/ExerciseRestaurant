@@ -4,8 +4,4 @@ class SearchPresenter(private val searchView: SearchContract.View) : SearchContr
     override fun init() {
         searchView.showInit()
     }
-
-    override fun search() {
-        searchView.showSearch()
-    }
 }

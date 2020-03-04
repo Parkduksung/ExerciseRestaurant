@@ -52,7 +52,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
         if (address1 && !address2 && !address3) {
             si = data
-
+            tv_address1.text = data
             address2 = true
             presenter.getRoadItem(
                 tv_address2, data,
@@ -62,6 +62,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
             unSelect(tv_address3)
         } else if (address1 && address2 && !address3) {
             gunGu = data
+            tv_address2.text = data
             address3 = true
             presenter.getRoadItem(
                 tv_address3, data,
@@ -71,6 +72,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
             unSelect(tv_address2)
         } else if (address1 && address2 && address3) {
             dong = data
+            tv_address3.text = data
             selectAddress = "$si $gunGu $dong"
 
 
@@ -104,7 +106,9 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                 unSelect(tv_address2)
                 unSelect(tv_address3)
 
-                Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
+                tv_address1.text = "광역시/도"
+                tv_address2.text = "시/군/구"
+                tv_address3.text = "읍/면/동"
 
             }
 
@@ -112,8 +116,10 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
                 address3 = false
 
-                if (address2) {
+                tv_address2.text = "시/군/구"
+                tv_address3.text = "읍/면/동"
 
+                if (address2) {
                     //
                     //이 부분은 만약 <시>를 선택해서 <군구>로 넘어왔는데 사용자가 <군구>를 다시 눌렀을때 다른게 안뜨는 것 방지.
 //                    select(tv_address2, resources.getStringArray(R.array.인천))
@@ -128,8 +134,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                     unSelect(tv_address3)
                 }
 
-                Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-
             }
 
             R.id.tv_address3 -> {
@@ -143,9 +147,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                     unSelect(tv_address1)
                     unSelect(tv_address2)
                 }
-
-                Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
-
             }
         }
     }
@@ -197,6 +198,13 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     }
 
     private fun select(address: TextView, loadingTextArrayList: Array<String?>) {
+
+//        if(address1){
+//            tv_address1.text = "광역시/도"
+//            tv_address2.text = "시/군/구"
+//            tv_address3.text = "읍/면/동"
+//        }
+
 
         addressAdapter.removeData()
         loadingTextArrayList.forEach {

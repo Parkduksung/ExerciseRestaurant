@@ -61,14 +61,27 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
         }
     }
 
+
+    private fun startHomeAddress() {
+        val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
+        startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.et_home -> {
-                val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-                startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
+            R.id.et_search_address -> {
+                startHomeAddress()
             }
 
-            R.id.iv_marker_url -> {
+            R.id.iv_search_address -> {
+                startHomeAddress()
+            }
+
+            R.id.ll_search_address -> {
+                startHomeAddress()
+            }
+
+            R.id.ll_marker_details -> {
                 if (getMarkerUrl != "") {
                     val intent =
                         Intent(activity?.application, SearchLookForActivity()::class.java).apply {
@@ -86,9 +99,11 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        et_home.setOnClickListener(this)
+        et_search_address.setOnClickListener(this)
+        ll_search_address.setOnClickListener(this)
+        iv_search_address.setOnClickListener(this)
         startMaps()
-        iv_marker_url.setOnClickListener(this)
+        ll_marker_details.setOnClickListener(this)
     }
 
     private fun startMaps() {
