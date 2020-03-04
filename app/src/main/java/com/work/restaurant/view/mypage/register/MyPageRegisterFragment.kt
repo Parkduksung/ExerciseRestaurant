@@ -83,7 +83,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                             ib_register_back.isClickable = true
                             randomVerifyNum = 0
                             toggleVerifiedEmail = true
-
+                            toggleDuplicationEmail = true
+                            et_register_email_verified.text.clear()
                         } else {
                             Toast.makeText(
                                 this.context,
@@ -259,6 +260,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         ll_register_email_verified.visibility = View.GONE
                                         btn_register.isClickable = true
                                         ib_register_back.isClickable = true
+                                        toggleDuplicationEmail = false
+                                        toggleVerifiedEmail = false
                                         val splitToPoint =
                                             et_register_email.text.toString().split(".")
                                         val lastSplit = splitToPoint[splitToPoint.size - 1]
@@ -301,6 +304,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         ll_register_email_verified.visibility = View.GONE
                                         btn_register.isClickable = true
                                         ib_register_back.isClickable = true
+                                        toggleDuplicationEmail = false
+                                        toggleVerifiedEmail = false
                                         val splitToPoint =
                                             et_register_email.text.toString().split(".")
                                         val lastSplit = splitToPoint[splitToPoint.size - 1]
@@ -343,6 +348,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         ll_register_email_verified.visibility = View.GONE
                                         btn_register.isClickable = true
                                         ib_register_back.isClickable = true
+                                        toggleDuplicationEmail = false
+                                        toggleVerifiedEmail = false
                                         val splitToPoint =
                                             et_register_email.text.toString().split(".")
                                         val lastSplit = splitToPoint[splitToPoint.size - 1]
@@ -387,12 +394,13 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                             }
 
                         }
-
-
-                    } else {
-                        imageView.setImageResource(R.drawable.ic_no)
-                        imageView.tag = R.drawable.ic_no
                     }
+                    if (!toggleDuplicationEmail) {
+                        iv_email_state.setImageResource(R.drawable.ic_no)
+                        iv_email_state.tag = R.drawable.ic_no
+                    }
+
+
                 }
 
             }
@@ -550,6 +558,9 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         var randomVerifyNum = 0
 
         private var toggleVerifiedEmail = false
+
+        private var toggleDuplicationEmail = false
+
         const val REGISTER_ID = "id"
         const val REGISTER_NICKNAME = "nickname"
 

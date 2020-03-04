@@ -1,14 +1,18 @@
 package com.work.restaurant.view.base
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.crashlytics.android.Crashlytics
+import com.work.restaurant.R
+import com.work.restaurant.util.App
 import io.fabric.sdk.android.Fabric
 
 
 abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
 
+    var mBackWait: Long = 0
 
     override fun onBackPressed() {
 
@@ -25,10 +29,20 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         }
 
         if (!handled) {
-
-
-            super.onBackPressed()
-
+            if (layoutId == R.layout.activity_main) {
+                if (System.currentTimeMillis() - mBackWait >= 2000) {
+                    mBackWait = System.currentTimeMillis()
+                    Toast.makeText(
+                        App.instance.context(),
+                        "뒤로가기 버튼을 한번 더 누르면 종료됩니다.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    finish()
+                }
+            } else {
+                super.onBackPressed()
+            }
 
         }
 

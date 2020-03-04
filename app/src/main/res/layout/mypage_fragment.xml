@@ -374,7 +374,6 @@
                         android:layout_weight="15"
                         app:hintTextAppearance="@style/HintText"
                         app:passwordToggleEnabled="true">
-
                         <EditText
                             android:id="@+id/et_pass"
                             android:layout_width="match_parent"

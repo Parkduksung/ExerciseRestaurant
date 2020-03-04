@@ -260,12 +260,16 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
         if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
+                et_email.text.clear()
+                et_pass.text.clear()
                 showInit()
             }
         }
 
         if (requestCode == WITHDRAW) {
             if (resultCode == Activity.RESULT_OK) {
+                et_email.text.clear()
+                et_pass.text.clear()
                 showInit()
             }
         }
@@ -280,7 +284,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             }
 
         }
-
     }
 
     override fun onDetach() {
@@ -290,10 +293,11 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     override fun onResume() {
+        et_email.text.clear()
+        et_pass.text.clear()
         super.onResume()
-        et_pass.text.clear()
-        et_pass.text.clear()
     }
+
 
     companion object {
         var toggleLoginState = false
