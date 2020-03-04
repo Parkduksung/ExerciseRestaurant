@@ -26,7 +26,6 @@ class EatLocalDataSourceImpl(
 
             }
 
-
         }
     }
 
@@ -71,7 +70,6 @@ class EatLocalDataSourceImpl(
 
 
     }
-
 
     override fun addEat(
         date: String,

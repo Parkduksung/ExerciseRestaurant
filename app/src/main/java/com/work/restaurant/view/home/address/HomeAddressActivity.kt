@@ -52,6 +52,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
         if (address1 && !address2 && !address3) {
             si = data
+
             address2 = true
             presenter.getRoadItem(
                 tv_address2, data,

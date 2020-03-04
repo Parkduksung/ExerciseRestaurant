@@ -18,10 +18,12 @@ class MyPageWithdrawalPresenter(
             userNickname,
             object : LoginRepositoryCallback.DeleteCallback {
                 override fun onSuccess() {
+
                     myPageWithdrawalView.showWithdrawLoginOk(userNickname)
                 }
 
                 override fun onFailure() {
+
                     myPageWithdrawalView.showWithdrawNo(1)
                 }
             })
@@ -36,10 +38,12 @@ class MyPageWithdrawalPresenter(
 
         userRepository.delete(userNickname, userEmail, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
+
                 myPageWithdrawalView.showWithdrawOk(resultNickname)
             }
 
             override fun onFailure(message: String) {
+
                 myPageWithdrawalView.showWithdrawNo(0)
             }
         })

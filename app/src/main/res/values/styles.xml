@@ -40,5 +40,15 @@
         <item name="android:textColor">@color/colorBlue</item>
     </style>
 
+    <style name="HintText2" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorBlue</item>
+        <item name="android:textSize">8dp</item>
+    </style>
+
+
+    <style name="ErrorText" parent="TextAppearance.Design.Error">
+        <!--        <item name="android:textColor">@color/</item>-->
+        <item name="android:textSize">8dp</item>
+    </style>
 
 </resources>

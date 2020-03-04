@@ -12,7 +12,6 @@ import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.notification.NotificationDataListener
 import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
-import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,8 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     ExerciseRestaurantContract.View,
     NotificationDataListener,
-    DiaryFragment.RenewDataListener,
-    MyPageRegisterFragment.RegisterListener {
+    DiaryFragment.RenewDataListener {
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -32,16 +30,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
             this.supportFragmentManager,
             fragmentMap
         )
-    }
-
-    override fun registerOk(state: Boolean, userId: String) {
-        if (state) {
-            supportFragmentManager.fragments.forEach {
-                if (it is MyPageFragment) {
-                    it.registerOk(userId)
-                }
-            }
-        }
     }
 
     override fun onReceivedData(msg: Boolean) {

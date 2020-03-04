@@ -38,12 +38,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
 
-
-    override fun onBackPressed(): Boolean {
-        return fragmentManager?.backStackEntryCount != 0
-    }
-
-
     interface RenewDataListener {
         fun onReceivedData(msg: Boolean)
     }
@@ -70,7 +64,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun getData(data: DiaryModel) {
 
         if (data.kind == 1) {
-
             val alertDialog =
                 AlertDialog.Builder(
                     ContextThemeWrapper(
@@ -83,11 +76,15 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.setPositiveButton(
                 "삭제"
             ) { _, _ ->
-                recyclerview_diary.run {
-                    diaryAdapter.deleteDate(data)
-                }
+
                 presenter.deleteExercise(data)
                 diaryModel.remove(data)
+
+                recyclerview_diary.run {
+                    diaryAdapter.deleteDate(data)
+
+                }
+
             }
             alertDialog.setNegativeButton(
                 "취소"
@@ -96,28 +93,54 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.show()
 
         } else {
-            val alertDialog =
-                AlertDialog.Builder(
-                    ContextThemeWrapper(
-                        activity,
-                        R.style.Theme_AppCompat_Light_Dialog
-                    )
-                )
-            alertDialog.setTitle("삭제")
-            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
-            alertDialog.setPositiveButton(
-                "삭제"
-            ) { _, _ ->
-                recyclerview_diary.run {
-                    diaryAdapter.deleteDate(data)
-                }
-                presenter.deleteEat(data)
-                diaryModel.remove(data)
+//            val alertDialog =
+//                AlertDialog.Builder(
+//                    ContextThemeWrapper(
+//                        activity,
+//                        R.style.Theme_AppCompat_Light_Dialog
+//                    )
+//                )
+//            alertDialog.setTitle("삭제")
+//            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
+//            alertDialog.setPositiveButton(
+//                "삭제"
+//            ) { _, _ ->
+//
+//                recyclerview_diary.run {
+//                    diaryAdapter.deleteDate(data)
+//                }
+//                presenter.deleteEat(data)
+//                diaryModel.remove(data)
+//            }
+//            alertDialog.setNegativeButton(
+//                "취소"
+//            ) { _, _ -> }
+//            alertDialog.show()
+
+
+            val addEatFragment =
+                AddEatFragment.newInstance(data.memo, data.time, data.type, data.date)
+            addEatFragment.setTargetFragment(
+                this,
+                REGISTER_EAT
+            )
+
+            fragmentManager?.let {
+                addEatFragment.show(it, AddEatFragment.TAG)
             }
-            alertDialog.setNegativeButton(
-                "취소"
-            ) { _, _ -> }
-            alertDialog.show()
+
+
+//            val addEatFragment = AddEatFragment()
+//            addEatFragment.setTargetFragment(
+//                this,
+//                REGISTER_EAT
+//            )
+//            addEatFragment.t(data)
+//
+//            fragmentManager?.let {
+//                addEatFragment.show(it, AddEatFragment.TAG)
+//            }
+
         }
     }
 
@@ -135,7 +158,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             diaryAdapter.clearListData()
             diaryAdapter.addAllData(toSortDiaryModel.toList().sortedBy { it.time })
         }
-
 
     }
 
@@ -237,6 +259,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun load() {
 
+        diaryModel.clear()
+
         val dayOfTheWeek =
             SimpleDateFormat("EE", Locale.getDefault())
                 .format(Calendar.getInstance().time)
@@ -248,20 +272,20 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                 dayOfTheWeek
             )
 
-
         presenter.todayEatData(
             App.prefs.current_date
         )
         presenter.todayExerciseData(
             App.prefs.current_date
         )
-
     }
+
 
     companion object {
         private const val TAG = "DiaryFragment"
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
+        const val c = 1
     }
 
 }

@@ -43,4 +43,10 @@ interface UserApi {
     ): Call<ResultResponse>
 
 
+    @GET("/emailDuplicationCheck.php")
+    fun emailDuplicationCheck(
+        @Query("userEmail") userEmail: String
+    ): Call<ResultResponse>
+
+
 }

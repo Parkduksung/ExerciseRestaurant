@@ -1,7 +1,6 @@
 package com.work.restaurant.view.mypage.logout
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
-import com.work.restaurant.view.mypage.main.MyPageFragment
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 
 class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
@@ -31,14 +29,18 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
                 fragmentManager?.popBackStack()
             }
 
-
             R.id.btn_logout_ok -> {
 
-                if (MyPageFragment.userId != "") {
-                    presenter.logoutOk(MyPageFragment.userId)
+                val bundle = arguments
+                val getUserId = bundle?.getString(LOGOUT_ID).orEmpty()
+
+                if (getUserId.isNotEmpty()) {
+                    presenter.logoutOk(getUserId)
+                } else {
+                    Toast.makeText(App.instance.context(), "로그아웃을 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
-
         }
     }
 
@@ -76,14 +78,10 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
         FirebaseAuth.getInstance().signOut()
 
-        val data = Intent().apply {
-            putExtra(LOGOUT_ID, "")
-            putExtra(LOGOUT_NICKNAME, "")
-        }
         targetFragment?.onActivityResult(
             targetRequestCode,
             Activity.RESULT_OK,
-            data
+            null
         )
         fragmentManager?.popBackStack()
     }
@@ -96,7 +94,14 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
         private const val TAG = "MyPageLogoutFragment"
 
         const val LOGOUT_ID = "id"
-        const val LOGOUT_NICKNAME = "nickname"
+
+        fun newInstance(
+            userId: String
+        ) = MyPageLogoutFragment().apply {
+            arguments = Bundle().apply {
+                putString(LOGOUT_ID, userId)
+            }
+        }
 
     }
 

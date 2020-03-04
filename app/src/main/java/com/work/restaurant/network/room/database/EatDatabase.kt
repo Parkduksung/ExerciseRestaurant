@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.work.restaurant.network.room.dao.EatDao
 import com.work.restaurant.network.room.entity.EatEntity
 
-@Database(entities = [EatEntity::class], version = 1)
+@Database(entities = [EatEntity::class], version = 2)
 abstract class EatDatabase : RoomDatabase() {
 
     abstract fun eatDao(): EatDao

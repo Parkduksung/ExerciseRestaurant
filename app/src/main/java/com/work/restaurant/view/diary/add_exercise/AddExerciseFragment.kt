@@ -51,7 +51,6 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 ll_add_remove_exercise.addView(addExerciseItem)
             }
 
-
             R.id.iv_remove_exercise -> {
 
                 if (viewList.size != 0) {

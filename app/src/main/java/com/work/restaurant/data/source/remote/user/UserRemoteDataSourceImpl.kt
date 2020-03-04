@@ -12,6 +12,34 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
 
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
+    override fun emailDuplicationCheck(
+        email: String,
+        callbackRemoteSource: UserRemoteDataSourceCallback.EmailDuplicationCheck
+    ) {
+        userApi.emailDuplicationCheck(email).enqueue(object : Callback<ResultResponse> {
+            override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
+                callbackRemoteSource.onFailure()
+            }
+
+            override fun onResponse(
+                call: Call<ResultResponse>?,
+                response: Response<ResultResponse>?
+            ) {
+                val result = response?.body()?.result
+
+                if (result != null) {
+                    if (!result) {
+                        callbackRemoteSource.onSuccess()
+                    } else {
+                        callbackRemoteSource.onFailure()
+                    }
+                }
+            }
+        })
+
+
+    }
+
     override fun login(
         email: String,
         pass: String,
@@ -116,7 +144,6 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                 }
             }
 
-
     }
 
     override fun delete(
@@ -132,7 +159,6 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                     override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
                         callbackRemoteSource.onFailure("${t?.message}")
                     }
-
                     override fun onResponse(
                         call: Call<ResultResponse>?,
                         response: Response<ResultResponse>?

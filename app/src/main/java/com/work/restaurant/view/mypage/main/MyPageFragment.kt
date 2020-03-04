@@ -4,68 +4,145 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.LoginModel
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.login.MyPageLoginFragment
+import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
 import com.work.restaurant.view.mypage.main.presenter.MyPageContract
 import com.work.restaurant.view.mypage.main.presenter.MyPagePresenter
 import com.work.restaurant.view.mypage.notification.MyPageNotificationFragment
 import com.work.restaurant.view.mypage.question.MyPageQuestionFragment
+import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
 import kotlinx.android.synthetic.main.mypage_fragment.*
 
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
 
+
     private lateinit var presenter: MyPageContract.Presenter
 
-    override fun showFirebaseLogin(loginId: String, loginNickname: String) {
 
-        userId = loginId
-        userNickname = loginNickname
+    override fun showProgress() {
+        pb_login.bringToFront()
+        pb_login.visibility = View.VISIBLE
+        btn_login.isClickable = false
+        tv_main_register.isClickable = false
+        tv_main_find.isClickable = false
 
-        loginState = true
+    }
+
+    override fun showEnd() {
+        pb_login.visibility = View.GONE
+        btn_login.isClickable = true
+        tv_main_register.isClickable = true
+        tv_main_find.isClickable = true
+    }
+
+
+    override fun showLoginOk(email: String, nickname: String) {
+        toggleLoginState = true
+        tv_login_nickname.text =
+            getString(
+                R.string.mypage_login_state_nickname,
+                nickname
+            )
+        tv_login_id.text = email
+        userNickname = nickname
         loginState()
+        showEnd()
+    }
+
+    override fun showLoginNo() {
+        Toast.makeText(this.context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT)
+            .show()
+        showEnd()
     }
 
     override fun showInit() {
+        toggleLoginState = false
+        userNickname = ""
+        tv_login_nickname.text = ""
+        tv_login_id.text = ""
         loginState()
     }
 
-    override fun showLoginState(model: LoginModel) {
-
-        presenter.loginFirebase(model.loginId, model.loginPw, model.loginNickname)
-
+    override fun showMaintainLogin(email: String, nickname: String) {
+        toggleLoginState = true
+        tv_login_nickname.text =
+            getString(
+                R.string.mypage_login_state_nickname,
+                nickname
+            )
+        tv_login_id.text = email
+        userNickname = nickname
+        loginState()
     }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
 
-            R.id.iv_login -> {
-                val myPageLoginFragment = MyPageLoginFragment()
-                myPageLoginFragment.setTargetFragment(
-                    this,
-                    LOGIN
-                )
-
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(
-                        R.id.mypage_main_container,
-                        myPageLoginFragment
-                    )
-                    .addToBackStack(null)
-                    .commit()
+            R.id.tv_main_find -> {
+                requireFragmentManager().beginTransaction().replace(
+                    R.id.main_container,
+                    MyPageFindPassFragment()
+                ).addToBackStack(null).commit()
             }
 
+            R.id.tv_main_register -> {
+
+                val myPageRegisterFragment = MyPageRegisterFragment()
+
+                myPageRegisterFragment.setTargetFragment(
+                    this,
+                    REGISTER
+                )
+                requireFragmentManager().beginTransaction().replace(
+                    R.id.mypage_main_container,
+                    myPageRegisterFragment
+                ).addToBackStack(null).commit()
+            }
+
+
+            R.id.btn_login -> {
+                if (et_email.text.toString().isNotEmpty() && et_pass.text.toString().isNotEmpty()) {
+
+                    if (et_email.text.toString().contains(" ") || et_pass.text.toString().contains(" ")) {
+                        Toast.makeText(this.context, "입력한 정보에 공백을 제거하세요.", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        if (isValidEmail(et_email.text.toString())) {
+                            showProgress()
+                            presenter.login(
+                                et_email.text.toString(),
+                                et_pass.text.toString()
+                            )
+                        } else {
+                            Toast.makeText(this.context, "형식에 맞는 아이디를 입력하세요.", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                } else if (et_email.text.toString().trim().isNotEmpty() && et_pass.text.toString().trim().isEmpty()) {
+                    Toast.makeText(this.context, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else if (et_email.text.toString().trim().isEmpty() && et_pass.text.toString().trim().isNotEmpty()) {
+                    Toast.makeText(this.context, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this.context, "아이디와 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
             R.id.ll_logout -> {
-                val myPageLogoutFragment = MyPageLogoutFragment()
+                val myPageLogoutFragment =
+                    MyPageLogoutFragment.newInstance(tv_login_id.text.toString())
 
                 myPageLogoutFragment.setTargetFragment(
                     this,
@@ -83,11 +160,15 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
             R.id.tv_page_withdrawal -> {
                 val myPageWithdrawalFragment =
-                    MyPageWithdrawalFragment()
+                    MyPageWithdrawalFragment.newInstance(
+                        tv_login_id.text.toString(),
+                        userNickname
+                    )
                 myPageWithdrawalFragment.setTargetFragment(
                     this,
                     WITHDRAW
                 )
+
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
@@ -118,7 +199,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 alertDialog.show()
 
             }
-
             R.id.ll_notification -> {
                 requireFragmentManager()
                     .beginTransaction()
@@ -130,7 +210,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     .commit()
             }
             R.id.ll_question -> {
-
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
@@ -140,7 +219,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     .addToBackStack(null)
                     .commit()
             }
-
         }
     }
 
@@ -157,99 +235,74 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         ll_identity.setOnClickListener(this)
         ll_notification.setOnClickListener(this)
         ll_question.setOnClickListener(this)
+        tv_main_register.setOnClickListener(this)
+        tv_main_find.setOnClickListener(this)
+        btn_login.setOnClickListener(this)
 
 
         presenter.getLoginState()
-    }
 
+
+    }
 
     private fun loginState() {
-        if (loginState) {
-            iv_login.setImageResource(R.drawable.user)
-            iv_login.isClickable = false
-            login_ok_ll.visibility = View.VISIBLE
-            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25F)
-            tv_login_id.text = "$userId 님 환영합니다"
-            tv_login_id.text = "$userNickname 님\n 환영합니다."
-        } else {
-            login_ok_ll.visibility = View.INVISIBLE
-            tv_login_id.text = "로그인"
-            iv_login.setImageResource(R.drawable.ic_login)
-            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40F)
-            iv_login.isClickable = true
-        }
+        ll_mypage_main_login.isVisible = toggleLoginState
+        ll_mypage_main_init.isVisible = !toggleLoginState
     }
 
-    fun registerOk(registerId: String) {
-        presenter.getLoginState()
-        userId = registerId
-    }
+    private fun isValidEmail(charSequence: CharSequence): Boolean =
+        !TextUtils.isEmpty(charSequence) && Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == LOGIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                val loginEmail =
-                    data?.extras?.getString(MyPageLoginFragment.LOGIN_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageLoginFragment.LOGIN_NICKNAME).orEmpty()
-
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = true
-                loginState()
-            }
-        }
 
         if (requestCode == LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
-
-                val loginEmail =
-                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_NICKNAME).orEmpty()
-
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = false
-                loginState()
+                showInit()
             }
         }
 
         if (requestCode == WITHDRAW) {
             if (resultCode == Activity.RESULT_OK) {
-                val loginEmail =
-                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_NICKNAME).orEmpty()
+                showInit()
+            }
+        }
 
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = false
-                loginState()
+        if (requestCode == REGISTER) {
+            if (resultCode == Activity.RESULT_OK) {
+                val loginEmail =
+                    data?.extras?.getString(MyPageRegisterFragment.REGISTER_ID).orEmpty()
+                val loginNickname =
+                    data?.extras?.getString(MyPageRegisterFragment.REGISTER_NICKNAME).orEmpty()
+                showLoginOk(loginEmail, loginNickname)
             }
 
         }
-
 
     }
 
     override fun onDetach() {
         super.onDetach()
-        loginState = false
+        toggleLoginState = false
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        et_pass.text.clear()
+        et_pass.text.clear()
+    }
+
     companion object {
-        var loginState = false
-        var userId = ""
+        var toggleLoginState = false
         var userNickname = ""
+
 
         private const val TAG = "MyPageFragment"
 
-        private const val LOGIN = 1
+        private const val REGISTER = 1
         private const val LOGOUT = 2
         private const val WITHDRAW = 3
 

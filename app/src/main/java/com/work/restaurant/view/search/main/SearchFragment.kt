@@ -26,12 +26,10 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
             }
         }
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         presenter = SearchPresenter(this)
-
         presenter.init()
         et_search_look.setOnClickListener(this)
     }

@@ -41,7 +41,7 @@
         <activity
             android:name=".view.ExerciseRestaurantActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
+            android:windowSoftInputMode="adjustPan">
             <!-- 로딩 보기 귀찮을때 사용해라.-->
             <!--                        <intent-filter>-->
             <!--                            <action android:name="android.intent.action.MAIN" />-->
@@ -57,7 +57,7 @@
         <activity
             android:name="com.work.restaurant.view.search.lookfor.SearchLookForActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

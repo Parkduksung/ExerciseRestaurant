@@ -146,7 +146,7 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
             this@LoadingActivity.finish()
 
-        }, 1000L)
+        }, 100L)
     }
 
     companion object {

@@ -4,7 +4,6 @@ import com.work.restaurant.data.repository.login.LoginRepository
 import com.work.restaurant.data.repository.login.LoginRepositoryCallback
 import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.data.repository.user.UserRepositoryCallback
-import java.util.regex.Pattern
 
 class MyPageRegisterPresenter(
     private val myPageRegisterView: MyPageRegisterContract.View,
@@ -12,16 +11,31 @@ class MyPageRegisterPresenter(
     private val loginRepository: LoginRepository
 ) :
     MyPageRegisterContract.Presenter {
-    override fun registerLogin(nickName: String, email: String, pass: String, state: Boolean) {
+    override fun emailDuplicationCheck(userId: String) {
+        userRepository.emailDuplicationCheck(
+            userId,
+            object : UserRepositoryCallback.EmailDuplicationCheck {
+                override fun onSuccess() {
+                    myPageRegisterView.showEmailDuplicationCheck(true)
+                }
 
+                override fun onFailure() {
+                    myPageRegisterView.showEmailDuplicationCheck(false)
+                }
+            })
+
+
+    }
+
+    private fun registerLogin(nickName: String, email: String, pass: String) {
         loginRepository.getRegisterData(
             email,
             pass,
             nickName,
-            state,
+            true,
             object : LoginRepositoryCallback.RegisterCallback {
                 override fun onSuccess() {
-                    myPageRegisterView.showLoginState()
+                    myPageRegisterView.showRegisterOk()
                 }
 
                 override fun onFailure() {
@@ -32,19 +46,11 @@ class MyPageRegisterPresenter(
     }
 
 
-    override fun isEmailValid(email: String): Boolean {
-        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
-        val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
-    }
-
-
     override fun register(nickName: String, email: String, pass: String) {
 
         userRepository.register(nickName, email, pass, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
-                myPageRegisterView.showRegisterState()
+                registerLogin(nickName, email, pass)
             }
 
             override fun onFailure(message: String) {
@@ -54,19 +60,5 @@ class MyPageRegisterPresenter(
 
     }
 
-    override fun loginForRegister(userId: String, userPass: String) {
-
-        userRepository.login(userId, userPass, object : UserRepositoryCallback {
-            override fun onSuccess(resultNickname: String) {
-
-                myPageRegisterView.showRegisterOk(resultNickname)
-            }
-
-            override fun onFailure(message: String) {
-                myPageRegisterView.showRegisterNo(0)
-            }
-        })
-
-    }
 
 }

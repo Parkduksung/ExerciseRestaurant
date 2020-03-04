@@ -7,6 +7,25 @@ import com.work.restaurant.util.App
 
 class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteDataSourceImpl) :
     UserRepository {
+    override fun emailDuplicationCheck(
+        email: String,
+        callback: UserRepositoryCallback.EmailDuplicationCheck
+    ) {
+        if (App.instance.context().isConnectedToNetwork()) {
+            userRemoteDataSourceImpl.emailDuplicationCheck(
+                email,
+                object : UserRemoteDataSourceCallback.EmailDuplicationCheck {
+                    override fun onSuccess() {
+                        callback.onSuccess()
+                    }
+
+                    override fun onFailure() {
+                        callback.onFailure()
+                    }
+                })
+        }
+
+    }
 
     override fun login(email: String, pass: String, callback: UserRepositoryCallback) {
 

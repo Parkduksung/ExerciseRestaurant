@@ -25,7 +25,11 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         }
 
         if (!handled) {
+
+
             super.onBackPressed()
+
+
         }
 
     }

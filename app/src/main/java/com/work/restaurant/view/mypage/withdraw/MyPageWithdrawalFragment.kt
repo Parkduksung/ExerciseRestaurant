@@ -3,19 +3,17 @@ package com.work.restaurant.view.mypage.withdraw
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userId
-import com.work.restaurant.view.mypage.main.MyPageFragment.Companion.userNickname
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalPresenter
 import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
@@ -37,8 +35,26 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
                 pb_withdrawal.visibility = View.VISIBLE
                 btn_withdraw_cancel.isClickable = false
                 btn_withdraw_ok.isClickable = false
-                presenter.withdraw(userNickname, userId)
-                presenter.withdrawLogin(userNickname, userId)
+
+
+                val bundle = arguments
+                val getUserId = bundle?.getString(WITHDRAW_ID).orEmpty()
+                val getUserNickname = bundle?.getString(WITHDRAW_NICKNAME).orEmpty()
+
+
+                if (getUserId.isNotEmpty() && getUserNickname.isNotEmpty()) {
+                    presenter.withdraw(getUserNickname, getUserId)
+                    presenter.withdrawLogin(getUserNickname, getUserId)
+
+                } else {
+                    pb_withdrawal.visibility = View.GONE
+                    btn_withdraw_cancel.isClickable = true
+                    btn_withdraw_ok.isClickable = true
+                    Toast.makeText(App.instance.context(), "회원탈퇴를 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
+
             }
         }
     }
@@ -84,18 +100,17 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
         if (toggleWithdraw && toggleWithdrawLogin) {
             if (pb_withdrawal != null) {
+
+
                 pb_withdrawal.visibility = View.GONE
                 btn_withdraw_cancel.isClickable = true
                 btn_withdraw_ok.isClickable = true
 
-                val data = Intent().apply {
-                    putExtra(WITHDRAW_ID, "")
-                    putExtra(WITHDRAW_NICKNAME, "")
-                }
+
                 targetFragment?.onActivityResult(
                     targetRequestCode,
                     Activity.RESULT_OK,
-                    data
+                    null
                 )
 
 
@@ -201,6 +216,16 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
         const val WITHDRAW_ID = "id"
         const val WITHDRAW_NICKNAME = "nickname"
+
+        fun newInstance(
+            userId: String,
+            userNickname: String
+        ) = MyPageWithdrawalFragment().apply {
+            arguments = Bundle().apply {
+                putString(WITHDRAW_ID, userId)
+                putString(WITHDRAW_NICKNAME, userNickname)
+            }
+        }
 
     }
 

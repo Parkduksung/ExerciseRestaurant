@@ -23,4 +23,9 @@ interface UserRemoteDataSource {
 
     fun resetPass(email: String, callbackRemoteSource: UserRemoteDataSourceCallback)
 
+    fun emailDuplicationCheck(
+        email: String,
+        callbackRemoteSource: UserRemoteDataSourceCallback.EmailDuplicationCheck
+    )
+
 }
