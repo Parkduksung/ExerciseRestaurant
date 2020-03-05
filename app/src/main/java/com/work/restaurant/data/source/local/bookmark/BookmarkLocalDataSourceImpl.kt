@@ -24,18 +24,18 @@ class BookmarkLocalDataSourceImpl(
                     callback.onFailure()
                 }
             }
-
         }
-
     }
 
-    override fun getAllList(callback: BookmarkLocalDataSourceCallback.GetAllList) {
+    override fun getAllList(
+        userId: String,
+        callback: BookmarkLocalDataSourceCallback.GetAllList
+    ) {
 
         appExecutors.diskIO.execute {
 
             val getAllList =
-                bookmarkDatabase.bookmarkDao().getAll()
-
+                bookmarkDatabase.bookmarkDao().getAll(userId)
 
             appExecutors.mainThread.execute {
                 getAllList.takeIf { true }

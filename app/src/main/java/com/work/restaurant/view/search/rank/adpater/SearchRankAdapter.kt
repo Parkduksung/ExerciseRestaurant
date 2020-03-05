@@ -44,6 +44,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
         private val kakaoDistance: TextView = itemView.findViewById(R.id.kakao_distance_tv)
         private val kakaoName: TextView = itemView.findViewById(R.id.kakao_name_tv)
+        private val kakaoAddress: TextView = itemView.findViewById(R.id.kakao_address_tv)
         private val kakaoMoreVert: ImageButton = itemView.findViewById(R.id.ib_more_vert)
 
         fun bind(item: KakaoSearchModel) {
@@ -158,6 +159,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
             }
 
             kakaoName.text = kakaoItem.placeName
+            kakaoAddress.text = kakaoItem.addressName
 
         }
 

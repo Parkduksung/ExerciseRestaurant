@@ -6,12 +6,15 @@ interface SearchBookmarksContract {
 
     interface View {
         fun showBookmarksList(bookmarkModelList: List<BookmarkModel>)
+
+        fun showNotLoginBookmark()
+
         fun showBookmarkDeleteResult(msg: Boolean)
 
     }
 
     interface Presenter {
-        fun getBookmarksList()
+        fun getBookmarksList(userId: String)
         fun deleteBookmark(bookmarkModel: BookmarkModel)
     }
 }

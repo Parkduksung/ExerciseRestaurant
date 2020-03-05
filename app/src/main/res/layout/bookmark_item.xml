@@ -10,7 +10,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="70dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,16 +38,37 @@
                     android:src="@drawable/ic_gym_foreground"
                     tools:ignore="ContentDescription" />
 
-
-                <TextView
-                    android:id="@+id/tv_bookmark_name"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="7"
-                    android:text=""
-                    android:textSize="20dp" />
+                    android:orientation="vertical"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:id="@+id/tv_bookmark_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="3"
+                        android:autoSizeMaxTextSize="25dp"
+                        android:autoSizeMinTextSize="3dp"
+                        android:autoSizeTextType="uniform"
+                        tools:ignore="UnusedAttribute" />
+
+                    <TextView
+                        android:id="@+id/tv_bookmark_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"
+                        android:autoSizeMaxTextSize="25dp"
+                        android:autoSizeMinTextSize="3dp"
+                        android:autoSizeTextType="uniform"
+                        tools:ignore="UnusedAttribute" />
+                </LinearLayout>
 
 
                 <LinearLayout

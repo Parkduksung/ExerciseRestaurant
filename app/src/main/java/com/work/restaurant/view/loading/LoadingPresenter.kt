@@ -2,17 +2,23 @@ package com.work.restaurant.view.loading
 
 import android.util.Log
 import com.work.restaurant.data.model.RoadModel
+import com.work.restaurant.data.repository.login.LoginRepository
+import com.work.restaurant.data.repository.login.LoginRepositoryCallback
 import com.work.restaurant.data.repository.road.Callback
 import com.work.restaurant.data.repository.road.RoadRepositoryDataCountCallback
 import com.work.restaurant.data.repository.road.RoadRepositoryImpl
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
 import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.network.room.entity.LoginEntity
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import kotlin.random.Random
 
-class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingContract.Presenter {
+class LoadingPresenter(
+    private val loadingView: LoadingContract.View,
+    private val loginRepository: LoginRepository
+) : LoadingContract.Presenter {
     override fun registerAddress() {
 
         RoadRepositoryImpl.getInstance(
@@ -53,7 +59,6 @@ class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingC
 
 
     override fun randomText(loadingTextArrayList: Array<String>) {
-
         val random = Random.nextInt(loadingTextArrayList.size)
         loadingView.showStartText(loadingTextArrayList[random])
     }
@@ -87,4 +92,16 @@ class LoadingPresenter(private val loadingView: LoadingContract.View) : LoadingC
             })
     }
 
+    override fun getLoginState() {
+        loginRepository.getLoginState(object : LoginRepositoryCallback.LoginStateCallback {
+            override fun onSuccess(list: LoginEntity) {
+                val getUserId = list.toLoginModel().loginId
+                loadingView.showLoginState(true, getUserId)
+            }
+
+            override fun onFailure() {
+                loadingView.showLoginState(false, "")
+            }
+        })
+    }
 }

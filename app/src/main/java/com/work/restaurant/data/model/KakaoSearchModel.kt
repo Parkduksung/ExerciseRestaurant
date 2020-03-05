@@ -11,7 +11,9 @@ data class KakaoSearchModel(
 ) {
     fun toBookmarkModel(): BookmarkModel =
         BookmarkModel(
+            "",
             placeName,
-            placeUrl
+            placeUrl,
+            addressName
         )
 }

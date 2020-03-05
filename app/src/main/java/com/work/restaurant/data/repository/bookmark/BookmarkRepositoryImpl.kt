@@ -26,16 +26,21 @@ class BookmarkRepositoryImpl(
         )
     }
 
-    override fun getAllList(callback: BookmarkRepositoryCallback.GetAllList) {
-        bookmarkLocalDataSourceImpl.getAllList(object : BookmarkLocalDataSourceCallback.GetAllList {
-            override fun onSuccess(list: List<BookmarkEntity>) {
-                callback.onSuccess(list)
-            }
+    override fun getAllList(
+        userId: String,
+        callback: BookmarkRepositoryCallback.GetAllList
+    ) {
+        bookmarkLocalDataSourceImpl.getAllList(
+            userId,
+            object : BookmarkLocalDataSourceCallback.GetAllList {
+                override fun onSuccess(list: List<BookmarkEntity>) {
+                    callback.onSuccess(list)
+                }
 
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
+                override fun onFailure() {
+                    callback.onFailure()
+                }
+            })
     }
 
     override fun deleteBookmark(

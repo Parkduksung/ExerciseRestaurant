@@ -2,6 +2,7 @@ package com.work.restaurant.view.mypage.main
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
@@ -28,6 +30,21 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
 
     private lateinit var presenter: MyPageContract.Presenter
+
+    private lateinit var renewBookmarkListener: RenewBookmarkListener
+
+
+    interface RenewBookmarkListener {
+        fun renewBookmark()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as? RenewBookmarkListener)?.let {
+            renewBookmarkListener = it
+        }
+    }
+
 
     override fun showProgress() {
         pb_login.bringToFront()
@@ -55,6 +72,9 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             )
         tv_login_id.text = email
         userNickname = nickname
+        App.prefs.login_state = true
+        App.prefs.login_state_id = email
+        renewBookmarkListener.renewBookmark()
         loginState()
         showEnd()
     }
@@ -70,6 +90,9 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         userNickname = ""
         tv_login_nickname.text = ""
         tv_login_id.text = ""
+        App.prefs.login_state_id = ""
+        App.prefs.login_state = false
+        renewBookmarkListener.renewBookmark()
         loginState()
     }
 
@@ -262,6 +285,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 et_email.text.clear()
                 et_pass.text.clear()
                 showInit()
+
             }
         }
 

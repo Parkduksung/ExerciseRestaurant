@@ -29,18 +29,24 @@ class SearchBookmarksPresenter(
 
     }
 
-    override fun getBookmarksList() {
-        bookmarkRepository.getAllList(object : BookmarkRepositoryCallback.GetAllList {
-            override fun onSuccess(list: List<BookmarkEntity>) {
+    override fun getBookmarksList(userId: String) {
 
-                val toBookmarkModelList = list.map { it.toBookmarkModel() }
-                searchBookmarksView.showBookmarksList(toBookmarkModelList)
-            }
+        if (userId.isNotEmpty()) {
+            bookmarkRepository.getAllList(
+                userId, object : BookmarkRepositoryCallback.GetAllList {
+                    override fun onSuccess(list: List<BookmarkEntity>) {
+                        val toBookmarkModelList = list.map { it.toBookmarkModel() }
+                        searchBookmarksView.showBookmarksList(toBookmarkModelList)
+                    }
 
-            override fun onFailure() {
+                    override fun onFailure() {
 
-            }
-        })
+                    }
+                })
+
+        } else {
+            searchBookmarksView.showNotLoginBookmark()
+        }
 
     }
 

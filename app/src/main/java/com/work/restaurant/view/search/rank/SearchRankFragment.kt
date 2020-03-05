@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
@@ -184,8 +185,20 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 startActivity(intent)
             }
             SELECT_BOOKMARK -> {
-                val toBookmarkModel = data.toBookmarkModel()
-                presenter.addBookmarkKakaoItem(toBookmarkModel)
+                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                    val toBookmarkModel = BookmarkModel(
+                        App.prefs.login_state_id,
+                        data.placeName,
+                        data.placeUrl,
+                        data.addressName
+                    )
+                    presenter.addBookmarkKakaoItem(toBookmarkModel)
+                } else {
+                    Toast.makeText(this.context, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
+                }
+
+//                val toBookmarkModel = data.toBookmarkModel()
+//                presenter.addBookmarkKakaoItem(toBookmarkModel)
             }
         }
     }

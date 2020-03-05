@@ -12,6 +12,7 @@ import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.notification.NotificationDataListener
 import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
+import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.main.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,7 +20,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     ExerciseRestaurantContract.View,
     NotificationDataListener,
-    DiaryFragment.RenewDataListener {
+    DiaryFragment.RenewDataListener,
+    MyPageFragment.RenewBookmarkListener {
+
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -42,6 +45,13 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
         }
     }
 
+    override fun renewBookmark() {
+        supportFragmentManager.fragments.forEach {
+            if (it is SearchBookmarksFragment) {
+                it.renewBookmark()
+            }
+        }
+    }
 
     override fun getNotificationData(data: NotificationModel) {
 

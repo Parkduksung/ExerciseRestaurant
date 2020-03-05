@@ -12,6 +12,7 @@ import android.os.Handler
 import android.widget.Toast
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity
@@ -22,6 +23,15 @@ import java.util.*
 
 
 class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
+    override fun showLoginState(result: Boolean, userId: String) {
+        if (result) {
+            App.prefs.login_state = true
+            App.prefs.login_state_id = userId
+        } else {
+            App.prefs.login_state = false
+            App.prefs.login_state_id = userId
+        }
+    }
 
     private lateinit var presenter: LoadingContract.Presenter
 
@@ -50,9 +60,11 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = LoadingPresenter(this)
+        presenter = LoadingPresenter(
+            this,
+            Injection.provideLoginRepository()
+        )
         presenter.randomText(resources.getStringArray(R.array.load_string))
-
         checkPermission()
 
     }
@@ -126,6 +138,7 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
                 dateArray[6]
             )
 
+        presenter.getLoginState()
         presenter.delayTime()
         presenter.getAddressDataCount()
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
 class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment),
     View.OnClickListener, AdapterDataListener.GetBookmarkData,
     SearchBookmarksContract.View {
+
 
     private val bookMarkAdapter: BookMarkAdapter by lazy { BookMarkAdapter() }
     private lateinit var presenter: SearchBookmarksPresenter
@@ -60,12 +62,16 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         bookmarkDeduplicationSet.addAll(bookmarkModelList)
 
         recyclerview_bookmark.run {
-            this.adapter = bookMarkAdapter
             bookMarkAdapter.clearListData()
             bookMarkAdapter.addAllData(bookmarkDeduplicationSet.toList())
-            layoutManager = LinearLayoutManager(this.context)
         }
 
+    }
+
+    override fun showNotLoginBookmark() {
+        recyclerview_bookmark.run {
+            bookMarkAdapter.clearListData()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -81,16 +87,22 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
             this,
             Injection.provideBookmarkRepository()
         )
+        recyclerview_bookmark.run {
+            this.adapter = bookMarkAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
 
         bookMarkAdapter.setItemClickListener(this)
+        presenter.getBookmarksList(App.prefs.login_state_id)
+    }
 
-        presenter.getBookmarksList()
-
+    fun renewBookmark() {
+        presenter.getBookmarksList(App.prefs.login_state_id)
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.getBookmarksList()
+        presenter.getBookmarksList(App.prefs.login_state_id)
     }
 
     companion object {

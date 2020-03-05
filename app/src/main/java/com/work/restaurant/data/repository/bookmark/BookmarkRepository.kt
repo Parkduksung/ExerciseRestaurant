@@ -4,6 +4,7 @@ import com.work.restaurant.network.room.entity.BookmarkEntity
 
 interface BookmarkRepository {
     fun getAllList(
+        userId:String,
         callback: BookmarkRepositoryCallback.GetAllList
     )
 

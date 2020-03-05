@@ -6,6 +6,7 @@ interface BookmarkLocalDataSource {
 
 
     fun getAllList(
+        userId: String,
         callback: BookmarkLocalDataSourceCallback.GetAllList
     )
 

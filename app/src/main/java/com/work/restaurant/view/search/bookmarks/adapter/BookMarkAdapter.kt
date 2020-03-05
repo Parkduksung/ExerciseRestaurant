@@ -41,6 +41,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         private val bookmarkName: TextView = itemView.findViewById(R.id.tv_bookmark_name)
+        private val bookmarkAddress: TextView = itemView.findViewById(R.id.tv_bookmark_address)
         private val bookmarkCancel: ImageButton = itemView.findViewById(R.id.ib_bookmark_cancel)
 
         fun bind(item: BookmarkModel) {
@@ -74,6 +75,7 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
                 }
             }
 
+            bookmarkAddress.text = item.bookmarkAddress
             bookmarkName.text = item.bookmarkName
         }
     }

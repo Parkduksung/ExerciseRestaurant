@@ -56,4 +56,25 @@ class MySharedPreferences(context: Context) {
         get() = prefs.getString(PREF_KEY_CURRENT_LOCATION_LAT, "")!!
         set(value) = prefs.edit().putString(PREF_KEY_CURRENT_LOCATION_LAT, value).apply()
 
+
+    val PREFS_LOGIN_STATE = "prefs_login_state"
+    val PREF_KEY_LOGIN_STATE = "login_state"
+    val prefs_login_state: SharedPreferences =
+        context.getSharedPreferences(PREFS_LOGIN_STATE, 0)
+
+    var login_state: Boolean
+        get() = prefs.getBoolean(PREF_KEY_LOGIN_STATE, false)
+        set(value) = prefs.edit().putBoolean(PREF_KEY_LOGIN_STATE, value).apply()
+
+
+    val PREFS_LOGIN_STATE_ID = "prefs_login_state_id"
+    val PREF_KEY_LOGIN_STATE_ID = "login_state_id"
+    val prefs_login_state_id: SharedPreferences =
+        context.getSharedPreferences(PREFS_LOGIN_STATE_ID, 0)
+
+    var login_state_id: String
+        get() = prefs.getString(PREF_KEY_LOGIN_STATE_ID, "")!!
+        set(value) = prefs.edit().putString(PREF_KEY_LOGIN_STATE_ID, value).apply()
+
+
 }

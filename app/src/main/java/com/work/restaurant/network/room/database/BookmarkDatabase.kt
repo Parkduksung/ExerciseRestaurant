@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.work.restaurant.network.room.dao.BookmarkDao
 import com.work.restaurant.network.room.entity.BookmarkEntity
 
-@Database(entities = [BookmarkEntity::class], version = 3)
+@Database(entities = [BookmarkEntity::class], version = 4)
 abstract class BookmarkDatabase : RoomDatabase() {
 
     abstract fun bookmarkDao(): BookmarkDao
