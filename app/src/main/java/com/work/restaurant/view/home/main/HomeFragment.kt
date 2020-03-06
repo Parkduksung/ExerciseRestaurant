@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
                         if (ParentFragment is HomeFragment) {
                             ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
                                 if (ChildFragment is MapFragment) {
-                                    MapFragment.toggleSelectLoction = true
+                                    MapFragment.toggleSelectLocation = true
                                 }
                             }
                         }

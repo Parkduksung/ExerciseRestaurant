@@ -2,6 +2,7 @@ package com.work.restaurant.view.loading
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -9,6 +10,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import android.widget.Toast
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -41,7 +43,29 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
         object : PermissionListener {
 
             override fun onPermissionGranted() {
-                saveCurrentLocation()
+
+                if (checkLocationServicesStatus()) {
+                    saveCurrentLocation()
+                } else {
+                    AlertDialog.Builder(this@LoadingActivity)
+                        .setTitle("GPS 오류")
+                        .setMessage("GPS 상태를 활성상태로 변경후 다시 시작해 주세요.")
+                        .setPositiveButton(
+                            "변경하기"
+                        ) { _, _ ->
+                            startActivity(
+                                Intent(ACTION_LOCATION_SOURCE_SETTINGS)
+                            )
+                            finish()
+                        }
+                        .setNegativeButton(
+                            "취소"
+                        ) { _, _ ->
+                            finish()
+                        }
+                        .show()
+                }
+
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
@@ -54,6 +78,14 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
                 finish()
             }
         }
+    }
+
+    //Gps잡히는지 확인하는것. 등 GPS관련
+    private fun checkLocationServicesStatus(): Boolean {
+        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
 

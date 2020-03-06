@@ -13,7 +13,7 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isEmpty
+import androidx.core.view.contains
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
@@ -153,7 +153,6 @@ class MapFragment : BaseFragment(R.layout.map),
                 markerInterface.getMarkerData(list[0])
                 mapInterface.click(true)
             } else {
-
                 markerInterface = object : MapInterface.SelectMarkerListener {
                     override fun getMarkerData(data: KakaoSearchModel) {
                     }
@@ -200,7 +199,7 @@ class MapFragment : BaseFragment(R.layout.map),
             p1?.let {
                 presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
             }
-        }, 2000L)
+        }, 1500L)
     }
 
     override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
@@ -253,7 +252,17 @@ class MapFragment : BaseFragment(R.layout.map),
     override fun showKakaoData(
         list: List<KakaoSearchModel>
     ) {
-        autoZoomLevel(list[0].distance.toInt())
+
+        if (toggleSelectLocation) {
+            autoZoomLevel(list[0].distance.toInt())
+            toggleSelectLocation = false
+        }
+
+        if (toggleCurrentLocation) {
+            autoZoomLevel(list[0].distance.toInt())
+            toggleCurrentLocation = false
+        }
+
         makeKakaoDataListMarker(list)
     }
 
@@ -262,7 +271,6 @@ class MapFragment : BaseFragment(R.layout.map),
     ) {
 
         var level = 0
-
         for (i in 0..8) {
             if (((2.0).pow(i) * 100) <= firstDistance && firstDistance <= ((2.0).pow(i + 1) * 100)) {
                 level = i
@@ -353,6 +361,7 @@ class MapFragment : BaseFragment(R.layout.map),
 
     private fun showCurrentLocation() {
         if (::mapView.isInitialized) {
+            toggleCurrentLocation = true
             mapView.removePOIItem(currentPOIItem)
             val currentPosition = MapPoint.mapPointWithGeoCoord(
                 App.prefs.current_location_lat.toDouble(),
@@ -449,18 +458,19 @@ class MapFragment : BaseFragment(R.layout.map),
                 map_view.removeView(mapView)
                 Toast.makeText(context, "GPS 비활성화 되었습니다 \n 다시 활성화를 하세요.", Toast.LENGTH_SHORT).show()
             } else {
-                if (map_view.isEmpty()) {
+
+                if (!map_view.contains(mapView)) {
+                    kakaoMarkerList.clear()
                     checkPermission()
                 } else {
-
                     if (::mapInterface.isInitialized) {
                         mapInterface.click(false)
                     }
 
-                    if (toggleSelectLoction) {
+                    if (toggleSelectLocation) {
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
-                        toggleSelectLoction = false
+//                        toggleSelectLocation = false
                     }
                     //다시 page로 돌오왔을시 현재 위치로 돌아오게 하고싶으면 풀어서 사용.
 //                    else {
@@ -473,7 +483,6 @@ class MapFragment : BaseFragment(R.layout.map),
 
     companion object {
 
-
         fun newInstance(selectAddress: String) =
             MapFragment().apply {
                 arguments = Bundle().apply {
@@ -481,9 +490,9 @@ class MapFragment : BaseFragment(R.layout.map),
                 }
             }
 
-
         var receiveAddress = ""
-        var toggleSelectLoction = false
+        var toggleSelectLocation = false
+        var toggleCurrentLocation = false
         private const val GPS_ENABLE_REQUEST_CODE = 1
     }
 }

@@ -26,5 +26,4 @@ class BookmarkEntity(
             bookmarkUrl,
             bookmarkAddress
         )
-
 }
