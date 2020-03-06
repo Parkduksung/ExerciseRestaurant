@@ -1,15 +1,15 @@
 package com.work.restaurant.view.search.rank.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 
 interface SearchRankContract {
 
     interface View {
 
-        fun showKakaoList(kakaoList: List<KakaoSearchModel>)
+        fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>)
 
-        fun showBookmarkResult(msg: Boolean)
+        fun showBookmarkResult(msg: Int)
 
         fun showCurrentLocation(addressName: String)
 
@@ -22,6 +22,8 @@ interface SearchRankContract {
     interface Presenter {
 
         fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel)
+
+        fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel)
 
         fun getCurrentLocation(addressName: String, itemCount: Int, sort: String)
 

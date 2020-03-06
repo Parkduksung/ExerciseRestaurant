@@ -2,6 +2,7 @@ package com.work.restaurant.view.search.lookfor
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -12,8 +13,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.util.App
+import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.main.HomeFragment
@@ -30,7 +32,7 @@ import kotlinx.android.synthetic.main.search_look_for_main.*
 class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     View.OnClickListener,
     AdapterDataListener,
-    AdapterDataListener.GetKakaoData,
+    AdapterDataListener.GetDisplayBookmarkKakaoModel,
     SearchLookForContract.View {
 
 
@@ -49,16 +51,54 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             }
         }
 
+    }
+
+    override fun showSearchLook(searchModel: List<DisplayBookmarkKakaoModel>) {
+
+        if (searchModel.isNotEmpty()) {
+            recyclerview_look.run {
+                lookForAdapter.clearListData()
+                lookForAdapter.addAllData(searchModel)
+            }
+        } else {
+            Toast.makeText(
+                App.instance.context(),
+                "검색한 헬스장이 없습니다. 다시 한번 입력해주세요",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        toggleSearch = true
+        supportFragmentManager.popBackStack()
 
     }
+
 
     override fun showBookmarkResult(msg: Int) {
         when (msg) {
             ADD_BOOKMARK -> {
+
+                val addressAllIntent =
+                    Intent(
+                        this@SearchLookForActivity,
+                        ExerciseRestaurantActivity::class.java
+                    ).apply {
+                        putExtra(RENEW, true)
+                    }
+                setResult(RESULT_OK, addressAllIntent)
+
                 Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
             }
 
             DELETE_BOOKMARK -> {
+                val addressAllIntent =
+                    Intent(
+                        this@SearchLookForActivity,
+                        ExerciseRestaurantActivity::class.java
+                    ).apply {
+                        putExtra(RENEW, true)
+                    }
+                setResult(RESULT_OK, addressAllIntent)
                 Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
             }
 
@@ -69,19 +109,23 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     }
 
 
-    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+    override fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel) {
         when (select) {
-
             ADD_BOOKMARK -> {
-                val toBookmarkModel = data.toBookmarkModel()
+                val toBookmarkModel =
+                    data.toBookmarkModel(App.prefs.login_state_id)
                 presenter.addBookmark(toBookmarkModel)
             }
-
             DELETE_BOOKMARK -> {
-                val toBookmarkModel = data.toBookmarkModel()
+                val toBookmarkModel =
+                    data.toBookmarkModel(App.prefs.login_state_id)
                 presenter.deleteBookmark(toBookmarkModel)
-            }
 
+
+            }
+            NOT_LOGIN_STATE -> {
+                Toast.makeText(this, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -147,7 +191,6 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
         if (getToggle != null) {
             if (getToggle) {
-
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.search_look_sub_container,
@@ -176,6 +219,13 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             Injection.provideKakaoRepository(),
             Injection.provideBookmarkRepository()
         )
+
+        recyclerview_look.run {
+            this.adapter = lookForAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
+
         lookForAdapter.setItemClickListener(this)
         lookForAdapter.setBookmarkListener(this)
         ib_search_look_back.setOnClickListener(this)
@@ -183,6 +233,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
         getRecyclerClickData()
         getBookmarkData()
         getMarkerData()
+
 
         searchItem(et_search_look_for_item)
 
@@ -216,32 +267,6 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
         et_search_look_for_item.text.clear()
     }
 
-    override fun showSearchLook(searchKakaoList: List<KakaoSearchModel>) {
-
-        if (searchKakaoList.isNotEmpty()) {
-            recyclerview_look.run {
-
-                this.adapter = lookForAdapter
-
-                lookForAdapter.clearListData()
-
-                lookForAdapter.addAllData(searchKakaoList)
-
-                layoutManager = LinearLayoutManager(this.context)
-
-            }
-        } else {
-            Toast.makeText(
-                App.instance.context(),
-                "검색한 헬스장이 없습니다. 다시 한번 입력해주세요",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        toggleSearch = true
-        supportFragmentManager.popBackStack()
-
-    }
 
     override fun showSearchNoFind() {
         val alertDialog =
@@ -268,9 +293,11 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     companion object {
 
         private const val TAG = "SearchLookForActivity"
+        const val RENEW = "renew"
 
         private const val ADD_BOOKMARK = 1
         private const val DELETE_BOOKMARK = 2
+        private const val NOT_LOGIN_STATE = 3
 
         private const val RESULT_FAILURE = 3
 

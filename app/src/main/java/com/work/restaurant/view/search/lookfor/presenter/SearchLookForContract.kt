@@ -1,13 +1,13 @@
 package com.work.restaurant.view.search.lookfor.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 
 interface SearchLookForContract {
     interface View {
 
 
-        fun showSearchLook(searchKakaoList: List<KakaoSearchModel>)
+        fun showSearchLook(searchModel: List<DisplayBookmarkKakaoModel>)
 
         fun showSearchNoFind()
 
@@ -23,5 +23,7 @@ interface SearchLookForContract {
         fun addBookmark(bookmarkModel: BookmarkModel)
 
         fun deleteBookmark(bookmarkModel: BookmarkModel)
+
+
     }
 }

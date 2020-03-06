@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.bookmarks
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
+import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
@@ -24,15 +26,25 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
     private val bookMarkAdapter: BookMarkAdapter by lazy { BookMarkAdapter() }
     private lateinit var presenter: SearchBookmarksPresenter
+    private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as? RenewBookmarkAndRankListener)?.let {
+            renewBookmarkAndRankListener = it
+        }
+    }
 
 
     override fun showBookmarkDeleteResult(msg: Boolean) {
         when (msg) {
             RESULT_SUCCESS -> {
-                Toast.makeText(this.context, "제거성공.", Toast.LENGTH_LONG).show()
+                renewBookmarkAndRankListener.renewBookmarkAndRank()
+                Toast.makeText(this.context, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
             }
             RESULT_FAILURE -> {
-                Toast.makeText(this.context, "제거실패.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, "즐겨찾기 제거를 실패하였습니다.", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -49,6 +61,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
                 startActivity(intent)
             }
             SELECT_DELETE -> {
+
                 presenter.deleteBookmark(data)
             }
         }
@@ -58,19 +71,17 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     override fun showBookmarksList(bookmarkModelList: List<BookmarkModel>) {
 
         val bookmarkDeduplicationSet = mutableSetOf<BookmarkModel>()
-
         bookmarkDeduplicationSet.addAll(bookmarkModelList)
-
         recyclerview_bookmark.run {
             bookMarkAdapter.clearListData()
             bookMarkAdapter.addAllData(bookmarkDeduplicationSet.toList())
         }
-
     }
 
     override fun showNotLoginBookmark() {
         recyclerview_bookmark.run {
             bookMarkAdapter.clearListData()
+            layoutManager = LinearLayoutManager(this.context)
         }
     }
 
@@ -96,9 +107,11 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         presenter.getBookmarksList(App.prefs.login_state_id)
     }
 
+
     fun renewBookmark() {
         presenter.getBookmarksList(App.prefs.login_state_id)
     }
+
 
     override fun onResume() {
         super.onResume()

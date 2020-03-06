@@ -43,10 +43,8 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), View.OnClickListener,
 
         if (requestCode == ADDRESS_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
                 val getAddressData = data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
                 getAddressData?.let {
-
                     requireFragmentManager().fragments.forEach { ParentFragment ->
                         if (ParentFragment is HomeFragment) {
                             ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->

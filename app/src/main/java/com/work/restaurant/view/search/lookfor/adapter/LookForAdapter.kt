@@ -7,15 +7,16 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
 
-    private val searchLookList = mutableListOf<KakaoSearchModel>()
+    private val searchLookList = mutableListOf<DisplayBookmarkKakaoModel>()
 
     private lateinit var adapterListener: AdapterDataListener
-    private lateinit var bookmarkListener: AdapterDataListener.GetKakaoData
+    private lateinit var bookmarkListener: AdapterDataListener.GetDisplayBookmarkKakaoModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -42,23 +43,36 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
         private val searchBookmarkCheckbox: CheckBox =
             itemView.findViewById(R.id.cb_search_add_bookmark)
+        private val searchLookAddress: TextView = itemView.findViewById(R.id.tv_search_look_address)
 
-        fun bind(item: KakaoSearchModel) {
 
-            searchLookName.text = item.placeName
+        fun bind(item: DisplayBookmarkKakaoModel) {
 
+            searchLookName.text = item.displayName
+            searchLookAddress.text = item.displayAddress
             searchBookmarkCheckbox.setButtonDrawable(R.drawable.selector_checkbox_drawable)
 
+            if (item.toggleBookmark) {
+                searchBookmarkCheckbox.isChecked = true
+            }
+
             if (::adapterListener.isInitialized && ::bookmarkListener.isInitialized) {
+
                 searchLookName.setOnClickListener {
-                    adapterListener.getData(item.placeUrl)
+                    adapterListener.getData(item.displayUrl)
                 }
 
+
                 searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
-                    if (searchBookmarkCheckbox.isChecked) {
-                        bookmarkListener.getKakaoData(1, item)
+                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                        if (searchBookmarkCheckbox.isChecked) {
+                            bookmarkListener.getDisplayBookmarkKakaoData(1, item)
+                        } else {
+                            bookmarkListener.getDisplayBookmarkKakaoData(2, item)
+                        }
                     } else {
-                        bookmarkListener.getKakaoData(2, item)
+                        searchBookmarkCheckbox.isChecked = false
+                        bookmarkListener.getDisplayBookmarkKakaoData(3, item)
                     }
                 }
 
@@ -69,36 +83,45 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                     }
                 }
 
-                bookmarkListener = object : AdapterDataListener.GetKakaoData {
-                    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+                bookmarkListener = object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
+                    override fun getDisplayBookmarkKakaoData(
+                        select: Int,
+                        data: DisplayBookmarkKakaoModel
+                    ) {
 
                     }
+                }
 
-                }
                 searchLookName.setOnClickListener {
-                    adapterListener.getData(item.placeName)
+                    adapterListener.getData(item.displayUrl)
                 }
+
 
                 searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
-                    if (searchBookmarkCheckbox.isChecked) {
-                        bookmarkListener.getKakaoData(1, item)
+
+                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                        if (searchBookmarkCheckbox.isChecked) {
+                            bookmarkListener.getDisplayBookmarkKakaoData(1, item)
+                        } else {
+                            bookmarkListener.getDisplayBookmarkKakaoData(2, item)
+                        }
                     } else {
-                        bookmarkListener.getKakaoData(2, item)
+                        searchBookmarkCheckbox.isChecked = false
+                        bookmarkListener.getDisplayBookmarkKakaoData(3, item)
                     }
                 }
 
             }
 
-
         }
     }
 
-    fun addAllData(kakaoSearchModelList: List<KakaoSearchModel>) =
-        searchLookList.addAll(kakaoSearchModelList)
+    fun addAllData(searchList: List<DisplayBookmarkKakaoModel>) =
+        searchLookList.addAll(searchList)
 
 
-    fun addData(kakaoSearchModel: KakaoSearchModel) {
-        searchLookList.add(kakaoSearchModel)
+    fun addData(searchList: DisplayBookmarkKakaoModel) {
+        searchLookList.add(searchList)
     }
 
     fun clearListData() {
@@ -110,7 +133,8 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         adapterListener = itemClickListener
     }
 
-    fun setBookmarkListener(listener: AdapterDataListener.GetKakaoData) {
+
+    fun setBookmarkListener(listener: AdapterDataListener.GetDisplayBookmarkKakaoModel) {
         bookmarkListener = listener
     }
 

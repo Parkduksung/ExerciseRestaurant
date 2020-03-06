@@ -41,7 +41,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     }
 
     override fun showRoadItem(address: TextView, list: List<String>) {
-
         select(address, list.toTypedArray())
 
     }

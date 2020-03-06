@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
+import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.calendar.CalendarFragment
@@ -14,6 +15,7 @@ import com.work.restaurant.view.mypage.notification.NotificationDataListener
 import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.main.SearchFragment
+import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -21,8 +23,7 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     ExerciseRestaurantContract.View,
     NotificationDataListener,
     DiaryFragment.RenewDataListener,
-    MyPageFragment.RenewBookmarkListener {
-
+    RenewBookmarkAndRankListener {
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -41,14 +42,18 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
                 if (it is CalendarFragment) {
                     it.renewDot()
                 }
+
             }
         }
     }
 
-    override fun renewBookmark() {
+    override fun renewBookmarkAndRank() {
         supportFragmentManager.fragments.forEach {
             if (it is SearchBookmarksFragment) {
                 it.renewBookmark()
+            }
+            if (it is SearchRankFragment) {
+                it.renewRank()
             }
         }
     }

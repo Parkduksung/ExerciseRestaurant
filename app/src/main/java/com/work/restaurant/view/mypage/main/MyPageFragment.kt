@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
+import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
@@ -31,17 +32,13 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     private lateinit var presenter: MyPageContract.Presenter
 
-    private lateinit var renewBookmarkListener: RenewBookmarkListener
+    private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
 
-
-    interface RenewBookmarkListener {
-        fun renewBookmark()
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as? RenewBookmarkListener)?.let {
-            renewBookmarkListener = it
+        (activity as? RenewBookmarkAndRankListener)?.let {
+            renewBookmarkAndRankListener = it
         }
     }
 
@@ -74,7 +71,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         userNickname = nickname
         App.prefs.login_state = true
         App.prefs.login_state_id = email
-        renewBookmarkListener.renewBookmark()
+        renewBookmarkAndRankListener.renewBookmarkAndRank()
         loginState()
         showEnd()
     }
@@ -92,7 +89,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         tv_login_id.text = ""
         App.prefs.login_state_id = ""
         App.prefs.login_state = false
-        renewBookmarkListener.renewBookmark()
+        renewBookmarkAndRankListener.renewBookmarkAndRank()
         loginState()
     }
 
@@ -132,7 +129,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     myPageRegisterFragment
                 ).addToBackStack(null).commit()
             }
-
 
             R.id.btn_login -> {
                 if (et_email.text.toString().isNotEmpty() && et_pass.text.toString().isNotEmpty()) {
@@ -285,7 +281,6 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                 et_email.text.clear()
                 et_pass.text.clear()
                 showInit()
-
             }
         }
 

@@ -1,11 +1,14 @@
 package com.work.restaurant.view.search.lookfor.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.util.App
 
 class SearchLookForPresenter(
     private val searchLookForView: SearchLookForContract.View,
@@ -45,7 +48,6 @@ class SearchLookForPresenter(
                 }
 
             })
-
     }
 
 
@@ -54,13 +56,53 @@ class SearchLookForPresenter(
         kakaoRepository.getKakaoItemInfo(searchItem,
             object : KakaoRepositoryCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
+
                     val toKakaoSearchModelList = item.map {
                         it.toKakaoModel()
                     }
-                    searchLookForView.showSearchLook(toKakaoSearchModelList)
+                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                        displayAlreadyBookmark(toKakaoSearchModelList)
+                    } else {
+                        val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
+                            it.toDisplayBookmarkKakaoModel(false)
+                        }
+                        searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
+                    }
                 }
 
                 override fun onFailure(message: String) {
+                    searchLookForView.showSearchNoFind()
+                }
+            })
+
+    }
+
+    private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
+        bookmarkRepository.getAllList(
+            App.prefs.login_state_id,
+            object : BookmarkRepositoryCallback.GetAllList {
+                override fun onSuccess(list: List<BookmarkEntity>) {
+
+
+                    val convertFromKakaoListToBookmarkModel =
+                        searchKakaoList.map { it.toBookmarkModel(App.prefs.login_state_id) }
+
+                    val convertFromBookmarkEntityToBookmarkModel =
+                        list.map { it.toBookmarkModel() }
+
+                    val displayBookmarkKakaoList = convertFromKakaoListToBookmarkModel.map {
+                        if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
+                            it.toDisplayBookmarkKakaoList(true)
+                        } else {
+                            it.toDisplayBookmarkKakaoList(false)
+                        }
+                    }
+
+                    searchLookForView.showSearchLook(displayBookmarkKakaoList)
+
+                }
+
+                override fun onFailure() {
                     searchLookForView.showSearchNoFind()
                 }
             })

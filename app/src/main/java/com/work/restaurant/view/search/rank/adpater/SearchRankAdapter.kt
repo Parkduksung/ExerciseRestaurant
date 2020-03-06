@@ -5,17 +5,19 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
 
-    private val kakaoList = mutableListOf<KakaoSearchModel>()
+    private val kakaoList = mutableListOf<DisplayBookmarkKakaoModel>()
 
-    private lateinit var adapterListener: AdapterDataListener.GetKakaoData
+    private lateinit var adapterListener: AdapterDataListener.GetDisplayBookmarkKakaoModel
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -47,100 +49,134 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
         private val kakaoAddress: TextView = itemView.findViewById(R.id.kakao_address_tv)
         private val kakaoMoreVert: ImageButton = itemView.findViewById(R.id.ib_more_vert)
 
-        fun bind(item: KakaoSearchModel) {
 
-            val kakaoItem: KakaoSearchModel = item
+        fun bind(item: DisplayBookmarkKakaoModel) {
+
+            val kakaoItem: DisplayBookmarkKakaoModel = item
+
+            val menuBuilder = MenuBuilder(itemView.context)
+            val inflater = MenuInflater(itemView.context)
+            inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
+            menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.displayAddress
+
+
+            val optionMenu =
+                MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
+            optionMenu.setForceShowIcon(true)
+
+            kakaoMoreVert.setOnClickListener {
+
+                if (kakaoItem.toggleBookmark) {
+                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 제거"
+                } else {
+                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
+                }
+
+
+
+
+                menuBuilder.setCallback(object : MenuBuilder.Callback {
+                    override fun onMenuModeChange(menu: MenuBuilder?) {
+                    }
+
+                    override fun onMenuItemSelected(
+                        menu: MenuBuilder?,
+                        item: MenuItem?
+                    ): Boolean {
+                        when (item?.itemId) {
+                            R.id.kakao_bookmark_item -> {
+
+                                if (::adapterListener.isInitialized) {
+
+                                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                                        if (kakaoItem.toggleBookmark) {
+                                            adapterListener.getDisplayBookmarkKakaoData(
+                                                3,
+                                                kakaoItem
+                                            )
+                                            itemView.setBackgroundColor(
+                                                ContextCompat.getColor(
+                                                    App.instance.context(),
+                                                    R.color.colorWhite
+                                                )
+                                            )
+                                        } else {
+                                            adapterListener.getDisplayBookmarkKakaoData(
+                                                2,
+                                                kakaoItem
+                                            )
+                                            itemView.setBackgroundColor(
+                                                ContextCompat.getColor(
+                                                    App.instance.context(),
+                                                    R.color.colorLeanYellow
+                                                )
+                                            )
+                                        }
+                                    } else {
+                                        adapterListener.getDisplayBookmarkKakaoData(4, kakaoItem)
+                                    }
+
+                                } else {
+                                    adapterListener =
+                                        object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
+                                            override fun getDisplayBookmarkKakaoData(
+                                                select: Int,
+                                                data: DisplayBookmarkKakaoModel
+                                            ) {
+
+                                            }
+                                        }
+                                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                                        if (kakaoItem.toggleBookmark) {
+                                            adapterListener.getDisplayBookmarkKakaoData(
+                                                3,
+                                                kakaoItem
+                                            )
+                                            itemView.setBackgroundColor(
+                                                ContextCompat.getColor(
+                                                    App.instance.context(),
+                                                    R.color.colorWhite
+                                                )
+                                            )
+                                        } else {
+                                            adapterListener.getDisplayBookmarkKakaoData(
+                                                2,
+                                                kakaoItem
+                                            )
+                                            itemView.setBackgroundColor(
+                                                ContextCompat.getColor(
+                                                    App.instance.context(),
+                                                    R.color.colorLeanYellow
+                                                )
+                                            )
+                                        }
+                                    } else {
+                                        adapterListener.getDisplayBookmarkKakaoData(4, kakaoItem)
+                                    }
+                                }
+                            }
+                        }
+                        return true
+                    }
+                })
+                optionMenu.show()
+            }
 
             if (::adapterListener.isInitialized) {
-
-                kakaoMoreVert.setOnClickListener {
-
-                    val menuBuilder = MenuBuilder(itemView.context)
-                    val inflater = MenuInflater(itemView.context)
-                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
-
-                    if (kakaoItem.phone == "") {
-//                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
-                    }
-
-                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
-                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
-                    val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
-                    optionMenu.setForceShowIcon(true)
-//                    optionMenu.gravity = Gravity.LEFT
-                    menuBuilder.setCallback(object : MenuBuilder.Callback {
-                        override fun onMenuModeChange(menu: MenuBuilder?) {
-                        }
-
-                        override fun onMenuItemSelected(
-                            menu: MenuBuilder?,
-                            item: MenuItem?
-                        ): Boolean {
-
-                            when (item?.itemId) {
-
-                                R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem)
-                                }
-
-                            }
-                            return true
-                        }
-                    })
-
-                    optionMenu.show()
-
-                }
-
-
                 itemView.setOnClickListener {
-                    adapterListener.getKakaoData(1, kakaoItem)
+                    adapterListener.getDisplayBookmarkKakaoData(1, kakaoItem)
                 }
-
-
             } else {
-                adapterListener = object : AdapterDataListener.GetKakaoData {
-                    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+                adapterListener = object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
+                    override fun getDisplayBookmarkKakaoData(
+                        select: Int,
+                        data: DisplayBookmarkKakaoModel
+                    ) {
 
                     }
-
                 }
-                kakaoMoreVert.setOnClickListener {
-
-                    val menuBuilder = MenuBuilder(itemView.context)
-                    val inflater = MenuInflater(itemView.context)
-                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
-
-
-                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
-                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
-                    val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
-                    optionMenu.setForceShowIcon(true)
-//                    optionMenu.gravity = Gravity.LEFT
-                    menuBuilder.setCallback(object : MenuBuilder.Callback {
-                        override fun onMenuModeChange(menu: MenuBuilder?) {
-                        }
-
-                        override fun onMenuItemSelected(
-                            menu: MenuBuilder?,
-                            item: MenuItem?
-                        ): Boolean {
-
-                            when (item?.itemId) {
-                                R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem)
-                                }
-                            }
-                            return true
-                        }
-                    })
-                    optionMenu.show()
-                }
-
                 itemView.setOnClickListener {
-                    adapterListener.getKakaoData(1, kakaoItem)
+                    adapterListener.getDisplayBookmarkKakaoData(1, kakaoItem)
                 }
             }
 
@@ -158,15 +194,41 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                 kakaoDistance.text = kakaoItem.distance + "M"
             }
 
-            kakaoName.text = kakaoItem.placeName
-            kakaoAddress.text = kakaoItem.addressName
+            if (kakaoItem.toggleBookmark && App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        App.instance.context(),
+                        R.color.colorLeanYellow
+                    )
+                )
+
+                menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 제거"
+                //글자색으로 구분하려면 이걸로
+//                kakaoName.setTextColor(
+//                    ContextCompat.getColorStateList(
+//                        App.instance.context(),
+//                        R.color.colorAccent
+//                    )
+//                )
+            } else {
+                itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        App.instance.context(),
+                        R.color.colorWhite
+                    )
+                )
+                menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
+            }
+
+            kakaoName.text = kakaoItem.displayName
+            kakaoAddress.text = kakaoItem.displayAddress
 
         }
 
     }
 
 
-    fun addAllData(documents: List<KakaoSearchModel>) {
+    fun addAllData(documents: List<DisplayBookmarkKakaoModel>) {
         kakaoList.addAll(documents)
         notifyItemInserted(kakaoList.lastIndex)
     }
@@ -178,10 +240,9 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
     }
 
 
-    fun setItemClickListener(listener: AdapterDataListener.GetKakaoData) {
+    fun setItemClickListener(listener: AdapterDataListener.GetDisplayBookmarkKakaoModel) {
         adapterListener = listener
     }
-
 
 }
 

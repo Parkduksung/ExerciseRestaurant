@@ -3,6 +3,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_search_look_item"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginTop="40dp"
@@ -11,6 +12,7 @@
     tools:ignore="ContentDescription, SpUsage">
 
     <ImageView
+        android:id="@+id/iv_search_look_image"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -18,21 +20,42 @@
         android:gravity="center"
         android:src="@drawable/ic_gym_foreground" />
 
-    <TextView
-        android:id="@+id/tv_search_look_name"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_weight="8"
-        android:gravity="center|left"
-        android:textSize="20dp"
-        tools:ignore="RtlHardcoded" />
+        android:orientation="vertical"
+        android:weightSum="3"
+        tools:ignore="RtlHardcoded, NestedWeights,UnusedAttribute">
+
+        <TextView
+            android:id="@+id/tv_search_look_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:autoSizeMaxTextSize="20dp"
+            android:autoSizeMinTextSize="3dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_search_look_address"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="20dp"
+            android:autoSizeMinTextSize="3dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center" />
+    </LinearLayout>
+
 
     <CheckBox
         android:id="@+id/cb_search_add_bookmark"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"
+        android:layout_weight="1"
         android:button="@drawable/selector_checkbox_drawable"
         android:gravity="center" />
 

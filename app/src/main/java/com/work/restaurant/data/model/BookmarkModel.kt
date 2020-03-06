@@ -16,4 +16,13 @@ data class BookmarkModel(
             bookmarkUrl,
             bookmarkAddress
         )
+
+    fun toDisplayBookmarkKakaoList(check: Boolean): DisplayBookmarkKakaoModel =
+        DisplayBookmarkKakaoModel(
+            bookmarkName,
+            bookmarkUrl,
+            bookmarkAddress,
+            check,
+            ""
+        )
 }

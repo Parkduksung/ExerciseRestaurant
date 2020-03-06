@@ -117,7 +117,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 //            ) { _, _ -> }
 //            alertDialog.show()
 
-
             val addEatFragment =
                 AddEatFragment.newInstance(data.memo, data.time, data.type, data.date)
             addEatFragment.setTargetFragment(
@@ -135,7 +134,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 //                this,
 //                REGISTER_EAT
 //            )
-//            addEatFragment.t(data)
+//            addEatFragment.renewRank(data)
 //
 //            fragmentManager?.let {
 //                addEatFragment.show(it, AddEatFragment.TAG)

@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -33,10 +34,32 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
         }
     }
 
+
     private fun startSearchLook() {
-        val intent = Intent(this.context, SearchLookForActivity()::class.java)
-        startActivity(intent)
+        val searchLookForActivity = Intent(this.context, SearchLookForActivity::class.java)
+        startActivityForResult(searchLookForActivity, RENEW_BOOKMARK_AND_RANK)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RENEW_BOOKMARK_AND_RANK) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                val getBoolean = data?.getBooleanExtra(SearchLookForActivity.RENEW, false)
+
+                getBoolean?.let {
+                    requireFragmentManager().fragments.forEach {
+                        if (it is SearchRankFragment) {
+                            it.renewRank()
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +88,8 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
 
     companion object {
         private const val TAG = "SearchFragment"
+
+        private const val RENEW_BOOKMARK_AND_RANK = 1
 
     }
 }

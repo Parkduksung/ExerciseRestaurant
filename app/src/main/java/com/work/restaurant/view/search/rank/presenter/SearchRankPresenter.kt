@@ -2,6 +2,7 @@ package com.work.restaurant.view.search.rank.presenter
 
 import android.util.Log
 import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
@@ -9,6 +10,8 @@ import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
 import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
+import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.util.App
 
 class SearchRankPresenter(
     private val searchRankView: SearchRankContract.View,
@@ -42,6 +45,7 @@ class SearchRankPresenter(
 
     override fun getCurrentLocation(addressName: String, itemCount: Int, sort: String) {
 
+
         kakaoRepository.getKakaoAddressLocation(addressName,
             object : KakaoRepositoryCallback.KakaoAddressCallback {
                 override fun onSuccess(item: List<KakaoAddressDocument>) {
@@ -49,6 +53,7 @@ class SearchRankPresenter(
                         val currentX = (item[0].x).toDouble()
                         val currentY = (item[0].y).toDouble()
                         getKakaoRankList(currentX, currentY, sort, itemCount)
+
                     }
                 }
 
@@ -67,16 +72,33 @@ class SearchRankPresenter(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
                 override fun onSuccess() {
-                    searchRankView.showBookmarkResult(true)
+                    searchRankView.showBookmarkResult(2)
                 }
 
                 override fun onFailure() {
-                    searchRankView.showBookmarkResult(false)
+                    searchRankView.showBookmarkResult(0)
+                }
+            })
+    }
+
+    override fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel) {
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.deleteBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
+                override fun onSuccess() {
+                    searchRankView.showBookmarkResult(3)
+                }
+
+                override fun onFailure() {
+                    searchRankView.showBookmarkResult(0)
                 }
             })
     }
 
     private fun getKakaoRankList(currentX: Double, currentY: Double, sort: String, itemCount: Int) {
+
         if (!toggleLastPageCheck) {
             if (itemCount >= (page * 15)) {
                 searchRankView.showLoad()
@@ -90,18 +112,48 @@ class SearchRankPresenter(
                         override fun onSuccess(
                             kakaoList: KakaoSearchResponse
                         ) {
-                            if (!kakaoList.kakaoSearchMeta.isEnd) {
-                                val toKakaoSearchModelList =
-                                    kakaoList.documents.map { it.toKakaoModel() }
-                                searchRankView.showKakaoList(toKakaoSearchModelList)
-                                searchRankView.showKakaoResult(-1)
+                            if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                                if (!kakaoList.kakaoSearchMeta.isEnd) {
+                                    Log.d("여기찍힘?", "7")
+                                    val toKakaoSearchModelList =
+                                        kakaoList.documents.map { it.toKakaoModel() }
+
+                                    displayAlreadyBookmark(toKakaoSearchModelList)
+
+                                    searchRankView.showKakaoResult(-1)
+                                } else {
+                                    val toKakaoSearchModelList =
+                                        kakaoList.documents.map { it.toKakaoModel() }
+
+                                    displayAlreadyBookmark(toKakaoSearchModelList)
+
+                                    searchRankView.showKakaoResult(-1)
+                                    toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
+                                }
+
                             } else {
-                                val toKakaoSearchModelList =
-                                    kakaoList.documents.map { it.toKakaoModel() }
-                                searchRankView.showKakaoList(toKakaoSearchModelList)
-                                searchRankView.showKakaoResult(-1)
-                                toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
+                                if (!kakaoList.kakaoSearchMeta.isEnd) {
+                                    Log.d("여기찍힘?", "6")
+                                    val toKakaoSearchModelList =
+                                        kakaoList.documents.map { it.toKakaoModel() }
+
+                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
+                                        it.toDisplayBookmarkKakaoModel(false)
+                                    }
+                                    searchRankView.showKakaoList(toDisplayBookmarkKakaoModel)
+                                    searchRankView.showKakaoResult(-1)
+                                } else {
+                                    val toKakaoSearchModelList =
+                                        kakaoList.documents.map { it.toKakaoModel() }
+                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
+                                        it.toDisplayBookmarkKakaoModel(false)
+                                    }
+                                    searchRankView.showKakaoList(toDisplayBookmarkKakaoModel)
+                                    searchRankView.showKakaoResult(-1)
+                                    toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
+                                }
                             }
+
                         }
 
                         override fun onFailure(message: String) {
@@ -113,6 +165,37 @@ class SearchRankPresenter(
             searchRankView.showKakaoResult(2)
         }
     }
+
+    private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
+        bookmarkRepository.getAllList(
+            App.prefs.login_state_id,
+            object : BookmarkRepositoryCallback.GetAllList {
+                override fun onSuccess(list: List<BookmarkEntity>) {
+
+                    val toDisplayBookmarkModel =
+                        searchKakaoList.map { it.toDisplayBookmarkKakaoModel(false) }
+                    val getUserBookmarkModel = list.map { it.toBookmarkModel() }
+
+                    for (i in 0 until toDisplayBookmarkModel.size) {
+                        for (j in 0 until list.size) {
+                            if (toDisplayBookmarkModel[i].displayAddress == getUserBookmarkModel[j].bookmarkAddress &&
+                                toDisplayBookmarkModel[i].displayName == getUserBookmarkModel[j].bookmarkName &&
+                                toDisplayBookmarkModel[i].displayUrl == getUserBookmarkModel[j].bookmarkUrl
+                            ) {
+                                toDisplayBookmarkModel[i].toggleBookmark = true
+                            }
+                        }
+                    }
+                    searchRankView.showKakaoList(toDisplayBookmarkModel)
+                }
+
+                override fun onFailure() {
+                    searchRankView.showKakaoResult(1)
+                }
+            })
+
+    }
+
 
     fun resetData() {
         page = 0

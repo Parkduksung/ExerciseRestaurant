@@ -16,5 +16,7 @@
     <color name="colorGreen">#92CFBF</color>
     <color name="colorLowPurple">#c12dff</color>
     <color name="transparentColorGreen">#9992CFBF</color>
+    <color name="defaultColor">#808080</color>
+    <color name="colorLeanYellow">#FDFD96</color>
     <color name="transparentColorPink">#99D81B60</color>
 </resources>

@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.data.model.BookmarkModel
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.adapter.AdapterDataListener
@@ -31,12 +30,10 @@ import kotlinx.android.synthetic.main.search_rank_fragment.*
 
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
-    AdapterDataListener.GetKakaoData {
-
+    AdapterDataListener.GetDisplayBookmarkKakaoModel {
 
     private lateinit var presenter: SearchRankPresenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
-
 
     override fun showCurrentLocation(addressName: String) {
 
@@ -47,11 +44,15 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURANCY)
     }
 
-
-    override fun showBookmarkResult(msg: Boolean) {
+    override fun showBookmarkResult(msg: Int) {
         when (msg) {
-            RESULT_SUCCESS -> {
+            SELECT_BOOKMARK -> {
                 Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+                renewRank()
+            }
+            DELETE_BOOKMARK -> {
+                Toast.makeText(this.context, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
+                renewRank()
             }
             RESULT_FAILURE -> {
                 Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
@@ -59,6 +60,22 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
+    fun renewRank() {
+        initData()
+        if (!toggleSort) {
+            presenter.getCurrentLocation(
+                tv_search_locate.text.toString(),
+                searchRankAdapter.itemCount,
+                SORT_ACCURANCY
+            )
+        } else {
+            presenter.getCurrentLocation(
+                tv_search_locate.text.toString(),
+                searchRankAdapter.itemCount,
+                SORT_DISTANCE
+            )
+        }
+    }
 
     private fun compressCity(city: String): String {
         return if (city.contains("남") || city.contains("북")) {
@@ -163,10 +180,9 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         searchRankAdapter.setItemClickListener(this)
 
         setup()
-
     }
 
-    override fun showKakaoList(kakaoList: List<KakaoSearchModel>) {
+    override fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>) {
         AppExecutors().mainThread.execute {
             recyclerview_rank.run {
                 searchRankAdapter.addAllData(kakaoList)
@@ -174,32 +190,37 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
+
+    override fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel) {
         when (select) {
             SELECT_URL -> {
                 val intent =
                     Intent(activity?.application, SearchLookForActivity()::class.java).apply {
-                        putExtra(RECYCLERVIEW_CLICK_DATA, data.placeUrl)
+                        putExtra(RECYCLERVIEW_CLICK_DATA, data.displayUrl)
                         putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
                     }
                 startActivity(intent)
             }
             SELECT_BOOKMARK -> {
-                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-                    val toBookmarkModel = BookmarkModel(
-                        App.prefs.login_state_id,
-                        data.placeName,
-                        data.placeUrl,
-                        data.addressName
-                    )
+                if (App.prefs.login_state_id.isNotEmpty()) {
+                    val toBookmarkModel =
+                        data.toBookmarkModel(App.prefs.login_state_id)
                     presenter.addBookmarkKakaoItem(toBookmarkModel)
-                } else {
-                    Toast.makeText(this.context, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
                 }
-
-//                val toBookmarkModel = data.toBookmarkModel()
-//                presenter.addBookmarkKakaoItem(toBookmarkModel)
             }
+
+            DELETE_BOOKMARK -> {
+                if (App.prefs.login_state_id.isNotEmpty()) {
+                    val toBookmarkModel =
+                        data.toBookmarkModel(App.prefs.login_state_id)
+                    presenter.deleteBookmarkKakaoItem(toBookmarkModel)
+                }
+            }
+
+            NOT_LOGIN -> {
+                Toast.makeText(this.context, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 
@@ -238,6 +259,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
 
     private fun setup() {
+
         recyclerview_rank.run {
             this.adapter = searchRankAdapter
             layoutManager = LinearLayoutManager(this.context)
@@ -294,9 +316,11 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         private const val SELECT_URL = 1
         private const val SELECT_BOOKMARK = 2
+        private const val DELETE_BOOKMARK = 3
+        private const val NOT_LOGIN = 4
 
-        private const val RESULT_SUCCESS = true
-        private const val RESULT_FAILURE = false
+
+        private const val RESULT_FAILURE = 0
 
         private const val INIT_COUNT = 15
 

@@ -54,7 +54,11 @@ class BookmarkLocalDataSourceImpl(
         appExecutors.diskIO.execute {
 
             val deleteBookmark = bookmarkDatabase.bookmarkDao()
-                .deleteBookmark(bookmarkEntity.bookmarkName, bookmarkEntity.bookmarkUrl)
+                .deleteBookmark(
+                    bookmarkEntity.bookmarkUserId,
+                    bookmarkEntity.bookmarkName,
+                    bookmarkEntity.bookmarkUrl
+                )
 
             appExecutors.mainThread.execute {
                 if (deleteBookmark >= 1) {

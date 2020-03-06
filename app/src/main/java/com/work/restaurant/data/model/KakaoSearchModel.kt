@@ -9,11 +9,21 @@ data class KakaoSearchModel(
     val locationX: String,
     val locationY: String
 ) {
-    fun toBookmarkModel(): BookmarkModel =
+    fun toBookmarkModel(userId: String): BookmarkModel =
         BookmarkModel(
-            "",
+            userId,
             placeName,
             placeUrl,
             addressName
         )
+
+    fun toDisplayBookmarkKakaoModel(toggleBookmark: Boolean): DisplayBookmarkKakaoModel =
+        DisplayBookmarkKakaoModel(
+            placeName,
+            placeUrl,
+            addressName,
+            toggleBookmark,
+            distance
+        )
+
 }
