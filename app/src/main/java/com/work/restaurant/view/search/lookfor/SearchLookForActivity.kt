@@ -54,7 +54,6 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     }
 
     override fun showSearchLook(searchModel: List<DisplayBookmarkKakaoModel>) {
-
         if (searchModel.isNotEmpty()) {
             recyclerview_look.run {
                 lookForAdapter.clearListData()
@@ -66,13 +65,13 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                 "검색한 헬스장이 없습니다. 다시 한번 입력해주세요",
                 Toast.LENGTH_SHORT
             ).show()
-        }
 
+        }
+        presenter.resetData()
         toggleSearch = true
         supportFragmentManager.popBackStack()
 
     }
-
 
     override fun showBookmarkResult(msg: Int) {
         when (msg) {

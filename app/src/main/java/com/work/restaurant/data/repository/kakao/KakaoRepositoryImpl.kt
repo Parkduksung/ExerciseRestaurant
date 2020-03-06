@@ -12,6 +12,8 @@ import com.work.restaurant.util.App
 class KakaoRepositoryImpl private constructor(
     private val kakaoRemoteDataSource: KakaoRemoteDataSource
 ) : KakaoRepository {
+
+
     override fun getKakaoLocationToAddress(
         currentX: Double,
         currentY: Double,
@@ -56,9 +58,7 @@ class KakaoRepositoryImpl private constructor(
         kakaoRemoteDataSource.getKakaoItemInfo(placeName,
             object : KakaoRemoteDataSourceCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
-
                     callback.onSuccess(item)
-
                 }
 
                 override fun onFailure(message: String) {
@@ -95,6 +95,30 @@ class KakaoRepositoryImpl private constructor(
                 })
         }
     }
+
+    override fun getSearchKakaoList(
+        searchName: String,
+        page: Int,
+        callback: KakaoRepositoryCallback
+    ) {
+        if (App.instance.context().isConnectedToNetwork()) {
+            kakaoRemoteDataSource.getSearchKakaoList(
+                searchName,
+                page,
+                object : KakaoRemoteDataSourceCallback {
+                    override fun onSuccess(
+                        kakaoList: KakaoSearchResponse
+                    ) {
+                        callback.onSuccess(kakaoList)
+                    }
+
+                    override fun onFailure(message: String) {
+                        callback.onFailure(message)
+                    }
+                })
+        }
+    }
+
 
     companion object {
 

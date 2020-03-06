@@ -89,7 +89,6 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                                 toSortDocuments.add(it)
                             }
                         }
-
                         callback.onSuccess(toSortDocuments)
                     } else {
                         callback.onFailure(response.message())
@@ -118,6 +117,16 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
             ) {
                 if (response != null) {
                     if (response.isSuccessful) {
+
+                        val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
+
+                        response.body().documents.forEach {
+                            if (it.categoryName.contains("스포츠,레저")) {
+                                toSortDocuments.add(it)
+                            }
+                        }
+
+
                         callback.onSuccess(
                             response.body()
                         )
@@ -127,6 +136,37 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                 }
             }
         })
+    }
+
+    override fun getSearchKakaoList(
+        searchName: String,
+        page: Int,
+        callback: KakaoRemoteDataSourceCallback
+    ) {
+
+        kakaoApi.keywordLookForSearch(searchName, page).enqueue(object :
+            Callback<KakaoSearchResponse> {
+            override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
+                callback.onFailure("${t?.message}")
+            }
+
+            override fun onResponse(
+                call: Call<KakaoSearchResponse>?,
+                response: Response<KakaoSearchResponse>?
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        callback.onSuccess(
+                            response.body()
+                        )
+                    } else {
+                        callback.onFailure(response.message())
+                    }
+                }
+            }
+
+        })
+
     }
 
 

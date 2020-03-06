@@ -26,4 +26,11 @@ interface KakaoRepository {
     )
 
 
+    fun getSearchKakaoList(
+        searchName: String,
+        page: Int,
+        callback: KakaoRepositoryCallback
+    )
+
+
 }

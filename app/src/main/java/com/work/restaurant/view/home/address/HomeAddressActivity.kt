@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
@@ -46,8 +45,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     }
 
     override fun getData(data: String) {
-
-        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
 
         if (address1 && !address2 && !address3) {
             si = data
@@ -197,13 +194,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     }
 
     private fun select(address: TextView, loadingTextArrayList: Array<String?>) {
-
-//        if(address1){
-//            tv_address1.text = "광역시/도"
-//            tv_address2.text = "시/군/구"
-//            tv_address3.text = "읍/면/동"
-//        }
-
 
         addressAdapter.removeData()
         loadingTextArrayList.forEach {

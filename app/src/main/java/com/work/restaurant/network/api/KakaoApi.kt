@@ -20,12 +20,20 @@ interface KakaoApi {
         @Query("query") keyword: String = KEYWORD
     ): Call<KakaoSearchResponse>
 
+    @Headers(HEADERS)
+    @GET("v2/local/search/keyword.json")
+    fun keywordLookForSearch(
+        @Query("query") keyword: String,
+        @Query("page") page: Int
+    ): Call<KakaoSearchResponse>
+
 
     @Headers(HEADERS)
     @GET("v2/local/search/keyword.json")
     fun kakaoItemSearch(
         @Query("query") keyword: String
     ): Call<KakaoSearchResponse>
+
 
     @Headers(HEADERS)
     @GET("v2/local/search/address.json")

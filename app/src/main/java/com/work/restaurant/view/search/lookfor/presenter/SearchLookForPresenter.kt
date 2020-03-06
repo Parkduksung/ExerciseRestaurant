@@ -6,7 +6,7 @@ import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import com.work.restaurant.network.room.entity.BookmarkEntity
 import com.work.restaurant.util.App
 
@@ -53,29 +53,88 @@ class SearchLookForPresenter(
 
     override fun searchLook(searchItem: String) {
 
-        kakaoRepository.getKakaoItemInfo(searchItem,
-            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
-                override fun onSuccess(item: List<KakaoSearchDocuments>) {
+        getSearchKakaoList(searchItem)
+//        kakaoRepository.getKakaoItemInfo(searchItem,
+//            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
+//                override fun onSuccess(item: List<KakaoSearchDocuments>) {
+//
+//                    val toKakaoSearchModelList = item.map {
+//                        it.toKakaoModel()
+//                    }
+//                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+//                        displayAlreadyBookmark(toKakaoSearchModelList)
+//                    } else {
+//                        val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
+//                            it.toDisplayBookmarkKakaoModel(false)
+//                        }
+//                        searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
+//                    }
+//                }
+//
+//                override fun onFailure(message: String) {
+//                    searchLookForView.showSearchNoFind()
+//                }
+//            })
+    }
 
-                    val toKakaoSearchModelList = item.map {
-                        it.toKakaoModel()
-                    }
-                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-                        displayAlreadyBookmark(toKakaoSearchModelList)
-                    } else {
-                        val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-                            it.toDisplayBookmarkKakaoModel(false)
+
+    private var toggleLastPageCheck = false
+    private var page = 0
+    private val searchList: MutableList<KakaoSearchModel> by lazy {
+        mutableListOf<KakaoSearchModel>()
+    }
+
+    private fun getSearchKakaoList(searchItem: String) {
+
+        if (!toggleLastPageCheck) {
+            ++page
+            kakaoRepository.getSearchKakaoList(searchItem, page, object : KakaoRepositoryCallback {
+                override fun onSuccess(kakaoList: KakaoSearchResponse) {
+                    if (!kakaoList.kakaoSearchMeta.isEnd) {
+                        val toKakaoModel = mutableListOf<KakaoSearchModel>()
+                        kakaoList.documents.forEach {
+                            if (it.categoryName.contains("스포츠,레저")) {
+                                toKakaoModel.add(it.toKakaoModel())
+                            }
                         }
-                        searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
+                        searchList.addAll(toKakaoModel)
+                        getSearchKakaoList(searchItem)
+                    } else {
+                        val toKakaoModel = mutableListOf<KakaoSearchModel>()
+                        kakaoList.documents.forEach {
+                            if (it.categoryName.contains("스포츠,레저")) {
+                                toKakaoModel.add(it.toKakaoModel())
+                            }
+                        }
+                        searchList.addAll(toKakaoModel)
+                        toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
+                        getSearchKakaoList(searchItem)
                     }
                 }
 
                 override fun onFailure(message: String) {
-                    searchLookForView.showSearchNoFind()
+                    resetData()
                 }
             })
+        } else {
+            if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                displayAlreadyBookmark(searchList)
+            } else {
+                val toDisplayBookmarkKakaoModel = searchList.map {
+                    it.toDisplayBookmarkKakaoModel(false)
+                }
+                searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
+            }
+        }
 
     }
+
+    fun resetData() {
+        page = 0
+        toggleLastPageCheck = false
+        searchList.clear()
+    }
+
 
     private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
         bookmarkRepository.getAllList(

@@ -28,4 +28,11 @@ interface KakaoRemoteDataSource {
     )
 
 
+    fun getSearchKakaoList(
+        searchName: String,
+        page: Int,
+        callback: KakaoRemoteDataSourceCallback
+    )
+
+
 }

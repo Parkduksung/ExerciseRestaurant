@@ -39,4 +39,5 @@ data class KakaoSearchDocuments(
             locationX,
             locationY
         )
+
 }

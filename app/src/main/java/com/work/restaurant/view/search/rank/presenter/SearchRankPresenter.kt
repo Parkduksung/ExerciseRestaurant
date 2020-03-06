@@ -45,7 +45,6 @@ class SearchRankPresenter(
 
     override fun getCurrentLocation(addressName: String, itemCount: Int, sort: String) {
 
-
         kakaoRepository.getKakaoAddressLocation(addressName,
             object : KakaoRepositoryCallback.KakaoAddressCallback {
                 override fun onSuccess(item: List<KakaoAddressDocument>) {
