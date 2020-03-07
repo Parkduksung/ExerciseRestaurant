@@ -77,4 +77,14 @@ class MySharedPreferences(context: Context) {
         set(value) = prefs.edit().putString(PREF_KEY_LOGIN_STATE_ID, value).apply()
 
 
+    val PREFS_LOGIN_STATE_NICKNAME = "prefs_login_state_nickname"
+    val PREF_KEY_LOGIN_STATE_NICKNAME = "login_state_nickname"
+    val prefs_login_state_nickname: SharedPreferences =
+        context.getSharedPreferences(PREFS_LOGIN_STATE_NICKNAME, 0)
+
+    var login_state_nickname: String
+        get() = prefs.getString(PREFS_LOGIN_STATE_NICKNAME, "")!!
+        set(value) = prefs.edit().putString(PREF_KEY_LOGIN_STATE_NICKNAME, value).apply()
+
+
 }

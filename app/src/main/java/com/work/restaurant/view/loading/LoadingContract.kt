@@ -7,7 +7,7 @@ interface LoadingContract {
 
         fun showDelay()
 
-        fun showLoginState(result: Boolean, userId: String)
+        fun showLoginState(result: Boolean, userId: String, userNickname: String)
     }
 
     interface Presenter {

@@ -96,11 +96,12 @@ class LoadingPresenter(
         loginRepository.getLoginState(object : LoginRepositoryCallback.LoginStateCallback {
             override fun onSuccess(list: LoginEntity) {
                 val getUserId = list.toLoginModel().loginId
-                loadingView.showLoginState(true, getUserId)
+                val getUserNickname = list.toLoginModel().loginNickname
+                loadingView.showLoginState(true, getUserId, getUserNickname)
             }
 
             override fun onFailure() {
-                loadingView.showLoginState(false, "")
+                loadingView.showLoginState(false, "", "")
             }
         })
     }

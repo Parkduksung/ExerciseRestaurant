@@ -20,18 +20,19 @@ import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.base.BaseActivity
 import kotlinx.android.synthetic.main.loading_fragment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
-    override fun showLoginState(result: Boolean, userId: String) {
+    override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
         if (result) {
             App.prefs.login_state = true
             App.prefs.login_state_id = userId
+            App.prefs.login_state_nickname = userNickname
         } else {
             App.prefs.login_state = false
             App.prefs.login_state_id = userId
+            App.prefs.login_state_nickname = userNickname
         }
     }
 

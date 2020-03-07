@@ -105,6 +105,20 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         loginState()
     }
 
+    override fun onStart() {
+        if (App.prefs.login_state && App.prefs.login_state_nickname.isNotEmpty() && App.prefs.login_state_id.isNotEmpty()) {
+            toggleLoginState = true
+            tv_login_nickname.text =
+                getString(
+                    R.string.mypage_login_state_nickname,
+                    App.prefs.login_state_nickname
+                )
+            tv_login_id.text = App.prefs.login_state_id
+            userNickname = App.prefs.login_state_nickname
+            loginState()
+        }
+        super.onStart()
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
