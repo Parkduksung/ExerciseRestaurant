@@ -4,10 +4,42 @@ import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceCallback
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceImpl
 import com.work.restaurant.network.room.entity.ExerciseEntity
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 
 class ExerciseRepositoryImpl(
     private val exerciseLocalDataSourceImpl: ExerciseLocalDataSourceImpl
 ) : ExerciseRepository {
+    override fun updateExercise(
+        changeTime: String,
+        changeType: String,
+        changeExerciseName: String,
+        changeExerciseSet: List<ExerciseSetResponse>,
+        currentId: String,
+        currentExerciseNum: Int,
+        callback: ExerciseRepositoryCallback.UpdateExerciseCallback
+    ) {
+
+        exerciseLocalDataSourceImpl.updateExercise(
+            changeTime,
+            changeType,
+            changeExerciseName,
+            changeExerciseSet,
+            currentId,
+            currentExerciseNum,
+            object : ExerciseLocalDataSourceCallback.UpdateExerciseCallback {
+                override fun onSuccess() {
+                    callback.onSuccess()
+                }
+
+                override fun onFailure() {
+                    callback.onFailure()
+                }
+            }
+
+        )
+
+    }
+
     override fun deleteEat(
         data: ExerciseEntity,
         callback: ExerciseRepositoryCallback.DeleteExerciseCallback

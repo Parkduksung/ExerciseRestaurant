@@ -1,11 +1,9 @@
 package com.work.restaurant.view.diary.main
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +22,7 @@ import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
 import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
+import com.work.restaurant.view.diary.update_or_delete_exercise.UpdateOrDeleteExerciseFragment
 import kotlinx.android.synthetic.main.diary_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,47 +64,25 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun getData(data: DiaryModel) {
 
         if (data.kind == 1) {
-            val alertDialog =
-                AlertDialog.Builder(
-                    ContextThemeWrapper(
-                        activity,
-                        R.style.Theme_AppCompat_Light_Dialog
-                    )
-                )
-            alertDialog.setTitle("삭제")
-            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
-            alertDialog.setPositiveButton(
-                "삭제"
-            ) { _, _ ->
 
-                presenter.deleteExercise(data)
-                diaryModel.remove(data)
+            val updateOrDeleteExerciseFragment1 =
+                UpdateOrDeleteExerciseFragment.newInstance(data.toExerciseModel())
 
-                recyclerview_diary.run {
-                    diaryAdapter.deleteDate(data)
-
-                }
-
+            updateOrDeleteExerciseFragment1.setTargetFragment(
+                this,
+                RENEW_EXERCISE
+            )
+            fragmentManager?.let {
+                updateOrDeleteExerciseFragment1.show(it, UpdateOrDeleteExerciseFragment.TAG)
             }
-            alertDialog.setNegativeButton(
-                "취소"
-            ) { _, _ -> }
-
-            alertDialog.show()
 
         } else {
 
-
-
             val updateOrDeleteEatFragment =
                 UpdateOrDeleteEatFragment.newInstance(
-                    data.eatNum.toString(),
-                    data.userId,
-                    data.date,
-                    DateAndTime.convertShowTime(data.time),
-                    data.type,
-                    data.memo
+                    data.toEatModel()
                 )
+
             updateOrDeleteEatFragment.setTargetFragment(
                 this,
                 RENEW_EAT
@@ -226,20 +203,38 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             }
             RENEW_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
-
                     val result =
                         data?.extras?.getInt(UpdateOrDeleteEatFragment.SEND_RESULT_NUM)
-
                     result?.let { resultNum ->
 
                         when (resultNum) {
-
                             UpdateOrDeleteEatFragment.DELETE_EAT -> {
                                 load()
                                 renewDot()
                             }
 
                             UpdateOrDeleteEatFragment.UPDATE_EAT -> {
+                                load()
+                                renewDot()
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            RENEW_EXERCISE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val result =
+                        data?.extras?.getInt(UpdateOrDeleteExerciseFragment.SEND_RESULT_NUM)
+                    result?.let { resultNum ->
+
+                        when (resultNum) {
+                            UpdateOrDeleteExerciseFragment.DELETE_EXERCISE -> {
+                                load()
+                                renewDot()
+                            }
+                            UpdateOrDeleteExerciseFragment.UPDATE_EXERCISE -> {
                                 load()
                                 renewDot()
                             }
@@ -307,6 +302,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
         private const val RENEW_EAT = 3
+        private const val RENEW_EXERCISE = 4
 
     }
 

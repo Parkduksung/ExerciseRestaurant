@@ -163,10 +163,16 @@ class DiaryAdapter :
         fun bind(item: DiaryModel) {
 
             if (::adapterListener.isInitialized) {
-                itemView.setOnClickListener {
+//                itemView.setOnClickListener {
+//
+//                    adapterListener.getData(item)
+//                }
 
+                addMemo.setOnLongClickListener {
                     adapterListener.getData(item)
+                    true
                 }
+
             } else {
                 adapterListener = object : AdapterDataListener.GetList {
                     override fun getData(data: DiaryModel) {
@@ -174,8 +180,13 @@ class DiaryAdapter :
                     }
 
                 }
-                itemView.setOnClickListener {
+//                itemView.setOnClickListener {
+//                    adapterListener.getData(item)
+//                }
+
+                itemView.setOnLongClickListener {
                     adapterListener.getData(item)
+                    true
                 }
             }
             addType.text = type[item.type.toInt()]

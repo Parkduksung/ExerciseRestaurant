@@ -206,27 +206,18 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 when (item?.itemId) {
                     R.id.chest -> {
                         btn_add_exercise_category.text = "가슴"
-                        Toast.makeText(App.instance.context(), "chest", Toast.LENGTH_SHORT)
-                            .show()
                     }
                     R.id.back -> {
                         btn_add_exercise_category.text = "등"
-                        Toast.makeText(App.instance.context(), "back", Toast.LENGTH_SHORT)
-                            .show()
                     }
                     R.id.shoulder -> {
                         btn_add_exercise_category.text = "어깨"
-                        Toast.makeText(App.instance.context(), "shoulder", Toast.LENGTH_SHORT)
-                            .show()
                     }
                     R.id.legs -> {
                         btn_add_exercise_category.text = "다리"
-                        Toast.makeText(App.instance.context(), "legs", Toast.LENGTH_SHORT)
-                            .show()
                     }
                     R.id.arm -> {
                         btn_add_exercise_category.text = "팔"
-                        Toast.makeText(App.instance.context(), "arm", Toast.LENGTH_SHORT).show()
                     }
                 }
                 return true

@@ -16,6 +16,12 @@ interface ExerciseRepositoryCallback {
 
     }
 
+    interface UpdateExerciseCallback {
+        fun onSuccess()
+        fun onFailure()
+
+    }
+
 
     interface GetAllList {
         fun onSuccess(list: List<ExerciseEntity>)

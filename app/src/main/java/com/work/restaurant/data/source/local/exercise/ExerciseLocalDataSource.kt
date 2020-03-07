@@ -2,6 +2,7 @@ package com.work.restaurant.data.source.local.exercise
 
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.network.room.entity.ExerciseEntity
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 
 interface ExerciseLocalDataSource {
 
@@ -29,5 +30,15 @@ interface ExerciseLocalDataSource {
     fun deleteEat(
         data: ExerciseEntity,
         callback: ExerciseLocalDataSourceCallback.DeleteExerciseCallback
+    )
+
+    fun updateExercise(
+        changeTime: String,
+        changeType: String,
+        changeExerciseName: String,
+        changeExerciseSet: List<ExerciseSetResponse>,
+        currentId: String,
+        currentExerciseNum: Int,
+        callback: ExerciseLocalDataSourceCallback.UpdateExerciseCallback
     )
 }

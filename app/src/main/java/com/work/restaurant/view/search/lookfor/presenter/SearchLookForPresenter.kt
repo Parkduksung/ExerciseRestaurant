@@ -93,7 +93,7 @@ class SearchLookForPresenter(
                     if (!kakaoList.kakaoSearchMeta.isEnd) {
                         val toKakaoModel = mutableListOf<KakaoSearchModel>()
                         kakaoList.documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저")) {
+                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
                                 toKakaoModel.add(it.toKakaoModel())
                             }
                         }
@@ -102,7 +102,7 @@ class SearchLookForPresenter(
                     } else {
                         val toKakaoModel = mutableListOf<KakaoSearchModel>()
                         kakaoList.documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저")) {
+                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
                                 toKakaoModel.add(it.toKakaoModel())
                             }
                         }

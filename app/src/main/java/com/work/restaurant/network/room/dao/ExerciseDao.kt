@@ -2,6 +2,7 @@ package com.work.restaurant.network.room.dao
 
 import androidx.room.*
 import com.work.restaurant.network.room.entity.ExerciseEntity
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 
 @Dao
 interface ExerciseDao {
@@ -21,6 +22,17 @@ interface ExerciseDao {
 
     @Delete
     fun deleteExercise(exerciseEntity: ExerciseEntity): Int
+
+
+    @Query("UPDATE exercise SET time = (:changeTime) , type = (:changeType) , exerciseName = (:changeExerciseName), exerciseSetList = (:exerciseSetList) WHERE  userId= (:currentUser) AND exerciseNum = (:currentNum)")
+    fun updateEat(
+        changeTime: String,
+        changeType: String,
+        changeExerciseName: String,
+        exerciseSetList: List<ExerciseSetResponse>,
+        currentUser: String,
+        currentNum: Int
+    ): Int
 
 
 }

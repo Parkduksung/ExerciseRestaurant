@@ -1,7 +1,10 @@
 package com.work.restaurant.data.model
 
+import android.os.Parcelable
 import com.work.restaurant.network.room.entity.EatEntity
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class EatModel(
     val eatNum: Int,
     val userId: String,
@@ -9,7 +12,7 @@ data class EatModel(
     val time: String,
     val type: Int,
     val memo: String
-) {
+) : Parcelable {
     fun toDiaryModel(): DiaryModel =
         DiaryModel(
             eatNum,
@@ -28,5 +31,6 @@ data class EatModel(
         EatEntity(
             eatNum, userId, date, time, type, memo
         )
+
 
 }

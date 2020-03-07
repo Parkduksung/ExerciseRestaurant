@@ -85,7 +85,7 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                         val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
 
                         response.body().documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저")) {
+                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
                                 toSortDocuments.add(it)
                             }
                         }
@@ -121,7 +121,7 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                         val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
 
                         response.body().documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저")) {
+                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
                                 toSortDocuments.add(it)
                             }
                         }

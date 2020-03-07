@@ -15,6 +15,16 @@ data class DiaryModel(
     val exerciseSetName: String,
     val exerciseSet: List<ExerciseSet>
 ) {
+
+    fun toExerciseModel(): ExerciseModel =
+        ExerciseModel(
+            exerciseNum, userId, date, time, type, exerciseSetName, exerciseSet
+        )
+
+
+    fun toEatModel(): EatModel =
+        EatModel(eatNum, userId, date, time, type.toInt(), memo)
+
     fun toEatEntity(): EatEntity =
         EatEntity(
             eatNum,

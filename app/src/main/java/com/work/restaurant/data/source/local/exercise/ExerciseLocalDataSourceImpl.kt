@@ -3,6 +3,7 @@ package com.work.restaurant.data.source.local.exercise
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.network.room.database.ExerciseDatabase
 import com.work.restaurant.network.room.entity.ExerciseEntity
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 import com.work.restaurant.util.AppExecutors
 
 class ExerciseLocalDataSourceImpl(
@@ -25,6 +26,41 @@ class ExerciseLocalDataSourceImpl(
                 }
             }
         }
+    }
+
+    override fun updateExercise(
+        changeTime: String,
+        changeType: String,
+        changeExerciseName: String,
+        changeExerciseSet: List<ExerciseSetResponse>,
+        currentId: String,
+        currentExerciseNum: Int,
+        callback: ExerciseLocalDataSourceCallback.UpdateExerciseCallback
+    ) {
+
+        appExecutors.diskIO.execute {
+
+            val updateExercise = exerciseDatabase.exerciseDao()
+                .updateEat(
+                    changeTime,
+                    changeType,
+                    changeExerciseName,
+                    changeExerciseSet,
+                    currentId,
+                    currentExerciseNum
+                )
+
+            appExecutors.mainThread.execute {
+                if (updateExercise >= 1) {
+                    callback.onSuccess()
+                } else {
+                    callback.onSuccess()
+                }
+            }
+
+
+        }
+
     }
 
     override fun getDataOfTheDay(

@@ -22,15 +22,13 @@ import kotlinx.android.synthetic.main.diary_update_or_delete_eat.*
 class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_delete_eat),
     View.OnClickListener, UpdateOrDeleteEatContract.View {
 
-
     private lateinit var presenter: UpdateOrDeleteEatPresenter
+
 
     override fun showResult(sort: Int) {
 
         when (sort) {
             1 -> {
-
-
                 val data = Intent().apply {
                     putExtra(SEND_RESULT_NUM, UPDATE_EAT)
                 }
@@ -83,13 +81,19 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                     if (radioClick <= 1 && et_renew_eat_memo.text.isNotBlank()) {
                         if (et_renew_eat_memo.text.trim().isNotEmpty()) {
 
-                            presenter.updateEat(
-                                DateAndTime.convertSaveTime(btn_renew_eat_time.text.toString()),
-                                radioClick,
-                                et_renew_eat_memo.text.toString(),
-                                getEatModel()
-                            )
-                            radioClick = 2
+                            val getEatModel = arguments?.getParcelable<EatModel>(GET_DATA)
+
+                            getEatModel?.let {
+                                presenter.updateEat(
+                                    DateAndTime.convertSaveTime(btn_renew_eat_time.text.toString()),
+                                    radioClick,
+                                    et_renew_eat_memo.text.toString(),
+                                    it
+                                )
+                                radioClick = 2
+
+                            }
+
                         } else {
                             Toast.makeText(this.context, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
                         }
@@ -114,7 +118,13 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                     .setPositiveButton(
                         "삭제"
                     ) { _, _ ->
-                        presenter.deleteEat(getEatModel())
+
+                        val getEatModel = arguments?.getParcelable<EatModel>(GET_DATA)
+
+                        getEatModel?.let {
+                            presenter.deleteEat(getEatModel)
+                        }
+//                        presenter.deleteEat(getEatModel)
                     }
                     .setNegativeButton(
                         "취소"
@@ -124,26 +134,6 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                     .show()
             }
         }
-    }
-
-    private fun getEatModel(): EatModel {
-
-        val bundle = arguments
-        val getNum = bundle?.getString(NUM).orEmpty()
-        val getUser = bundle?.getString(USER).orEmpty()
-        val getDate = bundle?.getString(DATE).orEmpty()
-        val getTime = bundle?.getString(TIME).orEmpty()
-        val getType = bundle?.getString(TYPE).orEmpty()
-        val getMemo = bundle?.getString(MEMO).orEmpty()
-
-        return EatModel(
-            getNum.toInt(),
-            getUser,
-            getDate,
-            getTime,
-            getType.toInt(),
-            getMemo
-        )
     }
 
 
@@ -161,26 +151,19 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
         btn_renew_save.setOnClickListener(this)
         iv_delete_eat.setOnClickListener(this)
 
-        //아이템클릭했을때
-        val bundle = arguments
-        val getNum = bundle?.getString(NUM).orEmpty()
-        val getUser = bundle?.getString(USER).orEmpty()
-        val getDate = bundle?.getString(DATE).orEmpty()
-        val getTime = bundle?.getString(TIME).orEmpty()
-        val getType = bundle?.getString(TYPE).orEmpty()
-        val getMemo = bundle?.getString(MEMO).orEmpty()
 
-        if (getDate.isNotEmpty() && getTime.isNotEmpty() && getType.isNotEmpty() && getMemo.isNotEmpty() && getNum.isNotEmpty() && getUser.isNotEmpty()) {
-            et_renew_eat_memo.setText(getMemo)
-            tv_renew_eat_today.text = getDate
-            btn_renew_eat_time.text = getTime
-            radioClick = getType.toInt()
-            if (getType.toInt() == 0) {
+        val getEatModel = arguments?.getParcelable<EatModel>(GET_DATA)
+
+        getEatModel?.let {
+            et_renew_eat_memo.setText(getEatModel.memo)
+            tv_renew_eat_today.text = getEatModel.date
+            btn_renew_eat_time.text = DateAndTime.convertShowTime(getEatModel.time)
+            radioClick = getEatModel.type
+            if (getEatModel.type == 0) {
                 renew_eat_radio_group.check(R.id.rb_meal_renew)
             } else {
                 renew_eat_radio_group.check(R.id.rb_snack_renew)
             }
-
         }
     }
 
@@ -209,17 +192,13 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
         val dialogView = View.inflate(context, R.layout.time_picker, null)
         val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
 
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
+        AlertDialog.Builder(
+            ContextThemeWrapper(
+                activity,
+                R.style.Theme_AppCompat_Light_Dialog
             )
-
-        alertDialog.setView(dialogView)
+        ).setView(dialogView)
             .setPositiveButton("변경") { _, _ ->
-
                 btn_renew_eat_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
             }
@@ -227,7 +206,6 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
 
             }
             .show()
-
 
     }
 
@@ -241,35 +219,22 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
         const val TAG = "UpdateOrDeleteEatFragment"
         private var radioClick = 2
 
-        const val MEMO = "memo"
-        const val TIME = "time"
-        const val TYPE = "type"
-        const val DATE = "date"
-        const val USER = "user"
-        const val NUM = "num"
-
         const val SEND_RESULT_NUM = "result"
+        const val GET_DATA = "data"
         const val DELETE_EAT = 1
         const val UPDATE_EAT = 2
 
 
         fun newInstance(
-            num: String,
-            user: String,
-            date: String,
-            time: String,
-            type: String,
-            memo: String
+            eatModel: EatModel
         ) = UpdateOrDeleteEatFragment().apply {
             arguments = Bundle().apply {
-                putString(NUM, num)
-                putString(USER, user)
-                putString(TYPE, type)
-                putString(MEMO, memo)
-                putString(TIME, time)
-                putString(DATE, date)
+                putParcelable(GET_DATA, eatModel)
             }
+
+
         }
+
     }
 
 }
