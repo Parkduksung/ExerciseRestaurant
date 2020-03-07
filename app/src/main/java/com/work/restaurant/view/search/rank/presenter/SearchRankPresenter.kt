@@ -55,7 +55,6 @@ class SearchRankPresenter(
 
                     }
                 }
-
                 override fun onFailure(message: String) {
                     searchRankView.showKakaoResult(1)
                     Log.d("error", message)
@@ -113,7 +112,7 @@ class SearchRankPresenter(
                         ) {
                             if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
                                 if (!kakaoList.kakaoSearchMeta.isEnd) {
-                                    Log.d("여기찍힘?", "7")
+
                                     val toKakaoSearchModelList =
                                         kakaoList.documents.map { it.toKakaoModel() }
 
@@ -132,7 +131,7 @@ class SearchRankPresenter(
 
                             } else {
                                 if (!kakaoList.kakaoSearchMeta.isEnd) {
-                                    Log.d("여기찍힘?", "6")
+
                                     val toKakaoSearchModelList =
                                         kakaoList.documents.map { it.toKakaoModel() }
 

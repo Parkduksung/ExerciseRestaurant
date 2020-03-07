@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
@@ -41,6 +43,8 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         private val searchLookName: TextView = itemView.findViewById(R.id.tv_search_look_name)
+        private val searchLookLayout: LinearLayout = itemView.findViewById(R.id.ll_search_look_item)
+        private val searchLookImage: ImageView = itemView.findViewById(R.id.iv_search_look_image)
         private val searchBookmarkCheckbox: CheckBox =
             itemView.findViewById(R.id.cb_search_add_bookmark)
         private val searchLookAddress: TextView = itemView.findViewById(R.id.tv_search_look_address)
@@ -59,6 +63,14 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
             if (::adapterListener.isInitialized && ::bookmarkListener.isInitialized) {
 
                 searchLookName.setOnClickListener {
+                    adapterListener.getData(item.displayUrl)
+                }
+
+                searchLookLayout.setOnClickListener {
+                    adapterListener.getData(item.displayUrl)
+                }
+
+                searchLookImage.setOnClickListener {
                     adapterListener.getData(item.displayUrl)
                 }
 
@@ -95,6 +107,14 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 searchLookName.setOnClickListener {
                     adapterListener.getData(item.displayUrl)
                 }
+                searchLookLayout.setOnClickListener {
+                    adapterListener.getData(item.displayUrl)
+                }
+
+                searchLookImage.setOnClickListener {
+                    adapterListener.getData(item.displayUrl)
+                }
+
 
 
                 searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->

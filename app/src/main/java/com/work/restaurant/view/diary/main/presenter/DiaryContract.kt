@@ -20,10 +20,9 @@ interface DiaryContract {
     interface Presenter {
 
 
+        fun todayEatData(userId: String, today: String)
 
-        fun todayEatData(today: String)
-
-        fun todayExerciseData(today: String)
+        fun todayExerciseData(userId: String, today: String)
 
         fun deleteEat(data: DiaryModel)
 

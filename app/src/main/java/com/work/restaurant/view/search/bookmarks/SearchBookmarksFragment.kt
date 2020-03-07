@@ -61,7 +61,6 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
                 startActivity(intent)
             }
             SELECT_DELETE -> {
-
                 presenter.deleteBookmark(data)
             }
         }

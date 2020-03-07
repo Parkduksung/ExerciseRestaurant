@@ -12,12 +12,12 @@ interface ExerciseDao {
     @Query("SELECT COUNT(*) FROM exercise")
     fun getAllCount(): Int
 
-    @Query("SELECT * FROM exercise")
-    fun getAll(): List<ExerciseEntity>
+    @Query("SELECT * FROM exercise WHERE userId = (:userId)")
+    fun getAll(userId: String): List<ExerciseEntity>
 
 
-    @Query("SELECT * FROM exercise WHERE date = (:today)")
-    fun getTodayItem(today: String): List<ExerciseEntity>
+    @Query("SELECT * FROM exercise WHERE userId = (:userId) AND date = (:today)")
+    fun getTodayItem(userId: String, today: String): List<ExerciseEntity>
 
     @Delete
     fun deleteExercise(exerciseEntity: ExerciseEntity): Int

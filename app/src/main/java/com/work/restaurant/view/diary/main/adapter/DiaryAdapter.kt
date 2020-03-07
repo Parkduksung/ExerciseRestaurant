@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.util.App
+import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class DiaryAdapter :
@@ -99,7 +100,7 @@ class DiaryAdapter :
             var i = 0
             addType.text = "운동"
             addExerciseType.text = item.type
-            addTime.text = showConvertTime(item.time)
+            addTime.text = DateAndTime.convertShowTime(item.time)
             addName.text = item.exerciseSetName
 
             when (item.type) {
@@ -131,7 +132,6 @@ class DiaryAdapter :
                     R.layout.exercise_set_item,
                     null
                 )
-
                 exerciseSetView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -178,14 +178,12 @@ class DiaryAdapter :
                     adapterListener.getData(item)
                 }
             }
-
             addType.text = type[item.type.toInt()]
-            addTime.text = showConvertTime(item.time)
+            addTime.text = DateAndTime.convertShowTime(item.time)
             addMemo.text = item.memo
 
         }
     }
-
 
     fun addAllData(diaryModel: List<DiaryModel>) =
         diaryList.addAll(diaryModel.sortedBy { it.time })
@@ -204,26 +202,6 @@ class DiaryAdapter :
 
     fun setItemClickListener(listener: AdapterDataListener.GetList) {
         adapterListener = listener
-    }
-
-
-    private fun showConvertTime(time: String): String {
-
-        val getAmPm = time.substring(0, 2)
-        val getHour =
-            if (time.substring(2, 4).toInt() > 12) {
-                "${time.substring(2, 4).toInt() - 12}"
-            } else {
-                if (time.substring(2, 4).toInt() / 10 == 0) {
-                    "${time[3]}"
-                } else {
-                    "${time.substring(2, 4).toInt()}"
-                }
-            }
-
-        val getMinute = time.substring(4)
-
-        return "$getAmPm $getHour" + "시 " + getMinute + "분"
     }
 
 }

@@ -16,7 +16,6 @@ class DiaryPresenter(
     override fun deleteExercise(data: DiaryModel) {
 
         val toExerciseEntity = data.toExerciseEntity()
-
         exerciseRepository.deleteEat(
             toExerciseEntity,
             object : ExerciseRepositoryCallback.DeleteExerciseCallback {
@@ -46,20 +45,18 @@ class DiaryPresenter(
         })
     }
 
-    override fun todayExerciseData(today: String) {
+    override fun todayExerciseData(userId: String, today: String) {
 
         exerciseRepository.getDataOfTheDay(
+            userId,
             today,
             object : ExerciseRepositoryCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<ExerciseEntity>) {
 
-
                     val getDataOfTheDayList = list.map {
                         it.toExerciseModel()
                     }
-
                     diaryView.showExerciseData(getDataOfTheDayList.sortedBy { it.time })
-
                 }
 
                 override fun onFailure() {
@@ -69,23 +66,22 @@ class DiaryPresenter(
     }
 
 
-    override fun todayEatData(today: String) {
+    override fun todayEatData(userId: String, today: String) {
 
-        eatRepository.getDataOfTheDay(today, object : EatRepositoryCallback.GetDataOfTheDay {
-            override fun onSuccess(list: List<EatEntity>) {
-                val getDataOfTheDayList = list.map {
-                    it.toEatModel()
+        eatRepository.getDataOfTheDay(
+            userId,
+            today,
+            object : EatRepositoryCallback.GetDataOfTheDay {
+                override fun onSuccess(list: List<EatEntity>) {
+                    val getDataOfTheDayList = list.map {
+                        it.toEatModel()
+                    }
+                    diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
                 }
+                override fun onFailure() {
 
-                diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
-
-            }
-
-            override fun onFailure() {
-
-            }
-        })
-
+                }
+            })
 
     }
 

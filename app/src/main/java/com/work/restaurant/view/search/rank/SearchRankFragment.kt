@@ -190,7 +190,6 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-
     override fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel) {
         when (select) {
             SELECT_URL -> {
@@ -241,8 +240,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                         .show()
                 }
                 1 -> {
-                    Toast.makeText(context, "데이터를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(context, "데이터를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
+//                        .show()
                 }
                 2 -> {
                     Toast.makeText(context, "더이상 결과가 없습니다.", Toast.LENGTH_SHORT)

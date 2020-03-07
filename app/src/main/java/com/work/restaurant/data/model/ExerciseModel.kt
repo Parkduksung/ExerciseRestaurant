@@ -2,6 +2,7 @@ package com.work.restaurant.data.model
 
 data class ExerciseModel(
     val exerciseNum: Int,
+    val userId: String,
     val date: String,
     val time: String,
     val type: String,
@@ -13,6 +14,7 @@ data class ExerciseModel(
         DiaryModel(
             0,
             exerciseNum,
+            userId,
             1,
             date,
             time,

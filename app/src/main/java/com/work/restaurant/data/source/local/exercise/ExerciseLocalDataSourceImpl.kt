@@ -17,7 +17,6 @@ class ExerciseLocalDataSourceImpl(
 
             val deleteExercise = exerciseDatabase.exerciseDao().deleteExercise(data)
 
-
             appExecutors.mainThread.execute {
                 if (deleteExercise >= 1) {
                     callback.onSuccess()
@@ -25,19 +24,17 @@ class ExerciseLocalDataSourceImpl(
                     callback.onSuccess()
                 }
             }
-
         }
     }
 
     override fun getDataOfTheDay(
+        userId: String,
         date: String,
         callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay
     ) {
         appExecutors.diskIO.execute {
 
-
-            val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(date)
-
+            val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(userId, date)
 
             appExecutors.mainThread.execute {
                 getDataOfTheDay.takeIf { true }
@@ -51,6 +48,7 @@ class ExerciseLocalDataSourceImpl(
     }
 
     override fun addExercise(
+        userId: String,
         date: String,
         time: String,
         type: String,
@@ -61,12 +59,12 @@ class ExerciseLocalDataSourceImpl(
 
         appExecutors.diskIO.execute {
 
-
             val exerciseSetResponseList = list.map {
                 it.toExerciseSetResponse()
             }
 
             val exerciseEntity = ExerciseEntity(
+                userId = userId,
                 date = date,
                 time = time,
                 type = type,
@@ -87,13 +85,12 @@ class ExerciseLocalDataSourceImpl(
 
     }
 
-    override fun getAllList(callback: ExerciseLocalDataSourceCallback.GetAllList) {
+    override fun getAllList(userId: String, callback: ExerciseLocalDataSourceCallback.GetAllList) {
 
 
         appExecutors.diskIO.execute {
 
-            val getAllList = exerciseDatabase.exerciseDao().getAll()
-
+            val getAllList = exerciseDatabase.exerciseDao().getAll(userId)
 
             appExecutors.mainThread.execute {
                 getAllList.takeIf { true }

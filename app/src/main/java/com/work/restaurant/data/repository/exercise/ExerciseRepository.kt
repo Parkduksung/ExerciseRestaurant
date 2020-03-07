@@ -6,6 +6,7 @@ import com.work.restaurant.network.room.entity.ExerciseEntity
 interface ExerciseRepository {
 
     fun addExercise(
+        userId: String,
         date: String,
         time: String,
         type: String,
@@ -20,10 +21,12 @@ interface ExerciseRepository {
     )
 
     fun getList(
+        userId: String,
         callback: ExerciseRepositoryCallback.GetAllList
     )
 
     fun getDataOfTheDay(
+        userId: String,
         today: String,
         callback: ExerciseRepositoryCallback.GetDataOfTheDay
     )

@@ -15,6 +15,11 @@ interface EatLocalDataSourceCallback {
         fun onFailure()
     }
 
+    interface UpdateEatCallback {
+        fun onSuccess()
+        fun onFailure()
+    }
+
     interface GetDataOfTheDay {
         fun onSuccess(list: List<EatEntity>)
         fun onFailure()

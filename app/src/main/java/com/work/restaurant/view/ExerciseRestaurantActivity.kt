@@ -49,11 +49,18 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
     override fun renewBookmarkAndRank() {
         supportFragmentManager.fragments.forEach {
+
             if (it is SearchBookmarksFragment) {
                 it.renewBookmark()
             }
             if (it is SearchRankFragment) {
                 it.renewRank()
+            }
+            if (it is DiaryFragment) {
+                it.load()
+            }
+            if (it is CalendarFragment) {
+                it.renewDot()
             }
         }
     }

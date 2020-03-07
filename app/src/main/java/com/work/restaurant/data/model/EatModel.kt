@@ -1,7 +1,10 @@
 package com.work.restaurant.data.model
 
+import com.work.restaurant.network.room.entity.EatEntity
+
 data class EatModel(
     val eatNum: Int,
+    val userId: String,
     val date: String,
     val time: String,
     val type: Int,
@@ -11,6 +14,7 @@ data class EatModel(
         DiaryModel(
             eatNum,
             0,
+            userId,
             0,
             date,
             time,
@@ -19,4 +23,10 @@ data class EatModel(
             "",
             emptyList()
         )
+
+    fun toEatEntity(): EatEntity =
+        EatEntity(
+            eatNum, userId, date, time, type, memo
+        )
+
 }

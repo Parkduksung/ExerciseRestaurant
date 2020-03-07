@@ -12,9 +12,10 @@ class CalendarPresenter(
     private val eatRepository: EatRepository,
     private val exerciseRepository: ExerciseRepository
 ) : CalendarContract.Presenter {
-    override fun getAllEatData() {
 
-        eatRepository.getList(object : EatRepositoryCallback.GetAllList {
+    override fun getAllEatData(userId: String) {
+
+        eatRepository.getList(userId, object : EatRepositoryCallback.GetAllList {
             override fun onSuccess(list: List<EatEntity>) {
 
                 val toEatModel = list.map { it.toEatModel() }
@@ -32,9 +33,9 @@ class CalendarPresenter(
 
     }
 
-    override fun getAllExerciseData() {
+    override fun getAllExerciseData(userId: String) {
 
-        exerciseRepository.getList(object : ExerciseRepositoryCallback.GetAllList {
+        exerciseRepository.getList(userId, object : ExerciseRepositoryCallback.GetAllList {
             override fun onSuccess(list: List<ExerciseEntity>) {
 
                 val toExerciseModel = list.map { it.toExerciseModel() }
@@ -53,19 +54,17 @@ class CalendarPresenter(
     }
 
 
-    override fun getDataOfTheDayExerciseData(date: String) {
+    override fun getDataOfTheDayExerciseData(userId: String, date: String) {
 
         exerciseRepository.getDataOfTheDay(
+            userId,
             date,
             object : ExerciseRepositoryCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<ExerciseEntity>) {
-
                     val toExerciseModelList = list.map {
                         it.toExerciseModel()
                     }
-
                     calendarContract.showExerciseData(toExerciseModelList)
-
                 }
 
                 override fun onFailure() {
@@ -75,21 +74,24 @@ class CalendarPresenter(
 
     }
 
-    override fun getDataOfTheDayEatData(date: String) {
+    override fun getDataOfTheDayEatData(userId: String, date: String) {
 
-        eatRepository.getDataOfTheDay(date, object : EatRepositoryCallback.GetDataOfTheDay {
-            override fun onSuccess(list: List<EatEntity>) {
-                val toEatModelList = list.map {
-                    it.toEatModel()
+        eatRepository.getDataOfTheDay(
+            userId,
+            date,
+            object : EatRepositoryCallback.GetDataOfTheDay {
+                override fun onSuccess(list: List<EatEntity>) {
+                    val toEatModelList = list.map {
+                        it.toEatModel()
+                    }
+
+                    calendarContract.showEatData(toEatModelList)
                 }
 
-                calendarContract.showEatData(toEatModelList)
-            }
+                override fun onFailure() {
 
-            override fun onFailure() {
-
-            }
-        })
+                }
+            })
 
     }
 

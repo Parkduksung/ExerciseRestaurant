@@ -15,6 +15,7 @@ import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.util.App
+import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -22,6 +23,7 @@ import com.work.restaurant.view.diary.add_exercise.AddExerciseFragment
 import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
+import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
 import kotlinx.android.synthetic.main.diary_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +50,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         (activity as? RenewDataListener)?.let {
             renewDataListener = it
         }
-
     }
 
     override fun showResult(msg: Boolean) {
@@ -93,53 +94,25 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             alertDialog.show()
 
         } else {
-//            val alertDialog =
-//                AlertDialog.Builder(
-//                    ContextThemeWrapper(
-//                        activity,
-//                        R.style.Theme_AppCompat_Light_Dialog
-//                    )
-//                )
-//            alertDialog.setTitle("삭제")
-//            alertDialog.setMessage("입력한 정보를 삭제하시겠습니까?")
-//            alertDialog.setPositiveButton(
-//                "삭제"
-//            ) { _, _ ->
-//
-//                recyclerview_diary.run {
-//                    diaryAdapter.deleteDate(data)
-//                }
-//                presenter.deleteEat(data)
-//                diaryModel.remove(data)
-//            }
-//            alertDialog.setNegativeButton(
-//                "취소"
-//            ) { _, _ -> }
-//            alertDialog.show()
 
-            val addEatFragment =
-                AddEatFragment.newInstance(data.memo, data.time, data.type, data.date)
-            addEatFragment.setTargetFragment(
+
+
+            val updateOrDeleteEatFragment =
+                UpdateOrDeleteEatFragment.newInstance(
+                    data.eatNum.toString(),
+                    data.userId,
+                    data.date,
+                    DateAndTime.convertShowTime(data.time),
+                    data.type,
+                    data.memo
+                )
+            updateOrDeleteEatFragment.setTargetFragment(
                 this,
-                REGISTER_EAT
+                RENEW_EAT
             )
-
             fragmentManager?.let {
-                addEatFragment.show(it, AddEatFragment.TAG)
+                updateOrDeleteEatFragment.show(it, UpdateOrDeleteEatFragment.TAG)
             }
-
-
-//            val addEatFragment = AddEatFragment()
-//            addEatFragment.setTargetFragment(
-//                this,
-//                REGISTER_EAT
-//            )
-//            addEatFragment.renewRank(data)
-//
-//            fragmentManager?.let {
-//                addEatFragment.show(it, AddEatFragment.TAG)
-//            }
-
         }
     }
 
@@ -151,28 +124,24 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
         diaryModel.addAll(getDiaryModel)
 
-        val toSortDiaryModel = diaryModel.map { it.toSortDiaryModel() }
-
         recyclerview_diary.run {
             diaryAdapter.clearListData()
-            diaryAdapter.addAllData(toSortDiaryModel.toList().sortedBy { it.time })
+            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
         }
 
     }
 
-
     override fun showEatData(data: List<EatModel>) {
+
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
 
         diaryModel.addAll(getDiaryModel)
 
-        val toSortDiaryModel = diaryModel.map { it.toSortDiaryModel() }
-
         recyclerview_diary.run {
             diaryAdapter.clearListData()
-            diaryAdapter.addAllData(toSortDiaryModel.toList().sortedBy { it.time })
+            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
         }
 
     }
@@ -180,30 +149,39 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun onClick(v: View?) {
 
         when (v?.id) {
-
             R.id.btn_add_eat -> {
-
-                val addEatFragment = AddEatFragment()
-                addEatFragment.setTargetFragment(
-                    this,
-                    REGISTER_EAT
-                )
-                fragmentManager?.let {
-                    addEatFragment.show(it, AddEatFragment.TAG)
+                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                    val addEatFragment = AddEatFragment()
+                    addEatFragment.setTargetFragment(
+                        this,
+                        REGISTER_EAT
+                    )
+                    fragmentManager?.let {
+                        addEatFragment.show(it, AddEatFragment.TAG)
+                    }
+                } else {
+                    Toast.makeText(this.context, "기록을 추가하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
+
             }
 
             R.id.btn_add_exercise -> {
 
-                val addExerciseFragment = AddExerciseFragment()
-                addExerciseFragment.setTargetFragment(
-                    this,
-                    REGISTER_EXERCISE
-                )
-
-                fragmentManager?.let {
-                    addExerciseFragment.show(it, AddExerciseFragment.TAG)
+                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                    val addExerciseFragment = AddExerciseFragment()
+                    addExerciseFragment.setTargetFragment(
+                        this,
+                        REGISTER_EXERCISE
+                    )
+                    fragmentManager?.let {
+                        addExerciseFragment.show(it, AddExerciseFragment.TAG)
+                    }
+                } else {
+                    Toast.makeText(this.context, "기록을 추가하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
+
 
             }
 
@@ -224,7 +202,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
 
         load()
-
         btn_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
         diaryAdapter.setItemClickListener(this)
@@ -234,6 +211,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+
             REGISTER_EAT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     load()
@@ -246,9 +224,33 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                     renewDot()
                 }
             }
+            RENEW_EAT -> {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    val result =
+                        data?.extras?.getInt(UpdateOrDeleteEatFragment.SEND_RESULT_NUM)
+
+                    result?.let { resultNum ->
+
+                        when (resultNum) {
+
+                            UpdateOrDeleteEatFragment.DELETE_EAT -> {
+                                load()
+                                renewDot()
+                            }
+
+                            UpdateOrDeleteEatFragment.UPDATE_EAT -> {
+                                load()
+                                renewDot()
+                            }
+                        }
+                    }
+
+                }
+            }
+
         }
     }
-
 
     private fun renewDot() {
         if (::renewDataListener.isInitialized) {
@@ -256,27 +258,47 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
-    private fun load() {
-
+    fun load() {
         diaryModel.clear()
-
-        val dayOfTheWeek =
-            SimpleDateFormat("EE", Locale.getDefault())
-                .format(Calendar.getInstance().time)
-
         tv_today.text =
             getString(
                 R.string.diary_main_date1,
-                App.prefs.current_date,
-                dayOfTheWeek
+                DateAndTime.currentDate(),
+                SimpleDateFormat("EE", Locale.getDefault())
+                    .format(Calendar.getInstance().time)
             )
 
-        presenter.todayEatData(
-            App.prefs.current_date
-        )
-        presenter.todayExerciseData(
-            App.prefs.current_date
-        )
+        if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+            recyclerview_diary.visibility = View.VISIBLE
+            tv_diary_not_login.visibility = View.GONE
+            presenter.todayEatData(
+                App.prefs.login_state_id,
+                DateAndTime.currentDate()
+            )
+            presenter.todayExerciseData(
+                App.prefs.login_state_id,
+                DateAndTime.currentDate()
+            )
+        } else {
+            recyclerview_diary.visibility = View.GONE
+            tv_diary_not_login.visibility = View.VISIBLE
+        }
+    }
+
+    //다음날로 넘어가는데 이전에 키다가 shared 쓰면 안넘어가니까.
+    override fun onResume() {
+        if (tv_today.text.isNotEmpty()) {
+            if (tv_today.text != getString(
+                    R.string.diary_main_date1,
+                    DateAndTime.currentDate(),
+                    SimpleDateFormat("EE", Locale.getDefault())
+                        .format(Calendar.getInstance().time)
+                )
+            ) {
+                load()
+            }
+        }
+        super.onResume()
     }
 
 
@@ -284,7 +306,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         private const val TAG = "DiaryFragment"
         private const val REGISTER_EAT = 1
         private const val REGISTER_EXERCISE = 2
-        const val c = 1
+        private const val RENEW_EAT = 3
+
     }
 
 }

@@ -8,10 +8,11 @@ class App : Application() {
         lateinit var instance: App
             private set
         lateinit var prefs: MySharedPreferences
+
+        lateinit var currentDate: String
     }
 
     override fun onCreate() {
-
         super.onCreate()
         instance = this
         prefs = MySharedPreferences(applicationContext)

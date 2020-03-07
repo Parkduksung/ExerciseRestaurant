@@ -10,8 +10,8 @@ class AddExercisePresenter(
 ) :
     AddExerciseContract.Presenter {
 
-
     override fun addExercise(
+        userId: String,
         date: String,
         time: String,
         type: String,
@@ -19,6 +19,7 @@ class AddExercisePresenter(
         list: List<ExerciseSet>
     ) {
         exerciseRepository.addExercise(
+            userId,
             date,
             time,
             type,
@@ -28,7 +29,6 @@ class AddExercisePresenter(
                 override fun onSuccess() {
                     addExerciseView.showAddSuccess()
                 }
-
                 override fun onFailure() {
 
                 }

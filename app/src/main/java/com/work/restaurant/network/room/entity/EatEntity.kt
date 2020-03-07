@@ -10,6 +10,8 @@ data class EatEntity(
 
     @PrimaryKey(autoGenerate = true)
     val eatNum: Int = 0,
+    @ColumnInfo(name = "userId")
+    val userId: String,
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "time")
@@ -18,12 +20,11 @@ data class EatEntity(
     val type: Int,
     @ColumnInfo(name = "memo")
     val memo: String
-
 ) {
-
     fun toEatModel(): EatModel =
         EatModel(
             eatNum,
+            userId,
             date,
             time,
             type,

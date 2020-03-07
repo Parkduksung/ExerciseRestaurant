@@ -46,7 +46,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         toHashSetCalendarDayExercise = HashSet()
 
         list.forEach {
-
             val splitList = it.split(" ")
             if (splitList.size == 3) {
                 val year = splitList[0].substring(0, splitList[0].length - 1).toInt()
@@ -61,9 +60,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 toHashSetCalendarDayExercise.add(toCalendarDay)
             }
         }
-
         dotEat = true
-
         showDotAndWeekend()
 
     }
@@ -73,9 +70,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         toHashSetCalendarDayEat = HashSet()
 
         list.forEach {
-
             val splitList = it.split(" ")
-
             if (splitList.size == 3) {
                 val year = splitList[0].substring(0, splitList[0].length - 1).toInt()
                 val month = splitList[1].substring(0, splitList[1].length - 1).toInt()
@@ -136,15 +131,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             layoutManager = LinearLayoutManager(this.context)
         }
 
-
-        presenter.getAllEatData()
-        presenter.getAllExerciseData()
-
         initCalendar()
 
         clickDate(calender_view)
-
-        showExplain()
 
     }
 
@@ -170,8 +159,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
 
-        toggleExplain = true
+        showExplain()
 
+        renewDot()
     }
 
     private fun showDotAndWeekend() {
@@ -180,8 +170,6 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             calender_view.removeDecorators()
 
             AppExecutors().diskIO.execute {
-
-
                 val decoratorList = mutableListOf<DayViewDecorator>()
 
                 val eatDecorator = EatDecorator(toHashSetCalendarDayEat)
@@ -196,86 +184,85 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
                 AppExecutors().mainThread.execute {
                     calender_view.addDecorators(decoratorList)
-
                 }
             }
-
             dotExercise = false
             dotEat = false
-
         }
     }
 
-
     fun renewDot() {
-
-        presenter.getAllEatData()
-        presenter.getAllExerciseData()
-        presenter.getDataOfTheDayEatData(App.prefs.current_date)
-        presenter.getDataOfTheDayExerciseData(App.prefs.current_date)
-        calender_view.selectedDate = CalendarDay.today()
-        toggleMessage = true
-
+        if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+            tv_calendar_main_context.text =
+                getString(R.string.et_calendar_main_context_ok_login_state)
+            presenter.getAllEatData(App.prefs.login_state_id)
+            presenter.getAllExerciseData(App.prefs.login_state_id)
+            presenter.getDataOfTheDayEatData(App.prefs.login_state_id, App.prefs.current_date)
+            presenter.getDataOfTheDayExerciseData(App.prefs.login_state_id, App.prefs.current_date)
+            calender_view.selectedDate = CalendarDay.today()
+            toggleMessage = true
+        } else {
+            tv_calendar_main_context.text =
+                getString(R.string.et_calendar_main_context_no_login_state)
+            calender_view.removeDecorators()
+            toggleExplain = true
+            showExplain()
+        }
     }
 
     private fun clickDate(calendarView: MaterialCalendarView) {
 
         calendarView.setOnDateChangedListener { _, date, _ ->
-
-            toggleMessage = false
-            val msg = getString(
-                R.string.current_date,
-                date.year.toString(),
-                (date.month + 1).toString(),
-                date.day.toString()
-            )
-            presenter.getDataOfTheDayEatData(msg)
-            presenter.getDataOfTheDayExerciseData(msg)
+            if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                toggleMessage = false
+                val msg = getString(
+                    R.string.current_date,
+                    date.year.toString(),
+                    (date.month + 1).toString(),
+                    date.day.toString()
+                )
+                presenter.getDataOfTheDayEatData(App.prefs.login_state_id, msg)
+                presenter.getDataOfTheDayExerciseData(App.prefs.login_state_id, msg)
+            } else {
+                Toast.makeText(this.context, "기록을 확인하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
         }
-
     }
-
 
     private fun showDayOfData() {
         if (workEat && workExercise) {
-
             val dayOfSet = mutableSetOf<DiaryModel>()
             dayOfSet.addAll(eat)
             dayOfSet.addAll(exercise)
 
-            val toSortDayOfSet = dayOfSet.map { it.toSortDiaryModel() }
-
-
             workEat = false
             workExercise = false
 
-
             if (dayOfSet.size == 0) {
+                tv_calendar_main_context.text =
+                    getString(R.string.et_calendar_main_context_ok_login_state)
                 if (!toggleExplain) {
                     toggleExplain = true
                     showExplain()
                 }
-
                 if (!toggleMessage) {
-                    Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(App.instance.context(), "저장된 기록이 없습니다.", Toast.LENGTH_SHORT)
+//                        .show()
                 }
-
             } else {
                 recyclerview_calendar.run {
                     diaryAdapter.clearListData()
                     if (dayOfSet.size != 0)
-                        diaryAdapter.addAllData(toSortDayOfSet.toList().sortedBy { it.time })
+                        diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
                 }
                 toggleExplain = false
                 showExplain()
             }
-
         }
     }
 
     private fun showExplain() {
-        et_calendar_main_context.isVisible = toggleExplain
+        tv_calendar_main_context.isVisible = toggleExplain
         recyclerview_calendar.isVisible = !toggleExplain
     }
 
@@ -283,6 +270,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     companion object {
 
         private const val TAG = "CalendarFragment"
+
 
         private var workEat = false
         private var workExercise = false

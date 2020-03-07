@@ -7,7 +7,6 @@ interface EatRepositoryCallback {
     interface AddEatCallback {
         fun onSuccess()
         fun onFailure()
-
     }
 
 
@@ -24,7 +23,11 @@ interface EatRepositoryCallback {
     interface DeleteEatCallback {
         fun onSuccess()
         fun onFailure()
+    }
 
+    interface UpdateEatCallback {
+        fun onSuccess()
+        fun onFailure()
     }
 
 }

@@ -7,6 +7,29 @@ import com.work.restaurant.network.room.entity.EatEntity
 class EatRepositoryImpl private constructor(
     private val eatLocalDataSourceImpl: EatLocalDataSourceImpl
 ) : EatRepository {
+    override fun updateEat(
+        time: String,
+        type: Int,
+        memo: String,
+        data: EatEntity,
+        callback: EatRepositoryCallback.UpdateEatCallback
+    ) {
+        eatLocalDataSourceImpl.updateEat(
+            time,
+            type,
+            memo,
+            data,
+            object : EatLocalDataSourceCallback.UpdateEatCallback {
+                override fun onSuccess() {
+                    callback.onSuccess()
+                }
+
+                override fun onFailure() {
+                    callback.onFailure()
+                }
+            })
+    }
+
     override fun deleteEat(data: EatEntity, callback: EatRepositoryCallback.DeleteEatCallback) {
         eatLocalDataSourceImpl.deleteEat(
             data,
@@ -22,8 +45,13 @@ class EatRepositoryImpl private constructor(
         )
     }
 
-    override fun getDataOfTheDay(today: String, callback: EatRepositoryCallback.GetDataOfTheDay) {
+    override fun getDataOfTheDay(
+        userId: String,
+        today: String,
+        callback: EatRepositoryCallback.GetDataOfTheDay
+    ) {
         eatLocalDataSourceImpl.getDataOfTheDay(
+            userId,
             today,
             object : EatLocalDataSourceCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<EatEntity>) {
@@ -38,8 +66,8 @@ class EatRepositoryImpl private constructor(
     }
 
 
-    override fun getList(callback: EatRepositoryCallback.GetAllList) {
-        eatLocalDataSourceImpl.getAllList(object : EatLocalDataSourceCallback.GetAllList {
+    override fun getList(userId: String, callback: EatRepositoryCallback.GetAllList) {
+        eatLocalDataSourceImpl.getAllList(userId, object : EatLocalDataSourceCallback.GetAllList {
             override fun onSuccess(list: List<EatEntity>) {
                 callback.onSuccess(list)
             }
@@ -53,6 +81,7 @@ class EatRepositoryImpl private constructor(
 
 
     override fun addEat(
+        userId: String,
         date: String,
         time: String,
         type: Int,
@@ -60,6 +89,7 @@ class EatRepositoryImpl private constructor(
         callback: EatRepositoryCallback.AddEatCallback
     ) {
         eatLocalDataSourceImpl.addEat(
+            userId,
             date,
             time,
             type,

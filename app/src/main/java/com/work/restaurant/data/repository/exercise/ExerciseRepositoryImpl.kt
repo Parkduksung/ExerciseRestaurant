@@ -25,19 +25,22 @@ class ExerciseRepositoryImpl(
             })
     }
 
-    override fun getList(callback: ExerciseRepositoryCallback.GetAllList) {
-        exerciseLocalDataSourceImpl.getAllList(object : ExerciseLocalDataSourceCallback.GetAllList {
-            override fun onSuccess(list: List<ExerciseEntity>) {
-                callback.onSuccess(list)
-            }
+    override fun getList(userId: String, callback: ExerciseRepositoryCallback.GetAllList) {
+        exerciseLocalDataSourceImpl.getAllList(
+            userId,
+            object : ExerciseLocalDataSourceCallback.GetAllList {
+                override fun onSuccess(list: List<ExerciseEntity>) {
+                    callback.onSuccess(list)
+                }
 
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
+                override fun onFailure() {
+                    callback.onFailure()
+                }
+            })
     }
 
     override fun addExercise(
+        userId: String,
         date: String,
         time: String,
         type: String,
@@ -47,6 +50,7 @@ class ExerciseRepositoryImpl(
     ) {
 
         exerciseLocalDataSourceImpl.addExercise(
+            userId,
             date,
             time,
             type,
@@ -67,10 +71,12 @@ class ExerciseRepositoryImpl(
     }
 
     override fun getDataOfTheDay(
+        userId: String,
         today: String,
         callback: ExerciseRepositoryCallback.GetDataOfTheDay
     ) {
         exerciseLocalDataSourceImpl.getDataOfTheDay(
+            userId,
             today,
             object : ExerciseLocalDataSourceCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<ExerciseEntity>) {

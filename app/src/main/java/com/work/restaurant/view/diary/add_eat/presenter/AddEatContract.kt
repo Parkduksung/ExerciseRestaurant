@@ -8,6 +8,7 @@ interface AddEatContract {
 
     interface Presenter {
 
-        fun addEat(date: String, time: String, type: Int, memo: String)
+        fun addEat(userId: String, date: String, time: String, type: Int, memo: String)
+
     }
 }

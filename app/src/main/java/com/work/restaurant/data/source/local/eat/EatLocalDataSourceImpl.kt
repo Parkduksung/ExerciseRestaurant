@@ -1,5 +1,6 @@
 package com.work.restaurant.data.source.local.eat
 
+import android.util.Log
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
@@ -8,6 +9,37 @@ class EatLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val eatDatabase: EatDatabase
 ) : EatLocalDataSource {
+    override fun updateEat(
+        time: String,
+        type: Int,
+        memo: String,
+        data: EatEntity,
+        callback: EatLocalDataSourceCallback.UpdateEatCallback
+    ) {
+
+        appExecutors.diskIO.execute {
+
+
+            val updateEat =
+                eatDatabase.eatDao().updateEat(time, type, memo, data.userId, data.eatNum)
+
+
+            appExecutors.mainThread.execute {
+                if (updateEat == 1) {
+
+                    callback.onSuccess()
+                } else {
+                    callback.onFailure()
+
+
+                }
+
+            }
+
+        }
+
+
+    }
 
     override fun deleteEat(
         data: EatEntity,
@@ -29,13 +61,12 @@ class EatLocalDataSourceImpl(
         }
     }
 
-    override fun getAllList(callback: EatLocalDataSourceCallback.GetAllList) {
+    override fun getAllList(userId: String, callback: EatLocalDataSourceCallback.GetAllList) {
 
         appExecutors.diskIO.execute {
 
             val getAllList =
-                eatDatabase.eatDao().getAll()
-
+                eatDatabase.eatDao().getAll(userId)
 
             appExecutors.mainThread.execute {
                 getAllList.takeIf { true }
@@ -51,13 +82,14 @@ class EatLocalDataSourceImpl(
 
 
     override fun getDataOfTheDay(
+        userId: String,
         date: String,
         callback: EatLocalDataSourceCallback.GetDataOfTheDay
     ) {
 
         appExecutors.diskIO.execute {
 
-            val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(date)
+            val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(userId, date)
 
             appExecutors.mainThread.execute {
                 getDataOfTheDay.takeIf { true }
@@ -72,6 +104,7 @@ class EatLocalDataSourceImpl(
     }
 
     override fun addEat(
+        userId: String,
         date: String,
         time: String,
         type: Int,
@@ -81,11 +114,9 @@ class EatLocalDataSourceImpl(
         appExecutors.diskIO.execute {
 
             val eatEntity =
-                EatEntity(date = date, time = time, type = type, memo = memo)
-
+                EatEntity(userId = userId, date = date, time = time, type = type, memo = memo)
 
             val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
-
 
             appExecutors.mainThread.execute {
                 if (registerEat >= 1) {

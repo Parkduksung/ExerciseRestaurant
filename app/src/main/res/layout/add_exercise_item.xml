@@ -11,13 +11,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+
         <EditText
             android:id="@+id/et_add_exercise_kg"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
             android:hint="@string/hint_add_exercise_kg"
+            android:imeActionLabel="완료"
+            android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="4"
             android:singleLine="true"
             android:textSize="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -26,13 +30,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+
         <EditText
             android:id="@+id/et_add_exercise_count"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
             android:hint="@string/hint_add_exercise_count"
+            android:imeActionLabel="완료"
+            android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="4"
             android:singleLine="true"
             android:textSize="15dp" />
     </com.google.android.material.textfield.TextInputLayout>

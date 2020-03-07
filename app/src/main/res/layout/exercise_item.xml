@@ -10,6 +10,7 @@
     tools:ignore="RtlHardcoded,RtlSymmetry,SpUsage">
 
     <TextView
+
         android:id="@+id/add_exercise_type"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -26,19 +27,16 @@
         android:orientation="horizontal">
 
         <LinearLayout
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_round"
+            android:backgroundTint="@color/colorWhite"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-
-                >
-
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_add_exercise_type"
@@ -56,9 +54,15 @@
                     android:id="@+id/tv_add_exercise_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:autoSizeMaxTextSize="15dp"
+                    android:autoSizeMinTextSize="1dp"
+                    android:autoSizeTextType="uniform"
                     android:gravity="center"
-                    android:minEms="4" />
+                    android:maxEms="9"
+                    android:minEms="6"
+                    tools:ignore="UnusedAttribute" />
 
             </LinearLayout>
 
@@ -67,39 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <!--                <LinearLayout -->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    android:weightSum="3">-->
-
-
-                <!--                    <TextView-->
-                <!--                        android:text="1세트"-->
-                <!--                        android:id="@+id/set_num"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:gravity="center" />-->
-                <!--                    <TextView-->
-                <!--                        android:text="1세트"-->
-                <!--                        android:id="@+id/set_kg"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:gravity="center" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:text="1세트"-->
-                <!--                        android:id="@+id/set_count"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="1"-->
-                <!--                        android:gravity="center" />-->
-
-                <!--                </LinearLayout>-->
-                <!--                -->
 
             </LinearLayout>
 

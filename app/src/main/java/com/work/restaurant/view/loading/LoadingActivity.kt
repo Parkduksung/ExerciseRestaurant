@@ -147,29 +147,6 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
     private fun start() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-EE-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
-
-        App.prefs.current_date =
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
-
-        App.prefs.current_time =
-            getString(
-                R.string.current_time,
-                dateArray[4],
-                dateArray[5],
-                dateArray[6]
-            )
-
         presenter.getLoginState()
         presenter.delayTime()
         presenter.getAddressDataCount()

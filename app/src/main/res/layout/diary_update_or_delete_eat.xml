@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,14 +19,38 @@
         android:orientation="vertical"
         android:weightSum="10">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/add_exercise_main"
-            android:textSize="35dp" />
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/tv_add_eat_main"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="식단 수정"
+                android:textSize="35dp" />
+
+            <ImageView
+                android:id="@+id/iv_delete_eat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:src="@drawable/delete"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,17 +72,16 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_weight="2"
-                    android:text="@string/add_exercise_category_today" />
+                    android:text="@string/add_eat_today" />
 
                 <TextView
-                    android:id="@+id/tv_add_exercise_today"
+                    android:id="@+id/tv_renew_eat_today"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
                     android:gravity="center"
                     android:textSize="14dp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -74,10 +96,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_weight="2"
-                    android:text="@string/add_exercise_category_time" />
+                    android:text="@string/add_eat_today_time" />
 
                 <Button
-                    android:id="@+id/btn_add_exercise_time"
+                    android:id="@+id/btn_renew_eat_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
@@ -104,76 +126,83 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="@string/add_exercise_list" />
+                android:text="@string/add_eat_list" />
 
-            <Button
-                android:id="@+id/btn_add_exercise_category"
+            <RadioGroup
+                android:id="@+id/renew_eat_radio_group"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="4"
-                android:background="@drawable/button_round"
-                android:backgroundTint="@color/colorLean4" />
+                android:layout_weight="9"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/iv_add_exercise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2.5"
-                app:srcCompat="@drawable/add"
-                tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:id="@+id/iv_remove_exercise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2.5"
-                app:srcCompat="@drawable/remove"
-                tools:ignore="ContentDescription" />
+                <RadioButton
+                    android:id="@+id/rb_meal_renew"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_eat_menu_meal"
+                    android:textSize="17dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_snack_renew"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/add_eat_menu_snack"
+                    android:textSize="17dp" />
+
+            </RadioGroup>
 
         </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5">
-
-            <EditText
-                android:id="@+id/et_add_exercise_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:hint="@string/hint_add_exercise_name"
-                android:imeActionLabel="완료"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:singleLine="true"
-                android:textSize="20dp"
-                tools:ignore="Autofill" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
-
-            <LinearLayout
-                android:id="@+id/ll_add_remove_exercise"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:ignore="ScrollViewSize">
-
-            </LinearLayout>
-
-        </ScrollView>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="@string/add_eat_memo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/et_renew_eat_memo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+                    android:background="@color/colorGrayBasic"
+                    android:backgroundTint="@color/colorLean4"
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:textIsSelectable="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="2">
@@ -185,13 +214,12 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/add_exercise_cancel"
+                    android:id="@+id/btn_renew_eat_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_round"
-                    android:text="@string/add_exercise_cancel"
+                    android:text="@string/add_eat_cancel"
                     android:textSize="20dp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -201,11 +229,11 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/add_exercise_save"
+                    android:id="@+id/btn_renew_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_round"
-                    android:text="@string/add_exercise_save"
+                    android:text="수정"
                     android:textSize="20dp" />
             </LinearLayout>
 
