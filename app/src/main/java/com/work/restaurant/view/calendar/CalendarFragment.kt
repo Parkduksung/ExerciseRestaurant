@@ -16,6 +16,7 @@ import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
+import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.calendar.decorator.EatDecorator
 import com.work.restaurant.view.calendar.decorator.ExerciseDecorator
@@ -177,10 +178,12 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 val saturdayDecorator = SaturdayDecorator()
                 val sundayDecorator = SundayDecorator()
 
-                decoratorList.add(eatDecorator)
-                decoratorList.add(exerciseDecorator)
-                decoratorList.add(saturdayDecorator)
-                decoratorList.add(sundayDecorator)
+                decoratorList.apply {
+                    add(eatDecorator)
+                    add(exerciseDecorator)
+                    add(saturdayDecorator)
+                    add(sundayDecorator)
+                }
 
                 AppExecutors().mainThread.execute {
                     calender_view.addDecorators(decoratorList)
@@ -193,15 +196,24 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
     fun renewDot() {
         if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+
+            loginStateId = App.prefs.login_state_id
+            loginState = App.prefs.login_state
+
             tv_calendar_main_context.text =
                 getString(R.string.et_calendar_main_context_ok_login_state)
-            presenter.getAllEatData(App.prefs.login_state_id)
-            presenter.getAllExerciseData(App.prefs.login_state_id)
-            presenter.getDataOfTheDayEatData(App.prefs.login_state_id, App.prefs.current_date)
-            presenter.getDataOfTheDayExerciseData(App.prefs.login_state_id, App.prefs.current_date)
+            presenter.run {
+                getAllEatData(loginStateId)
+                getAllExerciseData(loginStateId)
+                getDataOfTheDayEatData(loginStateId, DateAndTime.currentDate())
+                getDataOfTheDayExerciseData(loginStateId, DateAndTime.currentDate())
+            }
             calender_view.selectedDate = CalendarDay.today()
             toggleMessage = true
+
         } else {
+            loginStateId = App.prefs.login_state_id
+            loginState = App.prefs.login_state
             tv_calendar_main_context.text =
                 getString(R.string.et_calendar_main_context_no_login_state)
             calender_view.removeDecorators()
@@ -221,10 +233,18 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                     (date.month + 1).toString(),
                     date.day.toString()
                 )
-                presenter.getDataOfTheDayEatData(App.prefs.login_state_id, msg)
-                presenter.getDataOfTheDayExerciseData(App.prefs.login_state_id, msg)
+
+                presenter.run {
+                    getDataOfTheDayEatData(loginStateId, msg)
+                    getDataOfTheDayExerciseData(loginStateId, msg)
+                }
+
             } else {
-                Toast.makeText(this.context, "기록을 확인하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.calendar_login_state_no),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -271,6 +291,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
         private const val TAG = "CalendarFragment"
 
+
+        private var loginState = false
+        private var loginStateId = ""
 
         private var workEat = false
         private var workExercise = false

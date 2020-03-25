@@ -10,6 +10,31 @@ class LoginLocalDataSourceImpl(
     private val loginDatabase: LoginDatabase
 ) : LoginLocalDataSource {
 
+    override fun findUser(
+        id: String,
+        pw: String,
+        nickname: String,
+        callback: LoginLocalDataSourceCallback.FindUser
+    ) {
+
+        appExecutors.diskIO.execute {
+
+            val findUser = loginDatabase.loginDao().findUser(id, pw, nickname)
+
+            Log.d("숫자가어떻게나오나?", findUser.toString())
+
+            appExecutors.mainThread.execute {
+
+                if (findUser < 1) {
+                    callback.onFailure()
+                } else {
+                    callback.onSuccess()
+                }
+            }
+        }
+
+    }
+
     override fun deleteLogin(
         id: String,
         nickname: String,

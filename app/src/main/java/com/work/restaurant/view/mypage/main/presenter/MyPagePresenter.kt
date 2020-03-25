@@ -16,7 +16,8 @@ class MyPagePresenter(
     override fun login(email: String, pass: String) {
         userRepository.login(email, pass, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
-                changeState(email, resultNickname)
+//                changeState(email, resultNickname)
+                checkRegister(email, pass, resultNickname)
             }
 
             override fun onFailure(message: String) {
@@ -38,6 +39,43 @@ class MyPagePresenter(
             }
         })
     }
+
+    private fun checkRegister(userId: String, userPass: String, userNickname: String) {
+        loginRepository.findUser(
+            userId,
+            userPass,
+            userNickname,
+            object : LoginRepositoryCallback.FindUser {
+                override fun onSuccess() {
+                    changeState(userId, userNickname)
+                }
+
+                override fun onFailure() {
+                    registerLocal(userId, userPass, userNickname)
+                }
+            })
+    }
+
+
+    private fun registerLocal(userId: String, userPass: String, userNickname: String) {
+
+        loginRepository.getRegisterData(
+            userId,
+            userPass,
+            userNickname,
+            false,
+            object : LoginRepositoryCallback.RegisterCallback {
+                override fun onSuccess() {
+                    changeState(userId, userNickname)
+                }
+
+                override fun onFailure() {
+                    myPageView.showLoginNo()
+                }
+            })
+
+    }
+
 
     private fun autoLogin(userId: String, userPass: String) {
 

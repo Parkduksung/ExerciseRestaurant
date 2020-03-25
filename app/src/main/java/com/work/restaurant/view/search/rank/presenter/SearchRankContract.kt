@@ -9,7 +9,7 @@ interface SearchRankContract {
 
         fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>)
 
-        fun showBookmarkResult(msg: Int)
+        fun showBookmarkResult(msg: Int, selectPosition: Int)
 
         fun showCurrentLocation(addressName: String)
 
@@ -21,9 +21,9 @@ interface SearchRankContract {
 
     interface Presenter {
 
-        fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel)
+        fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition : Int)
 
-        fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel)
+        fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition : Int)
 
         fun getCurrentLocation(addressName: String, itemCount: Int, sort: String)
 

@@ -26,4 +26,9 @@ interface LoginRepositoryCallback {
         fun onFailure()
     }
 
+    interface FindUser {
+        fun onSuccess()
+        fun onFailure()
+    }
+
 }

@@ -54,9 +54,9 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun showResult(msg: Boolean) {
         if (msg) {
             renewDot()
-            Toast.makeText(this.context, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.context, getString(R.string.diary_delete_ok_message), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this.context, "삭제되지않았습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.context, getString(R.string.diary_delete_no_message), Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -137,7 +137,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addEatFragment.show(it, AddEatFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(this.context, "기록을 추가하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this.context, getString(R.string.diary_login_state_no), Toast.LENGTH_SHORT)
                         .show()
                 }
 
@@ -155,7 +155,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addExerciseFragment.show(it, AddExerciseFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(this.context, "기록을 추가하기 위해선 로그인이 필요합니다.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this.context, getString(R.string.diary_login_state_no), Toast.LENGTH_SHORT)
                         .show()
                 }
 

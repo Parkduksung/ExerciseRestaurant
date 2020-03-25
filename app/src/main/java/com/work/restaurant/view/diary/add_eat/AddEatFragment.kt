@@ -29,7 +29,8 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             null
         )
         dismiss()
-        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT)
+            .show()
 
     }
 
@@ -58,19 +59,43 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
                             )
                             radioClick = 2
                         } else {
-                            Toast.makeText(this.context, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this.context,
+                                getString(R.string.input_context_error_message1),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } else if (radioClick > 1 && et_add_eat_memo.text.isNotBlank()) {
-                        Toast.makeText(this.context, "항목을 선택하세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.input_context_error_message2),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else if (radioClick <= 1 && et_add_eat_memo.text.isEmpty()) {
-                        Toast.makeText(this.context, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.input_context_error_message1),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else if (radioClick <= 1 && et_add_eat_memo.text.trim().isEmpty()) {
-                        Toast.makeText(this.context, "내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.input_context_error_message1),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-                        Toast.makeText(this.context, "항목과 내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.input_context_error_message3),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this.context, "로그아웃시에는 기록을 저장할 수 없습니다.", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.logout_write_error_message),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

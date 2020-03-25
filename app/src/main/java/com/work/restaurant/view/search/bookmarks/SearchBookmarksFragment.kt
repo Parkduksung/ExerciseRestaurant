@@ -41,10 +41,18 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         when (msg) {
             RESULT_SUCCESS -> {
                 renewBookmarkAndRankListener.renewBookmarkAndRank()
-                Toast.makeText(this.context, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context, getString(
+                        R.string.bookmark_state_no
+                    ), Toast.LENGTH_LONG
+                ).show()
             }
             RESULT_FAILURE -> {
-                Toast.makeText(this.context, "즐겨찾기 제거를 실패하였습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_delete_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 

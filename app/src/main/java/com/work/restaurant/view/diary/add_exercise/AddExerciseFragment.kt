@@ -37,7 +37,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
             null
         )
         dismiss()
-        Toast.makeText(this.context, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT).show()
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -115,15 +115,15 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                                 setList
                             )
                         } else {
-                            Toast.makeText(this.context, "추가하려는 무게와 횟수를 입력하세요.", Toast.LENGTH_SHORT)
+                            Toast.makeText(this.context, getString(R.string.exercise_no_input_kg_and_count_error_message), Toast.LENGTH_SHORT)
                                 .show()
                         }
                     } else {
-                        Toast.makeText(this.context, "저장할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this.context, getString(R.string.diary_add_no_message), Toast.LENGTH_SHORT).show()
                     }
 
                 } else {
-                    Toast.makeText(this.context, "로그아웃시에는 기록을 저장할 수 없습니다.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this.context, getString(R.string.logout_write_error_message), Toast.LENGTH_SHORT)
                         .show()
                 }
 
@@ -205,19 +205,24 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
                 when (item?.itemId) {
                     R.id.chest -> {
-                        btn_add_exercise_category.text = "가슴"
+                        btn_add_exercise_category.text =
+                            resources.getStringArray(R.array.add_exercise_part)[0]
                     }
                     R.id.back -> {
-                        btn_add_exercise_category.text = "등"
+                        btn_add_exercise_category.text =
+                            resources.getStringArray(R.array.add_exercise_part)[1]
                     }
                     R.id.shoulder -> {
-                        btn_add_exercise_category.text = "어깨"
+                        btn_add_exercise_category.text =
+                            resources.getStringArray(R.array.add_exercise_part)[2]
                     }
                     R.id.legs -> {
-                        btn_add_exercise_category.text = "다리"
+                        btn_add_exercise_category.text =
+                            resources.getStringArray(R.array.add_exercise_part)[4]
                     }
                     R.id.arm -> {
-                        btn_add_exercise_category.text = "팔"
+                        btn_add_exercise_category.text =
+                            resources.getStringArray(R.array.add_exercise_part)[3]
                     }
                 }
                 return true

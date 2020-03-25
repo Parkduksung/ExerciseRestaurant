@@ -102,9 +102,9 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                 unSelect(tv_address2)
                 unSelect(tv_address3)
 
-                tv_address1.text = "광역시/도"
-                tv_address2.text = "시/군/구"
-                tv_address3.text = "읍/면/동"
+                tv_address1.text = getString(R.string.address_select1)
+                tv_address2.text = getString(R.string.address_select2)
+                tv_address3.text = getString(R.string.address_select3)
 
             }
 
@@ -112,8 +112,8 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
                 address3 = false
 
-                tv_address2.text = "시/군/구"
-                tv_address3.text = "읍/면/동"
+                tv_address2.text = getString(R.string.address_select2)
+                tv_address3.text = getString(R.string.address_select3)
 
                 if (address2) {
                     //

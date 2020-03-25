@@ -25,5 +25,10 @@ interface LoginLocalDataSourceCallback {
         fun onFailure()
     }
 
+    interface FindUser {
+        fun onSuccess()
+        fun onFailure()
+    }
+
 
 }

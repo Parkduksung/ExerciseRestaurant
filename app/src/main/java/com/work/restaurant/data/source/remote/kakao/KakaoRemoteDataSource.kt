@@ -7,10 +7,12 @@ interface KakaoRemoteDataSource {
         currentY: Double,
         page: Int,
         sort: String,
+        radius: Int,
         callback: KakaoRemoteDataSourceCallback
     )
 
     fun getKakaoItemInfo(
+        x: Double, y: Double,
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
     )

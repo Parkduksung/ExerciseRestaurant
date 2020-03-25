@@ -70,11 +70,6 @@
     <string name="add_exercise_year">2020년</string>
     <string name="add_exercise_today">1월 17일</string>
     <string name="add_exercise_category">카테고리</string>
-    <string name="add_exercise_category_chest">가슴</string>
-    <string name="add_exercise_category_back">등</string>
-    <string name="add_exercise_category_shoulder">어깨</string>
-    <string name="add_exercise_category_legs">하체</string>
-    <string name="add_exercise_category_arm">팔</string>
     <string name="exercise_set_delete">삭제</string>
     <string name="exercise_set_add">추가</string>
     <string name="tv_add_eat_category">식단 추가</string>
@@ -121,6 +116,8 @@
     <string name="question_main_text3">불편 및 개선사항을 자유롭게 말씀해주세요. \n  (ex. 운동 목록을 더 추가해주세요.)</string>
     <string name="question_main_text1">어떤 점이 불편하셨나요?</string>
     <string name="question_main_text4">의견 보내기</string>
+    <string name="question_send_no">문의사항이 전달되지 않았습니다.</string>
+    <string name="question_send_ok">문의사항이 전달되었습니다.</string>
     <string name="identify_content">\n\n\n본 개인정보처리방침의 목차는 아래와 같습니다. \n\n\n\n
         일부는 관계법령이 개인정보처리방침의 작성에 있어 요구하는 필수 사항을 포함하였고,\n\n\n
         나머지는 "운동맛집" 에서 자체적으로 이용자의 개인정보 보호에 있어 중요하다 판단하는 내용을 추가하였습니다. \n\n\n\n\n\n
@@ -155,5 +152,33 @@
     <string name="btn_register_email_verified1">인증</string>
     <string name="btn_register_email_verified2">확인</string>
     <string name="diary_main_no_login_state">로그인을 하여 기록을 남겨보세요!</string>
+
+
+    <string name="baseActivity_backPressed">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
+    <string name="calendar_login_state_no">기록을 확인하기 위해선 로그인이 필요합니다.</string>
+    <string name="diary_login_state_no">기록을 추가하기 위해선 로그인이 필요합니다.</string>
+
+    <string name="bookmark_add_no_message">즐겨찾기에 추가를 실패하였습니다.</string>
+    <string name="bookmark_delete_no_message">즐겨찾기에 제거를 실패하였습니다.</string>
+    <string name="bookmark_state_no_message">즐겨찾기 기능은 로그인이 필요합니다.</string>
+    <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
+    <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
+
+    <string name="bookmark_content_add">즐겨찾기 항목에 추가</string>
+    <string name="bookmark_content_delete">즐겨찾기 항목에 제거</string>
+
+
+    <string name="logout_write_error_message">로그아웃시에는 기록을 저장할 수 없습니다.</string>
+    <string name="input_context_error_message1">내용을 입력하세요.</string>
+    <string name="input_context_error_message2">항목을 선택하세요.</string>
+    <string name="input_context_error_message3">항목과 내용을 입력하세요.</string>
+
+    <string name="diary_add_no_message">저장할 수 없습니다.</string>
+    <string name="diary_add_ok_message">저장되었습니다.</string>
+    <string name="diary_delete_no_message">삭제할 수 없습니다.</string>
+    <string name="diary_delete_ok_message">삭제되었습니다.</string>
+    <string name="exercise_no_input_kg_and_count_error_message">추가하려는 무게와 횟수를 입력하세요.</string>
+    <!--    <string name=""></string>-->
+
 
 </resources>

@@ -86,7 +86,8 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                     }
                 setResult(RESULT_OK, addressAllIntent)
 
-                Toast.makeText(this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.bookmark_state_ok), Toast.LENGTH_LONG)
+                    .show()
             }
 
             DELETE_BOOKMARK -> {
@@ -98,17 +99,23 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                         putExtra(RENEW, true)
                     }
                 setResult(RESULT_OK, addressAllIntent)
-                Toast.makeText(this, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.bookmark_state_no), Toast.LENGTH_LONG)
+                    .show()
             }
 
             RESULT_FAILURE -> {
-                Toast.makeText(this, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.bookmark_add_no_message), Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
 
 
-    override fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel) {
+    override fun getDisplayBookmarkKakaoData(
+        select: Int,
+        data: DisplayBookmarkKakaoModel,
+        selectPosition: Int
+    ) {
         when (select) {
             ADD_BOOKMARK -> {
                 val toBookmarkModel =
@@ -123,7 +130,11 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
             }
             NOT_LOGIN_STATE -> {
-                Toast.makeText(this, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.bookmark_state_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

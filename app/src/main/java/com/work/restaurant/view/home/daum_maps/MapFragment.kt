@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.location.Geocoder
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -18,6 +18,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
@@ -48,11 +49,15 @@ class MapFragment : BaseFragment(R.layout.map),
 
     private val kakaoMarkerList = mutableSetOf<MapPOIItem>()
 
+    private lateinit var oldCenterPoint: MapPoint
+
     private lateinit var presenter: MapPresenter
 
     private lateinit var mapInterface: MapInterface.CurrentLocationClickListener
 
     private lateinit var markerInterface: MapInterface.SelectMarkerListener
+
+    private lateinit var searchInterface: MapInterface.SearchLocationListener
 
     private val permissionListener: PermissionListener by lazy {
         object : PermissionListener {
@@ -94,6 +99,10 @@ class MapFragment : BaseFragment(R.layout.map),
             markerInterface = it
         }
 
+        (parentFragment as? MapInterface.SearchLocationListener)?.let {
+            searchInterface = it
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,7 +111,8 @@ class MapFragment : BaseFragment(R.layout.map),
 
         presenter = MapPresenter(
             this,
-            Injection.provideKakaoRepository()
+            Injection.provideKakaoRepository(),
+            Injection.provideBookmarkRepository()
         )
 
         btn_current_location.setOnClickListener(this)
@@ -126,6 +136,8 @@ class MapFragment : BaseFragment(R.layout.map),
 //        mapView.setCurrentLocationEventListener(this)
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
+
+
         map_view.addView(mapView)
 
         showCurrentLocation()
@@ -147,14 +159,14 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     //MapViewEventListener
-    override fun showMarkerData(list: List<KakaoSearchModel>) {
+    override fun showMarkerData(list: List<DisplayBookmarkKakaoModel>) {
         if (list.isNotEmpty()) {
             if (::markerInterface.isInitialized) {
                 markerInterface.getMarkerData(list[0])
                 mapInterface.click(true)
             } else {
                 markerInterface = object : MapInterface.SelectMarkerListener {
-                    override fun getMarkerData(data: KakaoSearchModel) {
+                    override fun getMarkerData(data: DisplayBookmarkKakaoModel) {
                     }
                 }
                 markerInterface.getMarkerData(list[0])
@@ -187,27 +199,69 @@ class MapFragment : BaseFragment(R.layout.map),
 
     }
 
+
+    private fun getDistance(oldCenter: MapPoint, currentCenter: MapPoint): Int {
+
+        val locationA = Location("A")
+        val locationB = Location("B")
+
+        locationA.latitude = oldCenter.mapPointGeoCoord.latitude
+        locationA.longitude = oldCenter.mapPointGeoCoord.longitude
+
+        locationB.latitude = currentCenter.mapPointGeoCoord.latitude
+        locationB.longitude = currentCenter.mapPointGeoCoord.longitude
+
+        return locationA.distanceTo(locationB).toInt()
+    }
+
+
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
+
 
     }
 
     override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+//        Log.d("중앙위치", p1!!.mapPointGeoCoord.latitude.toString())
+
+        if (p0 != null && p1 != null) {
+            if (getDistance(oldCenterPoint, p1) >= zoomLevelToRadius(p0.zoomLevel)) {
+
+                if (::searchInterface.isInitialized) {
+                    oldCenterPoint = p0.mapCenterPoint
+                    searchInterface.finishOrNoResult(3)
+                    toggleSearchLocation = false
+                }
+
+            }
+        }
+
+
     }
 
     override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
-        Handler().postDelayed({
-            p1?.let {
-                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
-            }
-        }, 1500L)
+//        Handler().postDelayed({
+//            p1?.let {
+//                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
+//            }
+//        }, 1500L)
     }
 
     override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
+
 
     }
 
     override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
 
+        if (::searchInterface.isInitialized) {
+            p0?.let {
+                oldCenterPoint = it.mapCenterPoint
+                searchInterface.finishOrNoResult(3)
+                toggleSearchLocation = false
+            }
+        }
+
+        Log.d("줌레벨변화는?", p1.toString())
     }
 
     override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
@@ -235,15 +289,22 @@ class MapFragment : BaseFragment(R.layout.map),
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
 
         if (p0 != null && p1 != null) {
-
             if (::mapInterface.isInitialized) {
-                presenter.getMarkerData(p1.itemName)
+                presenter.getMarkerData(
+                    p1.mapPoint.mapPointGeoCoord.longitude,
+                    p1.mapPoint.mapPointGeoCoord.latitude,
+                    p1.itemName
+                )
             } else {
                 mapInterface = object : MapInterface.CurrentLocationClickListener {
                     override fun click(clickData: Boolean) {
                     }
                 }
-                presenter.getMarkerData(p1.itemName)
+                presenter.getMarkerData(
+                    p1.mapPoint.mapPointGeoCoord.longitude,
+                    p1.mapPoint.mapPointGeoCoord.latitude,
+                    p1.itemName
+                )
             }
         }
     }
@@ -254,30 +315,71 @@ class MapFragment : BaseFragment(R.layout.map),
     ) {
 
         if (toggleSelectLocation) {
-            autoZoomLevel(list[0].distance.toInt())
+
+            Log.d("아니왜결과왜이래", list[list.size - 1].distance)
+
+            autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleSelectLocation = false
         }
 
         if (toggleCurrentLocation) {
-            autoZoomLevel(list[0].distance.toInt())
+
+            Log.d("아니왜결과왜이래", list[list.size - 1].distance)
+
+            autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleCurrentLocation = false
         }
 
+
+//        Log.d("거리는얼마나?", (list[list.size - 1].distance.toInt()).toString())
+
+//        autoZoomLevel(list[0].distance.toInt())
         makeKakaoDataListMarker(list)
+//        Log.d("현재줌레벨거리", list[0].distance.toInt().toString())
+//        Log.d("현재줌레벨", mapView.zoomLevel.toString())
     }
 
     private fun autoZoomLevel(
         firstDistance: Int
     ) {
 
-        var level = 0
-        for (i in 0..8) {
-            if (((2.0).pow(i) * 100) <= firstDistance && firstDistance <= ((2.0).pow(i + 1) * 100)) {
-                level = i
-                break
+//        var level = -1
+        for (i in -1..8) {
+            if (i < 0) {
+                if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= 0) {
+//                    level = i
+                    mapView.setZoomLevel(i, true)
+                    break
+                }
+            } else if (i == 0) {
+                if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= ((2.0).pow(i - 1) * 100)) {
+//                    level = i
+                    mapView.setZoomLevel(i, true)
+                    break
+                }
+            } else if (i > 0) {
+                if (((2.0).pow(i - 1) * 100) <= firstDistance && firstDistance < ((2.0).pow(i) * 100)) {
+//                    level = i
+                    mapView.setZoomLevel(i, true)
+                    break
+                }
             }
         }
-        mapView.setZoomLevel(level + 1, true)
+//        if (level == 0 && firstDistance < 50) {
+//            mapView.setZoomLevel(level - 1, true)
+//        } else if (level == 0 && firstDistance < 100 && firstDistance >= 50) {
+//            mapView.setZoomLevel(level, true)
+//        } else if (level == 0 && firstDistance >= 100) {
+//            mapView.setZoomLevel(level + 1, true)
+//        } else {
+//            mapView.setZoomLevel(level + 1, true)
+//        }
+
+
+//        Log.d("현재줌레벨?", level.toString())
+//        Log.d("현재줌레벨?1번째 위치", firstDistance.toString())
+
+//        mapView.setZoomLevel(level, true)
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {
@@ -326,16 +428,16 @@ class MapFragment : BaseFragment(R.layout.map),
                     _getNotOverlapList.add(mapPOIItem)
                 }
 
+                AppExecutors().mainThread.execute {
 
-                getNotOverlapList.forEach { getNotOverlapMarker ->
-                    kakaoMarkerList.forEach { kakaoMarker ->
-                        if (getNotOverlapMarker.itemName == kakaoMarker.itemName) {
-                            _getNotOverlapList.remove(getNotOverlapMarker)
+                    getNotOverlapList.forEach { getNotOverlapMarker ->
+                        kakaoMarkerList.forEach { kakaoMarker ->
+                            if (getNotOverlapMarker.itemName == kakaoMarker.itemName) {
+                                _getNotOverlapList.remove(getNotOverlapMarker)
+                            }
                         }
                     }
-                }
 
-                AppExecutors().mainThread.execute {
                     kakaoMarkerList.addAll(_getNotOverlapList)
                     mapView.addPOIItems(_getNotOverlapList.toTypedArray())
                 }
@@ -345,7 +447,7 @@ class MapFragment : BaseFragment(R.layout.map),
 
     private fun showCurrentOrSelectMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
         if (mapPOIItem == currentPOIItem) {
-            mapPOIItem.itemName = "내위치"
+//            mapPOIItem.itemName = "내위치"
         } else {
             mapPOIItem.itemName = selectAll
         }
@@ -354,15 +456,18 @@ class MapFragment : BaseFragment(R.layout.map),
             this.mapPoint = mapPoint
             this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
         }
+        oldCenterPoint = mapPoint
         mapView.addPOIItem(mapPOIItem)
         mapView.selectPOIItem(mapPOIItem, true)
         mapView.setMapCenterPoint(mapPoint, true)
     }
 
+
     private fun showCurrentLocation() {
         if (::mapView.isInitialized) {
             toggleCurrentLocation = true
             mapView.removePOIItem(currentPOIItem)
+
             val currentPosition = MapPoint.mapPointWithGeoCoord(
                 App.prefs.current_location_lat.toDouble(),
                 App.prefs.current_location_long.toDouble()
@@ -481,6 +586,72 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
+    private fun zoomLevelToRadius(zoomLevel: Int): Int {
+        return if (zoomLevel == -2) {
+            ((2.0).pow(-1) * 100).toInt()
+        } else {
+            ((2.0).pow(zoomLevel) * 100).toInt()
+        }
+    }
+
+    override fun showSearchData(list: List<KakaoSearchModel>, sort: Int) {
+
+        when (sort) {
+
+            0 -> {
+                if (::searchInterface.isInitialized) {
+                    searchInterface.finishOrNoResult(0)
+                }
+                Toast.makeText(this.context, "새롭게 검색된 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+
+            1 -> {
+                if (::searchInterface.isInitialized) {
+                    searchInterface.finishOrNoResult(1)
+                    makeKakaoDataListMarker(list)
+                }
+
+                Toast.makeText(this.context, "마지막 결과입니다.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this.context, "결과가 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+            2 -> {
+                if (::searchInterface.isInitialized) {
+                    searchInterface.finishOrNoResult(2)
+                    makeKakaoDataListMarker(list)
+                }
+
+                Toast.makeText(this.context, "결과가 더 남아있습니다.", Toast.LENGTH_SHORT).show()
+
+//                Toast.makeText(this.context, "결과가 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+    }
+
+
+    fun t() {
+
+        oldCenterPoint = mapView.mapCenterPoint
+
+        if (!toggleSearchLocation) {
+            mapView.removePOIItems(kakaoMarkerList.toTypedArray())
+            kakaoMarkerList.clear()
+            presenter.resetData()
+            toggleSearchLocation = true
+        }
+
+        presenter.getThisPositionData(
+            mapView.mapCenterPoint.mapPointGeoCoord.longitude,
+            mapView.mapCenterPoint.mapPointGeoCoord.latitude,
+            zoomLevelToRadius(mapView.zoomLevel),
+            kakaoMarkerList.size
+        )
+
+    }
+
     companion object {
 
         fun newInstance(selectAddress: String) =
@@ -489,6 +660,10 @@ class MapFragment : BaseFragment(R.layout.map),
                     putString(ADDRESS, selectAddress)
                 }
             }
+
+
+        var toggleSearchLocation = false
+        var toggleLastPage = false
 
         var receiveAddress = ""
         var toggleSelectLocation = false

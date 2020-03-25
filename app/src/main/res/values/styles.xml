@@ -45,6 +45,14 @@
         <item name="android:textSize">8dp</item>
     </style>
 
+    <style name="RefreshLayout" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@drawable/button_refresh_textcolor</item>
+        <item name="android:textSize">8dp</item>
+        <item name="android:background">@color/colorWhite</item>
+        <!--        <item name="android:background">@drawable/button_refresh</item>-->
+
+    </style>
+
 
     <style name="ErrorText" parent="TextAppearance.Design.Error">
         <!--        <item name="android:textColor">@color/</item>-->

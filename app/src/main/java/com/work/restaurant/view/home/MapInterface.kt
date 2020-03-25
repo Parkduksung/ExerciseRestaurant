@@ -1,6 +1,6 @@
 package com.work.restaurant.view.home
 
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 
 interface MapInterface {
 
@@ -9,6 +9,11 @@ interface MapInterface {
     }
 
     interface SelectMarkerListener {
-        fun getMarkerData(data: KakaoSearchModel)
+        fun getMarkerData(data: DisplayBookmarkKakaoModel)
     }
+
+    interface SearchLocationListener {
+        fun finishOrNoResult(sort: Int)
+    }
+
 }

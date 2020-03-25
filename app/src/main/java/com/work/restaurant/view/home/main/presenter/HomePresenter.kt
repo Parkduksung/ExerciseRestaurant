@@ -1,4 +1,55 @@
 package com.work.restaurant.view.home.main.presenter
 
-class HomePresenter {
+import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.data.repository.bookmark.BookmarkRepository
+import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
+
+class HomePresenter(
+    private val homeView: HomeContract.View,
+    private val bookmarkRepository: BookmarkRepository
+) : HomeContract.Presenter {
+    override fun deleteBookmark(bookmarkModel: BookmarkModel) {
+
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.deleteBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
+                override fun onSuccess() {
+                    homeView.showResult(DELETE_BOOKMARK)
+                }
+
+                override fun onFailure() {
+                    homeView.showResult(FAIL_DELETE)
+                }
+            })
+
+
+    }
+
+    override fun addBookmark(bookmarkModel: BookmarkModel) {
+        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        bookmarkRepository.addBookmark(
+            toBookmarkEntity,
+            object : BookmarkRepositoryCallback.AddBookmarkCallback {
+                override fun onSuccess() {
+                    homeView.showResult(ADD_BOOKMARK)
+                }
+
+                override fun onFailure() {
+                    homeView.showResult(FAIL_ADD)
+                }
+            })
+    }
+
+    companion object {
+
+        const val FAIL_DELETE = 0
+        const val FAIL_ADD = 1
+        const val DELETE_BOOKMARK = 2
+        const val ADD_BOOKMARK = 3
+
+    }
+
 }

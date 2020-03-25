@@ -43,9 +43,10 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
 
                 if (getUserId.isNotEmpty() && getUserNickname.isNotEmpty()) {
-                    presenter.withdraw(getUserNickname, getUserId)
-                    presenter.withdrawLogin(getUserNickname, getUserId)
-
+                    presenter.run {
+                        withdraw(getUserNickname, getUserId)
+                        withdrawLogin(getUserNickname, getUserId)
+                    }
                 } else {
                     pb_withdrawal.visibility = View.GONE
                     btn_withdraw_cancel.isClickable = true

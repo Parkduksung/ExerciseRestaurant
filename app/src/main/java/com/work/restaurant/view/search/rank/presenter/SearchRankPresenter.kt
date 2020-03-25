@@ -7,6 +7,7 @@ import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
+import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
 import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
@@ -55,6 +56,7 @@ class SearchRankPresenter(
 
                     }
                 }
+
                 override fun onFailure(message: String) {
                     searchRankView.showKakaoResult(1)
                     Log.d("error", message)
@@ -62,7 +64,7 @@ class SearchRankPresenter(
             })
     }
 
-    override fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel) {
+    override fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition: Int) {
 
         val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
 
@@ -70,27 +72,27 @@ class SearchRankPresenter(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
                 override fun onSuccess() {
-                    searchRankView.showBookmarkResult(2)
+                    searchRankView.showBookmarkResult(2, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchRankView.showBookmarkResult(0)
+                    searchRankView.showBookmarkResult(0, 0)
                 }
             })
     }
 
-    override fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel) {
+    override fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition: Int) {
         val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
                 override fun onSuccess() {
-                    searchRankView.showBookmarkResult(3)
+                    searchRankView.showBookmarkResult(3, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchRankView.showBookmarkResult(0)
+                    searchRankView.showBookmarkResult(0, 0)
                 }
             })
     }
@@ -106,6 +108,7 @@ class SearchRankPresenter(
                     currentY,
                     page,
                     sort,
+                    KakaoApi.RADIUS,
                     object : KakaoRepositoryCallback {
                         override fun onSuccess(
                             kakaoList: KakaoSearchResponse

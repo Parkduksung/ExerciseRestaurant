@@ -26,4 +26,7 @@ interface LoginDao {
     @Delete
     fun delete(loginEntityList: List<LoginEntity>): Int
 
+    @Query("SELECT * FROM login WHERE login_id = (:id) AND login_pw = (:pw) AND login_nickname = (:nickname)")
+    fun findUser(id: String, pw: String, nickname: String): Int
+
 }

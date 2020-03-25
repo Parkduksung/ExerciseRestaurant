@@ -26,4 +26,11 @@ interface LoginRepository {
         callback: LoginRepositoryCallback.DeleteCallback
     )
 
+    fun findUser(
+        id:String,
+        pw: String,
+        nickname: String,
+        callback : LoginRepositoryCallback.FindUser
+    )
+
 }

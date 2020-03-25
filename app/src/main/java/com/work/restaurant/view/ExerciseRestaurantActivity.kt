@@ -23,7 +23,14 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     ExerciseRestaurantContract.View,
     NotificationDataListener,
     DiaryFragment.RenewDataListener,
-    RenewBookmarkAndRankListener {
+    RenewBookmarkAndRankListener,
+    SearchRankFragment.LoginListener {
+
+    override fun loginCallbackListener() {
+        tl_main.run {
+            getTabAt(4)?.select()
+        }
+    }
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -50,18 +57,25 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     override fun renewBookmarkAndRank() {
         supportFragmentManager.fragments.forEach {
 
-            if (it is SearchBookmarksFragment) {
-                it.renewBookmark()
+            when (it) {
+                is SearchBookmarksFragment -> {
+                    it.renewBookmark()
+                }
+
+                is SearchRankFragment -> {
+                    it.renewRank()
+                }
+
+                is DiaryFragment -> {
+                    it.load()
+                }
+
+                is CalendarFragment -> {
+                    it.renewDot()
+
+                }
             }
-            if (it is SearchRankFragment) {
-                it.renewRank()
-            }
-            if (it is DiaryFragment) {
-                it.load()
-            }
-            if (it is CalendarFragment) {
-                it.renewDot()
-            }
+
         }
     }
 
@@ -111,14 +125,18 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
         vp_main.setSwipePagingEnabled(false)
 
+
         tl_main.run {
             setupWithViewPager(vp_main)
+            getTabAt(4)?.select()
             getTabAt(0)?.setIcon(R.drawable.ic_home)
             getTabAt(1)?.setIcon(R.drawable.ic_search)
             getTabAt(2)?.setIcon(R.drawable.write)
             getTabAt(3)?.setIcon(R.drawable.calendar)
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
+
+
     }
 
     companion object {

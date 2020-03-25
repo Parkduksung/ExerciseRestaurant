@@ -58,7 +58,6 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
         }
     }
 
-
     fun setItemClickListener(listener: AdapterDataListener) {
         adapterListener = listener
     }

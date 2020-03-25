@@ -52,10 +52,11 @@ class KakaoRepositoryImpl private constructor(
 
 
     override fun getKakaoItemInfo(
+        x: Double, y: Double,
         placeName: String,
         callback: KakaoRepositoryCallback.KakaoItemInfoCallback
     ) {
-        kakaoRemoteDataSource.getKakaoItemInfo(placeName,
+        kakaoRemoteDataSource.getKakaoItemInfo(x, y, placeName,
             object : KakaoRemoteDataSourceCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
                     callback.onSuccess(item)
@@ -74,6 +75,7 @@ class KakaoRepositoryImpl private constructor(
         currentY: Double,
         page: Int,
         sort: String,
+        radius: Int,
         callback: KakaoRepositoryCallback
     ) {
         if (App.instance.context().isConnectedToNetwork()) {
@@ -82,6 +84,7 @@ class KakaoRepositoryImpl private constructor(
                 currentY,
                 page,
                 sort,
+                radius,
                 object : KakaoRemoteDataSourceCallback {
                     override fun onSuccess(
                         kakaoList: KakaoSearchResponse

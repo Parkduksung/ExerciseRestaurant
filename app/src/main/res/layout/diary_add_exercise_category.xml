@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/add_exercise_category_chest"
+            android:text="@string/item_chest"
             android:textSize="15dp" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/add_exercise_category_back"
+            android:text="@string/item_back"
             android:textSize="15dp" />
 
         <TextView
@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/add_exercise_category_shoulder"
+            android:text="@string/item_shoulder"
             android:textSize="15dp" />
 
         <TextView
@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/add_exercise_category_legs"
+            android:text="@string/item_legs"
             android:textSize="15dp" />
 
         <TextView
@@ -89,7 +89,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/add_exercise_category_arm"
+            android:text="@string/item_arm"
             android:textSize="15dp" />
     </LinearLayout>
 
@@ -99,10 +99,10 @@
         android:layout_weight="13">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/recyclerview_exercise_category"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 

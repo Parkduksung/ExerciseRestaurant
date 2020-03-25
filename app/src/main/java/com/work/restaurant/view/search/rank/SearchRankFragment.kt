@@ -1,6 +1,7 @@
 package com.work.restaurant.view.search.rank
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
@@ -35,6 +37,19 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     private lateinit var presenter: SearchRankPresenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
+    private lateinit var loginListener: LoginListener
+
+    interface LoginListener {
+        fun loginCallbackListener()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as? LoginListener)?.let {
+            loginListener = it
+        }
+    }
+
     override fun showCurrentLocation(addressName: String) {
 
         val splitAddressName = addressName.split(" ")
@@ -44,21 +59,38 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURANCY)
     }
 
-    override fun showBookmarkResult(msg: Int) {
+    override fun showBookmarkResult(msg: Int, selectPosition: Int) {
         when (msg) {
             SELECT_BOOKMARK -> {
-                Toast.makeText(this.context, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_LONG).show()
-                renewRank()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_ok),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                searchRankAdapter.stateChange(selectPosition)
+
             }
             DELETE_BOOKMARK -> {
-                Toast.makeText(this.context, "즐겨찾기에 제거되었습니다.", Toast.LENGTH_LONG).show()
-                renewRank()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_no),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                searchRankAdapter.stateChange(selectPosition)
+
             }
             RESULT_FAILURE -> {
-                Toast.makeText(this.context, "즐겨찾기에 추가를 실패하였습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_add_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
+
 
     fun renewRank() {
         initData()
@@ -190,7 +222,11 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel) {
+    override fun getDisplayBookmarkKakaoData(
+        select: Int,
+        data: DisplayBookmarkKakaoModel,
+        selectPosition: Int
+    ) {
         when (select) {
             SELECT_URL -> {
                 val intent =
@@ -204,20 +240,24 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 if (App.prefs.login_state_id.isNotEmpty()) {
                     val toBookmarkModel =
                         data.toBookmarkModel(App.prefs.login_state_id)
-                    presenter.addBookmarkKakaoItem(toBookmarkModel)
+                    presenter.addBookmarkKakaoItem(toBookmarkModel, selectPosition)
                 }
             }
-
             DELETE_BOOKMARK -> {
                 if (App.prefs.login_state_id.isNotEmpty()) {
                     val toBookmarkModel =
                         data.toBookmarkModel(App.prefs.login_state_id)
-                    presenter.deleteBookmarkKakaoItem(toBookmarkModel)
+                    presenter.deleteBookmarkKakaoItem(toBookmarkModel, selectPosition)
                 }
             }
-
             NOT_LOGIN -> {
-                Toast.makeText(this.context, "즐겨찾기 기능은 로그인이 필요합니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                loginListener.loginCallbackListener()
             }
 
         }
@@ -258,6 +298,15 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
 
     private fun setup() {
+
+        val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
+            override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+        }
+
+        recyclerview_rank.itemAnimator = itemAnimator
+
 
         recyclerview_rank.run {
             this.adapter = searchRankAdapter
@@ -300,6 +349,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             )
         }
     }
+
 
     private fun initData() {
         presenter.resetData()

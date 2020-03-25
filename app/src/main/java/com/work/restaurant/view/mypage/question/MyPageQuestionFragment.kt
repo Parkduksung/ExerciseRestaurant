@@ -43,10 +43,12 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
             btn_send_question.isClickable = true
             if (message == "success") {
 
-                Toast.makeText(App.instance.context(), "문의사항이 전달되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    App.instance.context(),
+                    getString(R.string.question_send_ok), Toast.LENGTH_SHORT).show()
                 fragmentManager?.popBackStack()
             } else {
-                Toast.makeText(this.context, "문의사항이 전달되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, getString(R.string.question_send_no), Toast.LENGTH_SHORT).show()
             }
 
         }

@@ -16,6 +16,14 @@ class SearchLookForPresenter(
     private val bookmarkRepository: BookmarkRepository
 ) :
     SearchLookForContract.Presenter {
+
+    private var toggleLastPageCheck = false
+    private var page = 0
+    private val searchList: MutableList<KakaoSearchModel> by lazy {
+        mutableListOf<KakaoSearchModel>()
+    }
+
+
     override fun addBookmark(bookmarkModel: BookmarkModel) {
         val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
 
@@ -54,35 +62,9 @@ class SearchLookForPresenter(
     override fun searchLook(searchItem: String) {
 
         getSearchKakaoList(searchItem)
-//        kakaoRepository.getKakaoItemInfo(searchItem,
-//            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
-//                override fun onSuccess(item: List<KakaoSearchDocuments>) {
-//
-//                    val toKakaoSearchModelList = item.map {
-//                        it.toKakaoModel()
-//                    }
-//                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-//                        displayAlreadyBookmark(toKakaoSearchModelList)
-//                    } else {
-//                        val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-//                            it.toDisplayBookmarkKakaoModel(false)
-//                        }
-//                        searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
-//                    }
-//                }
-//
-//                override fun onFailure(message: String) {
-//                    searchLookForView.showSearchNoFind()
-//                }
-//            })
+
     }
 
-
-    private var toggleLastPageCheck = false
-    private var page = 0
-    private val searchList: MutableList<KakaoSearchModel> by lazy {
-        mutableListOf<KakaoSearchModel>()
-    }
 
     private fun getSearchKakaoList(searchItem: String) {
 
@@ -141,7 +123,6 @@ class SearchLookForPresenter(
             App.prefs.login_state_id,
             object : BookmarkRepositoryCallback.GetAllList {
                 override fun onSuccess(list: List<BookmarkEntity>) {
-
 
                     val convertFromKakaoListToBookmarkModel =
                         searchKakaoList.map { it.toBookmarkModel(App.prefs.login_state_id) }

@@ -148,9 +148,11 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
     private fun start() {
 
-        presenter.getLoginState()
-        presenter.delayTime()
-        presenter.getAddressDataCount()
+        presenter.run {
+            getLoginState()
+            delayTime()
+            getAddressDataCount()
+        }
 
     }
 

@@ -1,5 +1,6 @@
 package com.work.restaurant.data.source.remote.kakao
 
+import android.util.Log
 import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressResponse
@@ -67,10 +68,11 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
 
 
     override fun getKakaoItemInfo(
+        x: Double, y: Double,
         placeName: String,
         callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
     ) {
-        kakaoApi.kakaoItemSearch(placeName).enqueue(object : Callback<KakaoSearchResponse> {
+        kakaoApi.kakaoItemSearch(x, y, placeName).enqueue(object : Callback<KakaoSearchResponse> {
             override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
                 callback.onFailure("${t?.message}")
             }
@@ -103,9 +105,10 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
         currentY: Double,
         page: Int,
         sort: String,
+        radius: Int,
         callback: KakaoRemoteDataSourceCallback
     ) {
-        kakaoApi.keywordSearch(currentX, currentY, page, sort).enqueue(object :
+        kakaoApi.keywordSearch(currentX, currentY, page, sort, radius).enqueue(object :
             Callback<KakaoSearchResponse> {
             override fun onFailure(call: Call<KakaoSearchResponse>?, t: Throwable?) {
                 callback.onFailure("${t?.message}")
@@ -120,15 +123,18 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
 
                         val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
 
+                        Log.d("페이지여부확인", response.body().kakaoSearchMeta.pageableCount.toString())
+
                         response.body().documents.forEach {
                             if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
                                 toSortDocuments.add(it)
                             }
                         }
-
+                        val kakaoList =
+                            KakaoSearchResponse(toSortDocuments, response.body().kakaoSearchMeta)
 
                         callback.onSuccess(
-                            response.body()
+                            kakaoList
                         )
                     } else {
                         callback.onFailure(response.message())

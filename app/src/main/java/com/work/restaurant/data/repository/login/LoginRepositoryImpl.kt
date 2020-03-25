@@ -8,6 +8,29 @@ class LoginRepositoryImpl(
     private val loginLocalDataSourceImpl: LoginLocalDataSourceImpl
 ) : LoginRepository {
 
+    override fun findUser(
+        id: String,
+        pw: String,
+        nickname: String,
+        callback: LoginRepositoryCallback.FindUser
+    ) {
+
+        loginLocalDataSourceImpl.findUser(
+            id,
+            pw,
+            nickname,
+            object : LoginLocalDataSourceCallback.FindUser {
+                override fun onSuccess() {
+                    callback.onSuccess()
+                }
+
+                override fun onFailure() {
+                    callback.onFailure()
+                }
+            })
+
+    }
+
     override fun changeState(
         id: String,
         state: Boolean,

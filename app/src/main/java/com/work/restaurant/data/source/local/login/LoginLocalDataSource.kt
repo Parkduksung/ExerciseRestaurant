@@ -26,4 +26,11 @@ interface LoginLocalDataSource {
         callback: LoginLocalDataSourceCallback.DeleteCallback
     )
 
+    fun findUser(
+        id:String,
+        pw: String,
+        nickname: String,
+        callback : LoginLocalDataSourceCallback.FindUser
+    )
+
 }

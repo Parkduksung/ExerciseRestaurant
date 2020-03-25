@@ -12,10 +12,8 @@ interface AdapterDataListener {
         fun getData(data: DiaryModel)
     }
 
-
-
     interface GetDisplayBookmarkKakaoModel {
-        fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel)
+        fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel, selectPosition : Int)
     }
 
 

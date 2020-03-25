@@ -34,7 +34,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
                     mBackWait = System.currentTimeMillis()
                     Toast.makeText(
                         App.instance.context(),
-                        "뒤로가기 버튼을 한번 더 누르면 종료됩니다.",
+                        getString(R.string.baseActivity_backPressed),
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
