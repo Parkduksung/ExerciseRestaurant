@@ -14,7 +14,7 @@
     </item>
     <item
         android:bottom="15dp"
-        android:drawable="@drawable/bookmark_map"
+        android:drawable="@drawable/ic_favorite3"
         android:left="15dp"
         android:right="15dp"
         android:top="15dp" />

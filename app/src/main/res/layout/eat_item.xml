@@ -30,11 +30,11 @@
             android:id="@+id/add_eat_memo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
+            android:background="@drawable/select_diary_item"
             android:gravity="center"
             android:maxEms="15"
             android:minEms="6"
-            android:minLines="2" />
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/add_eat_time"

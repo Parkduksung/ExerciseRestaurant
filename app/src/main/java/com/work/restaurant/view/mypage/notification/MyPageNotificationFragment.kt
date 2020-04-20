@@ -49,10 +49,8 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     override fun showNotificationList(list: List<NotificationModel>) {
 
         recyclerview_notification.run {
-            this.adapter = notificationAdapter
             notificationAdapter.clearListData()
             notificationAdapter.addData(list)
-            layoutManager = LinearLayoutManager(this.context)
         }
 
     }
@@ -65,12 +63,17 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
             this,
             Injection.provideNotificationRepository()
         )
+        notificationAdapter.setItemClickListener(this)
+        ib_notification_back.setOnClickListener(this)
+
+        recyclerview_notification.run {
+            this.adapter = notificationAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
 
         presenter.getNotificationList()
 
-        notificationAdapter.setItemClickListener(this)
 
-        ib_notification_back.setOnClickListener(this)
     }
 
 

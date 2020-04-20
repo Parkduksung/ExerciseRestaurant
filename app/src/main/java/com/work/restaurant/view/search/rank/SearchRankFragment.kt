@@ -257,7 +257,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                     Toast.LENGTH_LONG
                 ).show()
 
-                loginListener.loginCallbackListener()
+//                loginListener.loginCallbackListener()
             }
 
         }

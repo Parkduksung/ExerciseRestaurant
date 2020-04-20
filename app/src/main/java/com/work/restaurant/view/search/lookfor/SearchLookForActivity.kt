@@ -35,7 +35,6 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     AdapterDataListener.GetDisplayBookmarkKakaoModel,
     SearchLookForContract.View {
 
-
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
     private lateinit var presenter: SearchLookForPresenter
 
@@ -50,7 +49,6 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                 this@SearchLookForActivity.finish()
             }
         }
-
     }
 
     override fun showSearchLook(searchModel: List<DisplayBookmarkKakaoModel>) {
@@ -73,7 +71,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
     }
 
-    override fun showBookmarkResult(msg: Int) {
+    override fun showBookmarkResult(msg: Int, selectPosition: Int) {
         when (msg) {
             ADD_BOOKMARK -> {
 
@@ -88,6 +86,10 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
                 Toast.makeText(this, getString(R.string.bookmark_state_ok), Toast.LENGTH_LONG)
                     .show()
+
+                lookForAdapter.stateChange(selectPosition)
+
+
             }
 
             DELETE_BOOKMARK -> {
@@ -101,6 +103,10 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                 setResult(RESULT_OK, addressAllIntent)
                 Toast.makeText(this, getString(R.string.bookmark_state_no), Toast.LENGTH_LONG)
                     .show()
+
+                lookForAdapter.stateChange(selectPosition)
+
+
             }
 
             RESULT_FAILURE -> {
@@ -120,12 +126,12 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             ADD_BOOKMARK -> {
                 val toBookmarkModel =
                     data.toBookmarkModel(App.prefs.login_state_id)
-                presenter.addBookmark(toBookmarkModel)
+                presenter.addBookmark(toBookmarkModel, selectPosition)
             }
             DELETE_BOOKMARK -> {
                 val toBookmarkModel =
                     data.toBookmarkModel(App.prefs.login_state_id)
-                presenter.deleteBookmark(toBookmarkModel)
+                presenter.deleteBookmark(toBookmarkModel, selectPosition)
 
 
             }

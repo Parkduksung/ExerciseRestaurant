@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
 import android.widget.Toast
@@ -37,7 +38,8 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
             null
         )
         dismiss()
-        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun hideKeyboard(editText: EditText) {
@@ -49,6 +51,10 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
     override fun onClick(v: View?) {
 
         when (v?.id) {
+
+            R.id.tv_add_exercise_today -> {
+                getDatePicker()
+            }
 
             R.id.iv_add_exercise -> {
 
@@ -76,7 +82,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 getMenuClick()
             }
 
-            R.id.btn_add_exercise_time -> {
+            R.id.tv_add_exercise_time -> {
                 getTimePicker()
             }
 
@@ -109,21 +115,33 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                             presenter.addExercise(
                                 App.prefs.login_state_id,
                                 tv_add_exercise_today.text.toString(),
-                                DateAndTime.convertSaveTime(btn_add_exercise_time.text.toString()),
+                                DateAndTime.convertSaveTime(tv_add_exercise_time.text.toString()),
                                 btn_add_exercise_category.text.toString(),
                                 et_add_exercise_name.text.toString(),
                                 setList
                             )
                         } else {
-                            Toast.makeText(this.context, getString(R.string.exercise_no_input_kg_and_count_error_message), Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this.context,
+                                getString(R.string.exercise_no_input_kg_and_count_error_message),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     } else {
-                        Toast.makeText(this.context, getString(R.string.diary_add_no_message), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.diary_add_no_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                 } else {
-                    Toast.makeText(this.context, getString(R.string.logout_write_error_message), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.logout_write_error_message),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
@@ -150,17 +168,18 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
         iv_add_exercise.setOnClickListener(this)
         iv_remove_exercise.setOnClickListener(this)
         btn_add_exercise_category.setOnClickListener(this)
-        btn_add_exercise_time.setOnClickListener(this)
+        tv_add_exercise_time.setOnClickListener(this)
         add_exercise_cancel.setOnClickListener(this)
         add_exercise_save.setOnClickListener(this)
 
+        tv_add_exercise_today.setOnClickListener(this)
     }
 
 
     private fun init() {
         tv_add_exercise_today.text =
-            DateAndTime.currentDate()
-        btn_add_exercise_time.text =
+            arguments?.getString(DATE)
+        tv_add_exercise_time.text =
             DateAndTime.convertShowTime(DateAndTime.currentTime())
     }
 
@@ -175,11 +194,42 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 )
             )
         alertDialog.setView(dialogView)
+            .setCancelable(false)
             .setPositiveButton("변경") { _, _ ->
 
-                btn_add_exercise_time.text =
+                tv_add_exercise_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
 
+            }
+            .setNegativeButton("취소") { _, _ ->
+
+            }
+            .show()
+    }
+
+    private fun getDatePicker() {
+
+        val dialogView = View.inflate(context, R.layout.date_picker, null)
+        val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
+
+        val alertDialog =
+            android.app.AlertDialog.Builder(
+                ContextThemeWrapper(
+                    activity,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
+
+        alertDialog.setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("변경") { _, _ ->
+                tv_add_exercise_today.text =
+                    getString(
+                        R.string.current_date,
+                        datePicker.year.toString(),
+                        (datePicker.month + 1).toString(),
+                        datePicker.dayOfMonth.toString()
+                    )
             }
             .setNegativeButton("취소") { _, _ ->
 
@@ -234,6 +284,16 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
     companion object {
         const val TAG = "AddExerciseFragment"
+
+        private const val DATE = "date"
+
+        fun newInstance(
+            date: String
+        ) = AddExerciseFragment().apply {
+            arguments = Bundle().apply {
+                putString(DATE, date)
+            }
+        }
     }
 
 

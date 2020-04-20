@@ -83,7 +83,7 @@ class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListe
         vp_search.adapter = adapter
         tl_search.setupWithViewPager(vp_search)
         tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
-        tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
+        tl_search.getTabAt(1)?.setIcon(R.drawable.ic_favorite2)
     }
 
     companion object {

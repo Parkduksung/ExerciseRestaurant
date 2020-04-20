@@ -3,14 +3,55 @@ package com.work.restaurant.util
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+//showing date easily
 object DateAndTime {
-    fun currentDate(): String {
-        val currentTime = Calendar.getInstance().time
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d", Locale.getDefault()).format(currentTime)
-        val dateArray = dateTextAll.split("-")
-        return "${dateArray[0]}년 ${dateArray[1]}월 ${dateArray[2]}일"
+
+    fun currentDate(): String =
+        SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(Date())
+
+    fun convertDate(date: String): List<String> {
+
+        val list = mutableListOf<String>()
+
+        date.split(" ").apply {
+            this.forEach {
+                list.add(Regex("[^0-9]").replace(it, ""))
+            }
+        }
+        return list
     }
+
+
+    fun convertDayOfWeek(date: String): String {
+
+        val list = convertDate(date)
+
+        val calendar = Calendar.getInstance()
+        calendar.set(list[0].toInt(), list[1].toInt() - 1, list[2].toInt())
+
+        return SimpleDateFormat("EE요일", Locale.getDefault()).format(calendar.time)
+
+    }
+
+    fun beforeDate(date: List<String>): String {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
+        calendar.add(Calendar.DATE, -1)
+
+        return SimpleDateFormat("yyyy년 M월 d일").format(calendar.time)
+    }
+
+    fun afterDate(date: List<String>): String {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
+        calendar.add(Calendar.DATE, 1)
+
+        return SimpleDateFormat("yyyy년 M월 d일").format(calendar.time)
+    }
+
 
     fun currentTime(): String {
         val currentTime = Calendar.getInstance().time
@@ -70,7 +111,6 @@ object DateAndTime {
         }
         return "$getAmPm $getHour $getMinute"
     }
-
 
     fun convertShowTime(time: String): String {
         val getAmPm = time.substring(0, 2)

@@ -5,8 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
@@ -18,14 +22,13 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
 import com.work.restaurant.view.diary.add_exercise.AddExerciseFragment
-import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
+import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
+import com.work.restaurant.view.diary.main.adapter.DiaryMainAdapter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
 import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.UpdateOrDeleteExerciseFragment
 import kotlinx.android.synthetic.main.diary_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class DiaryFragment : BaseFragment(R.layout.diary_main),
@@ -36,8 +39,13 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     private lateinit var presenter: DiaryPresenter
     private lateinit var renewDataListener: RenewDataListener
 
-    private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
+    private val diaryDetailsAdapter: DiaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
     private val diaryModel = mutableSetOf<DiaryModel>()
+
+    private val snapHelper: PagerSnapHelper by lazy { PagerSnapHelper() }
+
+    private val diaryMainAdapter: DiaryMainAdapter by lazy { DiaryMainAdapter() }
+
 
     interface RenewDataListener {
         fun onReceivedData(msg: Boolean)
@@ -54,17 +62,25 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun showResult(msg: Boolean) {
         if (msg) {
             renewDot()
-            Toast.makeText(this.context, getString(R.string.diary_delete_ok_message), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.context,
+                getString(R.string.diary_delete_ok_message),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
-            Toast.makeText(this.context, getString(R.string.diary_delete_no_message), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.context,
+                getString(R.string.diary_delete_no_message),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-
     }
 
     override fun getData(data: DiaryModel) {
 
         if (data.kind == 1) {
 
+            //register exercise update
             val updateOrDeleteExerciseFragment1 =
                 UpdateOrDeleteExerciseFragment.newInstance(data.toExerciseModel())
 
@@ -78,6 +94,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
         } else {
 
+            //register eat update
             val updateOrDeleteEatFragment =
                 UpdateOrDeleteEatFragment.newInstance(
                     data.toEatModel()
@@ -93,42 +110,67 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
-
     override fun showExerciseData(data: List<ExerciseModel>) {
+
+        showLoadingState(false)
+
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
 
-        diaryModel.addAll(getDiaryModel)
+        if (getDiaryModel.isEmpty()) {
+            toggleExerciseData = false
+        } else {
+            diaryModel.addAll(getDiaryModel)
+        }
 
-        recyclerview_diary.run {
-            diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+        showResultData()
+
+    }
+
+
+    private fun showResultData() {
+
+        if (!toggleEatData && !toggleExerciseData) {
+            tv_diary_message.text = getString(R.string.et_calendar_main_context_ok_login_state)
+            tv_diary_message.isVisible = true
+            rv_diary_main.isVisible = false
+        } else {
+            tv_diary_message.isVisible = false
+            rv_diary_main.isVisible = true
+
+            diaryMainAdapter.addDetailsData(diaryModel.toList().sortedBy { it.time })
         }
 
     }
+
 
     override fun showEatData(data: List<EatModel>) {
 
+        showLoadingState(false)
+
         val getDiaryModel = data.map {
             it.toDiaryModel()
         }
 
-        diaryModel.addAll(getDiaryModel)
-
-        recyclerview_diary.run {
-            diaryAdapter.clearListData()
-            diaryAdapter.addAllData(diaryModel.toList().sortedBy { it.time })
+        if (getDiaryModel.isEmpty()) {
+            toggleExerciseData = false
+        } else {
+            diaryModel.addAll(getDiaryModel)
         }
 
+        showResultData()
+
     }
+
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
-            R.id.btn_add_eat -> {
+            R.id.ib_add_eat -> {
                 if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-                    val addEatFragment = AddEatFragment()
+                    val addEatFragment =
+                        AddEatFragment.newInstance(tv_diary_day.text.toString())
                     addEatFragment.setTargetFragment(
                         this,
                         REGISTER_EAT
@@ -137,7 +179,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addEatFragment.show(it, AddEatFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(this.context, getString(R.string.diary_login_state_no), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.diary_login_state_no),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
@@ -146,7 +192,8 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.btn_add_exercise -> {
 
                 if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-                    val addExerciseFragment = AddExerciseFragment()
+                    val addExerciseFragment =
+                        AddExerciseFragment.newInstance(tv_diary_day.text.toString())
                     addExerciseFragment.setTargetFragment(
                         this,
                         REGISTER_EXERCISE
@@ -155,13 +202,39 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addExerciseFragment.show(it, AddExerciseFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(this.context, getString(R.string.diary_login_state_no), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.diary_login_state_no),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
-
             }
 
+            R.id.ib_diary_left_button -> {
+
+                diaryMainAdapter.clearListData()
+                oldPosition--
+                rv_diary_main.scrollToPosition(oldPosition)
+                tv_diary_day.text =
+                    DateAndTime.beforeDate(
+                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                    )
+                load()
+            }
+
+            R.id.ib_diary_right_button -> {
+
+                diaryMainAdapter.clearListData()
+                oldPosition++
+                rv_diary_main.scrollToPosition(oldPosition)
+                tv_diary_day.text =
+                    DateAndTime.afterDate(
+                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                    )
+                load()
+            }
         }
     }
 
@@ -173,16 +246,65 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             Injection.provideEatRepository(),
             Injection.provideExerciseRepository()
         )
-        recyclerview_diary.run {
-            this.adapter = diaryAdapter
-            layoutManager = LinearLayoutManager(this.context)
+
+        oldTodayDate = DateAndTime.currentDate()
+
+        tv_diary_day.text =
+            DateAndTime.currentDate()
+
+
+        rv_diary_main.run {
+            adapter = diaryMainAdapter
+            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+            scrollToPosition(startPosition)
+            snapHelper.attachToRecyclerView(this)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    diaryMainAdapter.clearListData()
+
+                    val lastVisible =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
+                    if (lastVisible != -1) {
+                        if (recyclerView.scrollState == 2 || recyclerView.scrollState == 0)
+
+                            if (oldPosition > lastVisible) {
+                                tv_diary_day.text =
+                                    DateAndTime.beforeDate(
+                                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                                    )
+                                oldPosition = lastVisible
+                                load()
+
+                            } else if (oldPosition < lastVisible) {
+                                tv_diary_day.text =
+                                    DateAndTime.afterDate(
+                                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                                    )
+                                oldPosition = lastVisible
+                                load()
+                            }
+                    }
+                }
+            })
         }
 
         load()
-        btn_add_eat.setOnClickListener(this)
+        ib_add_eat.setOnClickListener(this)
         btn_add_exercise.setOnClickListener(this)
-        diaryAdapter.setItemClickListener(this)
+        ib_diary_left_button.setOnClickListener(this)
+        ib_diary_right_button.setOnClickListener(this)
+        diaryDetailsAdapter.setItemClickListener(this)
+        diaryMainAdapter.setItemClickListener(this)
 
+    }
+
+    private fun getDayOfWeek(textView: TextView) {
+        textView.text = DateAndTime.convertDayOfWeek(tv_diary_day.text.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -247,6 +369,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
+    override fun showLoadingState(state: Boolean) {
+        pb_diary_details.isVisible = state
+    }
+
+
     private fun renewDot() {
         if (::renewDataListener.isInitialized) {
             renewDataListener.onReceivedData(true)
@@ -255,43 +382,31 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     fun load() {
         diaryModel.clear()
-        tv_today.text =
-            getString(
-                R.string.diary_main_date1,
-                DateAndTime.currentDate(),
-                SimpleDateFormat("EE", Locale.getDefault())
-                    .format(Calendar.getInstance().time)
-            )
+        getDayOfWeek(tv_diary_day_of_week)
+        toggleExerciseData = true
+        toggleEatData = true
 
         if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-            recyclerview_diary.visibility = View.VISIBLE
-            tv_diary_not_login.visibility = View.GONE
             presenter.todayEatData(
                 App.prefs.login_state_id,
-                DateAndTime.currentDate()
+                tv_diary_day.text.toString()
             )
             presenter.todayExerciseData(
                 App.prefs.login_state_id,
-                DateAndTime.currentDate()
+                tv_diary_day.text.toString()
             )
         } else {
-            recyclerview_diary.visibility = View.GONE
-            tv_diary_not_login.visibility = View.VISIBLE
+            showLoadingState(false)
         }
+
     }
+
 
     //다음날로 넘어가는데 이전에 키다가 shared 쓰면 안넘어가니까.
     override fun onResume() {
-        if (tv_today.text.isNotEmpty()) {
-            if (tv_today.text != getString(
-                    R.string.diary_main_date1,
-                    DateAndTime.currentDate(),
-                    SimpleDateFormat("EE", Locale.getDefault())
-                        .format(Calendar.getInstance().time)
-                )
-            ) {
-                load()
-            }
+        if (oldTodayDate != DateAndTime.currentDate()) {
+            tv_diary_day.text = DateAndTime.currentDate()
+            load()
         }
         super.onResume()
     }
@@ -304,6 +419,13 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         private const val RENEW_EAT = 3
         private const val RENEW_EXERCISE = 4
 
+
+        private var toggleEatData = true
+        private var toggleExerciseData = true
+
+        private var oldTodayDate = ""
+        private var oldPosition = ((Int.MAX_VALUE / 2) - ((Int.MAX_VALUE / 2) % 3))
+        private const val startPosition = Int.MAX_VALUE / 2
     }
 
 }

@@ -106,17 +106,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     override fun onStart() {
-        if (App.prefs.login_state && App.prefs.login_state_nickname.isNotEmpty() && App.prefs.login_state_id.isNotEmpty()) {
-            toggleLoginState = true
-            tv_login_nickname.text =
-                getString(
-                    R.string.mypage_login_state_nickname,
-                    App.prefs.login_state_nickname
-                )
-            tv_login_id.text = App.prefs.login_state_id
-            userNickname = App.prefs.login_state_nickname
-            loginState()
-        }
+        presenter.getLoginState()
         super.onStart()
     }
 
@@ -272,7 +262,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         btn_login.setOnClickListener(this)
 
 
-        presenter.getLoginState()
+//        presenter.getLoginState()
 
 
     }

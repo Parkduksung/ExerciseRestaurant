@@ -17,7 +17,7 @@
     </style>
 
     <style name="TapTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
         <!--        <item name="textInputStyle">@style/TextAppearance.MyApp.Headline1</item>-->
@@ -25,7 +25,7 @@
     </style>
 
     <style name="tab_text" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
     </style>

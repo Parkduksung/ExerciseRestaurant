@@ -56,9 +56,7 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
             searchLookAddress.text = item.displayAddress
             searchBookmarkCheckbox.setButtonDrawable(R.drawable.selector_checkbox_bookmark1)
 
-            if (item.toggleBookmark) {
-                searchBookmarkCheckbox.isChecked = true
-            }
+            searchBookmarkCheckbox.isChecked = item.toggleBookmark
 
             if (::adapterListener.isInitialized && ::bookmarkListener.isInitialized) {
 
@@ -75,12 +73,12 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 }
 
 
-                searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
+                searchBookmarkCheckbox.setOnClickListener {
                     if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
                         if (searchBookmarkCheckbox.isChecked) {
-                            bookmarkListener.getDisplayBookmarkKakaoData(1, item, 0)
+                            bookmarkListener.getDisplayBookmarkKakaoData(1, item, adapterPosition)
                         } else {
-                            bookmarkListener.getDisplayBookmarkKakaoData(2, item, 0)
+                            bookmarkListener.getDisplayBookmarkKakaoData(2, item, adapterPosition)
                         }
                     } else {
                         searchBookmarkCheckbox.isChecked = false
@@ -117,14 +115,13 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
                 }
 
 
-
-                searchBookmarkCheckbox.setOnCheckedChangeListener { _, _ ->
+                searchBookmarkCheckbox.setOnClickListener {
 
                     if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
                         if (searchBookmarkCheckbox.isChecked) {
-                            bookmarkListener.getDisplayBookmarkKakaoData(1, item, 0)
+                            bookmarkListener.getDisplayBookmarkKakaoData(1, item, adapterPosition)
                         } else {
-                            bookmarkListener.getDisplayBookmarkKakaoData(2, item, 0)
+                            bookmarkListener.getDisplayBookmarkKakaoData(2, item, adapterPosition)
                         }
                     } else {
                         searchBookmarkCheckbox.isChecked = false
@@ -148,6 +145,11 @@ class LookForAdapter : RecyclerView.Adapter<LookForAdapter.ViewHolder>() {
     fun clearListData() {
         searchLookList.clear()
         notifyDataSetChanged()
+    }
+
+    fun stateChange(position: Int) {
+        searchLookList[position].toggleBookmark = !searchLookList[position].toggleBookmark
+        notifyItemChanged(position)
     }
 
     fun setItemClickListener(itemClickListener: AdapterDataListener) {

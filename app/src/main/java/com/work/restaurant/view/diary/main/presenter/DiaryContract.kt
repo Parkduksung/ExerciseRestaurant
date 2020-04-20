@@ -1,6 +1,5 @@
 package com.work.restaurant.view.diary.main.presenter
 
-import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 
@@ -15,6 +14,8 @@ interface DiaryContract {
 
         fun showResult(msg: Boolean)
 
+        fun showLoadingState(state: Boolean)
+
     }
 
     interface Presenter {
@@ -24,9 +25,6 @@ interface DiaryContract {
 
         fun todayExerciseData(userId: String, today: String)
 
-        fun deleteEat(data: DiaryModel)
-
-        fun deleteExercise(data: DiaryModel)
 
     }
 }

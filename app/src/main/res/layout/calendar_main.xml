@@ -81,14 +81,13 @@
             android:layout_height="0dp"
             android:layout_margin="5dp"
             android:layout_weight="12"
-            android:background="@drawable/border">
+            android:background="@drawable/border1">
 
             <TextView
                 android:id="@+id/tv_calendar_main_context"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="@color/colorLeanBlue"
                 android:gravity="center"
                 android:text="@string/et_calendar_main_context_ok_login_state"
                 android:textSize="16sp" />
@@ -98,7 +97,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="@color/colorLeanBlue"
                 android:overScrollMode="never" />
 
         </RelativeLayout>

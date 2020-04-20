@@ -60,37 +60,18 @@ class MapPresenter(
                                 mapView.showSearchData(toKakaoSearchModelList, 0)
                             } else {
                                 if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-//                                if (!kakaoList.kakaoSearchMeta.isEnd) {
-//
-//                                    val toKakaoSearchModelList =
-//                                        kakaoList.documents.map { it.toKakaoModel() }
-//
-//                                } else {
-//                                    val toKakaoSearchModelList =
-//                                        kakaoList.documents.map { it.toKakaoModel() }
-//
-//                                    toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
-//                                }
+
                                     if (!kakaoList.kakaoSearchMeta.isEnd) {
 
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-//                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-//                                        it.toDisplayBookmarkKakaoModel(false)
-//                                    }
-
-
                                         mapView.showSearchData(toKakaoSearchModelList, 2)
-//                                    mapView.showKakaoData(toKakaoSearchModelList)
-
 
                                     } else {
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
-//                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-//                                        it.toDisplayBookmarkKakaoModel(false)
-//                                    }
+
                                         toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
                                         mapView.showSearchData(toKakaoSearchModelList, 1)
                                         mapView.showKakaoData(toKakaoSearchModelList)
@@ -103,21 +84,12 @@ class MapPresenter(
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-//                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-//                                        it.toDisplayBookmarkKakaoModel(false)
-//                                    }
-
-
                                         mapView.showSearchData(toKakaoSearchModelList, 2)
-//                                    mapView.showKakaoData(toKakaoSearchModelList)
-
 
                                     } else {
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
-//                                    val toDisplayBookmarkKakaoModel = toKakaoSearchModelList.map {
-//                                        it.toDisplayBookmarkKakaoModel(false)
-//                                    }
+
                                         toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
                                         mapView.showSearchData(toKakaoSearchModelList, 1)
 
@@ -174,8 +146,10 @@ class MapPresenter(
                 override fun onSuccess(kakaoList: KakaoSearchResponse) {
                     val toKakaoModelList = kakaoList.documents.map { it.toKakaoModel() }
 
+                    val toDistanceArrayList = toKakaoModelList.sortedBy { it.distance.toInt() }
+
                     mapView.showKakaoData(
-                        toKakaoModelList.sortedBy { it.distance }
+                        toDistanceArrayList
                     )
                 }
 
@@ -208,6 +182,7 @@ class MapPresenter(
                     mapView.showMarkerData(displayBookmarkKakaoList)
 
                 }
+
                 override fun onFailure() {
 
                 }

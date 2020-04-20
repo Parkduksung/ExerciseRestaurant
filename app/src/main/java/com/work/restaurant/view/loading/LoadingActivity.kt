@@ -24,17 +24,7 @@ import java.util.*
 
 
 class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
-    override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
-        if (result) {
-            App.prefs.login_state = true
-            App.prefs.login_state_id = userId
-            App.prefs.login_state_nickname = userNickname
-        } else {
-            App.prefs.login_state = false
-            App.prefs.login_state_id = userId
-            App.prefs.login_state_nickname = userNickname
-        }
-    }
+
 
     private lateinit var presenter: LoadingContract.Presenter
 
@@ -89,6 +79,17 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
         )
     }
 
+    override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
+        if (result) {
+            App.prefs.login_state = true
+            App.prefs.login_state_id = userId
+            App.prefs.login_state_nickname = userNickname
+        } else {
+            App.prefs.login_state = false
+            App.prefs.login_state_id = userId
+            App.prefs.login_state_nickname = userNickname
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,6 +142,7 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
             .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
             .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+
 //            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }

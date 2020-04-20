@@ -24,7 +24,7 @@ import com.work.restaurant.view.calendar.decorator.SaturdayDecorator
 import com.work.restaurant.view.calendar.decorator.SundayDecorator
 import com.work.restaurant.view.calendar.presenter.CalendarContract
 import com.work.restaurant.view.calendar.presenter.CalendarPresenter
-import com.work.restaurant.view.diary.main.adapter.DiaryAdapter
+import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +37,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private lateinit var toHashSetCalendarDayExercise: HashSet<CalendarDay>
 
     private lateinit var presenter: CalendarPresenter
-    private val diaryAdapter: DiaryAdapter by lazy { DiaryAdapter() }
+    private val diaryDetailsAdapter: DiaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
 
     private val eat = mutableSetOf<DiaryModel>()
     private val exercise = mutableSetOf<DiaryModel>()
@@ -128,7 +128,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         )
 
         recyclerview_calendar.run {
-            this.adapter = diaryAdapter
+            this.adapter = diaryDetailsAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
 
@@ -159,6 +159,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             )
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
+
+
+
 
         showExplain()
 
@@ -271,9 +274,9 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 }
             } else {
                 recyclerview_calendar.run {
-                    diaryAdapter.clearListData()
+                    diaryDetailsAdapter.clearListData()
                     if (dayOfSet.size != 0)
-                        diaryAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
+                        diaryDetailsAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
                 }
                 toggleExplain = false
                 showExplain()

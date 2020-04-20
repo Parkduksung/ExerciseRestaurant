@@ -1,93 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="8dp"
+    android:layout_height="80dp"
+    android:layout_margin="0.1dp"
+    android:background="?selectableItemBackground"
     android:clipToPadding="true"
     android:orientation="vertical"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage,UnusedAttribute,NestedWeights">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:weightSum="1"
-        tools:ignore="SpUsage">
+        android:background="?selectableItemBackground"
+        android:orientation="horizontal"
+        android:weightSum="8">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.5"
+            app:srcCompat="@drawable/ic_distance2" />
+
+        <TextView
+            android:id="@+id/kakao_distance_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="16dp"
+            android:autoSizeMinTextSize="14dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorLeanBlack" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="8">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_weight="0.5"
-                app:srcCompat="@drawable/ic_distance_foreground"
-                tools:ignore="NestedWeights" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:weightSum="5">
 
             <TextView
-
-                android:id="@+id/kakao_distance_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:id="@+id/kakao_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:autoSizeMaxTextSize="18dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:textSize="20dp" />
+                android:textColor="@color/colorLeanBlack" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:orientation="vertical"
-                android:weightSum="5">
-
-                <TextView
-                    android:id="@+id/kakao_name_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
-                    android:autoSizeMaxTextSize="20dp"
-                    android:autoSizeMinTextSize="3dp"
-                    android:autoSizeTextType="uniform"
-                    android:gravity="center"
-                    tools:ignore="UnusedAttribute" />
-
-                <TextView
-                    android:id="@+id/kakao_address_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:autoSizeMaxTextSize="25dp"
-                    android:autoSizeMinTextSize="3dp"
-                    android:autoSizeTextType="uniform"
-                    android:gravity="center"
-                    tools:ignore="UnusedAttribute" />
-
-            </LinearLayout>
-
-
-            <ImageButton
-                android:id="@+id/ib_more_vert"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:layout_weight="0.5"
-                android:background="@drawable/button_round"
-                android:backgroundTint="@color/colorWhite"
-                app:srcCompat="@drawable/more_vert"
-                tools:ignore="NestedWeights,RtlHardcoded" />
+            <TextView
+                android:id="@+id/kakao_address_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:autoSizeMaxTextSize="14dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorLeanBlack" />
 
         </LinearLayout>
 
+
+        <CheckBox
+            android:layout_marginEnd="10dp"
+            android:id="@+id/cb_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@drawable/selector_checkbox_bookmark1"
+            android:gravity="center" />
+
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/ib_more_vert"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:background="@drawable/button_round"-->
+<!--            android:backgroundTint="@color/colorWhite"-->
+<!--            app:srcCompat="@drawable/more_vert"-->
+<!--            tools:ignore="NestedWeights,RtlHardcoded" />-->
+
     </LinearLayout>
+
+
 </androidx.cardview.widget.CardView>
 

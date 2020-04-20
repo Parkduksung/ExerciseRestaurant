@@ -38,8 +38,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="6"
                 android:gravity="center"
-                android:text="식단 수정"
-                android:textSize="35dp" />
+                android:text="@string/tv_update_or_delete_eat_category"
+                android:textSize="30dp" />
 
             <ImageView
                 android:id="@+id/iv_delete_eat"
@@ -78,8 +78,11 @@
                     android:id="@+id/tv_renew_eat_today"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:layout_weight="8"
+                    android:background="@drawable/select_diary_item"
                     android:gravity="center"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14dp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -104,8 +107,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:layout_weight="8"
-                    android:background="@drawable/button_round"
-                    android:backgroundTint="@color/colorLean4"
+                    android:background="@drawable/select_diary_item"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14dp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -165,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="6"
+            android:layout_weight="5.5"
             android:orientation="vertical"
             android:weightSum="10">
 
@@ -186,9 +190,7 @@
                     android:id="@+id/et_renew_eat_memo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:autofillHints=""
-                    android:background="@color/colorGrayBasic"
-                    android:backgroundTint="@color/colorLean4"
+                    android:background="@drawable/border1"
                     android:gravity="top"
                     android:padding="10dp"
                     android:textIsSelectable="false" />
@@ -202,8 +204,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -217,7 +218,7 @@
                     android:id="@+id/btn_renew_eat_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_round"
+                    android:background="@drawable/select_diary_item"
                     android:text="@string/add_eat_cancel"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -232,7 +233,7 @@
                     android:id="@+id/btn_renew_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_round"
+                    android:background="@drawable/select_diary_item"
                     android:text="수정"
                     android:textSize="20dp" />
             </LinearLayout>

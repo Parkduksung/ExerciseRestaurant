@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.widget.DatePicker
 import android.widget.RadioGroup
 import android.widget.TimePicker
 import android.widget.Toast
@@ -38,7 +39,11 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
 
         when (v?.id) {
 
-            R.id.btn_add_eat_time -> {
+            R.id.tv_add_eat_today -> {
+                getDatePicker()
+            }
+
+            R.id.tv_add_eat_time -> {
                 getTimePicker()
             }
             R.id.add_eat_cancel -> {
@@ -53,7 +58,7 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
                             presenter.addEat(
                                 App.prefs.login_state_id,
                                 tv_add_eat_today.text.toString(),
-                                DateAndTime.convertSaveTime(btn_add_eat_time.text.toString()),
+                                DateAndTime.convertSaveTime(tv_add_eat_time.text.toString()),
                                 radioClick,
                                 et_add_eat_memo.text.toString()
                             )
@@ -112,7 +117,8 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             this,
             Injection.provideEatRepository()
         )
-        btn_add_eat_time.setOnClickListener(this)
+        tv_add_eat_time.setOnClickListener(this)
+        tv_add_eat_today.setOnClickListener(this)
         add_eat_cancel.setOnClickListener(this)
         add_eat_save.setOnClickListener(this)
 
@@ -133,8 +139,8 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
 
     private fun init() {
         tv_add_eat_today.text =
-            DateAndTime.currentDate()
-        btn_add_eat_time.text =
+            arguments?.getString(DATE)
+        tv_add_eat_time.text =
             DateAndTime.convertShowTime(DateAndTime.currentTime())
         getRadioClickNum(add_eat_radio_group)
     }
@@ -152,9 +158,10 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             )
 
         alertDialog.setView(dialogView)
+            .setCancelable(false)
             .setPositiveButton("변경") { _, _ ->
 
-                btn_add_eat_time.text =
+                tv_add_eat_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
 
             }
@@ -165,6 +172,36 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
 
     }
 
+    private fun getDatePicker() {
+
+        val dialogView = View.inflate(context, R.layout.date_picker, null)
+        val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
+
+        val alertDialog =
+            android.app.AlertDialog.Builder(
+                ContextThemeWrapper(
+                    activity,
+                    R.style.Theme_AppCompat_Light_Dialog
+                )
+            )
+
+        alertDialog.setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("변경") { _, _ ->
+                tv_add_eat_today.text =
+                    getString(
+                        R.string.current_date,
+                        datePicker.year.toString(),
+                        (datePicker.month + 1).toString(),
+                        datePicker.dayOfMonth.toString()
+                    )
+            }
+            .setNegativeButton("취소") { _, _ ->
+
+            }
+            .show()
+    }
+
     override fun onResume() {
         radioClick = 2
         super.onResume()
@@ -173,7 +210,16 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
     companion object {
         const val TAG = "AddEatFragment"
         private var radioClick = 2
+        private const val DATE = "date"
 
+
+        fun newInstance(
+            date: String
+        ) = AddEatFragment().apply {
+            arguments = Bundle().apply {
+                putString(DATE, date)
+            }
+        }
     }
 
 }

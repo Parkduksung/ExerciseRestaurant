@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -92,6 +90,11 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
 
             0 -> {
                 ll_marker_refresh.visibility = View.GONE
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.map_no_result_search),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             1 -> {
@@ -108,13 +111,13 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                         R.color.colorMiddleBlue
                     )
                 )
-                ll_marker_refresh.isClickable = false
+//                ll_marker_refresh.isClickable = false
                 toggleClickEffect = false
 
             }
             2 -> {
                 tv_refresh.text = "결과더보기"
-                ll_marker_refresh.isClickable = true
+//                ll_marker_refresh.isClickable = true
                 tv_refresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
@@ -143,7 +146,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                         R.color.colorBlue
                     )
                 )
-                ll_marker_refresh.isClickable = true
+//                ll_marker_refresh.isClickable = true
                 ll_marker_refresh.visibility = View.VISIBLE
                 toggleClickEffect = true
             }
@@ -268,48 +271,43 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                 }
             }
 
-//            R.id.cb_marker_bookmark -> {
-//
-//                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-//
-//                    if (cb_marker_bookmark.isChecked) {
-//
-//                        Toast.makeText(this.context, "클릭온", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        Toast.makeText(this.context, "클릭해제", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                } else {
-//                    Toast.makeText(
-//                        this.context,
-//                        getString(R.string.bookmark_state_no_message),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//            }
-
             R.id.ll_marker_refresh -> {
 
-                if (ll_marker_refresh.isClickable) {
-
-                    Log.d("여기클릭함", "1")
+                if (toggleClickEffect) {
                     requireFragmentManager().fragments.forEach { ParentFragment ->
                         if (ParentFragment is HomeFragment) {
                             ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
                                 if (ChildFragment is MapFragment) {
-
                                     ChildFragment.t()
                                 }
                             }
                         }
                     }
                 } else {
-
+                    Toast.makeText(
+                        App.instance.context(),
+                        getString(R.string.map_no_longer_searchable),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
 
                 }
 
+
             }
+            R.id.ib_current_location -> {
+                requireFragmentManager().fragments.forEach { ParentFragment ->
+                    if (ParentFragment is HomeFragment) {
+                        ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
+                            if (ChildFragment is MapFragment) {
+                                ChildFragment.showCurrentLocation()
+                            }
+                        }
+                    }
+                }
+
+            }
+
 
             R.id.ib_marker_url -> {
                 if (getMarkerUrl != "") {
@@ -342,81 +340,82 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
         ll_marker_details.setOnClickListener(this)
         ib_marker_url.setOnClickListener(this)
         ll_marker_refresh.setOnClickListener(this)
+        ib_current_location.setOnClickListener(this)
 
 
-        refreshInit(toggleClickEffect)
+//        refreshInit(toggleClickEffect)
     }
 
 
-    private fun refreshInit(toggleEffect: Boolean) {
-
-        if (toggleEffect) {
-            ll_marker_refresh.setOnTouchListener { _, event ->
-                var t = false
-                when (event.action) {
-
-                    MotionEvent.ACTION_DOWN -> {
-                        tv_refresh.setTextColor(
-                            ContextCompat.getColor(
-                                this.requireContext(),
-                                R.color.colorMiddleBlue
-                            )
-                        )
-                        iv_refresh.setColorFilter(
-                            ContextCompat.getColor(
-                                this.requireContext(),
-                                R.color.colorMiddleBlue
-                            )
-                        )
-                        requireFragmentManager().fragments.forEach {
-
-                            if (it is HomeFragment) {
-
-                                childFragmentManager.fragments.forEach {
-
-                                    if (it is MapFragment) {
-                                        it.t()
-//                                    Log.d("결콰는??", it.toString())
-                                    }
-                                }
-
-                            }
-
-
-                        }
-                        Log.d("결콰는??", "down")
-
-                        t = true
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-                        tv_refresh.setTextColor(
-                            ContextCompat.getColor(
-                                this.requireContext(),
-                                R.color.colorBlue
-                            )
-                        )
-                        iv_refresh.setColorFilter(
-                            ContextCompat.getColor(
-                                this.requireContext(),
-                                R.color.colorBlue
-                            )
-                        )
-                        Log.d("결콰는??", "up")
-                        t = false
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        t = true
-                        Log.d("결콰는??", "move")
-                    }
-
-                }
-
-                t
-            }
-        }
-    }
+//    private fun refreshInit(toggleEffect: Boolean) {
+//
+//
+//        ll_marker_refresh.setOnTouchListener { _, event ->
+//            var t = false
+//            when (event.action) {
+//
+//                MotionEvent.ACTION_DOWN -> {
+//                    tv_refresh.setTextColor(
+//                        ContextCompat.getColor(
+//                            this.requireContext(),
+//                            R.color.colorMiddleBlue
+//                        )
+//                    )
+//                    iv_refresh.setColorFilter(
+//                        ContextCompat.getColor(
+//                            this.requireContext(),
+//                            R.color.colorMiddleBlue
+//                        )
+//                    )
+//                    requireFragmentManager().fragments.forEach {
+//
+//                        if (it is HomeFragment) {
+//
+//                            childFragmentManager.fragments.forEach {
+//
+//                                if (it is MapFragment) {
+//                                    it.t()
+////                                    Log.d("결콰는??", it.toString())
+//                                }
+//                            }
+//
+//                        }
+//
+//
+//                    }
+//                    Log.d("결콰는??", "down")
+//
+//                    t = true
+//                }
+//
+//                MotionEvent.ACTION_UP -> {
+//                    tv_refresh.setTextColor(
+//                        ContextCompat.getColor(
+//                            this.requireContext(),
+//                            R.color.colorBlue
+//                        )
+//                    )
+//                    iv_refresh.setColorFilter(
+//                        ContextCompat.getColor(
+//                            this.requireContext(),
+//                            R.color.colorBlue
+//                        )
+//                    )
+//                    Log.d("결콰는??", "up")
+//                    t = false
+//                }
+//
+//                MotionEvent.ACTION_MOVE -> {
+//                    t = true
+//                    Log.d("결콰는??", "move")
+//                }
+//
+//            }
+//
+//            t
+//        }
+//
+//    }
 
     private fun startMaps() {
         childFragmentManager.beginTransaction().add(

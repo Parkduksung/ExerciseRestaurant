@@ -1,9 +1,12 @@
 package com.work.restaurant.view
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
+import com.work.restaurant.util.App
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseActivity
@@ -26,11 +29,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     RenewBookmarkAndRankListener,
     SearchRankFragment.LoginListener {
 
-    override fun loginCallbackListener() {
-        tl_main.run {
-            getTabAt(4)?.select()
-        }
-    }
 
     private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
@@ -41,6 +39,12 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
             this.supportFragmentManager,
             fragmentMap
         )
+    }
+
+    override fun loginCallbackListener() {
+        tl_main.run {
+            getTabAt(4)?.select()
+        }
     }
 
     override fun onReceivedData(msg: Boolean) {
@@ -72,7 +76,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
                 is CalendarFragment -> {
                     it.renewDot()
-
                 }
             }
 
@@ -128,7 +131,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
         tl_main.run {
             setupWithViewPager(vp_main)
-            getTabAt(4)?.select()
             getTabAt(0)?.setIcon(R.drawable.ic_home)
             getTabAt(1)?.setIcon(R.drawable.ic_search)
             getTabAt(2)?.setIcon(R.drawable.write)
@@ -136,6 +138,27 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
             getTabAt(4)?.setIcon(R.drawable.ic_mypage)
         }
 
+        if (!App.prefs.login_state && App.prefs.login_state_id.isEmpty()) {
+
+            val alertDialog =
+                AlertDialog.Builder(
+                    ContextThemeWrapper(
+                        this@ExerciseRestaurantActivity,
+                        R.style.Theme_AppCompat_Light_Dialog
+                    )
+                )
+
+            alertDialog.setTitle("알림")
+            alertDialog.setMessage("여러 기능을 사용하려면 로그인이 필요합니다. \n로그인 하시겠습니까?")
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(
+                "확인"
+            ) { _, _ -> loginCallbackListener() }
+            alertDialog.setNegativeButton(
+                "취소"
+            ) { _, _ -> }
+            alertDialog.show()
+        }
 
     }
 

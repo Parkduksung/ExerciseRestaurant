@@ -89,11 +89,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:duplicateParentState="true"
                     android:text="이 지역 재검색"
                     android:textColor="@color/colorBlue">
 
                 </TextView>
             </LinearLayout>
+
+
+            <ImageButton
+                android:elevation="2dp"
+                android:id="@+id/ib_current_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/border_map_current_location" />
 
 
             <FrameLayout
@@ -110,13 +122,14 @@
                 android:background="@color/colorWhite"
                 android:elevation="10dp"
                 android:orientation="horizontal"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:weightSum="5">
 
                 <LinearLayout
                     android:id="@+id/ll_marker_details"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="3"
                     android:orientation="vertical"
                     android:weightSum="2">
@@ -160,8 +173,7 @@
                         android:id="@+id/ib_marker_url"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_map_content"
-                        />
+                        android:background="@drawable/border_map_content" />
 
                 </LinearLayout>
 

@@ -24,23 +24,23 @@ class SearchLookForPresenter(
     }
 
 
-    override fun addBookmark(bookmarkModel: BookmarkModel) {
+    override fun addBookmark(bookmarkModel: BookmarkModel, selectPosition: Int) {
         val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
                 override fun onSuccess() {
-                    searchLookForView.showBookmarkResult(1)
+                    searchLookForView.showBookmarkResult(1, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchLookForView.showBookmarkResult(3)
+                    searchLookForView.showBookmarkResult(3, 0)
                 }
             })
     }
 
-    override fun deleteBookmark(bookmarkModel: BookmarkModel) {
+    override fun deleteBookmark(bookmarkModel: BookmarkModel, selectPosition: Int) {
 
         val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
 
@@ -48,11 +48,11 @@ class SearchLookForPresenter(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
                 override fun onSuccess() {
-                    searchLookForView.showBookmarkResult(2)
+                    searchLookForView.showBookmarkResult(2, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchLookForView.showBookmarkResult(3)
+                    searchLookForView.showBookmarkResult(3, 0)
                 }
 
             })

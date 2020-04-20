@@ -11,7 +11,7 @@ interface SearchLookForContract {
 
         fun showSearchNoFind()
 
-        fun showBookmarkResult(msg: Int)
+        fun showBookmarkResult(msg: Int, selectPosition: Int)
 
 
     }
@@ -20,9 +20,9 @@ interface SearchLookForContract {
 
         fun searchLook(searchItem: String)
 
-        fun addBookmark(bookmarkModel: BookmarkModel)
+        fun addBookmark(bookmarkModel: BookmarkModel, selectPosition: Int)
 
-        fun deleteBookmark(bookmarkModel: BookmarkModel)
+        fun deleteBookmark(bookmarkModel: BookmarkModel, selectPosition: Int)
 
 
     }

@@ -81,9 +81,6 @@ class MapFragment : BaseFragment(R.layout.map),
     override fun onClick(v: View?) {
         when (v?.id) {
 
-            R.id.btn_current_location -> {
-                showCurrentLocation()
-            }
 
         }
     }
@@ -115,7 +112,6 @@ class MapFragment : BaseFragment(R.layout.map),
             Injection.provideBookmarkRepository()
         )
 
-        btn_current_location.setOnClickListener(this)
 
         val bundle = arguments
         if (bundle != null) {
@@ -133,10 +129,8 @@ class MapFragment : BaseFragment(R.layout.map),
     private fun loadMap() {
         Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
         mapView = MapView(this.context)
-//        mapView.setCurrentLocationEventListener(this)
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
-
 
         map_view.addView(mapView)
 
@@ -239,15 +233,10 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
-//        Handler().postDelayed({
-//            p1?.let {
-//                presenter.getKakaoData(it.mapPointGeoCoord.longitude, it.mapPointGeoCoord.latitude)
-//            }
-//        }, 1500L)
+
     }
 
     override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
-
 
     }
 
@@ -261,7 +250,6 @@ class MapFragment : BaseFragment(R.layout.map),
             }
         }
 
-        Log.d("줌레벨변화는?", p1.toString())
     }
 
     override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
@@ -290,6 +278,9 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (p0 != null && p1 != null) {
             if (::mapInterface.isInitialized) {
+
+//                 p1.userObject = R.drawable.animation
+
                 presenter.getMarkerData(
                     p1.mapPoint.mapPointGeoCoord.longitude,
                     p1.mapPoint.mapPointGeoCoord.latitude,
@@ -316,70 +307,46 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (toggleSelectLocation) {
 
-            Log.d("아니왜결과왜이래", list[list.size - 1].distance)
-
             autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleSelectLocation = false
         }
 
         if (toggleCurrentLocation) {
 
-            Log.d("아니왜결과왜이래", list[list.size - 1].distance)
-
             autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleCurrentLocation = false
         }
 
-
-//        Log.d("거리는얼마나?", (list[list.size - 1].distance.toInt()).toString())
-
-//        autoZoomLevel(list[0].distance.toInt())
         makeKakaoDataListMarker(list)
-//        Log.d("현재줌레벨거리", list[0].distance.toInt().toString())
-//        Log.d("현재줌레벨", mapView.zoomLevel.toString())
+
     }
 
     private fun autoZoomLevel(
         firstDistance: Int
     ) {
 
-//        var level = -1
         for (i in -1..8) {
             if (i < 0) {
                 if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= 0) {
-//                    level = i
+
                     mapView.setZoomLevel(i, true)
                     break
                 }
             } else if (i == 0) {
                 if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= ((2.0).pow(i - 1) * 100)) {
-//                    level = i
+
                     mapView.setZoomLevel(i, true)
                     break
                 }
             } else if (i > 0) {
                 if (((2.0).pow(i - 1) * 100) <= firstDistance && firstDistance < ((2.0).pow(i) * 100)) {
-//                    level = i
+
                     mapView.setZoomLevel(i, true)
                     break
                 }
             }
         }
-//        if (level == 0 && firstDistance < 50) {
-//            mapView.setZoomLevel(level - 1, true)
-//        } else if (level == 0 && firstDistance < 100 && firstDistance >= 50) {
-//            mapView.setZoomLevel(level, true)
-//        } else if (level == 0 && firstDistance >= 100) {
-//            mapView.setZoomLevel(level + 1, true)
-//        } else {
-//            mapView.setZoomLevel(level + 1, true)
-//        }
 
-
-//        Log.d("현재줌레벨?", level.toString())
-//        Log.d("현재줌레벨?1번째 위치", firstDistance.toString())
-
-//        mapView.setZoomLevel(level, true)
     }
 
     private fun makeKakaoDataListMarker(list: List<KakaoSearchModel>) {
@@ -395,9 +362,14 @@ class MapFragment : BaseFragment(R.layout.map),
                     val mapPOIItem = MapPOIItem()
                     mapPOIItem.apply {
                         this.itemName = it.placeName
-                        this.markerType = MapPOIItem.MarkerType.BluePin
                         this.mapPoint = mapPoint
-                        this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                        this.markerType = MapPOIItem.MarkerType.CustomImage
+                        this.customImageResourceId = R.drawable.asdf4_4
+                        this.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        this.customSelectedImageResourceId = R.drawable.asdf7
+                        this.userObject = R.drawable.animation
+                        this.isShowDisclosureButtonOnCalloutBalloon = false
+                        this.isShowCalloutBalloonOnTouch = false
                     }
                     kakaoMarkerList.add(mapPOIItem)
                 }
@@ -420,9 +392,13 @@ class MapFragment : BaseFragment(R.layout.map),
                     val mapPOIItem = MapPOIItem()
                     mapPOIItem.apply {
                         this.itemName = it.placeName
-                        this.markerType = MapPOIItem.MarkerType.BluePin
+                        this.markerType = MapPOIItem.MarkerType.CustomImage
+                        this.customImageResourceId = R.drawable.asdf4_4
+                        this.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        this.customSelectedImageResourceId = R.drawable.asdf7
                         this.mapPoint = mapPoint
-                        this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                        this.isShowDisclosureButtonOnCalloutBalloon = false
+                        this.isShowCalloutBalloonOnTouch = false
                     }
                     getNotOverlapList.add(mapPOIItem)
                     _getNotOverlapList.add(mapPOIItem)
@@ -446,32 +422,47 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     private fun showCurrentOrSelectMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
-        if (mapPOIItem == currentPOIItem) {
-//            mapPOIItem.itemName = "내위치"
-        } else {
-            mapPOIItem.itemName = selectAll
-        }
+
         mapPOIItem.apply {
-            this.markerType = MapPOIItem.MarkerType.YellowPin
+            this.itemName = ""
+            this.markerType = MapPOIItem.MarkerType.CustomImage
+
+//            val bm = BitmapFactory.decodeResource(resources, R.drawable.custom_marker_star)
+//            this.customImageBitmap = bm
+
+            this.customImageResourceId = R.drawable.asdf8
             this.mapPoint = mapPoint
-            this.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+            this.showAnimationType = MapPOIItem.ShowAnimationType.DropFromHeaven
+            this.isShowDisclosureButtonOnCalloutBalloon = false
+            this.isShowCalloutBalloonOnTouch = false
         }
         oldCenterPoint = mapPoint
         mapView.addPOIItem(mapPOIItem)
-        mapView.selectPOIItem(mapPOIItem, true)
+
         mapView.setMapCenterPoint(mapPoint, true)
     }
 
 
-    private fun showCurrentLocation() {
+    fun showCurrentLocation() {
         if (::mapView.isInitialized) {
-            toggleCurrentLocation = true
-            mapView.removePOIItem(currentPOIItem)
 
             val currentPosition = MapPoint.mapPointWithGeoCoord(
                 App.prefs.current_location_lat.toDouble(),
                 App.prefs.current_location_long.toDouble()
             )
+
+            if (::oldCenterPoint.isInitialized) {
+                if (currentPosition.mapPointGeoCoord.latitude != oldCenterPoint.mapPointGeoCoord.latitude &&
+                    currentPosition.mapPointGeoCoord.longitude != oldCenterPoint.mapPointGeoCoord.longitude
+                ) {
+                    mapView.removePOIItems(kakaoMarkerList.toTypedArray())
+                    kakaoMarkerList.clear()
+                }
+            }
+
+            toggleCurrentLocation = true
+            mapView.removePOIItem(selectPOIItem)
+            mapView.removePOIItem(currentPOIItem)
             AppExecutors().diskIO.execute {
                 presenter.getKakaoData(
                     App.prefs.current_location_long.toDouble(),
@@ -479,12 +470,14 @@ class MapFragment : BaseFragment(R.layout.map),
                 )
                 showCurrentOrSelectMarker(currentPOIItem, currentPosition)
             }
+
         }
     }
 
     private fun showSelectLocation(longitude: Double, latitude: Double) {
         if (::mapView.isInitialized) {
             mapView.removePOIItem(selectPOIItem)
+
             val currentPosition = MapPoint.mapPointWithGeoCoord(latitude, longitude)
             showCurrentOrSelectMarker(selectPOIItem, currentPosition)
         }
@@ -494,6 +487,9 @@ class MapFragment : BaseFragment(R.layout.map),
     private fun getLocation(location: String) {
         if (::mapView.isInitialized) {
             mapView.removePOIItem(selectPOIItem)
+            mapView.removePOIItem(currentPOIItem)
+            mapView.removePOIItems(kakaoMarkerList.toTypedArray())
+            kakaoMarkerList.clear()
             AppExecutors().diskIO.execute {
                 val geoCoder = Geocoder(context, Locale.getDefault())
                 val addresses = geoCoder.getFromLocationName(location, 1)
@@ -524,7 +520,6 @@ class MapFragment : BaseFragment(R.layout.map),
             .check()
     }
 
-
     private fun showDialogForLocationServiceSetting() {
         val alertDialog =
             AlertDialog.Builder(
@@ -553,7 +548,6 @@ class MapFragment : BaseFragment(R.layout.map),
 
 
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -602,7 +596,7 @@ class MapFragment : BaseFragment(R.layout.map),
                 if (::searchInterface.isInitialized) {
                     searchInterface.finishOrNoResult(0)
                 }
-                Toast.makeText(this.context, "새롭게 검색된 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+
             }
 
 
@@ -612,8 +606,6 @@ class MapFragment : BaseFragment(R.layout.map),
                     makeKakaoDataListMarker(list)
                 }
 
-                Toast.makeText(this.context, "마지막 결과입니다.", Toast.LENGTH_SHORT).show()
-//                Toast.makeText(this.context, "결과가 없습니다.", Toast.LENGTH_SHORT).show()
             }
 
             2 -> {
@@ -622,9 +614,6 @@ class MapFragment : BaseFragment(R.layout.map),
                     makeKakaoDataListMarker(list)
                 }
 
-                Toast.makeText(this.context, "결과가 더 남아있습니다.", Toast.LENGTH_SHORT).show()
-
-//                Toast.makeText(this.context, "결과가 없습니다.", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -670,4 +659,6 @@ class MapFragment : BaseFragment(R.layout.map),
         var toggleCurrentLocation = false
         private const val GPS_ENABLE_REQUEST_CODE = 1
     }
+
 }
+

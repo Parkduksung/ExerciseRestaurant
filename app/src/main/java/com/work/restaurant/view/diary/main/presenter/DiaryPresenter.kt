@@ -1,6 +1,5 @@
 package com.work.restaurant.view.diary.main.presenter
 
-import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.repository.eat.EatRepository
 import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
@@ -13,39 +12,10 @@ class DiaryPresenter(
     private val eatRepository: EatRepository,
     private val exerciseRepository: ExerciseRepository
 ) : DiaryContract.Presenter {
-    override fun deleteExercise(data: DiaryModel) {
-
-        val toExerciseEntity = data.toExerciseEntity()
-        exerciseRepository.deleteEat(
-            toExerciseEntity,
-            object : ExerciseRepositoryCallback.DeleteExerciseCallback {
-                override fun onSuccess() {
-                    diaryView.showResult(true)
-
-                }
-
-                override fun onFailure() {
-                    diaryView.showResult(false)
-                }
-            })
-    }
-
-    override fun deleteEat(data: DiaryModel) {
-
-        val toEatEntity = data.toEatEntity()
-
-        eatRepository.deleteEat(toEatEntity, object : EatRepositoryCallback.DeleteEatCallback {
-            override fun onSuccess() {
-                diaryView.showResult(true)
-            }
-
-            override fun onFailure() {
-                diaryView.showResult(false)
-            }
-        })
-    }
 
     override fun todayExerciseData(userId: String, today: String) {
+
+        diaryView.showLoadingState(true)
 
         exerciseRepository.getDataOfTheDay(
             userId,
@@ -65,8 +35,9 @@ class DiaryPresenter(
             })
     }
 
-
     override fun todayEatData(userId: String, today: String) {
+
+        diaryView.showLoadingState(true)
 
         eatRepository.getDataOfTheDay(
             userId,
@@ -78,6 +49,7 @@ class DiaryPresenter(
                     }
                     diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
                 }
+
                 override fun onFailure() {
 
                 }
