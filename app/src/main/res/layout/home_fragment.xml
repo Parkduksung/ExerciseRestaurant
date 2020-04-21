@@ -98,14 +98,14 @@
 
 
             <ImageButton
-                android:elevation="2dp"
                 android:id="@+id/ib_current_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/border_map_current_location" />
+                android:background="@drawable/border_map_current_location"
+                android:elevation="2dp" />
 
 
             <FrameLayout

@@ -25,6 +25,7 @@ data class DiaryModel(
     companion object {
         const val EAT = 0
         const val EXERCISE = 1
+        const val NO_DATA = 2
     }
 
 }

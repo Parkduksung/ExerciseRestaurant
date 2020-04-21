@@ -1,14 +1,19 @@
 package com.work.restaurant.util
 
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 //showing date easily
+@SuppressLint("SimpleDateFormat")
 object DateAndTime {
 
+    private const val datePattern = "yyyy년 M월 d일"
+    private val simpleDateFormat = SimpleDateFormat(datePattern)
+
     fun currentDate(): String =
-        SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault()).format(Date())
+        simpleDateFormat.format(Date())
 
     fun convertDate(date: String): List<String> {
 
@@ -40,7 +45,17 @@ object DateAndTime {
         calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
         calendar.add(Calendar.DATE, -1)
 
-        return SimpleDateFormat("yyyy년 M월 d일").format(calendar.time)
+        return simpleDateFormat.format(calendar.time)
+    }
+
+
+    fun beforeWeek(date: List<String>): String {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
+        calendar.add(Calendar.DATE, -7)
+
+        return simpleDateFormat.format(calendar.time)
     }
 
     fun afterDate(date: List<String>): String {
@@ -49,7 +64,16 @@ object DateAndTime {
         calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
         calendar.add(Calendar.DATE, 1)
 
-        return SimpleDateFormat("yyyy년 M월 d일").format(calendar.time)
+        return simpleDateFormat.format(calendar.time)
+    }
+
+
+    fun afterWeek(date: List<String>): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
+        calendar.add(Calendar.DATE, 7)
+
+        return simpleDateFormat.format(calendar.time)
     }
 
 
@@ -127,5 +151,6 @@ object DateAndTime {
         val getMinute = time.substring(4)
         return "$getAmPm $getHour" + "시 " + getMinute + "분"
     }
+
 
 }

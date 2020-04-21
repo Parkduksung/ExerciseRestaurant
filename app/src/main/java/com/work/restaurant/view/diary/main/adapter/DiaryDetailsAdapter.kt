@@ -42,6 +42,15 @@ class DiaryDetailsAdapter :
                         false
                     )
                 return ExerciseViewHolder(view)
+            }
+            DiaryModel.NO_DATA -> {
+                val view =
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.no_diary_item,
+                        parent,
+                        false
+                    )
+                return NoDataViewHolder(view)
 
             }
             else -> throw RuntimeException("알 수 없는 뷰 타입 에러")
@@ -51,11 +60,11 @@ class DiaryDetailsAdapter :
     override fun getItemViewType(position: Int): Int =
         diaryList[position].kind
 
-
     override fun getItemCount(): Int =
         diaryList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val obj = diaryList[position]
         when (obj.kind) {
             DiaryModel.EAT -> {
@@ -64,8 +73,22 @@ class DiaryDetailsAdapter :
             DiaryModel.EXERCISE -> {
                 (holder as ExerciseViewHolder).bind(obj)
             }
+            DiaryModel.NO_DATA -> {
+                (holder as NoDataViewHolder).bind()
+            }
         }
     }
+
+    inner class NoDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val noDataMessage: TextView = itemView.findViewById(R.id.tv_no_data)
+
+        fun bind() {
+            noDataMessage.text =
+                itemView.resources.getString(R.string.et_calendar_main_context_ok_login_state)
+        }
+    }
+
 
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -84,8 +107,9 @@ class DiaryDetailsAdapter :
 
 
             if (::adapterListener.isInitialized) {
-                itemView.setOnClickListener {
+                itemView.setOnLongClickListener {
                     adapterListener.getData(item)
+                    true
                 }
             } else {
                 adapterListener = object : AdapterDataListener.GetList {
@@ -93,8 +117,9 @@ class DiaryDetailsAdapter :
 
                     }
                 }
-                itemView.setOnClickListener {
+                itemView.setOnLongClickListener {
                     adapterListener.getData(item)
+                    true
                 }
             }
 
@@ -164,16 +189,10 @@ class DiaryDetailsAdapter :
         fun bind(item: DiaryModel) {
 
             if (::adapterListener.isInitialized) {
-//                itemView.setOnClickListener {
-//
-//                    adapterListener.getData(item)
-//                }
-
                 addMemo.setOnLongClickListener {
                     adapterListener.getData(item)
                     true
                 }
-
             } else {
                 adapterListener = object : AdapterDataListener.GetList {
                     override fun getData(data: DiaryModel) {
@@ -181,10 +200,6 @@ class DiaryDetailsAdapter :
                     }
 
                 }
-//                itemView.setOnClickListener {
-//                    adapterListener.getData(item)
-//                }
-
                 itemView.setOnLongClickListener {
                     adapterListener.getData(item)
                     true
@@ -203,15 +218,31 @@ class DiaryDetailsAdapter :
         }
     }
 
-    fun addAllData(diaryModel: List<DiaryModel>) =
-        diaryList.addAll(diaryModel.sortedBy { it.time })
+    fun addAllData(diaryModel: List<DiaryModel>) {
 
+        if (diaryModel.isEmpty()) {
+            val emptyDiaryModel =
+                DiaryModel(
+                    0,
+                    0,
+                    "",
+                    2, "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    emptyList()
+                )
+            diaryList.add(emptyDiaryModel)
+        } else {
+            diaryList.addAll(diaryModel.sortedBy { it.time })
+        }
+    }
 
     fun clearListData() {
         diaryList.clear()
         notifyDataSetChanged()
     }
-
 
     fun setItemClickListener(listener: AdapterDataListener.GetList) {
         adapterListener = listener

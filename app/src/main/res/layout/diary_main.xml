@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="" />
+                    android:text="@string/diary_main_no_login_state" />
 
                 <ProgressBar
                     android:id="@+id/pb_diary_details"
@@ -120,28 +120,43 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <ImageButton
-                android:id="@+id/ib_add_eat"
+            <Button
+                android:id="@+id/btn_add_eat"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/select_diary_item"
-                android:src="@drawable/ic_food" />
+                android:drawableTop="@drawable/ic_food"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:stateListAnimator="@null"
+                android:text="@string/tv_diary_add_eat"
+                android:textSize="10dp"
+                android:weightSum="6" />
         </RelativeLayout>
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_weight="1">
 
-            <ImageButton
+            <Button
                 android:id="@+id/btn_add_exercise"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_centerInParent="true"
                 android:background="@drawable/select_diary_item"
-                android:src="@drawable/ic_exercise" />
-        </LinearLayout>
+                android:drawableTop="@drawable/ic_exercise"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:stateListAnimator="@null"
+                android:text="@string/tv_diary_add_exercise"
+                android:textSize="10dp"
+                android:weightSum="6" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

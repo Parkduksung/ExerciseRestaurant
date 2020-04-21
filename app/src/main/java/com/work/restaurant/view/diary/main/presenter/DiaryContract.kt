@@ -7,7 +7,6 @@ interface DiaryContract {
 
     interface View {
 
-
         fun showEatData(data: List<EatModel>)
 
         fun showExerciseData(data: List<ExerciseModel>)
@@ -16,6 +15,7 @@ interface DiaryContract {
 
         fun showLoadingState(state: Boolean)
 
+        fun showLoginState(state: Boolean)
     }
 
     interface Presenter {

@@ -181,7 +181,8 @@
     <string name="map_no_result_search">새롭게 검색된 결과가 없습니다.</string>
     <string name="tv_update_or_delete_eat_category">식단 수정</string>
     <string name="update_or_delete_exercise_main">운동 수정</string>
-
+    <string name="tv_diary_add_eat">식단 추가</string>
+    <string name="tv_diary_add_exercise">운동 추가</string>
 
     <!--    <string name=""></string>-->
 

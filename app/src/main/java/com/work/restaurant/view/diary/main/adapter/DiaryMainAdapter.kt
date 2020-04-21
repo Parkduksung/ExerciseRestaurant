@@ -42,6 +42,7 @@ class DiaryMainAdapter :
                 layoutManager = LinearLayoutManager(this.context)
                 setHasFixedSize(true)
             }
+
         }
     }
 
@@ -49,6 +50,7 @@ class DiaryMainAdapter :
         diaryDetailsAdapter.clearListData()
         diaryDetailsAdapter.addAllData(diaryModel)
     }
+
 
     fun clearListData() =
         diaryDetailsAdapter.clearListData()
