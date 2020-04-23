@@ -13,6 +13,7 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.MapInterface
@@ -25,13 +26,15 @@ import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
-class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, View.OnClickListener,
+class HomeFragment : BaseFragment(R.layout.home_fragment),
+    HomeContract.View, View.OnClickListener,
     MapInterface.SelectMarkerListener, MapInterface.CurrentLocationClickListener,
     MapInterface.SearchLocationListener {
 
     private lateinit var presenter: HomePresenter
 
     private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,10 +43,147 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
         }
     }
 
-    override fun showResult(result: Int) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter =
+            HomePresenter(this, Injection.provideBookmarkRepository())
+
+        ll_marker_details.setOnClickListener(this)
+        ib_marker_url.setOnClickListener(this)
+        ll_marker_refresh.setOnClickListener(this)
+        ib_current_location.setOnClickListener(this)
+        btn_address_search.setOnClickListener(this)
+
+        startMaps()
+
+    }
+
+    private fun startMaps() {
+        childFragmentManager.beginTransaction()
+            .add(
+                R.id.maps_fl,
+                MapFragment()
+            ).addToBackStack(null)
+            .commit()
+    }
+
+    private fun startHomeAddress() {
+        val homeAddressActivity =
+            Intent(this.context, HomeAddressActivity::class.java)
+        startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            ADDRESS_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val getAddressData =
+                        data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
+
+                    getAddressData?.let {
+                        requireFragmentManager().fragments.forEach { ParentFragment ->
+                            if (ParentFragment is HomeFragment) {
+                                ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
+                                    if (ChildFragment is MapFragment) {
+                                        MapFragment.toggleSelectLocation = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_address_search -> {
+                startHomeAddress()
+            }
+
+            R.id.ll_marker_details -> {
+                if (getMarkerUrl.isNotEmpty()) {
+                    val intent =
+                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                            putExtra(MARKER_CLICK_DATA, getMarkerUrl)
+                            putExtra(MARKER_CLICK_TOGGLE, true)
+                        }
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.home_no_access),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            R.id.ll_marker_refresh -> {
+
+                if (toggleClickEffect) {
+                    requireFragmentManager().fragments.forEach { ParentFragment ->
+                        if (ParentFragment is HomeFragment) {
+                            ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
+                                if (ChildFragment is MapFragment) {
+                                    ChildFragment.searchByZoomLevel()
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        App.instance.context(),
+                        getString(R.string.home_unRemain_result),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+
+                }
+
+
+            }
+
+            R.id.ib_current_location -> {
+                requireFragmentManager().fragments.forEach { ParentFragment ->
+                    if (ParentFragment is HomeFragment) {
+                        ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
+                            if (ChildFragment is MapFragment) {
+                                ChildFragment.showCurrentLocation()
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+            R.id.ib_marker_url -> {
+                if (getMarkerUrl.isNotEmpty()) {
+                    val intent =
+                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                            putExtra(MARKER_CLICK_DATA, getMarkerUrl)
+                            putExtra(MARKER_CLICK_TOGGLE, true)
+                        }
+                    startActivity(intent)
+
+                } else {
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.home_no_access),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    override fun showBookmarkResult(result: Int) {
 
         when (result) {
-
             HomePresenter.ADD_BOOKMARK -> {
                 Toast.makeText(
                     this.context,
@@ -84,21 +224,22 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
 
     }
 
-    override fun finishOrNoResult(sort: Int) {
+    override fun findFitnessResult(sort: Int) {
 
         when (sort) {
 
-            0 -> {
+            MapFragment.NO_NEW_RESULT -> {
                 ll_marker_refresh.visibility = View.GONE
                 Toast.makeText(
                     this.context,
-                    getString(R.string.map_no_result_search),
+                    getString(R.string.home_no_result),
                     Toast.LENGTH_SHORT
                 ).show()
             }
 
-            1 -> {
-                tv_refresh.text = "결과더보기"
+            MapFragment.REMAIN_RESULT -> {
+                tv_refresh.text =
+                    getString(R.string.home_remain_result)
                 tv_refresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
@@ -111,13 +252,13 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                         R.color.colorMiddleBlue
                     )
                 )
-//                ll_marker_refresh.isClickable = false
                 toggleClickEffect = false
 
             }
-            2 -> {
-                tv_refresh.text = "결과더보기"
-//                ll_marker_refresh.isClickable = true
+            MapFragment.FINAL_RESULT -> {
+                tv_refresh.text =
+                    getString(R.string.home_remain_result)
+
                 tv_refresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
@@ -132,8 +273,9 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                 )
             }
 
-            3 -> {
-                tv_refresh.text = "이 지역 재검색"
+            MapFragment.RENEW_SEARCHABLE_STATE -> {
+                tv_refresh.text =
+                    getString(R.string.home_this_locate_research)
                 tv_refresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
@@ -146,16 +288,13 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                         R.color.colorBlue
                     )
                 )
-//                ll_marker_refresh.isClickable = true
+
                 ll_marker_refresh.visibility = View.VISIBLE
                 toggleClickEffect = true
             }
-
-
         }
 
     }
-
 
     override fun getMarkerData(data: DisplayBookmarkKakaoModel) {
         tv_marker_place_address.text = data.displayAddress
@@ -163,33 +302,33 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
         getMarkerUrl = data.displayUrl
 
         cb_marker_bookmark.isChecked = data.toggleBookmark
-
-
         cb_marker_bookmark.setOnClickListener {
 
-            if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+            if (RelateLogin.loginState()) {
                 if (cb_marker_bookmark.isChecked) {
-                    val toBookmarkModel = data.toBookmarkModel(App.prefs.login_state_id)
+                    val toBookmarkModel =
+                        data.toBookmarkModel(App.prefs.login_state_id)
+
                     presenter.addBookmark(toBookmarkModel)
                 } else {
-                    val toBookmarkModel = data.toBookmarkModel(App.prefs.login_state_id)
+                    val toBookmarkModel =
+                        data.toBookmarkModel(App.prefs.login_state_id)
+
                     presenter.deleteBookmark(toBookmarkModel)
                 }
             } else {
                 Toast.makeText(
                     this.context,
-                    getString(R.string.bookmark_state_no_message),
+                    getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 cb_marker_bookmark.isChecked = false
             }
         }
-
     }
 
-
-    override fun click(clickData: Boolean) {
+    override fun clickMap(clickData: Boolean) {
 
         if (clickData) {
             ll_marker_content.isVisible = true
@@ -199,7 +338,6 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                     R.anim.slide_up
                 )
             )
-
         } else {
             if (ll_marker_content.isVisible) {
                 ll_marker_content.isVisible = false
@@ -211,230 +349,26 @@ class HomeFragment : BaseFragment(R.layout.home_fragment), HomeContract.View, Vi
                 )
             } else {
                 ll_marker_content.isVisible = false
-                tv_marker_place_address.text = ""
-                tv_marker_place_name.text = ""
+                tv_marker_place_address.text = EMPTY_TEXT
+                tv_marker_place_name.text = EMPTY_TEXT
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == ADDRESS_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val getAddressData = data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
-                getAddressData?.let {
-                    requireFragmentManager().fragments.forEach { ParentFragment ->
-                        if (ParentFragment is HomeFragment) {
-                            ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                                if (ChildFragment is MapFragment) {
-                                    MapFragment.toggleSelectLocation = true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    private fun startHomeAddress() {
-        val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-        startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.et_search_address -> {
-                startHomeAddress()
-            }
-
-            R.id.iv_search_address -> {
-                startHomeAddress()
-            }
-
-            R.id.ll_search_address -> {
-                startHomeAddress()
-            }
-
-            R.id.ll_marker_details -> {
-                if (getMarkerUrl != "") {
-                    val intent =
-                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
-                            putExtra(MARKER_CLICK_DATA, getMarkerUrl)
-                            putExtra(MARKER_CLICK_TOGGLE, true)
-                        }
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this.context, "접속할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            R.id.ll_marker_refresh -> {
-
-                if (toggleClickEffect) {
-                    requireFragmentManager().fragments.forEach { ParentFragment ->
-                        if (ParentFragment is HomeFragment) {
-                            ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                                if (ChildFragment is MapFragment) {
-                                    ChildFragment.t()
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Toast.makeText(
-                        App.instance.context(),
-                        getString(R.string.map_no_longer_searchable),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-
-                }
-
-
-            }
-            R.id.ib_current_location -> {
-                requireFragmentManager().fragments.forEach { ParentFragment ->
-                    if (ParentFragment is HomeFragment) {
-                        ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                            if (ChildFragment is MapFragment) {
-                                ChildFragment.showCurrentLocation()
-                            }
-                        }
-                    }
-                }
-
-            }
-
-
-            R.id.ib_marker_url -> {
-                if (getMarkerUrl != "") {
-
-                    val intent =
-                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
-                            putExtra(MARKER_CLICK_DATA, getMarkerUrl)
-                            putExtra(MARKER_CLICK_TOGGLE, true)
-                        }
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this.context, "접속할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter = HomePresenter(this, Injection.provideBookmarkRepository())
-
-
-        et_search_address.setOnClickListener(this)
-        ll_search_address.setOnClickListener(this)
-        iv_search_address.setOnClickListener(this)
-        startMaps()
-
-        ll_marker_details.setOnClickListener(this)
-        ib_marker_url.setOnClickListener(this)
-        ll_marker_refresh.setOnClickListener(this)
-        ib_current_location.setOnClickListener(this)
-
-
-//        refreshInit(toggleClickEffect)
-    }
-
-
-//    private fun refreshInit(toggleEffect: Boolean) {
-//
-//
-//        ll_marker_refresh.setOnTouchListener { _, event ->
-//            var t = false
-//            when (event.action) {
-//
-//                MotionEvent.ACTION_DOWN -> {
-//                    tv_refresh.setTextColor(
-//                        ContextCompat.getColor(
-//                            this.requireContext(),
-//                            R.color.colorMiddleBlue
-//                        )
-//                    )
-//                    iv_refresh.setColorFilter(
-//                        ContextCompat.getColor(
-//                            this.requireContext(),
-//                            R.color.colorMiddleBlue
-//                        )
-//                    )
-//                    requireFragmentManager().fragments.forEach {
-//
-//                        if (it is HomeFragment) {
-//
-//                            childFragmentManager.fragments.forEach {
-//
-//                                if (it is MapFragment) {
-//                                    it.t()
-////                                    Log.d("결콰는??", it.toString())
-//                                }
-//                            }
-//
-//                        }
-//
-//
-//                    }
-//                    Log.d("결콰는??", "down")
-//
-//                    t = true
-//                }
-//
-//                MotionEvent.ACTION_UP -> {
-//                    tv_refresh.setTextColor(
-//                        ContextCompat.getColor(
-//                            this.requireContext(),
-//                            R.color.colorBlue
-//                        )
-//                    )
-//                    iv_refresh.setColorFilter(
-//                        ContextCompat.getColor(
-//                            this.requireContext(),
-//                            R.color.colorBlue
-//                        )
-//                    )
-//                    Log.d("결콰는??", "up")
-//                    t = false
-//                }
-//
-//                MotionEvent.ACTION_MOVE -> {
-//                    t = true
-//                    Log.d("결콰는??", "move")
-//                }
-//
-//            }
-//
-//            t
-//        }
-//
-//    }
-
-    private fun startMaps() {
-        childFragmentManager.beginTransaction().add(
-            R.id.maps_fl,
-            MapFragment()
-        ).addToBackStack(null).commit()
-    }
 
     companion object {
 
         private const val TAG = "HomeFragment"
+        private const val EMPTY_TEXT = ""
+
+        private var toggleClickEffect = true
         private var getMarkerUrl = ""
 
         const val MARKER_CLICK_DATA = "marker_click_data"
         const val MARKER_CLICK_TOGGLE = "marker_click_toggle"
-
-        private var toggleClickEffect = true
-
         const val ADDRESS_REQUEST_CODE = 1
+
+
     }
 
 }

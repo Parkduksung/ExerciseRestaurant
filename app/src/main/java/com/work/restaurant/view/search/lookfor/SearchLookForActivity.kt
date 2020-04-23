@@ -138,7 +138,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             NOT_LOGIN_STATE -> {
                 Toast.makeText(
                     this,
-                    getString(R.string.bookmark_state_no_message),
+                    getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_LONG
                 ).show()
             }

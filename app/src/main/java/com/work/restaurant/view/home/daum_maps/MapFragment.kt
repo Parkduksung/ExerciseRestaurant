@@ -9,7 +9,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
@@ -25,7 +24,7 @@ import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.MapInterface
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.ADDRESS
+import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
 import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
 import kotlinx.android.synthetic.main.map.*
@@ -38,7 +37,7 @@ import kotlin.math.pow
 
 class MapFragment : BaseFragment(R.layout.map),
     MapView.POIItemEventListener, MapView.MapViewEventListener,
-    MapContract.View, View.OnClickListener {
+    MapContract.View {
 
 
     private lateinit var mapView: MapView
@@ -67,7 +66,6 @@ class MapFragment : BaseFragment(R.layout.map),
                     loadMap()
                 } else {
                     showDialogForLocationServiceSetting()
-                    Toast.makeText(context, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -75,13 +73,6 @@ class MapFragment : BaseFragment(R.layout.map),
                 Toast.makeText(context, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
                     .show()
             }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
-
         }
     }
 
@@ -106,29 +97,24 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
 
-        presenter = MapPresenter(
-            this,
-            Injection.provideKakaoRepository(),
-            Injection.provideBookmarkRepository()
-        )
-
-
-        val bundle = arguments
-        if (bundle != null) {
-            val c = bundle.getString(ADDRESS)
-
-            c?.let {
-                Log.d("전달됨..", bundle.getString(ADDRESS)!!)
-            }
-        }
-
+        presenter =
+            MapPresenter(
+                this,
+                Injection.provideKakaoRepository(),
+                Injection.provideBookmarkRepository()
+            )
 
     }
 
 
     private fun loadMap() {
-        Toast.makeText(context, "GPS 활성화, 권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-        mapView = MapView(this.context)
+        Toast.makeText(
+            context,
+            getString(R.string.map_gps_and_authorization_on),
+            Toast.LENGTH_SHORT
+        ).show()
+        mapView = MapView(context)
+
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
 
@@ -144,9 +130,11 @@ class MapFragment : BaseFragment(R.layout.map),
             GPS_ENABLE_REQUEST_CODE ->
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
-                    mapView = MapView(this.requireContext())
+                    mapView =
+                        MapView(requireContext())
                     map_view.addView(mapView)
-                    Toast.makeText(context, "GPS 활성화 되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.map_gps_on), Toast.LENGTH_SHORT)
+                        .show()
                     return
                 }
         }
@@ -157,14 +145,14 @@ class MapFragment : BaseFragment(R.layout.map),
         if (list.isNotEmpty()) {
             if (::markerInterface.isInitialized) {
                 markerInterface.getMarkerData(list[0])
-                mapInterface.click(true)
+                mapInterface.clickMap(true)
             } else {
                 markerInterface = object : MapInterface.SelectMarkerListener {
                     override fun getMarkerData(data: DisplayBookmarkKakaoModel) {
                     }
                 }
                 markerInterface.getMarkerData(list[0])
-                mapInterface.click(true)
+                mapInterface.clickMap(true)
             }
         }
     }
@@ -181,13 +169,13 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (p0 != null) {
             if (::mapInterface.isInitialized) {
-                mapInterface.click(false)
+                mapInterface.clickMap(false)
             } else {
                 mapInterface = object : MapInterface.CurrentLocationClickListener {
-                    override fun click(clickData: Boolean) {
+                    override fun clickMap(clickData: Boolean) {
                     }
                 }
-                mapInterface.click(false)
+                mapInterface.clickMap(false)
             }
         }
 
@@ -211,18 +199,16 @@ class MapFragment : BaseFragment(R.layout.map),
 
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
 
-
     }
 
     override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-//        Log.d("중앙위치", p1!!.mapPointGeoCoord.latitude.toString())
 
         if (p0 != null && p1 != null) {
             if (getDistance(oldCenterPoint, p1) >= zoomLevelToRadius(p0.zoomLevel)) {
 
                 if (::searchInterface.isInitialized) {
                     oldCenterPoint = p0.mapCenterPoint
-                    searchInterface.finishOrNoResult(3)
+                    searchInterface.findFitnessResult(RENEW_SEARCHABLE_STATE)
                     toggleSearchLocation = false
                 }
 
@@ -245,7 +231,7 @@ class MapFragment : BaseFragment(R.layout.map),
         if (::searchInterface.isInitialized) {
             p0?.let {
                 oldCenterPoint = it.mapCenterPoint
-                searchInterface.finishOrNoResult(3)
+                searchInterface.findFitnessResult(RENEW_SEARCHABLE_STATE)
                 toggleSearchLocation = false
             }
         }
@@ -278,9 +264,6 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (p0 != null && p1 != null) {
             if (::mapInterface.isInitialized) {
-
-//                 p1.userObject = R.drawable.animation
-
                 presenter.getMarkerData(
                     p1.mapPoint.mapPointGeoCoord.longitude,
                     p1.mapPoint.mapPointGeoCoord.latitude,
@@ -288,7 +271,7 @@ class MapFragment : BaseFragment(R.layout.map),
                 )
             } else {
                 mapInterface = object : MapInterface.CurrentLocationClickListener {
-                    override fun click(clickData: Boolean) {
+                    override fun clickMap(clickData: Boolean) {
                     }
                 }
                 presenter.getMarkerData(
@@ -300,19 +283,16 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-    //Marker 표현하는거 관련
     override fun showKakaoData(
         list: List<KakaoSearchModel>
     ) {
 
         if (toggleSelectLocation) {
-
             autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleSelectLocation = false
         }
 
         if (toggleCurrentLocation) {
-
             autoZoomLevel(list[list.size - 1].distance.toInt())
             toggleCurrentLocation = false
         }
@@ -361,15 +341,15 @@ class MapFragment : BaseFragment(R.layout.map),
                         )
                     val mapPOIItem = MapPOIItem()
                     mapPOIItem.apply {
-                        this.itemName = it.placeName
+                        itemName = it.placeName
                         this.mapPoint = mapPoint
-                        this.markerType = MapPOIItem.MarkerType.CustomImage
-                        this.customImageResourceId = R.drawable.asdf4_4
-                        this.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        this.customSelectedImageResourceId = R.drawable.asdf7
-                        this.userObject = R.drawable.animation
-                        this.isShowDisclosureButtonOnCalloutBalloon = false
-                        this.isShowCalloutBalloonOnTouch = false
+                        markerType = MapPOIItem.MarkerType.CustomImage
+                        customImageResourceId = R.drawable.asdf4_4
+                        selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        customSelectedImageResourceId = R.drawable.asdf7
+                        userObject = R.drawable.animation
+                        isShowDisclosureButtonOnCalloutBalloon = false
+                        isShowCalloutBalloonOnTouch = false
                     }
                     kakaoMarkerList.add(mapPOIItem)
                 }
@@ -391,14 +371,14 @@ class MapFragment : BaseFragment(R.layout.map),
 
                     val mapPOIItem = MapPOIItem()
                     mapPOIItem.apply {
-                        this.itemName = it.placeName
-                        this.markerType = MapPOIItem.MarkerType.CustomImage
-                        this.customImageResourceId = R.drawable.asdf4_4
-                        this.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        this.customSelectedImageResourceId = R.drawable.asdf7
+                        itemName = it.placeName
+                        markerType = MapPOIItem.MarkerType.CustomImage
+                        customImageResourceId = R.drawable.asdf4_4
+                        selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        customSelectedImageResourceId = R.drawable.asdf7
                         this.mapPoint = mapPoint
-                        this.isShowDisclosureButtonOnCalloutBalloon = false
-                        this.isShowCalloutBalloonOnTouch = false
+                        isShowDisclosureButtonOnCalloutBalloon = false
+                        isShowCalloutBalloonOnTouch = false
                     }
                     getNotOverlapList.add(mapPOIItem)
                     _getNotOverlapList.add(mapPOIItem)
@@ -424,17 +404,13 @@ class MapFragment : BaseFragment(R.layout.map),
     private fun showCurrentOrSelectMarker(mapPOIItem: MapPOIItem, mapPoint: MapPoint) {
 
         mapPOIItem.apply {
-            this.itemName = ""
-            this.markerType = MapPOIItem.MarkerType.CustomImage
-
-//            val bm = BitmapFactory.decodeResource(resources, R.drawable.custom_marker_star)
-//            this.customImageBitmap = bm
-
-            this.customImageResourceId = R.drawable.asdf8
+            itemName = ""
+            markerType = MapPOIItem.MarkerType.CustomImage
+            customImageResourceId = R.drawable.asdf8
             this.mapPoint = mapPoint
-            this.showAnimationType = MapPOIItem.ShowAnimationType.DropFromHeaven
-            this.isShowDisclosureButtonOnCalloutBalloon = false
-            this.isShowCalloutBalloonOnTouch = false
+            showAnimationType = MapPOIItem.ShowAnimationType.DropFromHeaven
+            isShowDisclosureButtonOnCalloutBalloon = false
+            isShowCalloutBalloonOnTouch = false
         }
         oldCenterPoint = mapPoint
         mapView.addPOIItem(mapPOIItem)
@@ -446,10 +422,11 @@ class MapFragment : BaseFragment(R.layout.map),
     fun showCurrentLocation() {
         if (::mapView.isInitialized) {
 
-            val currentPosition = MapPoint.mapPointWithGeoCoord(
-                App.prefs.current_location_lat.toDouble(),
-                App.prefs.current_location_long.toDouble()
-            )
+            val currentPosition =
+                MapPoint.mapPointWithGeoCoord(
+                    App.prefs.current_location_lat.toDouble(),
+                    App.prefs.current_location_long.toDouble()
+                )
 
             if (::oldCenterPoint.isInitialized) {
                 if (currentPosition.mapPointGeoCoord.latitude != oldCenterPoint.mapPointGeoCoord.latitude &&
@@ -463,6 +440,7 @@ class MapFragment : BaseFragment(R.layout.map),
             toggleCurrentLocation = true
             mapView.removePOIItem(selectPOIItem)
             mapView.removePOIItem(currentPOIItem)
+
             AppExecutors().diskIO.execute {
                 presenter.getKakaoData(
                     App.prefs.current_location_long.toDouble(),
@@ -478,7 +456,8 @@ class MapFragment : BaseFragment(R.layout.map),
         if (::mapView.isInitialized) {
             mapView.removePOIItem(selectPOIItem)
 
-            val currentPosition = MapPoint.mapPointWithGeoCoord(latitude, longitude)
+            val currentPosition =
+                MapPoint.mapPointWithGeoCoord(latitude, longitude)
             showCurrentOrSelectMarker(selectPOIItem, currentPosition)
         }
     }
@@ -486,13 +465,20 @@ class MapFragment : BaseFragment(R.layout.map),
     //주소 변경한 위치 좌표얻어오는것
     private fun getLocation(location: String) {
         if (::mapView.isInitialized) {
-            mapView.removePOIItem(selectPOIItem)
-            mapView.removePOIItem(currentPOIItem)
-            mapView.removePOIItems(kakaoMarkerList.toTypedArray())
+
+            mapView.apply {
+                removePOIItem(selectPOIItem)
+                removePOIItem(currentPOIItem)
+                removePOIItems(kakaoMarkerList.toTypedArray())
+            }
+
             kakaoMarkerList.clear()
+
             AppExecutors().diskIO.execute {
-                val geoCoder = Geocoder(context, Locale.getDefault())
-                val addresses = geoCoder.getFromLocationName(location, 1)
+                val geoCoder =
+                    Geocoder(context, Locale.getDefault())
+                val addresses =
+                    geoCoder.getFromLocationName(location, 1)
                 if (addresses.isNotEmpty()) {
                     presenter.getKakaoData(addresses[0].longitude, addresses[0].latitude)
                     showSelectLocation(addresses[0].longitude, addresses[0].latitude)
@@ -504,7 +490,8 @@ class MapFragment : BaseFragment(R.layout.map),
 
     //Gps잡히는지 확인하는것. 등 GPS관련
     private fun checkLocationServicesStatus(): Boolean {
-        val locationManager = context?.getSystemService(LOCATION_SERVICE) as LocationManager
+        val locationManager =
+            context?.getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
@@ -513,8 +500,8 @@ class MapFragment : BaseFragment(R.layout.map),
     private fun checkPermission() {
         TedPermission.with(context)
             .setPermissionListener(permissionListener)
-            .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
-            .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setRationaleMessage(getString(R.string.tedPermission_setRationaleMessage))
+            .setDeniedMessage(getString(R.string.tedPermission_setDeniedMessage))
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
 //            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
@@ -555,15 +542,14 @@ class MapFragment : BaseFragment(R.layout.map),
         if (::mapView.isInitialized) {
             if (!checkLocationServicesStatus()) {
                 map_view.removeView(mapView)
-                Toast.makeText(context, "GPS 비활성화 되었습니다 \n 다시 활성화를 하세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.map_gps_off), Toast.LENGTH_SHORT).show()
             } else {
-
                 if (!map_view.contains(mapView)) {
                     kakaoMarkerList.clear()
                     checkPermission()
                 } else {
                     if (::mapInterface.isInitialized) {
-                        mapInterface.click(false)
+                        mapInterface.clickMap(false)
                     }
 
                     if (toggleSelectLocation) {
@@ -591,37 +577,28 @@ class MapFragment : BaseFragment(R.layout.map),
     override fun showSearchData(list: List<KakaoSearchModel>, sort: Int) {
 
         when (sort) {
-
-            0 -> {
+            MapPresenter.NO_NEW_RESULT -> {
                 if (::searchInterface.isInitialized) {
-                    searchInterface.finishOrNoResult(0)
+                    searchInterface.findFitnessResult(NO_NEW_RESULT)
                 }
-
             }
-
-
-            1 -> {
+            MapPresenter.REMAIN_RESULT -> {
                 if (::searchInterface.isInitialized) {
-                    searchInterface.finishOrNoResult(1)
+                    searchInterface.findFitnessResult(REMAIN_RESULT)
                     makeKakaoDataListMarker(list)
                 }
-
             }
-
-            2 -> {
+            MapPresenter.FINAL_RESULT -> {
                 if (::searchInterface.isInitialized) {
-                    searchInterface.finishOrNoResult(2)
+                    searchInterface.findFitnessResult(FINAL_RESULT)
                     makeKakaoDataListMarker(list)
                 }
-
             }
-
         }
 
     }
 
-
-    fun t() {
+    fun searchByZoomLevel() {
 
         oldCenterPoint = mapView.mapCenterPoint
 
@@ -646,19 +623,21 @@ class MapFragment : BaseFragment(R.layout.map),
         fun newInstance(selectAddress: String) =
             MapFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ADDRESS, selectAddress)
+                    putString(HomeAddressActivity.ADDRESS, selectAddress)
                 }
             }
 
+        private const val GPS_ENABLE_REQUEST_CODE = 1
 
         var toggleSearchLocation = false
-        var toggleLastPage = false
-
-        var receiveAddress = ""
-        var toggleSelectLocation = false
         var toggleCurrentLocation = false
-        private const val GPS_ENABLE_REQUEST_CODE = 1
+        var toggleSelectLocation = false
+
+        const val NO_NEW_RESULT = 0
+        const val REMAIN_RESULT = 1
+        const val FINAL_RESULT = 2
+        const val RENEW_SEARCHABLE_STATE = 3
+
     }
 
 }
-

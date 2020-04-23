@@ -10,7 +10,6 @@
     <string name="address_change_cancel">취소</string>
     <string name="address_change_title">선택주소</string>
     <string name="address_change_ok">변경</string>
-    <string name="search_address_hint">검색할 지역을 선택하세요!</string>
     <string name="loading_title">운동맛집</string>
     <string name="pass_find_title">비밀번호 초기화</string>
     <string name="pass_find_email">이메일</string>
@@ -49,7 +48,6 @@
     <string name="withdrawal_explain">회원탈퇴시 회원님의 모든 정보가 사라집니다!</string>
     <string name="withdrawal_cancel">취소</string>
     <string name="withdrawal_ok">회원탈퇴</string>
-    <string name="search_hint">검색할 헬스장 이름을 입력하세요.</string>
     <string name="search_item_money">하루이용</string>
     <string name="search_item_time">이용시간</string>
     <string name="search_item_best_part">이집 잘해요!</string>
@@ -157,11 +155,6 @@
     <string name="calendar_login_state_no">기록을 확인하기 위해선 로그인이 필요합니다.</string>
     <string name="diary_login_state_no">기록을 추가하기 위해선 로그인이 필요합니다.</string>
 
-    <string name="bookmark_add_no_message">즐겨찾기에 추가를 실패하였습니다.</string>
-    <string name="bookmark_delete_no_message">즐겨찾기에 제거를 실패하였습니다.</string>
-    <string name="bookmark_state_no_message">즐겨찾기 기능은 로그인이 필요합니다.</string>
-    <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
-    <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
 
     <string name="bookmark_content_add">즐겨찾기 항목에 추가</string>
     <string name="bookmark_content_delete">즐겨찾기 항목에 제거</string>
@@ -177,8 +170,7 @@
     <string name="diary_delete_no_message">삭제할 수 없습니다.</string>
     <string name="diary_delete_ok_message">삭제되었습니다.</string>
     <string name="exercise_no_input_kg_and_count_error_message">추가하려는 무게와 횟수를 입력하세요.</string>
-    <string name="map_no_longer_searchable">더이상 검색할 수 없습니다.</string>
-    <string name="map_no_result_search">새롭게 검색된 결과가 없습니다.</string>
+
     <string name="tv_update_or_delete_eat_category">식단 수정</string>
     <string name="update_or_delete_exercise_main">운동 수정</string>
     <string name="tv_diary_add_eat">식단 추가</string>
@@ -190,11 +182,41 @@
     <string name="common_ok">확인</string>
     <string name="common_no">취소</string>
 
+    <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
+    <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
+    <string name="bookmark_add_no_message">즐겨찾기에 추가를 실패하였습니다.</string>
+    <string name="bookmark_delete_no_message">즐겨찾기에 제거를 실패하였습니다.</string>
+    <string name="bookmark_state_no_login_message">즐겨찾기 기능은 로그인이 필요합니다.</string>
+
+    <string name="tedPermission_setRationaleMessage"> 앱의 기능을 사용하기 위해서는 권한이 필요합니다.</string>
+    <string name="tedPermission_setDeniedMessage">만약 권한을 다시 얻으려면,\n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
 
     //ExerciseRestaurantActivity
 
     <string name="noLoginMessage_title">알림</string>
     <string name="noLoginMessage_message">여러 기능을 사용하려면 로그인이 필요합니다. \n로그인 하시겠습니까?</string>
+
+
+    //Home
+
+    //*main
+    <string name="home_hint">검색할 지역을 선택하세요!</string>
+
+    //*map
+    <string name="map_gps_on">GPS 활성화 되었습니다</string>
+    <string name="map_gps_off">GPS 비활성화 되었습니다 \n 다시 활성화를 하세요.</string>
+    <string name="map_gps_and_authorization_on">GPS 활성화, 권한이 허용되었습니다</string>
+
+    //Search
+
+    //*main
+    <string name="search_hint">검색할 헬스장 이름을 입력하세요!</string>
+    <string name="home_this_locate_research">이 지역 재검색</string>
+    <string name="home_remain_result">결과더보기</string>
+    <string name="home_unRemain_result">더이상 검색할 수 없습니다.</string>
+    <string name="home_no_result">새롭게 검색된 결과가 없습니다.</string>
+    <string name="home_no_access">접근할 수 없습니다.</string>
+
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
 

@@ -4,103 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_main_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="10"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent,RtlSymmetry">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_search_look"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/colorWhite"
+            android:drawableStart="@drawable/ic_search"
+            android:paddingStart="20dp"
+            android:text="@string/search_hint"
+            android:stateListAnimator="@null"
+            android:textSize="15sp" />
 
-            <LinearLayout
-                android:id="@+id/ll_search_look"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <ImageView
-                    android:id="@+id/iv_search_look"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:backgroundTint="@color/colorWhite"
-                    app:srcCompat="@drawable/ic_search"
-                    tools:ignore="ContentDescription" />
-
-                <EditText
-                    android:id="@+id/et_search_look"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:background="@color/colorWhite"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/search_hint"
-                    tools:ignore="Autofill,TextFields" />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/search_sub_container"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9">
+            android:layout_weight="1"
+            android:theme="@style/TapTheme"
+            app:tabIndicatorHeight="0dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="10">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tl_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:theme="@style/TapTheme"
-                        app:tabIndicatorHeight="0dp">
-
-                    </com.google.android.material.tabs.TabLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="9">
-
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/vp_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </androidx.viewpager.widget.ViewPager>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </FrameLayout>
-
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_search"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8" />
     </LinearLayout>
 </FrameLayout>

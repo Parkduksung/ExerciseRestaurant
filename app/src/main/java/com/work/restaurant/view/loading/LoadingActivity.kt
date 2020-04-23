@@ -73,7 +73,8 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
     //Gps잡히는지 확인하는것. 등 GPS관련
     private fun checkLocationServicesStatus(): Boolean {
-        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager =
+            this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
@@ -94,10 +95,11 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = LoadingPresenter(
-            this,
-            Injection.provideLoginRepository()
-        )
+        presenter =
+            LoadingPresenter(
+                this,
+                Injection.provideLoginRepository()
+            )
         presenter.randomText(resources.getStringArray(R.array.load_string))
         checkPermission()
 
@@ -139,14 +141,12 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     private fun checkPermission() {
         TedPermission.with(App.instance.context())
             .setPermissionListener(permissionListener)
-            .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
-            .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setRationaleMessage(getString(R.string.tedPermission_setRationaleMessage))
+            .setDeniedMessage(getString(R.string.tedPermission_setDeniedMessage))
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-
 //            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
-
 
     private fun start() {
 
@@ -167,7 +167,8 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
         Handler().postDelayed({
 
-            val nextIntent = Intent(this, ExerciseRestaurantActivity::class.java)
+            val nextIntent =
+                Intent(this, ExerciseRestaurantActivity::class.java)
 
             startActivity(nextIntent)
 

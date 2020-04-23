@@ -7,7 +7,7 @@ interface HomeContract {
 
     interface View {
 
-        fun showResult(result: Int)
+        fun showBookmarkResult(result: Int)
 
     }
 

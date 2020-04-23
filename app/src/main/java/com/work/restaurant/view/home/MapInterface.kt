@@ -5,7 +5,7 @@ import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 interface MapInterface {
 
     interface CurrentLocationClickListener {
-        fun click(clickData: Boolean)
+        fun clickMap(clickData: Boolean)
     }
 
     interface SelectMarkerListener {
@@ -13,7 +13,7 @@ interface MapInterface {
     }
 
     interface SearchLocationListener {
-        fun finishOrNoResult(sort: Int)
+        fun findFitnessResult(sort: Int)
     }
 
 }

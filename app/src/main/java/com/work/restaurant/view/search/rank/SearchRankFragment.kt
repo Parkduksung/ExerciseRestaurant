@@ -253,7 +253,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             NOT_LOGIN -> {
                 Toast.makeText(
                     this.context,
-                    getString(R.string.bookmark_state_no_message),
+                    getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_LONG
                 ).show()
 

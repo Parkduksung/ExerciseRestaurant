@@ -10,17 +10,18 @@ class HomePresenter(
 ) : HomeContract.Presenter {
     override fun deleteBookmark(bookmarkModel: BookmarkModel) {
 
-        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+        val toBookmarkEntity =
+            bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
                 override fun onSuccess() {
-                    homeView.showResult(DELETE_BOOKMARK)
+                    homeView.showBookmarkResult(DELETE_BOOKMARK)
                 }
 
                 override fun onFailure() {
-                    homeView.showResult(FAIL_DELETE)
+                    homeView.showBookmarkResult(FAIL_DELETE)
                 }
             })
 
@@ -28,17 +29,19 @@ class HomePresenter(
     }
 
     override fun addBookmark(bookmarkModel: BookmarkModel) {
-        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        val toBookmarkEntity =
+            bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
                 override fun onSuccess() {
-                    homeView.showResult(ADD_BOOKMARK)
+                    homeView.showBookmarkResult(ADD_BOOKMARK)
                 }
 
                 override fun onFailure() {
-                    homeView.showResult(FAIL_ADD)
+                    homeView.showBookmarkResult(FAIL_ADD)
                 }
             })
     }

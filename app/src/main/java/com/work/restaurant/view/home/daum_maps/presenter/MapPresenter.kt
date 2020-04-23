@@ -10,6 +10,7 @@ import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import com.work.restaurant.network.room.entity.BookmarkEntity
 import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
 
 class MapPresenter(
     private val mapView: MapContract.View,
@@ -57,23 +58,28 @@ class MapPresenter(
                             if (kakaoList.documents.isEmpty()) {
                                 val toKakaoSearchModelList =
                                     kakaoList.documents.map { it.toKakaoModel() }
-                                mapView.showSearchData(toKakaoSearchModelList, 0)
+                                mapView.showSearchData(toKakaoSearchModelList, NO_NEW_RESULT)
                             } else {
-                                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                                if (RelateLogin.loginState()) {
 
                                     if (!kakaoList.kakaoSearchMeta.isEnd) {
 
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-                                        mapView.showSearchData(toKakaoSearchModelList, 2)
+                                        mapView.showSearchData(toKakaoSearchModelList, FINAL_RESULT)
 
                                     } else {
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-                                        toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
-                                        mapView.showSearchData(toKakaoSearchModelList, 1)
+                                        toggleLastPageCheck =
+                                            kakaoList.kakaoSearchMeta.isEnd
+
+                                        mapView.showSearchData(
+                                            toKakaoSearchModelList,
+                                            REMAIN_RESULT
+                                        )
                                         mapView.showKakaoData(toKakaoSearchModelList)
 
                                     }
@@ -84,14 +90,19 @@ class MapPresenter(
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-                                        mapView.showSearchData(toKakaoSearchModelList, 2)
+                                        mapView.showSearchData(toKakaoSearchModelList, FINAL_RESULT)
 
                                     } else {
                                         val toKakaoSearchModelList =
                                             kakaoList.documents.map { it.toKakaoModel() }
 
-                                        toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
-                                        mapView.showSearchData(toKakaoSearchModelList, 1)
+                                        toggleLastPageCheck =
+                                            kakaoList.kakaoSearchMeta.isEnd
+
+                                        mapView.showSearchData(
+                                            toKakaoSearchModelList,
+                                            REMAIN_RESULT
+                                        )
 
                                         mapView.showKakaoData(toKakaoSearchModelList)
                                     }
@@ -100,8 +111,7 @@ class MapPresenter(
                         }
 
                         override fun onFailure(message: String) {
-                            val nullKakaoKList = mutableListOf<KakaoSearchModel>()
-                            mapView.showSearchData(nullKakaoKList, 0)
+                            mapView.showSearchData(emptyList(), NO_NEW_RESULT)
                         }
                     })
             }
@@ -115,15 +125,17 @@ class MapPresenter(
         kakaoRepository.getKakaoItemInfo(x, y, markerName,
             object : KakaoRepositoryCallback.KakaoItemInfoCallback {
                 override fun onSuccess(item: List<KakaoSearchDocuments>) {
-                    val toKakaoSearchModel = item.map { it.toKakaoModel() }
+                    val toKakaoSearchModel =
+                        item.map { it.toKakaoModel() }
 
                     if (toKakaoSearchModel.isNotEmpty()) {
-                        if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                        if (RelateLogin.loginState()) {
                             displayAlreadyBookmark(toKakaoSearchModel)
                         } else {
-                            val toDisplayBookmarkKakaoModel = toKakaoSearchModel.map {
-                                it.toDisplayBookmarkKakaoModel(false)
-                            }
+                            val toDisplayBookmarkKakaoModel =
+                                toKakaoSearchModel.map {
+                                    it.toDisplayBookmarkKakaoModel(false)
+                                }
                             mapView.showMarkerData(toDisplayBookmarkKakaoModel)
                         }
 
@@ -144,9 +156,11 @@ class MapPresenter(
             KakaoApi.RADIUS,
             object : KakaoRepositoryCallback {
                 override fun onSuccess(kakaoList: KakaoSearchResponse) {
-                    val toKakaoModelList = kakaoList.documents.map { it.toKakaoModel() }
+                    val toKakaoModelList =
+                        kakaoList.documents.map { it.toKakaoModel() }
 
-                    val toDistanceArrayList = toKakaoModelList.sortedBy { it.distance.toInt() }
+                    val toDistanceArrayList =
+                        toKakaoModelList.sortedBy { it.distance.toInt() }
 
                     mapView.showKakaoData(
                         toDistanceArrayList
@@ -171,13 +185,14 @@ class MapPresenter(
                     val convertFromBookmarkEntityToBookmarkModel =
                         list.map { it.toBookmarkModel() }
 
-                    val displayBookmarkKakaoList = convertFromKakaoListToBookmarkModel.map {
-                        if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
-                            it.toDisplayBookmarkKakaoList(true)
-                        } else {
-                            it.toDisplayBookmarkKakaoList(false)
+                    val displayBookmarkKakaoList =
+                        convertFromKakaoListToBookmarkModel.map {
+                            if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
+                                it.toDisplayBookmarkKakaoList(true)
+                            } else {
+                                it.toDisplayBookmarkKakaoList(false)
+                            }
                         }
-                    }
 
                     mapView.showMarkerData(displayBookmarkKakaoList)
 
@@ -201,5 +216,10 @@ class MapPresenter(
         private const val PAGENUM = 1
         private const val SORT_DISTANCE = "distance"
         private const val SORT_ACCURACY = "accuracy"
+
+        const val NO_NEW_RESULT = 0
+        const val REMAIN_RESULT = 1
+        const val FINAL_RESULT = 2
+
     }
 }
