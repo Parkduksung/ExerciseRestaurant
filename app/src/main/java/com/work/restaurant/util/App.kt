@@ -9,7 +9,6 @@ class App : Application() {
             private set
         lateinit var prefs: MySharedPreferences
 
-        lateinit var currentDate: String
     }
 
     override fun onCreate() {

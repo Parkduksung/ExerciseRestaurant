@@ -1,12 +1,11 @@
 package com.work.restaurant.view
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
-import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseActivity
@@ -23,14 +22,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
-    ExerciseRestaurantContract.View,
     NotificationDataListener,
     DiaryFragment.RenewDataListener,
     RenewBookmarkAndRankListener,
     SearchRankFragment.LoginListener {
-
-
-    private lateinit var presenter: ExerciseRestaurantContract.Presenter
 
     private var fragmentMap = emptyMap<String, Fragment>()
 
@@ -41,19 +36,85 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        startView()
+
+    }
+
+    private fun startView() {
+
+        fragmentMap = mapOf(
+            resources.getStringArray(R.array.tab_main)[HOME] to HomeFragment(),
+            resources.getStringArray(R.array.tab_main)[SEARCH] to SearchFragment(),
+            resources.getStringArray(R.array.tab_main)[DIARY] to DiaryFragment(),
+            resources.getStringArray(R.array.tab_main)[CALENDAR] to CalendarFragment(),
+            resources.getStringArray(R.array.tab_main)[MY_PAGE] to MyPageFragment()
+        )
+
+        vp_main.run {
+            this.adapter = viewPagerAdapter
+            offscreenPageLimit = SCREEN_LIMIT_COUNT
+            setSwipePagingEnabled(false)
+        }
+
+        tl_main.run {
+            setupWithViewPager(vp_main)
+            getTabAt(HOME)?.setIcon(R.drawable.ic_home)
+            getTabAt(SEARCH)?.setIcon(R.drawable.ic_search)
+            getTabAt(DIARY)?.setIcon(R.drawable.write)
+            getTabAt(CALENDAR)?.setIcon(R.drawable.calendar)
+            getTabAt(MY_PAGE)?.setIcon(R.drawable.ic_mypage)
+        }
+
+        if (!RelateLogin.loginState()) {
+            noLoginMessage()
+        }
+    }
+
+    private fun noLoginMessage() {
+
+        ShowAlertDialog(this@ExerciseRestaurantActivity).apply {
+            titleAndMessage(
+                getString(R.string.noLoginMessage_title),
+                getString(R.string.noLoginMessage_message)
+            )
+            cancelable(false)
+
+            alertDialog.setPositiveButton(
+                getString(R.string.common_ok)
+            ) { _, _ ->
+                loginCallbackListener()
+            }
+
+            alertDialog.setNegativeButton(
+                getString(R.string.common_no)
+            ) { _, _ -> }
+
+            showDialog()
+        }
+
+    }
+
+
     override fun loginCallbackListener() {
         tl_main.run {
-            getTabAt(4)?.select()
+            getTabAt(MY_PAGE)?.select()
         }
     }
 
     override fun onReceivedData(msg: Boolean) {
         if (msg) {
             supportFragmentManager.fragments.forEach {
-                if (it is CalendarFragment) {
-                    it.renewDot()
-                }
 
+                when (it) {
+
+                    is CalendarFragment -> {
+                        it.renewDot()
+                    }
+
+                }
             }
         }
     }
@@ -96,73 +157,17 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
             )
             .addToBackStack(null)
             .commit()
-
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        presenter = ExerciseRestaurantPresenter(this)
-        start()
-    }
-
-    private fun start() {
-        presenter.init()
-    }
-
-    override fun showInit() {
-
-        fragmentMap = mapOf(
-            resources.getStringArray(R.array.tab_main)[0] to HomeFragment(),
-            resources.getStringArray(R.array.tab_main)[1] to SearchFragment(),
-            resources.getStringArray(R.array.tab_main)[2] to DiaryFragment(),
-            resources.getStringArray(R.array.tab_main)[3] to CalendarFragment(),
-            resources.getStringArray(R.array.tab_main)[4] to MyPageFragment()
-        )
-
-        val adapter = viewPagerAdapter
-
-        vp_main.adapter = adapter
-        vp_main.offscreenPageLimit = 5
-
-        vp_main.setSwipePagingEnabled(false)
-
-
-        tl_main.run {
-            setupWithViewPager(vp_main)
-            getTabAt(0)?.setIcon(R.drawable.ic_home)
-            getTabAt(1)?.setIcon(R.drawable.ic_search)
-            getTabAt(2)?.setIcon(R.drawable.write)
-            getTabAt(3)?.setIcon(R.drawable.calendar)
-            getTabAt(4)?.setIcon(R.drawable.ic_mypage)
-        }
-
-        if (!App.prefs.login_state && App.prefs.login_state_id.isEmpty()) {
-
-            val alertDialog =
-                AlertDialog.Builder(
-                    ContextThemeWrapper(
-                        this@ExerciseRestaurantActivity,
-                        R.style.Theme_AppCompat_Light_Dialog
-                    )
-                )
-
-            alertDialog.setTitle("알림")
-            alertDialog.setMessage("여러 기능을 사용하려면 로그인이 필요합니다. \n로그인 하시겠습니까?")
-            alertDialog.setCancelable(false)
-            alertDialog.setPositiveButton(
-                "확인"
-            ) { _, _ -> loginCallbackListener() }
-            alertDialog.setNegativeButton(
-                "취소"
-            ) { _, _ -> }
-            alertDialog.show()
-        }
-
     }
 
     companion object {
+
+        private const val HOME = 0
+        private const val SEARCH = 1
+        private const val DIARY = 2
+        private const val CALENDAR = 3
+        private const val MY_PAGE = 4
+
+        private const val SCREEN_LIMIT_COUNT = 5
 
         var selectAll = ""
     }
