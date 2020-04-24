@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Exercise\nRestaurant</string>
     <string name="app_version">v.1.1.1</string>
-    <string name="app_update">Update 2020.02.29</string>
+
     <string name="search_look_hint">오늘은 어디에서?</string>
     <string name="address_title">주소 설정</string>
     <string name="address_select1">광역시/도</string>
@@ -135,7 +135,7 @@
     <string name="tv_calendar_main_eat">식단</string>
     <string name="et_calendar_main_context_ok_login_state">등록된 기록이 없습니다. \n많은 기록은 건강한 나를 만들수 있어요!</string>
     <string name="et_calendar_main_context_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
-    <string name="btn_rank_main_context">주변맛집</string>
+
 
 
     //이메일인증관련
@@ -179,6 +179,8 @@
     <!--    <string name=""></string>-->
 
     //Common
+    <string name="app_update">Update 2020.02.29</string>
+
     <string name="common_ok">확인</string>
     <string name="common_no">취소</string>
 
@@ -201,21 +203,29 @@
 
     //*main
     <string name="home_hint">검색할 지역을 선택하세요!</string>
+    <string name="home_this_locate_research">이 지역 재검색</string>
+    <string name="home_remain_result">결과더보기</string>
+    <string name="home_unRemain_result">더이상 검색할 수 없습니다.</string>
+    <string name="home_no_result">새롭게 검색된 결과가 없습니다.</string>
+    <string name="home_no_access">접근할 수 없습니다.</string>
 
     //*map
     <string name="map_gps_on">GPS 활성화 되었습니다</string>
     <string name="map_gps_off">GPS 비활성화 되었습니다 \n 다시 활성화를 하세요.</string>
     <string name="map_gps_and_authorization_on">GPS 활성화, 권한이 허용되었습니다</string>
 
+
     //Search
 
     //*main
     <string name="search_hint">검색할 헬스장 이름을 입력하세요!</string>
-    <string name="home_this_locate_research">이 지역 재검색</string>
-    <string name="home_remain_result">결과더보기</string>
-    <string name="home_unRemain_result">더이상 검색할 수 없습니다.</string>
-    <string name="home_no_result">새롭게 검색된 결과가 없습니다.</string>
-    <string name="home_no_access">접근할 수 없습니다.</string>
+
+    //*rank
+    <string name="rank_main_context">주변맛집</string>
+    <string name="rank_error_location">현재 위치의 정보를 가져올 수 없습니다.</string>
+    <string name="rank_error_load_data">데이터를 가져올 수 없습니다.</string>
+    <string name="rank_unRemain_result">더이상 결과가 없습니다.</string>
+
 
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->

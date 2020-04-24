@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
@@ -51,14 +52,13 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
             val kakaoItem: DisplayBookmarkKakaoModel = item
 
-
             kakaoBookmark.setButtonDrawable(R.drawable.selector_checkbox_bookmark1)
 
             kakaoBookmark.isChecked = kakaoItem.toggleBookmark
 
             itemView.setOnClickListener {
                 if (::adapterListener.isInitialized) {
-                    adapterListener.getDisplayBookmarkKakaoData(1, kakaoItem, 0)
+                    adapterListener.getDisplayBookmarkKakaoData(SELECT_URL, kakaoItem, NOT_SELECT)
                 } else {
                     adapterListener =
                         object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
@@ -69,7 +69,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                             ) {
                             }
                         }
-                    adapterListener.getDisplayBookmarkKakaoData(1, kakaoItem, 0)
+                    adapterListener.getDisplayBookmarkKakaoData(SELECT_URL, kakaoItem, NOT_SELECT)
                 }
             }
 
@@ -79,20 +79,24 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                     if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
                         if (kakaoBookmark.isChecked) {
                             adapterListener.getDisplayBookmarkKakaoData(
-                                2,
+                                ADD_BOOKMARK,
                                 kakaoItem,
                                 adapterPosition
                             )
                         } else {
                             adapterListener.getDisplayBookmarkKakaoData(
-                                3,
+                                DELETE_BOOKMARK,
                                 kakaoItem,
                                 adapterPosition
                             )
                         }
                     } else {
                         kakaoBookmark.isChecked = false
-                        adapterListener.getDisplayBookmarkKakaoData(4, item, 0)
+                        adapterListener.getDisplayBookmarkKakaoData(
+                            NOT_LOGIN_STATE,
+                            item,
+                            NOT_SELECT
+                        )
                     }
                 } else {
                     adapterListener =
@@ -105,42 +109,34 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
                             }
                         }
-                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                    if (RelateLogin.loginState()) {
                         if (kakaoBookmark.isChecked) {
                             adapterListener.getDisplayBookmarkKakaoData(
-                                2,
+                                ADD_BOOKMARK,
                                 kakaoItem,
                                 adapterPosition
                             )
                         } else {
                             adapterListener.getDisplayBookmarkKakaoData(
-                                3,
+                                DELETE_BOOKMARK,
                                 kakaoItem,
                                 adapterPosition
                             )
                         }
                     } else {
                         kakaoBookmark.isChecked = false
-                        adapterListener.getDisplayBookmarkKakaoData(4, item, 0)
+                        adapterListener.getDisplayBookmarkKakaoData(
+                            NOT_LOGIN_STATE,
+                            item,
+                            NOT_SELECT
+                        )
                     }
 
                 }
             }
 
 
-            if (kakaoItem.distance.toInt() >= 1000) {
-                val convertKm = kakaoItem.distance.toInt() / 1000
-                val convertM = (kakaoItem.distance.toInt() - (convertKm * 1000))
-
-                if (convertM / 100 > 0) {
-                    val decimalPoint = ((kakaoItem.distance.toInt() % 1000).toString())[0]
-                    kakaoDistance.text = "$convertKm" + "." + "${decimalPoint}km"
-                } else {
-                    kakaoDistance.text = "$convertKm" + ".0km"
-                }
-            } else {
-                kakaoDistance.text = kakaoItem.distance + "m"
-            }
+            kakaoDistance.text = convertDistance(kakaoItem.distance)
 
             kakaoName.text = kakaoItem.displayName
             kakaoAddress.text = kakaoItem.displayAddress
@@ -168,5 +164,35 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
         adapterListener = listener
     }
 
+
+    private fun convertDistance(distance: String): String {
+
+        return if (distance.toInt() >= 1000) {
+            val convertKm = distance.toInt() / 1000
+            val convertM = (distance.toInt() - (convertKm * 1000))
+
+            if (convertM / 100 > 0) {
+                val decimalPoint = ((distance.toInt() % 1000).toString())[0]
+                "$convertKm" + "." + "${decimalPoint}km"
+            } else {
+                "$convertKm" + ".0km"
+            }
+        } else {
+            distance + "m"
+        }
+
+    }
+
+
+    companion object {
+
+        private const val NOT_SELECT = 0
+
+        const val SELECT_URL = 0
+        const val ADD_BOOKMARK = 1
+        const val DELETE_BOOKMARK = 2
+        const val NOT_LOGIN_STATE = 3
+
+    }
 }
 

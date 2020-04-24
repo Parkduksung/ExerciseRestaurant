@@ -150,10 +150,10 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
         val intent = intent
 
         val getData =
-            intent.extras?.getString(SearchRankFragment.RECYCLERVIEW_CLICK_DATA).toString()
+            intent.extras?.getString(SearchRankFragment.CLICK_ITEM_DATA).toString()
 
         val getToggle =
-            intent.extras?.getBoolean(SearchRankFragment.RECYCLERVIEW_CLICK_TOGGLE)
+            intent.extras?.getBoolean(SearchRankFragment.CLICK_ITEM_TOGGLE)
 
         if (getToggle != null) {
             if (getToggle) {

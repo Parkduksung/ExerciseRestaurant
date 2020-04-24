@@ -13,7 +13,7 @@ interface SearchRankContract {
 
         fun showCurrentLocation(addressName: String)
 
-        fun showLoad()
+        fun showLoadingState(state: Boolean)
 
         fun showKakaoResult(sort: Int)
 
@@ -21,9 +21,9 @@ interface SearchRankContract {
 
     interface Presenter {
 
-        fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition : Int)
+        fun addBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition: Int)
 
-        fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition : Int)
+        fun deleteBookmarkKakaoItem(bookmarkModel: BookmarkModel, selectPosition: Int)
 
         fun getCurrentLocation(addressName: String, itemCount: Int, sort: String)
 

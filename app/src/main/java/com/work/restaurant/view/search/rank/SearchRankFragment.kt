@@ -1,6 +1,5 @@
 package com.work.restaurant.view.search.rank
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +19,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
+import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
@@ -50,254 +51,23 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-    override fun showCurrentLocation(addressName: String) {
-
-        val splitAddressName = addressName.split(" ")
-        val convertAddressName =
-            "${compressCity(splitAddressName[0])} ${splitAddressName[1]} ${splitAddressName[2]}"
-        tv_search_locate.text = convertAddressName
-        presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURANCY)
-    }
-
-    override fun showBookmarkResult(msg: Int, selectPosition: Int) {
-        when (msg) {
-            SELECT_BOOKMARK -> {
-                Toast.makeText(
-                    this.context,
-                    getString(R.string.bookmark_state_ok),
-                    Toast.LENGTH_LONG
-                ).show()
-
-                searchRankAdapter.stateChange(selectPosition)
-
-            }
-            DELETE_BOOKMARK -> {
-                Toast.makeText(
-                    this.context,
-                    getString(R.string.bookmark_state_no),
-                    Toast.LENGTH_LONG
-                ).show()
-
-                searchRankAdapter.stateChange(selectPosition)
-
-            }
-            RESULT_FAILURE -> {
-                Toast.makeText(
-                    this.context,
-                    getString(R.string.bookmark_add_no_message),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-
-
-    fun renewRank() {
-        initData()
-        if (!toggleSort) {
-            presenter.getCurrentLocation(
-                tv_search_locate.text.toString(),
-                searchRankAdapter.itemCount,
-                SORT_ACCURANCY
-            )
-        } else {
-            presenter.getCurrentLocation(
-                tv_search_locate.text.toString(),
-                searchRankAdapter.itemCount,
-                SORT_DISTANCE
-            )
-        }
-    }
-
-    private fun compressCity(city: String): String {
-        return if (city.contains("남") || city.contains("북")) {
-            "${city[0]}${city[2]}"
-        } else {
-            city.slice(IntRange(0, 1))
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-
-                val getAddressData = data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
-                getAddressData?.let {
-
-                    tv_search_locate.text = getAddressData
-
-                    initData()
-                    toggleSort = false
-
-                    presenter.getCurrentLocation(
-                        tv_search_locate.text.toString(),
-                        searchRankAdapter.itemCount,
-                        SORT_ACCURANCY
-                    )
-                }
-            }
-        }
-    }
-
-
-    override fun onClick(v: View?) {
-
-        when (v?.id) {
-            R.id.iv_search_settings -> {
-                val homeAddressActivity = Intent(this.context, HomeAddressActivity::class.java)
-                startActivityForResult(homeAddressActivity, REQUEST_CODE)
-            }
-            R.id.iv_search_filter -> {
-                val menuBuilder = MenuBuilder(this.context)
-                val inflater = MenuInflater(this.context)
-                inflater.inflate(R.menu.exercise_list_sort_menu, menuBuilder)
-
-                val optionMenu =
-                    MenuPopupHelper(this.context!!, menuBuilder, iv_search_filter)
-                optionMenu.setForceShowIcon(true)
-                optionMenu.gravity = Gravity.CENTER
-                menuBuilder.setCallback(object : MenuBuilder.Callback {
-                    override fun onMenuModeChange(menu: MenuBuilder?) {
-                    }
-
-                    override fun onMenuItemSelected(
-                        menu: MenuBuilder?,
-                        item: MenuItem?
-                    ): Boolean {
-                        when (item?.itemId) {
-                            R.id.exercise_list_accuracy_sort -> {
-                                initData()
-                                toggleSort = false
-
-                                presenter.getCurrentLocation(
-                                    tv_search_locate.text.toString(),
-                                    searchRankAdapter.itemCount,
-                                    SORT_ACCURANCY
-                                )
-                            }
-                            R.id.exercise_list_distance_sort -> {
-                                initData()
-                                toggleSort = true
-
-                                presenter.getCurrentLocation(
-                                    tv_search_locate.text.toString(),
-                                    searchRankAdapter.itemCount,
-                                    SORT_DISTANCE
-                                )
-                            }
-                        }
-                        return true
-                    }
-                })
-
-                optionMenu.show()
-
-            }
-
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = SearchRankPresenter(
-            this,
-            Injection.provideKakaoRepository(),
-            Injection.provideBookmarkRepository()
-        )
+        presenter =
+            SearchRankPresenter(
+                this,
+                Injection.provideKakaoRepository(),
+                Injection.provideBookmarkRepository()
+            )
 
         iv_search_settings.setOnClickListener(this)
         iv_search_filter.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
-        setup()
+        startRankView()
     }
 
-    override fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>) {
-        AppExecutors().mainThread.execute {
-            recyclerview_rank.run {
-                searchRankAdapter.addAllData(kakaoList)
-            }
-        }
-    }
-
-    override fun getDisplayBookmarkKakaoData(
-        select: Int,
-        data: DisplayBookmarkKakaoModel,
-        selectPosition: Int
-    ) {
-        when (select) {
-            SELECT_URL -> {
-                val intent =
-                    Intent(activity?.application, SearchLookForActivity()::class.java).apply {
-                        putExtra(RECYCLERVIEW_CLICK_DATA, data.displayUrl)
-                        putExtra(RECYCLERVIEW_CLICK_TOGGLE, true)
-                    }
-                startActivity(intent)
-            }
-            SELECT_BOOKMARK -> {
-                if (App.prefs.login_state_id.isNotEmpty()) {
-                    val toBookmarkModel =
-                        data.toBookmarkModel(App.prefs.login_state_id)
-                    presenter.addBookmarkKakaoItem(toBookmarkModel, selectPosition)
-                }
-            }
-            DELETE_BOOKMARK -> {
-                if (App.prefs.login_state_id.isNotEmpty()) {
-                    val toBookmarkModel =
-                        data.toBookmarkModel(App.prefs.login_state_id)
-                    presenter.deleteBookmarkKakaoItem(toBookmarkModel, selectPosition)
-                }
-            }
-            NOT_LOGIN -> {
-                Toast.makeText(
-                    this.context,
-                    getString(R.string.bookmark_state_no_login_message),
-                    Toast.LENGTH_LONG
-                ).show()
-
-//                loginListener.loginCallbackListener()
-            }
-
-        }
-    }
-
-    override fun showLoad() {
-        if (pb_search_rank != null) {
-            pb_search_rank.bringToFront()
-            pb_search_rank.visibility = View.VISIBLE
-            pb_search_rank.isIndeterminate = true
-        }
-    }
-
-    override fun showKakaoResult(sort: Int) {
-
-        AppExecutors().mainThread.execute {
-            when (sort) {
-                0 -> {
-                    Toast.makeText(context, "현재 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
-                        .show()
-                }
-                1 -> {
-//                    Toast.makeText(context, "데이터를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
-//                        .show()
-                }
-                2 -> {
-                    Toast.makeText(context, "더이상 결과가 없습니다.", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-
-        if (pb_search_rank != null) {
-            pb_search_rank.visibility = View.GONE
-            pb_search_rank.isIndeterminate = false
-        }
-    }
-
-
-    private fun setup() {
+    private fun startRankView() {
 
         val itemAnimator: DefaultItemAnimator = object : DefaultItemAnimator() {
             override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder): Boolean {
@@ -305,10 +75,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
         }
 
-        recyclerview_rank.itemAnimator = itemAnimator
-
-
-        recyclerview_rank.run {
+        rv_rank.run {
+            this.itemAnimator = itemAnimator
             this.adapter = searchRankAdapter
             layoutManager = LinearLayoutManager(this.context)
 
@@ -327,7 +95,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                                 presenter.getCurrentLocation(
                                     tv_search_locate.text.toString(),
                                     totalItemCount,
-                                    SORT_ACCURANCY
+                                    SORT_ACCURACY
                                 )
                             } else {
                                 presenter.getCurrentLocation(
@@ -350,6 +118,276 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.iv_search_settings -> {
+
+                val homeAddressActivity =
+                    Intent(context, HomeAddressActivity::class.java)
+                startActivityForResult(homeAddressActivity, REQUEST_CODE)
+            }
+
+            R.id.iv_search_filter -> {
+
+                context?.let { showSearchFilter(it) }
+
+            }
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+
+            REQUEST_CODE -> {
+
+                val getAddressData =
+                    data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
+
+                getAddressData?.let {
+
+                    tv_search_locate.text = getAddressData
+
+                    initData()
+
+                    toggleSort = false
+
+                    presenter.getCurrentLocation(
+                        tv_search_locate.text.toString(),
+                        searchRankAdapter.itemCount,
+                        SORT_ACCURACY
+                    )
+                }
+            }
+
+
+        }
+
+
+    }
+
+    private fun showSearchFilter(context: Context) {
+
+        val menuBuilder = MenuBuilder(context)
+        val inflater = MenuInflater(context)
+        inflater.inflate(R.menu.exercise_list_sort_menu, menuBuilder)
+
+        val optionMenu =
+            MenuPopupHelper(context, menuBuilder, iv_search_filter)
+        optionMenu.setForceShowIcon(true)
+        optionMenu.gravity = Gravity.CENTER
+
+        menuBuilder.setCallback(object : MenuBuilder.Callback {
+            override fun onMenuModeChange(menu: MenuBuilder?) {
+            }
+
+            override fun onMenuItemSelected(
+                menu: MenuBuilder?,
+                item: MenuItem?
+            ): Boolean {
+                when (item?.itemId) {
+                    R.id.exercise_list_accuracy_sort -> {
+                        initData()
+                        toggleSort = false
+
+                        presenter.getCurrentLocation(
+                            tv_search_locate.text.toString(),
+                            searchRankAdapter.itemCount,
+                            SORT_ACCURACY
+                        )
+                    }
+                    R.id.exercise_list_distance_sort -> {
+                        initData()
+                        toggleSort = true
+
+                        presenter.getCurrentLocation(
+                            tv_search_locate.text.toString(),
+                            searchRankAdapter.itemCount,
+                            SORT_DISTANCE
+                        )
+                    }
+                }
+                return true
+            }
+        })
+
+        optionMenu.show()
+    }
+
+    override fun showCurrentLocation(addressName: String) {
+        tv_search_locate.text = convertAddressName(addressName)
+        presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURACY)
+    }
+
+    private fun convertAddressName(addressName: String): String {
+        val splitAddressName =
+            addressName.split(" ")
+        return "${compressCity(splitAddressName[0])} ${splitAddressName[1]} ${splitAddressName[2]}"
+    }
+
+    private fun compressCity(city: String): String {
+        return if (city.contains("남") || city.contains("북")) {
+            "${city[0]}${city[2]}"
+        } else {
+            city.slice(IntRange(0, 1))
+        }
+    }
+
+    override fun showBookmarkResult(msg: Int, selectPosition: Int) {
+
+        when (msg) {
+
+            SearchRankPresenter.ADD_BOOKMARK -> {
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_ok),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                searchRankAdapter.stateChange(selectPosition)
+
+            }
+            SearchRankPresenter.DELETE_BOOKMARK -> {
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_no),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                searchRankAdapter.stateChange(selectPosition)
+
+            }
+            SearchRankPresenter.FAIL_ADD -> {
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_add_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            SearchRankPresenter.FAIL_DELETE -> {
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_delete_no_message),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    override fun showKakaoResult(sort: Int) {
+
+        showLoadingState(false)
+
+        AppExecutors().mainThread.execute {
+            when (sort) {
+
+                SearchRankPresenter.LOAD_LOCATION_ERROR -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.rank_error_location),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+                SearchRankPresenter.LOAD_DATA_ERROR -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.rank_error_load_data),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+                SearchRankPresenter.NOT_REMAIN_DATA -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.rank_unRemain_result),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+
+    }
+
+    override fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>) {
+
+        showLoadingState(false)
+
+        AppExecutors().mainThread.execute {
+            rv_rank.run {
+                searchRankAdapter.addAllData(kakaoList)
+            }
+        }
+    }
+
+    override fun getDisplayBookmarkKakaoData(
+        select: Int,
+        data: DisplayBookmarkKakaoModel,
+        selectPosition: Int
+    ) {
+        when (select) {
+            SearchRankAdapter.SELECT_URL -> {
+                val intent =
+                    Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                        putExtra(CLICK_ITEM_DATA, data.displayUrl)
+                        putExtra(CLICK_ITEM_TOGGLE, true)
+                    }
+                startActivity(intent)
+            }
+            SearchRankAdapter.ADD_BOOKMARK -> {
+                if (RelateLogin.loginState()) {
+                    val toBookmarkModel =
+                        data.toBookmarkModel(RelateLogin.getLoginId())
+                    presenter.addBookmarkKakaoItem(toBookmarkModel, selectPosition)
+                }
+            }
+            SearchRankAdapter.DELETE_BOOKMARK -> {
+                if (RelateLogin.loginState()) {
+                    val toBookmarkModel =
+                        data.toBookmarkModel(RelateLogin.getLoginId())
+                    presenter.deleteBookmarkKakaoItem(toBookmarkModel, selectPosition)
+                }
+            }
+            SearchRankAdapter.NOT_LOGIN_STATE -> {
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.bookmark_state_no_login_message),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+        }
+    }
+
+    override fun showLoadingState(state: Boolean) {
+        pb_search_rank?.let {
+            pb_search_rank.bringToFront()
+            pb_search_rank.isVisible = state
+            pb_search_rank.isIndeterminate = state
+        }
+    }
+
+    fun renewRank() {
+        initData()
+        if (!toggleSort) {
+            presenter.getCurrentLocation(
+                tv_search_locate.text.toString(),
+                searchRankAdapter.itemCount,
+                SORT_ACCURACY
+            )
+        } else {
+            presenter.getCurrentLocation(
+                tv_search_locate.text.toString(),
+                searchRankAdapter.itemCount,
+                SORT_DISTANCE
+            )
+        }
+    }
 
     private fun initData() {
         presenter.resetData()
@@ -358,27 +396,20 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         }
     }
 
-
     companion object {
         private const val TAG = "SearchRankFragment"
-        private const val REQUEST_CODE = 2
 
-        private const val SELECT_URL = 1
-        private const val SELECT_BOOKMARK = 2
-        private const val DELETE_BOOKMARK = 3
-        private const val NOT_LOGIN = 4
-
-
-        private const val RESULT_FAILURE = 0
-
-        private const val INIT_COUNT = 15
+        const val INIT_COUNT = 15
 
         private var toggleSort = false
-        private const val SORT_DISTANCE = "distance"
-        private const val SORT_ACCURANCY = "accuracy"
 
-        const val RECYCLERVIEW_CLICK_DATA = "recyclerview_click_data"
-        const val RECYCLERVIEW_CLICK_TOGGLE = "recyclerview_click_toggle"
+        private const val REQUEST_CODE = 2
+
+        private const val SORT_DISTANCE = "distance"
+        private const val SORT_ACCURACY = "accuracy"
+
+        const val CLICK_ITEM_DATA = "click_item_data"
+        const val CLICK_ITEM_TOGGLE = "click_item_toggle"
 
 
     }
