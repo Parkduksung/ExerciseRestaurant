@@ -16,6 +16,7 @@ interface DiaryContract {
         fun showLoadingState(state: Boolean)
 
         fun showLoginState(state: Boolean)
+
     }
 
     interface Presenter {

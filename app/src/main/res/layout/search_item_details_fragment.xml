@@ -3,26 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:weightSum="20"
     tools:ignore="NestedWeights,SpUsage,ContentDescription,DisableBaselineAlignment">
-
 
     <ProgressBar
         android:id="@+id/pb_item_details"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:indeterminate="true"
         android:indeterminateTint="@color/colorBlue"
-        android:padding="150dp"
         android:visibility="visible" />
 
     <WebView
         android:id="@+id/wb_search_item_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
 

@@ -2,7 +2,7 @@
     <string name="app_name">Exercise\nRestaurant</string>
     <string name="app_version">v.1.1.1</string>
 
-    <string name="search_look_hint">오늘은 어디에서?</string>
+
     <string name="address_title">주소 설정</string>
     <string name="address_select1">광역시/도</string>
     <string name="address_select2">시/군/구</string>
@@ -137,7 +137,6 @@
     <string name="et_calendar_main_context_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
 
 
-
     //이메일인증관련
 
     <string name="verified_email_user">duksung12@gmail.com</string>
@@ -176,9 +175,8 @@
     <string name="tv_diary_add_eat">식단 추가</string>
     <string name="tv_diary_add_exercise">운동 추가</string>
 
-    <!--    <string name=""></string>-->
 
-    //Common
+    //-----------------------Common------------------------
     <string name="app_update">Update 2020.02.29</string>
 
     <string name="common_ok">확인</string>
@@ -193,13 +191,13 @@
     <string name="tedPermission_setRationaleMessage"> 앱의 기능을 사용하기 위해서는 권한이 필요합니다.</string>
     <string name="tedPermission_setDeniedMessage">만약 권한을 다시 얻으려면,\n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
 
-    //ExerciseRestaurantActivity
+    //----------- ExerciseRestaurantActivity-------------
 
     <string name="noLoginMessage_title">알림</string>
     <string name="noLoginMessage_message">여러 기능을 사용하려면 로그인이 필요합니다. \n로그인 하시겠습니까?</string>
 
 
-    //Home
+    //-----------------------Home-------------------------
 
     //*main
     <string name="home_hint">검색할 지역을 선택하세요!</string>
@@ -215,7 +213,7 @@
     <string name="map_gps_and_authorization_on">GPS 활성화, 권한이 허용되었습니다</string>
 
 
-    //Search
+    //-----------------------Search------------------------
 
     //*main
     <string name="search_hint">검색할 헬스장 이름을 입력하세요!</string>
@@ -225,6 +223,19 @@
     <string name="rank_error_location">현재 위치의 정보를 가져올 수 없습니다.</string>
     <string name="rank_error_load_data">데이터를 가져올 수 없습니다.</string>
     <string name="rank_unRemain_result">더이상 결과가 없습니다.</string>
+
+    //*bookmark
+    <string name="bookmark_main_context">나의 맛집 취향은?!</string>
+    <string name="bookmark_no_login"> 맛집을 추가하기 위해선 로그인이 필요합니다.</string>
+    <string name="bookmark_no_item">관심있는 맛집을 추가해 보세요!</string>
+
+    //*lookFor
+    <string name="lookFor_hint">오늘은 어디에서?</string>
+    <string name="lookFor_no_result">검색한 헬스장이 없습니다. 다시 한번 입력해주세요</string>
+    <string name="noSearchMessage_title">검색 실패</string>
+    <string name="noSearchMessage_message">다시 입력해 주세요.</string>
+
+    //*item_details
 
 
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->

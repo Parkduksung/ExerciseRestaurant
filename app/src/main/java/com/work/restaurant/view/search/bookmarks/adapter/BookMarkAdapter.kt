@@ -1,6 +1,5 @@
 package com.work.restaurant.view.search.bookmarks.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,11 +47,10 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
             if (::adapterListener.isInitialized) {
                 itemView.setOnClickListener {
-                    adapterListener.getBookmarkData(1, item)
+                    adapterListener.getBookmarkData(SELECT_URL, item)
                 }
                 bookmarkCancel.setOnClickListener {
-                    Log.d("삭제과정", "버튼눌렀을때")
-                    adapterListener.getBookmarkData(2, item)
+                    adapterListener.getBookmarkData(DELETE_BOOKMARK, item)
                     bookmarkList.remove(item)
                     notifyDataSetChanged()
                 }
@@ -65,13 +63,12 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
 
                 }
                 itemView.setOnClickListener {
-                    adapterListener.getBookmarkData(1, item)
+                    adapterListener.getBookmarkData(SELECT_URL, item)
                 }
                 bookmarkCancel.setOnClickListener {
-                    Log.d("삭제과정", "버튼눌렀을때")
+                    adapterListener.getBookmarkData(DELETE_BOOKMARK, item)
                     bookmarkList.remove(item)
                     notifyDataSetChanged()
-                    adapterListener.getBookmarkData(2, item)
                 }
             }
 
@@ -83,9 +80,6 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
     fun addAllData(bookmarkModelList: List<BookmarkModel>) =
         bookmarkList.addAll(bookmarkModelList)
 
-    fun addData(bookmarkModel: BookmarkModel) =
-        bookmarkList.add(bookmarkModel)
-
     fun clearListData() {
         bookmarkList.clear()
         notifyDataSetChanged()
@@ -95,6 +89,12 @@ class BookMarkAdapter : RecyclerView.Adapter<BookMarkAdapter.ViewHolder>() {
         adapterListener = listener
     }
 
+    companion object {
+
+        const val SELECT_URL = 1
+        const val DELETE_BOOKMARK = 2
+
+    }
 
 }
 

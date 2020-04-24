@@ -17,6 +17,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
+import com.work.restaurant.util.Keyboard
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
@@ -42,12 +43,6 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
             .show()
     }
 
-    private fun hideKeyboard(editText: EditText) {
-        val inputMethodManager =
-            this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
-    }
-
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -58,7 +53,9 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
             R.id.iv_add_exercise -> {
 
-                hideKeyboard(et_add_exercise_name)
+                context?.let {
+                    Keyboard.hideEditText(it, et_add_exercise_name)
+                }
 
                 val addExerciseItem = layoutInflater.inflate(R.layout.add_exercise_item, null)
 
@@ -69,7 +66,9 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
             R.id.iv_remove_exercise -> {
 
-                hideKeyboard(et_add_exercise_name)
+                context?.let {
+                    Keyboard.hideEditText(it, et_add_exercise_name)
+                }
 
                 if (viewList.size != 0) {
                     ll_add_remove_exercise.removeView(viewList[viewList.size - 1])

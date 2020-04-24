@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.itemdetails
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,95 +9,91 @@ import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.isVisible
 import com.work.restaurant.R
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsContract
-import com.work.restaurant.view.search.itemdetails.presenter.SearchItemDetailsPresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity.Companion.toggleWebPage
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
-class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment),
-    SearchItemDetailsContract.View {
-
-
-    private lateinit var detailsPresenter: SearchItemDetailsPresenter
+class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        detailsPresenter =
-            SearchItemDetailsPresenter(
-                this
-            )
+        showDetails()
 
-        pb_item_details.bringToFront()
-
-        searchResult()
     }
 
 
-    private fun searchResult() {
+    private fun showDetails() {
 
-        pb_item_details.visibility = View.VISIBLE
+        pb_item_details.bringToFront()
 
-        val bundle = arguments
-        val getData = bundle?.getString(DATA).toString()
+        showStateProgressBar(true)
+
+        val getData = arguments?.getString(DATA).toString()
 
         showUrl(wb_search_item_detail, getData)
 
     }
 
+    private fun showStateProgressBar(state: Boolean) {
+        pb_item_details?.let {
+            pb_item_details.isVisible = state
+        }
+    }
 
-    private fun showUrl(webview: WebView, url: String) {
-        webview.loadUrl(url)
-        webview.settings.apply {
-            this.setGeolocationEnabled(true)
-            this.javaScriptEnabled = true
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun showUrl(webView: WebView, getUrl: String) {
+        webView.loadUrl(getUrl)
+        webView.settings.apply {
+            setGeolocationEnabled(true)
+            javaScriptEnabled = true
         }
 
-        webview.webChromeClient = object : WebChromeClient() {
+        webView.webChromeClient = object : WebChromeClient() {
             override fun onGeolocationPermissionsShowPrompt(
                 origin: String?,
                 callback: GeolocationPermissions.Callback?
             ) {
                 callback?.invoke(origin, true, false)
             }
-
         }
 
 
-        webview.webViewClient = object : WebViewClient() {
+        webView.webViewClient = object : WebViewClient() {
+
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
-                if (pb_item_details != null) {
-                    pb_item_details.visibility = View.VISIBLE
-                }
+                showStateProgressBar(true)
 
-                if (url != null) {
+                url?.let {
                     if (url.startsWith("tel:")) {
-                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+                        val intent =
+                            Intent(Intent.ACTION_DIAL, Uri.parse(url))
                         startActivity(intent)
-                        pb_item_details.visibility = View.GONE
+                        showStateProgressBar(false)
                         return true
-                    }
+                    } else if (url.startsWith("intent:")) {
 
-                    if (url.startsWith("intent:")) {
-
-                        val schemeIntent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-                        val existPackage = Package.getPackage(schemeIntent.`package`)
+                        val schemeIntent =
+                            Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                        val existPackage =
+                            Package.getPackage(schemeIntent.`package`)
 
                         return if (existPackage != null) {
-                            val existPackageIntent = Intent(Intent.ACTION_VIEW)
+                            val existPackageIntent =
+                                Intent(Intent.ACTION_VIEW)
                             existPackageIntent.data =
                                 Uri.parse("https://play.google.com/store/apps/details?id=${existPackage.name}&hl=ko")
                             startActivity(existPackageIntent)
-                            pb_item_details.visibility = View.GONE
+                            showStateProgressBar(false)
                             true
                         } else {
-
                             Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
                                 startActivity(this)
                             }
@@ -112,11 +109,9 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
-                if (pb_item_details != null) {
-                    pb_item_details.visibility = View.GONE
-                }
+                showStateProgressBar(false)
 
-                toggleWebPage = webview.canGoBack()
+                toggleWebPage = webView.canGoBack()
 
             }
         }
@@ -136,9 +131,5 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                 putString(DATA, data)
             }
         }
-
-
     }
-
-
 }

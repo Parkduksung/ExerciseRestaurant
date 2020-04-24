@@ -8,7 +8,7 @@ import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import com.work.restaurant.network.room.entity.BookmarkEntity
-import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
 
 class SearchLookForPresenter(
     private val searchLookForView: SearchLookForContract.View,
@@ -25,17 +25,19 @@ class SearchLookForPresenter(
 
 
     override fun addBookmark(bookmarkModel: BookmarkModel, selectPosition: Int) {
-        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+
+        val toBookmarkEntity =
+            bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.AddBookmarkCallback {
                 override fun onSuccess() {
-                    searchLookForView.showBookmarkResult(1, selectPosition)
+                    searchLookForView.showBookmarkResult(ADD_BOOKMARK, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchLookForView.showBookmarkResult(3, 0)
+                    searchLookForView.showBookmarkResult(FAIL_ADD, NOT_SELECT)
                 }
             })
     }
@@ -48,23 +50,19 @@ class SearchLookForPresenter(
             toBookmarkEntity,
             object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
                 override fun onSuccess() {
-                    searchLookForView.showBookmarkResult(2, selectPosition)
+                    searchLookForView.showBookmarkResult(DELETE_BOOKMARK, selectPosition)
                 }
 
                 override fun onFailure() {
-                    searchLookForView.showBookmarkResult(3, 0)
+                    searchLookForView.showBookmarkResult(FAIL_DELETE, NOT_SELECT)
                 }
 
             })
     }
 
-
     override fun searchLook(searchItem: String) {
-
         getSearchKakaoList(searchItem)
-
     }
-
 
     private fun getSearchKakaoList(searchItem: String) {
 
@@ -73,18 +71,22 @@ class SearchLookForPresenter(
             kakaoRepository.getSearchKakaoList(searchItem, page, object : KakaoRepositoryCallback {
                 override fun onSuccess(kakaoList: KakaoSearchResponse) {
                     if (!kakaoList.kakaoSearchMeta.isEnd) {
-                        val toKakaoModel = mutableListOf<KakaoSearchModel>()
+                        val toKakaoModel =
+                            mutableListOf<KakaoSearchModel>()
+
                         kakaoList.documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
+                            if (it.categoryName.contains(CATEGORY)) {
                                 toKakaoModel.add(it.toKakaoModel())
                             }
                         }
                         searchList.addAll(toKakaoModel)
                         getSearchKakaoList(searchItem)
                     } else {
-                        val toKakaoModel = mutableListOf<KakaoSearchModel>()
+                        val toKakaoModel =
+                            mutableListOf<KakaoSearchModel>()
+
                         kakaoList.documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
+                            if (it.categoryName.contains(CATEGORY)) {
                                 toKakaoModel.add(it.toKakaoModel())
                             }
                         }
@@ -99,16 +101,16 @@ class SearchLookForPresenter(
                 }
             })
         } else {
-            if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+            if (RelateLogin.loginState()) {
                 displayAlreadyBookmark(searchList)
             } else {
-                val toDisplayBookmarkKakaoModel = searchList.map {
-                    it.toDisplayBookmarkKakaoModel(false)
-                }
+                val toDisplayBookmarkKakaoModel =
+                    searchList.map {
+                        it.toDisplayBookmarkKakaoModel(false)
+                    }
                 searchLookForView.showSearchLook(toDisplayBookmarkKakaoModel)
             }
         }
-
     }
 
     fun resetData() {
@@ -117,26 +119,26 @@ class SearchLookForPresenter(
         searchList.clear()
     }
 
-
     private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
         bookmarkRepository.getAllList(
-            App.prefs.login_state_id,
+            RelateLogin.getLoginId(),
             object : BookmarkRepositoryCallback.GetAllList {
                 override fun onSuccess(list: List<BookmarkEntity>) {
 
                     val convertFromKakaoListToBookmarkModel =
-                        searchKakaoList.map { it.toBookmarkModel(App.prefs.login_state_id) }
+                        searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
 
                     val convertFromBookmarkEntityToBookmarkModel =
                         list.map { it.toBookmarkModel() }
 
-                    val displayBookmarkKakaoList = convertFromKakaoListToBookmarkModel.map {
-                        if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
-                            it.toDisplayBookmarkKakaoList(true)
-                        } else {
-                            it.toDisplayBookmarkKakaoList(false)
+                    val displayBookmarkKakaoList =
+                        convertFromKakaoListToBookmarkModel.map {
+                            if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
+                                it.toDisplayBookmarkKakaoList(true)
+                            } else {
+                                it.toDisplayBookmarkKakaoList(false)
+                            }
                         }
-                    }
 
                     searchLookForView.showSearchLook(displayBookmarkKakaoList)
 
@@ -146,6 +148,19 @@ class SearchLookForPresenter(
                     searchLookForView.showSearchNoFind()
                 }
             })
+
+    }
+
+    companion object {
+
+        private const val CATEGORY = "스포츠,레저 > 스포츠시설 > 헬스클럽"
+
+        const val NOT_SELECT = 0
+
+        const val FAIL_ADD = 0
+        const val FAIL_DELETE = 1
+        const val ADD_BOOKMARK = 2
+        const val DELETE_BOOKMARK = 3
 
     }
 }

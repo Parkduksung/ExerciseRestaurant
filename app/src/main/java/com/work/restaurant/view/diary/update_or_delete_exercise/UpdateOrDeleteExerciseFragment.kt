@@ -2,11 +2,9 @@ package com.work.restaurant.view.diary.update_or_delete_exercise
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TimePicker
 import android.widget.Toast
@@ -18,6 +16,7 @@ import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
+import com.work.restaurant.util.Keyboard
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
@@ -71,21 +70,18 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
     }
 
-    private fun hideKeyboard(editText: EditText) {
-        val inputMethodManager =
-            this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
-    }
-
     override fun onClick(v: View?) {
 
         when (v?.id) {
 
             R.id.iv_renew_add_exercise -> {
 
-                hideKeyboard(et_renew_exercise_name)
+                context?.let {
+                    Keyboard.hideEditText(it, et_renew_exercise_name)
+                }
 
-                val addExerciseItem = layoutInflater.inflate(R.layout.add_exercise_item, null)
+                val addExerciseItem =
+                    layoutInflater.inflate(R.layout.add_exercise_item, null)
 
                 viewList.add(addExerciseItem)
 
@@ -94,7 +90,9 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.iv_renew_remove_exercise -> {
 
-                hideKeyboard(et_renew_exercise_name)
+                context?.let {
+                    Keyboard.hideEditText(it, et_renew_exercise_name)
+                }
 
                 if (viewList.size != 0) {
                     ll_renew_add_remove_exercise.removeView(viewList[viewList.size - 1])
@@ -105,7 +103,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.iv_delete_exercise -> {
 
-                val getExerciseModel = arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
+                val getExerciseModel =
+                    arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
 
                 getExerciseModel?.let {
                     presenter.deleteExercise(it)
@@ -161,14 +160,26 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                                 )
                             }
                         } else {
-                            Toast.makeText(this.context, getString(R.string.exercise_no_input_kg_and_count_error_message), Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this.context,
+                                getString(R.string.exercise_no_input_kg_and_count_error_message),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     } else {
-                        Toast.makeText(this.context, getString(R.string.diary_add_no_message), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this.context,
+                            getString(R.string.diary_add_no_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this.context, getString(R.string.logout_write_error_message), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this.context,
+                        getString(R.string.logout_write_error_message),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }

@@ -13,7 +13,6 @@ interface SearchLookForContract {
 
         fun showBookmarkResult(msg: Int, selectPosition: Int)
 
-
     }
 
     interface Presenter {
