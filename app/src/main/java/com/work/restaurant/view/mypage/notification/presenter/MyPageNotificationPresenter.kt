@@ -14,9 +14,10 @@ class MyPageNotificationPresenter(
         notificationRepository.getNotificationData(object : NotificationRepositoryCallback {
             override fun onSuccess(notificationList: List<NotificationResponse>) {
 
-                val toNotificationModel = notificationList.map {
-                    it.toNotificationModel()
-                }
+                val toNotificationModel =
+                    notificationList.map {
+                        it.toNotificationModel()
+                    }
                 notificationView.showNotificationList(toNotificationModel)
             }
 

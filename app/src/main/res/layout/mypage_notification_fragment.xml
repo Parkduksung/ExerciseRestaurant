@@ -7,43 +7,29 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:weightSum="40"
-    tools:ignore="ContentDescription,SpUsage.NestedWeights">
+    tools:ignore="ContentDescription,SpUsage.NestedWeights,RtlHardcoded">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="left"
-        android:layout_marginTop="10dp"
-        android:layout_weight="3"
-        tools:ignore="RtlHardcoded">
-
-        <ImageButton
-            android:id="@+id/ib_notification_back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@color/colorWhite"
-            app:srcCompat="@drawable/ic_back" />
-
-    </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/ib_notification_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorWhite"
+        app:srcCompat="@drawable/ic_back" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="40dp"
         android:layout_weight="7"
-        android:gravity="center|left"
-        android:text="@string/notification_main_tv"
-        android:textSize="40sp"
-        tools:ignore="RtlHardcoded,SpUsage" />
+        android:gravity="center_vertical"
+        android:text="@string/notification_main_context"
+        android:textSize="40sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_notification"
+        android:id="@+id/rv_notification"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="33"
         android:overScrollMode="never" />
 
 </LinearLayout>

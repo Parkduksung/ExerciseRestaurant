@@ -7,16 +7,8 @@ import com.work.restaurant.view.base.BaseFragment
 import kotlinx.android.synthetic.main.mypage_notification_detail_fragment.*
 
 class MyPageNotificationDetailsFragment :
-    BaseFragment(R.layout.mypage_notification_detail_fragment), View.OnClickListener {
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
-            R.id.ib_notification_detail_back -> {
-                fragmentManager?.popBackStack()
-            }
-        }
-    }
-
+    BaseFragment(R.layout.mypage_notification_detail_fragment),
+    View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,14 +18,21 @@ class MyPageNotificationDetailsFragment :
         loadNotificationData()
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.ib_notification_detail_back -> {
+                fragmentManager?.popBackStack()
+            }
+        }
+    }
+
     private fun loadNotificationData() {
 
-        val bundle = arguments
-        val getNotificationDate = bundle?.getString(DATE).toString()
-        val getNotificationSubject = bundle?.getString(SUBJECT).toString()
-        val getNotificationContent = bundle?.getString(CONTENT).toString()
+        val getNotificationDate = arguments?.getString(DATE).orEmpty()
+        val getNotificationSubject = arguments?.getString(SUBJECT).orEmpty()
+        val getNotificationContent = arguments?.getString(CONTENT).orEmpty()
 
-        val splitContent = getNotificationContent.split(".")
+        val splitContent = getNotificationContent.split(SPLIT_CONTEXT)
 
         var toConvertContent = ""
 
@@ -45,11 +44,11 @@ class MyPageNotificationDetailsFragment :
         tv_notification_detail_date.text = getNotificationDate
         tv_notification_detail_subject.text = getNotificationSubject
         tv_notification_detail_content.text = toConvertContent
-
     }
 
-
     companion object {
+
+        private const val SPLIT_CONTEXT = "."
 
         private const val DATE = "date"
         private const val SUBJECT = "subject"

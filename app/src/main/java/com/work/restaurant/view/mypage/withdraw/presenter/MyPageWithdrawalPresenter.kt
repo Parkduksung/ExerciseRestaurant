@@ -24,14 +24,10 @@ class MyPageWithdrawalPresenter(
 
                 override fun onFailure() {
 
-                    myPageWithdrawalView.showWithdrawNo(1)
+                    myPageWithdrawalView.showWithdrawNo()
                 }
             })
 
-    }
-
-    override fun withdrawCancel() {
-        myPageWithdrawalView.showWithdrawCancel()
     }
 
     override fun withdraw(userNickname: String, userEmail: String) {
@@ -44,7 +40,7 @@ class MyPageWithdrawalPresenter(
 
             override fun onFailure(message: String) {
 
-                myPageWithdrawalView.showWithdrawNo(0)
+                myPageWithdrawalView.showWithdrawNo()
             }
         })
 

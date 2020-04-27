@@ -19,17 +19,35 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
 
     private lateinit var presenter: MyPageNotificationPresenter
 
+    private lateinit var notificationDataListener: NotificationDataListener
+
     private val notificationAdapter: NotificationAdapter by lazy { NotificationAdapter() }
 
-    private lateinit var notificationDataListener: NotificationDataListener
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         (context as NotificationDataListener).let {
             notificationDataListener = it
         }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter =
+            MyPageNotificationPresenter(
+                this,
+                Injection.provideNotificationRepository()
+            )
+        notificationAdapter.setItemClickListener(this)
+        ib_notification_back.setOnClickListener(this)
+
+        rv_notification.run {
+            this.adapter = notificationAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
+        presenter.getNotificationList()
     }
 
     override fun onClick(v: View?) {
@@ -41,39 +59,12 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     }
 
     override fun getData(data: NotificationModel) {
-
         notificationDataListener.getNotificationData(data)
     }
 
-
     override fun showNotificationList(list: List<NotificationModel>) {
-
-        recyclerview_notification.run {
-            notificationAdapter.clearListData()
-            notificationAdapter.addData(list)
-        }
-
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter = MyPageNotificationPresenter(
-            this,
-            Injection.provideNotificationRepository()
-        )
-        notificationAdapter.setItemClickListener(this)
-        ib_notification_back.setOnClickListener(this)
-
-        recyclerview_notification.run {
-            this.adapter = notificationAdapter
-            layoutManager = LinearLayoutManager(this.context)
-        }
-
-        presenter.getNotificationList()
-
-
+        notificationAdapter.clearListData()
+        notificationAdapter.addData(list)
     }
 
 

@@ -12,13 +12,23 @@ class MyPageQuestionPresenter(
 
         questionRepository.sendQuestion(question, object : QuestionRepositoryCallback {
             override fun onSuccess(message: String) {
-                questionView.showResult(message)
+
+                if (message == MESSAGE_OK) {
+                    questionView.showResult(true)
+                } else {
+                    questionView.showResult(false)
+                }
             }
 
             override fun onFailure(message: String) {
-                questionView.showResult(message)
+                questionView.showResult(false)
             }
         })
+    }
 
+    companion object {
+
+
+        private const val MESSAGE_OK = "success"
     }
 }

@@ -2,20 +2,18 @@ package com.work.restaurant.view.mypage.withdraw.presenter
 
 interface MyPageWithdrawalContract {
 
-    interface View{
-
-        fun showWithdrawCancel()
+    interface View {
 
         fun showWithdrawOk(userNickname: String)
 
         fun showWithdrawLoginOk(userNickname: String)
 
-        fun showWithdrawNo(sort : Int)
+        fun showProgressState(state: Boolean)
+
+        fun showWithdrawNo()
     }
 
-    interface Presenter{
-
-        fun withdrawCancel()
+    interface Presenter {
 
         fun withdraw(userNickname: String, userEmail: String)
 

@@ -3,6 +3,7 @@ package com.work.restaurant.view.mypage.question
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.util.App
@@ -16,54 +17,66 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
 
     private lateinit var presenter: MyPageQuestionPresenter
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter =
+            MyPageQuestionPresenter(
+                this,
+                Injection.provideQuestionRepository()
+            )
+
+        ib_question_back.setOnClickListener(this)
+        btn_send_question.setOnClickListener(this)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ib_question_back -> {
                 fragmentManager?.popBackStack()
             }
             R.id.btn_send_question -> {
-
                 if (et_question_content.text.toString().isNotEmpty()) {
-                    pb_question.bringToFront()
-                    pb_question.visibility = View.VISIBLE
-                    btn_send_question.isClickable = false
+                    showProgressState(true)
                     presenter.sendQuestion(et_question_content.text.toString())
                 } else {
-                    Toast.makeText(App.instance.context(), "정확한 입력을 부탁드립니다!", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        App.instance.context(),
+                        getString(R.string.question_not_input),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
         }
     }
 
-    override fun showResult(message: String) {
-        if (pb_question != null) {
+    override fun showResult(resultState: Boolean) {
 
-            pb_question.visibility = View.GONE
-            btn_send_question.isClickable = true
-            if (message == "success") {
-
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.question_send_ok), Toast.LENGTH_SHORT).show()
-                fragmentManager?.popBackStack()
-            } else {
-                Toast.makeText(this.context, getString(R.string.question_send_no), Toast.LENGTH_SHORT).show()
-            }
-
+        if (resultState) {
+            Toast.makeText(
+                App.instance.context(),
+                getString(R.string.question_send_ok), Toast.LENGTH_SHORT
+            ).show()
+            fragmentManager?.popBackStack()
+        } else {
+            Toast.makeText(
+                this.context,
+                getString(R.string.question_send_no),
+                Toast.LENGTH_SHORT
+            ).show()
         }
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun showProgressState(state: Boolean) {
+        pb_question?.let {
+            pb_question.bringToFront()
+            pb_question.isVisible = state
+        }
 
-        presenter = MyPageQuestionPresenter(
-            this,
-            Injection.provideQuestionRepository()
-        )
-
-        ib_question_back.setOnClickListener(this)
-        btn_send_question.setOnClickListener(this)
-
+        btn_send_question?.let {
+            btn_send_question.isClickable = !state
+        }
     }
 }

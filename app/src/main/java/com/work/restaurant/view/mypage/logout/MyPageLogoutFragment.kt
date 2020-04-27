@@ -65,7 +65,8 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = MyPageLogoutPresenter(
+        presenter =
+            MyPageLogoutPresenter(
             this,
             Injection.provideLoginRepository()
         )
