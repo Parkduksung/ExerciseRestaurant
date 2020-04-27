@@ -12,9 +12,9 @@ interface MyPageContract {
 
         fun showLoginNo()
 
-        fun showProgress()
+        fun showProgressState(state: Boolean)
 
-        fun showEnd()
+        fun showLoginCheck(kind: Int)
 
     }
 
@@ -24,6 +24,7 @@ interface MyPageContract {
 
         fun login(email: String, pass: String)
 
+        fun loginCheck(email: String, pass: String)
 
     }
 

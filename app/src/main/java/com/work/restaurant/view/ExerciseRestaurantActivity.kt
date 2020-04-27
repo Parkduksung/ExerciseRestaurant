@@ -148,7 +148,7 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
         supportFragmentManager.beginTransaction()
             .replace(
-                R.id.mypage_main_container,
+                R.id.myPage_main_container,
                 MyPageNotificationDetailsFragment
                     .newInstance(
                         data.notificationDate,

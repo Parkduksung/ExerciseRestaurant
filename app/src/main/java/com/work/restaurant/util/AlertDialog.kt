@@ -15,9 +15,13 @@ class ShowAlertDialog(context: Context) {
             )
         )
 
-    fun titleAndMessage(title: String, message: String) {
-        alertDialog.setTitle(title)
-        alertDialog.setMessage(message)
+    fun titleAndMessage(title: String?, message: String?) {
+        title?.let {
+            alertDialog.setTitle(title)
+        }
+        message?.let {
+            alertDialog.setMessage(message)
+        }
     }
 
     fun cancelable(state: Boolean) {

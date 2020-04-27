@@ -23,13 +23,8 @@
     <string name="find_ok_okay">확인</string>
     <string name="recent_view_item">최근 본 헬스장</string>
     <string name="logout">로그아웃</string>
-    <string name="withdraw">회원탈퇴</string>
-    <string name="login_title">운동맛집 로그인</string>
-    <string name="login_email_text">이메일</string>
-    <string name="login_pass_text">비밀번호</string>
-    <string name="login_register_start">회원가입하기</string>
-    <string name="login_start">시작</string>
-    <string name="login_find_pass_start">비밀번호 찾기</string>
+
+
     <string name="logout_question">로그아웃 하시겠어요?</string>
     <string name="logout_explain">로그아웃시 즐겨찾기가 저장되지 않아요!</string>
     <string name="logout_cancel">취소</string>
@@ -83,8 +78,6 @@
 
     <string name="diary_main_date1">%s %s요일</string>
 
-    <string name="mypage_login_state_nickname">%s 님 환영합니다!</string>
-
     <string name="diary_main_date">%s년 %s월 %s일 %s요일</string>
     <string name="current_date">%s년 %s월 %s일</string>
     <string name="current_time">%s %s시 %s분</string>
@@ -103,11 +96,8 @@
     <string name="hint_add_exercise_kg">kg</string>
     <string name="hint_add_exercise_count">횟수</string>
     <string name="btn_current_location">현위치로</string>
-    <string name="ll_mypage_identity">개인정보 처리방침</string>
-    <string name="ll_mypage_question">문의하기</string>
-    <string name="ll_mypage_notification">공지사항</string>
-    <string name="login_pass_hint">비밀번호를 입력하세요.</string>
-    <string name="login_email_hint">이메일을 입력하세요.</string>
+
+
     <string name="notification_main_tv">공지사항</string>
     <string name="question_main_text2">고객님께 불편을 드려 죄솝합니다. \n  고객님의 불편사항을 말씀해주시면, \n  더 나은 서비스를 제공할 수 있도록 \n  최대한 반영하겠습니다.</string>
     <string name="question_main_text3">불편 및 개선사항을 자유롭게 말씀해주세요. \n  (ex. 운동 목록을 더 추가해주세요.)</string>
@@ -182,6 +172,14 @@
     <string name="common_ok">확인</string>
     <string name="common_no">취소</string>
 
+    <string name="common_next">다음</string>
+    <string name="common_complete">완료</string>
+
+
+    <string name="email">이메일</string>
+    <string name="pass">비밀번호</string>
+    <string name="log_out">로그아웃</string>
+
     <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
     <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
     <string name="bookmark_add_no_message">즐겨찾기에 추가를 실패하였습니다.</string>
@@ -236,6 +234,34 @@
     <string name="noSearchMessage_message">다시 입력해 주세요.</string>
 
     //*item_details
+
+
+    //-----------------------My_Page-------------------------
+
+    //*main
+    <string name="myPage_identity">개인정보 처리방침</string>
+    <string name="myPage_question">문의하기</string>
+    <string name="myPage_notification">공지사항</string>
+    <string name="myPage_withdraw">회원탈퇴</string>
+
+    <string name="myPage_init_title">운동맛집 로그인</string>
+    <string name="myPage_init_email_hint">이메일을 입력하세요.</string>
+    <string name="myPage_init_pass_hint">비밀번호를 입력하세요.</string>
+    <string name="myPage_register">회원가입하기</string>
+    <string name="myPage_login_start">시작</string>
+    <string name="myPage_find_pass">비밀번호 찾기</string>
+
+    <string name="myPage_not_valid_email">형식에 맞는 이메일을 입력하세요.</string>
+    <string name="myPage_have_trim">입력한 정보에 공백을 제거하세요.</string>
+    <string name="myPage_not_input_email">이메일을 입력하세요.</string>
+    <string name="myPage_not_input_pass">비밀번호를 입력하세요.</string>
+    <string name="myPage_not_input_all">이메일과 비밀번호를 입력하세요.</string>
+    <string name="myPage_login_state_nickname">%s 님 환영합니다!</string>
+
+    <string name="myPage_login_fail">로그인에 실패하였습니다.</string>
+
+
+    //
 
 
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->

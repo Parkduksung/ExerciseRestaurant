@@ -3,6 +3,7 @@ package com.work.restaurant.network.room.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.work.restaurant.data.model.RoadModel
 
 @Entity(tableName = "address")
 data class AddressEntity(
@@ -14,5 +15,8 @@ data class AddressEntity(
     val gunGu: String,
     @ColumnInfo(name = "dong")
     val dong: String
-)
+) {
+    fun toRoadModel(): RoadModel =
+        RoadModel(si, gunGu, dong)
+}
 

@@ -5,6 +5,7 @@ import com.work.restaurant.data.repository.login.LoginRepositoryCallback
 import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.data.repository.user.UserRepositoryCallback
 import com.work.restaurant.network.room.entity.LoginEntity
+import com.work.restaurant.util.RelateLogin
 
 class MyPagePresenter(
     private val myPageView: MyPageContract.View,
@@ -16,7 +17,6 @@ class MyPagePresenter(
     override fun login(email: String, pass: String) {
         userRepository.login(email, pass, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
-//                changeState(email, resultNickname)
                 checkRegister(email, pass, resultNickname)
             }
 
@@ -29,12 +29,12 @@ class MyPagePresenter(
     override fun getLoginState() {
         loginRepository.getLoginState(object : LoginRepositoryCallback.LoginStateCallback {
             override fun onSuccess(list: LoginEntity) {
-                val toLoginModel = list.toLoginModel()
+                val toLoginModel =
+                    list.toLoginModel()
                 autoLogin(toLoginModel.loginId, toLoginModel.loginPw)
             }
 
             override fun onFailure() {
-                //현재 로그인된 계정이 없는것
                 myPageView.showInit()
             }
         })
@@ -85,7 +85,6 @@ class MyPagePresenter(
             }
 
             override fun onFailure(message: String) {
-                //자동로그인이 안되는것.
                 myPageView.showInit()
             }
         })
@@ -105,5 +104,37 @@ class MyPagePresenter(
         })
     }
 
+    override fun loginCheck(email: String, pass: String) {
+        if (email.isNotEmpty() && pass.isNotEmpty()) {
+            if (email.contains(EMPTY_SPACE) || pass.contains(EMPTY_SPACE)) {
+                myPageView.showLoginCheck(HAVE_TRIM)
+            } else {
+                if (RelateLogin.isValidEmail(email)) {
+                    myPageView.showLoginCheck(LOGIN_OK)
+                } else {
+                    myPageView.showLoginCheck(NOT_VALID_EMAIL)
+                }
+            }
+        } else if (email.trim().isNotEmpty() && pass.trim().isEmpty()) {
+            myPageView.showLoginCheck(NOT_INPUT_PASS)
+        } else if (email.trim().isEmpty() && pass.trim().isNotEmpty()) {
+            myPageView.showLoginCheck(NOT_INPUT_EMAIL)
+        } else {
+            myPageView.showLoginCheck(NOT_INPUT_ALL)
+        }
 
+    }
+
+    companion object {
+
+        private const val EMPTY_SPACE = " "
+
+        const val LOGIN_OK = 0
+        const val NOT_VALID_EMAIL = 1
+        const val HAVE_TRIM = 2
+        const val NOT_INPUT_PASS = 3
+        const val NOT_INPUT_EMAIL = 4
+        const val NOT_INPUT_ALL = 5
+
+    }
 }
