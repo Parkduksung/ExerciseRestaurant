@@ -11,16 +11,23 @@ class MyPageLogoutPresenter(
 
     override fun logoutOk(userId: String) {
 
-        loginRepository.changeState(userId, false, object : LoginRepositoryCallback.ChangeState {
-            override fun onSuccess() {
-                myPageLogoutView.showLogoutOk()
-            }
+        loginRepository.changeState(
+            userId,
+            LOGOUT_STATE,
+            object : LoginRepositoryCallback.ChangeState {
+                override fun onSuccess() {
+                    myPageLogoutView.showLogoutOk()
+                }
 
-            override fun onFailure() {
-                myPageLogoutView.showLogoutNo()
-            }
-        })
+                override fun onFailure() {
+                    myPageLogoutView.showLogoutNo()
+                }
+            })
     }
 
+    companion object {
+
+        private const val LOGOUT_STATE = false
+    }
 
 }

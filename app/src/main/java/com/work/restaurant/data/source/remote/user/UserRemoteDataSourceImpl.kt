@@ -72,7 +72,7 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                                     if (result) {
                                         callbackRemoteSource.onSuccess(resultNickname)
                                     } else {
-                                        callbackRemoteSource.onFailure("쿼리실패...")
+                                        callbackRemoteSource.onFailure(NOT_QUERY)
                                     }
                                 }
                             }
@@ -90,7 +90,7 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                             if (result) {
                                 callbackRemoteSource.onSuccess(resultNickname)
                             } else {
-                                callbackRemoteSource.onFailure("쿼리실패...")
+                                callbackRemoteSource.onFailure(NOT_QUERY)
                             }
                         }
 
@@ -159,6 +159,7 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                     override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
                         callbackRemoteSource.onFailure("${t?.message}")
                     }
+
                     override fun onResponse(
                         call: Call<ResultResponse>?,
                         response: Response<ResultResponse>?
@@ -169,7 +170,7 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                             if (result) {
                                 callbackRemoteSource.onSuccess(userNickname)
                             } else {
-                                callbackRemoteSource.onFailure("삭제 실패")
+                                callbackRemoteSource.onFailure(NOT_DELETE)
                             }
                         }
                     }
@@ -203,14 +204,14 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
                             if (it.isSuccessful) {
                                 callbackRemoteSource.onSuccess(resultNickname)
                             } else {
-                                callbackRemoteSource.onFailure("비밀번호 초기화 실패.")
+                                callbackRemoteSource.onFailure(NOT_INIT_PASS)
                             }
                         }
                     } else {
-                        callbackRemoteSource.onFailure("등록된 아이디가 없습니다.")
+                        callbackRemoteSource.onFailure(NOT_CONSIST_EMAIL)
                     }
                 } else {
-                    callbackRemoteSource.onFailure("비밀번호 초기화 실패.")
+                    callbackRemoteSource.onFailure(NOT_INIT_PASS)
                 }
 
             }
@@ -219,6 +220,11 @@ class UserRemoteDataSourceImpl private constructor(private val userApi: UserApi)
 
 
     companion object {
+
+        private const val NOT_INIT_PASS = "비밀번호 초기화 실패."
+        private const val NOT_CONSIST_EMAIL = "등록된 아이디가 없습니다."
+        private const val NOT_DELETE = "삭제 실패"
+        private const val NOT_QUERY = "쿼리 실패"
 
         private var instance: UserRemoteDataSourceImpl? = null
 

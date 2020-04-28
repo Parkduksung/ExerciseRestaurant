@@ -10,6 +10,7 @@ interface MyPageRegisterContract {
 
         fun showEmailDuplicationCheck(check: Boolean)
 
+        fun showProgressState(state: Boolean)
 
     }
 
@@ -18,6 +19,7 @@ interface MyPageRegisterContract {
         fun register(nickName: String, email: String, pass: String)
 
         fun emailDuplicationCheck(userId: String)
+
 
     }
 

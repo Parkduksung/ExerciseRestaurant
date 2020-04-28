@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.ContextThemeWrapper
 import com.work.restaurant.R
 
-class ShowAlertDialog(context: Context) {
+class ShowAlertDialog(context: Context?) {
 
     val alertDialog =
         AlertDialog.Builder(

@@ -4,10 +4,11 @@ interface MyPageFindPassContract {
 
     interface View {
 
-
         fun showResetOk()
 
-        fun showResetNo(message: String)
+        fun showResetNo()
+
+        fun showProgressState(state: Boolean)
 
     }
 

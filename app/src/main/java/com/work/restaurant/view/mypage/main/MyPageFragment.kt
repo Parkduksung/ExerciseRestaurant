@@ -136,20 +136,20 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
             R.id.btn_identity -> {
 
-                context?.let {
-                    ShowAlertDialog(it).apply {
-                        alertDialog.setView(
-                            LayoutInflater.from(context).inflate(
-                                R.layout.identify_item,
-                                null
-                            )
+
+                ShowAlertDialog(context).apply {
+                    alertDialog.setView(
+                        LayoutInflater.from(context).inflate(
+                            R.layout.identify_item,
+                            null
                         )
-                        titleAndMessage(getString(R.string.myPage_identity), null)
-                        alertDialog.setPositiveButton(
-                            getString(R.string.common_ok)
-                        ) { _, _ -> }
-                        showDialog()
-                    }
+                    )
+                    titleAndMessage(getString(R.string.myPage_identity), null)
+                    alertDialog.setPositiveButton(
+                        getString(R.string.common_ok)
+                    ) { _, _ -> }
+                    showDialog()
+
                 }
             }
             R.id.btn_notification -> {
@@ -281,7 +281,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             MyPagePresenter.HAVE_TRIM -> {
                 Toast.makeText(
                     context,
-                    getString(R.string.myPage_have_trim),
+                    getString(R.string.common_have_trim),
                     Toast.LENGTH_SHORT
                 )
                     .show()

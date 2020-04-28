@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.Injection
 import com.work.restaurant.R
@@ -14,6 +15,7 @@ import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
+import kotlinx.android.synthetic.main.mypage_fragment.*
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 
 class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
@@ -21,28 +23,6 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
 
     private lateinit var presenter: MyPageLogoutContract.Presenter
-
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_logout_cancel -> {
-                fragmentManager?.popBackStack()
-            }
-
-            R.id.btn_logout_ok -> {
-
-                val bundle = arguments
-                val getUserId = bundle?.getString(LOGOUT_ID).orEmpty()
-
-                if (getUserId.isNotEmpty()) {
-                    presenter.logoutOk(getUserId)
-                } else {
-                    Toast.makeText(App.instance.context(), "로그아웃을 실패하였습니다.", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,16 +47,57 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
         super.onViewCreated(view, savedInstanceState)
         presenter =
             MyPageLogoutPresenter(
-            this,
-            Injection.provideLoginRepository()
-        )
+                this,
+                Injection.provideLoginRepository()
+            )
         btn_logout_cancel.setOnClickListener(this)
         btn_logout_ok.setOnClickListener(this)
 
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_logout_cancel -> {
+                fragmentManager?.popBackStack()
+            }
+
+            R.id.btn_logout_ok -> {
+
+                val getUserId = arguments?.getString(LOGOUT_ID).orEmpty()
+
+                if (getUserId.isNotEmpty()) {
+                    showProgressState(true)
+                    presenter.logoutOk(getUserId)
+                } else {
+                    Toast.makeText(
+                        App.instance.context(),
+                        getString(R.string.logout_no),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+    }
+
+    override fun showProgressState(state: Boolean) {
+
+        pb_logout?.let {
+            pb_logout.bringToFront()
+            pb_logout.isVisible = state
+        }
+        btn_logout_cancel?.let {
+            btn_logout_cancel.isClickable != state
+        }
+        btn_logout?.let {
+            btn_logout_ok.isClickable != state
+        }
+
+    }
+
     override fun showLogoutOk() {
 
+        showProgressState(false)
         FirebaseAuth.getInstance().signOut()
 
         targetFragment?.onActivityResult(
@@ -88,7 +109,9 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
     }
 
     override fun showLogoutNo() {
-        Toast.makeText(App.instance.context(), "로그아웃을 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        showProgressState(false)
+        Toast.makeText(App.instance.context(), getString(R.string.logout_no), Toast.LENGTH_SHORT)
+            .show()
     }
 
     companion object {

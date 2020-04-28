@@ -12,6 +12,9 @@ class MyPageRegisterPresenter(
 ) :
     MyPageRegisterContract.Presenter {
     override fun emailDuplicationCheck(userId: String) {
+
+        myPageRegisterView.showProgressState(true)
+
         userRepository.emailDuplicationCheck(
             userId,
             object : UserRepositoryCallback.EmailDuplicationCheck {
@@ -39,7 +42,7 @@ class MyPageRegisterPresenter(
                 }
 
                 override fun onFailure() {
-                    myPageRegisterView.showRegisterNo(1)
+                    myPageRegisterView.showRegisterNo(NOT_VERIFIED_REGISTER)
                 }
             })
 
@@ -48,15 +51,24 @@ class MyPageRegisterPresenter(
 
     override fun register(nickName: String, email: String, pass: String) {
 
+        myPageRegisterView.showProgressState(true)
+
         userRepository.register(nickName, email, pass, object : UserRepositoryCallback {
             override fun onSuccess(resultNickname: String) {
                 registerLogin(nickName, email, pass)
             }
 
             override fun onFailure(message: String) {
-                myPageRegisterView.showRegisterNo(0)
+                myPageRegisterView.showRegisterNo(DUPLICATE_REGISTER)
             }
         })
+
+    }
+
+    companion object {
+        const val DUPLICATE_REGISTER = 0
+        const val NOT_VERIFIED_REGISTER = 1
+
 
     }
 

@@ -15,11 +15,13 @@ class MyPageFindPassPresenter(
 
                 if (resultNickname.isNotEmpty()) {
                     myPageFindPassView.showResetOk()
+                } else {
+                    myPageFindPassView.showResetNo()
                 }
             }
 
             override fun onFailure(message: String) {
-                myPageFindPassView.showResetNo(message)
+                myPageFindPassView.showResetNo()
             }
         })
     }

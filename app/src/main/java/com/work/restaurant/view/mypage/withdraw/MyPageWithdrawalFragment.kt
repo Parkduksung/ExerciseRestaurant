@@ -119,18 +119,18 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
                 null
             )
 
-            context?.let {
-                ShowAlertDialog(it).apply {
-                    titleAndMessage(
-                        getString(R.string.common_success),
-                        getString(R.string.withdrawal_ok_result, userNickname)
-                    )
-                    alertDialog.setPositiveButton(
-                        getString(R.string.common_ok)
-                    ) { _, _ -> }
-                    showDialog()
-                }
+
+            ShowAlertDialog(context).apply {
+                titleAndMessage(
+                    getString(R.string.common_success),
+                    getString(R.string.withdrawal_ok_result, userNickname)
+                )
+                alertDialog.setPositiveButton(
+                    getString(R.string.common_ok)
+                ) { _, _ -> }
+                showDialog()
             }
+
 
             toggleWithdraw = false
             toggleWithdrawLogin = false
@@ -154,15 +154,15 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
     override fun showWithdrawNo() {
         showProgressState(false)
 
-        context?.let {
-            ShowAlertDialog(it).apply {
-                titleAndMessage(getString(R.string.common_fail), getString(R.string.withdrawal_no))
-                alertDialog.setPositiveButton(
-                    getString(R.string.common_ok)
-                ) { _, _ -> }
-                showDialog()
-            }
+
+        ShowAlertDialog(context).apply {
+            titleAndMessage(getString(R.string.common_fail), getString(R.string.withdrawal_no))
+            alertDialog.setPositiveButton(
+                getString(R.string.common_ok)
+            ) { _, _ -> }
+            showDialog()
         }
+
     }
 
     companion object {
