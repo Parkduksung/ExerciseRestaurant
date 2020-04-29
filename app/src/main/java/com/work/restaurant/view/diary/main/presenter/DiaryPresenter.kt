@@ -23,9 +23,10 @@ class DiaryPresenter(
             object : ExerciseRepositoryCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<ExerciseEntity>) {
 
-                    val getDataOfTheDayList = list.map {
-                        it.toExerciseModel()
-                    }
+                    val getDataOfTheDayList =
+                        list.map {
+                            it.toExerciseModel()
+                        }
                     diaryView.showExerciseData(getDataOfTheDayList.sortedBy { it.time })
                 }
 
@@ -44,9 +45,10 @@ class DiaryPresenter(
             today,
             object : EatRepositoryCallback.GetDataOfTheDay {
                 override fun onSuccess(list: List<EatEntity>) {
-                    val getDataOfTheDayList = list.map {
-                        it.toEatModel()
-                    }
+                    val getDataOfTheDayList =
+                        list.map {
+                            it.toEatModel()
+                        }
                     diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
                 }
 

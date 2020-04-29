@@ -1,6 +1,5 @@
 package com.work.restaurant.view.diary.update_or_delete_eat.presenter
 
-import android.util.Log
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.repository.eat.EatRepository
 import com.work.restaurant.data.repository.eat.EatRepositoryCallback
@@ -16,11 +15,11 @@ class UpdateOrDeleteEatPresenter(
 
         eatRepository.deleteEat(toEatEntity, object : EatRepositoryCallback.DeleteEatCallback {
             override fun onSuccess() {
-                updateOrDeleteEatView.showResult(2)
+                updateOrDeleteEatView.showResult(SUCCESS_DELETE)
             }
 
             override fun onFailure() {
-                updateOrDeleteEatView.showResult(0)
+                updateOrDeleteEatView.showResult(FAIL_DELETE)
             }
         })
 
@@ -30,8 +29,6 @@ class UpdateOrDeleteEatPresenter(
 
         val toEatEntity = data.toEatEntity()
 
-
-
         eatRepository.updateEat(
             time,
             type,
@@ -40,14 +37,22 @@ class UpdateOrDeleteEatPresenter(
             object : EatRepositoryCallback.UpdateEatCallback {
                 override fun onSuccess() {
 
-                    updateOrDeleteEatView.showResult(1)
+                    updateOrDeleteEatView.showResult(SUCCESS_UPDATE)
                 }
 
                 override fun onFailure() {
-                    updateOrDeleteEatView.showResult(0)
+                    updateOrDeleteEatView.showResult(FAIL_UPDATE)
                 }
             })
 
+    }
+
+    companion object {
+
+        const val FAIL_UPDATE = 0
+        const val FAIL_DELETE = 1
+        const val SUCCESS_UPDATE = 2
+        const val SUCCESS_DELETE = 3
 
     }
 }

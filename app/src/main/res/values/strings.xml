@@ -1,6 +1,46 @@
 <resources>
-    <string name="app_name">Exercise\nRestaurant</string>
-    <string name="app_version">v.1.1.1</string>
+
+    <string-array name="tab_main">
+        <item>홈</item>
+        <item>헬스장검색</item>
+        <item>다이어리</item>
+        <item>켈린더</item>
+        <item>마이페이지</item>
+    </string-array>
+
+    <string-array name="tab_search">
+        <item>운동맛집</item>
+        <item>관심맛집</item>
+    </string-array>
+
+    <string-array name="tab_address">
+        <item>광역시/도</item>
+        <item>시/군/구</item>
+        <item>읍/면/동</item>
+    </string-array>
+
+    <string-array name="tab_community">
+        <item>헬스장리뷰</item>
+        <item>운동일지</item>
+        <item>영양일지</item>
+    </string-array>
+
+    <string-array name="add_exercise_part">
+        <item>가슴</item>
+        <item>등</item>
+        <item>어깨</item>
+        <item>팔</item>
+        <item>다리</item>
+    </string-array>
+
+    <string-array name="load_string">
+        <item>오늘도 운동을 Flex!</item>
+        <item>쇠는 놓지말자!</item>
+        <item>덤벨잡는 너, 참 멋져!</item>
+        <item>No pain, No gain!</item>
+        <item>땀흘린자, 먹어라!</item>
+        <item>운동인들을 위한 세상</item>
+    </string-array>
 
 
     <string name="address_title">주소 설정</string>
@@ -12,58 +52,17 @@
     <string name="address_change_ok">변경</string>
     <string name="loading_title">운동맛집</string>
 
-    <string name="recent_view_item">최근 본 헬스장</string>
 
-
-    <string name="search_item_money">하루이용</string>
-    <string name="search_item_time">이용시간</string>
-    <string name="search_item_best_part">이집 잘해요!</string>
-    <string name="bookmarks_title">추가 목록</string>
-    <string name="rank_title">현재위치</string>
-
-
-    <string name="google_geo_api_key">AIzaSyAAXt-NZ8tK9Pgn1Bidb9tmRPw3uQbU3G4</string>
     <string name="kakao_map_api_key">785b8c0fb5d7046009351ac6fe2fed8b</string>
 
-    <string name="home_address_main_text">주소 설정</string>
-    <string name="btn_eat">식단</string>
-    <string name="btn_exercise">운동</string>
-    <string name="add_exercise_year">2020년</string>
-    <string name="add_exercise_today">1월 17일</string>
-    <string name="add_exercise_category">카테고리</string>
-    <string name="exercise_set_delete">삭제</string>
-    <string name="exercise_set_add">추가</string>
-    <string name="tv_add_eat_category">식단 추가</string>
-    <string name="add_eat_today">요일</string>
-    <string name="add_eat_today_time">시간</string>
-    <string name="add_eat_list">종류</string>
-    <string name="add_eat_menu_meal">식사</string>
-    <string name="add_eat_menu_snack">간식</string>
-    <string name="add_eat_memo">메모</string>
-    <string name="add_eat_cancel">취소</string>
-    <string name="add_eat_save">저장</string>
 
-
-    <string name="diary_main_date1">%s %s요일</string>
-
-    <string name="diary_main_date">%s년 %s월 %s일 %s요일</string>
     <string name="current_date">%s년 %s월 %s일</string>
-    <string name="current_time">%s %s시 %s분</string>
+
     <string name="item_chest">가슴</string>
     <string name="item_back">등</string>
     <string name="item_shoulder">어깨</string>
     <string name="item_legs">다리</string>
     <string name="item_arm">팔</string>
-    <string name="add_exercise_category_today">요일</string>
-    <string name="add_exercise_category_time">시간</string>
-    <string name="add_exercise_list">운동부위</string>
-    <string name="add_exercise_save">저장</string>
-    <string name="add_exercise_cancel">취소</string>
-    <string name="add_exercise_main">운동 추가</string>
-    <string name="hint_add_exercise_name">운동종목을 입력하세요</string>
-    <string name="hint_add_exercise_kg">kg</string>
-    <string name="hint_add_exercise_count">횟수</string>
-    <string name="btn_current_location">현위치로</string>
 
 
     <string name="exercise_sort_accuracy">정확도순</string>
@@ -74,37 +73,23 @@
     <string name="et_calendar_main_context_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
 
 
-    <string name="baseActivity_backPressed">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
     <string name="calendar_login_state_no">기록을 확인하기 위해선 로그인이 필요합니다.</string>
-    <string name="diary_login_state_no">기록을 추가하기 위해선 로그인이 필요합니다.</string>
 
 
-    <string name="bookmark_content_add">즐겨찾기 항목에 추가</string>
-    <string name="bookmark_content_delete">즐겨찾기 항목에 제거</string>
 
-    <string name="diary_main_no_login_state">로그인을 하여 기록을 남겨보세요!</string>
-    <string name="logout_write_error_message">로그아웃시에는 기록을 저장할 수 없습니다.</string>
-    <string name="input_context_error_message1">내용을 입력하세요.</string>
-    <string name="input_context_error_message2">항목을 선택하세요.</string>
-    <string name="input_context_error_message3">항목과 내용을 입력하세요.</string>
-
-    <string name="diary_add_no_message">저장할 수 없습니다.</string>
-    <string name="diary_add_ok_message">저장되었습니다.</string>
-    <string name="diary_delete_no_message">삭제할 수 없습니다.</string>
-    <string name="diary_delete_ok_message">삭제되었습니다.</string>
-    <string name="exercise_no_input_kg_and_count_error_message">추가하려는 무게와 횟수를 입력하세요.</string>
-
-    <string name="tv_update_or_delete_eat_category">식단 수정</string>
     <string name="update_or_delete_exercise_main">운동 수정</string>
-    <string name="tv_diary_add_eat">식단 추가</string>
-    <string name="tv_diary_add_exercise">운동 추가</string>
 
 
     //-----------------------Common------------------------
     <string name="app_update">Update 2020.02.29</string>
+    <string name="app_name">Exercise\nRestaurant</string>
+    <string name="app_version">v.1.1.1</string>
 
     <string name="common_ok">확인</string>
     <string name="common_no">취소</string>
+
+    <string name="common_change">변경</string>
+    <string name="common_delete">삭제</string>
 
     <string name="common_success">성공</string>
     <string name="common_fail">실패</string>
@@ -112,12 +97,28 @@
     <string name="common_next">다음</string>
     <string name="common_complete">완료</string>
 
-
     <string name="email">이메일</string>
     <string name="pass">비밀번호</string>
     <string name="log_out">로그아웃</string>
 
+    <string name="common_save_no">저장할 수 없습니다.</string>
+    <string name="common_save_ok">저장되었습니다.</string>
+    <string name="common_delete_no">삭제할 수 없습니다.</string>
+    <string name="common_delete_fail">삭제를 실패하였습니다..</string>
+    <string name="common_delete_ok">삭제되었습니다.</string>
+    <string name="common_update_ok">수정되었습니다.</string>
+    <string name="common_update_fail">수정을 실패하였습니다.</string>
+
+
     <string name="common_have_trim">입력한 정보에 공백을 제거하세요.</string>
+    <string name="common_context_error_message1">내용을 입력하세요.</string>
+    <string name="common_context_error_message2">항목을 선택하세요.</string>
+    <string name="common_context_error_message3">항목과 내용을 입력하세요.</string>
+    <string name="common_exercise_no_input_kg_and_count_error_message">추가하려는 무게와 횟수를 입력하세요.</string>
+
+    <string name="common_when_logout_not_save_records">로그아웃시에는 기록을 저장할 수 없습니다.</string>
+
+    <string name="baseActivity_backPressed">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
 
     <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
     <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
@@ -310,6 +311,46 @@
     <string name="register_ok_start">Start!</string>
 
 
+    //-----------------------Diary-------------------------
+
+
+    //*main
+    <string name="diary_login_state_no1">기록을 추가하기 위해선 로그인이 필요합니다.</string>
+    <string name="diary_login_state_no2">로그인을 하여 기록을 남겨보세요!</string>
+
+    <string name="tv_diary_add_eat">식단 추가</string>
+    <string name="tv_diary_add_exercise">운동 추가</string>
+
+    //*add_eat
+    <string name="add_eat_category">식단 추가</string>
+    <string name="add_eat_today">요일</string>
+    <string name="add_eat_today_time">시간</string>
+    <string name="add_eat_list">종류</string>
+    <string name="add_eat_menu_meal">식사</string>
+    <string name="add_eat_menu_snack">간식</string>
+    <string name="add_eat_memo">메모</string>
+    <string name="add_eat_cancel">취소</string>
+    <string name="add_eat_save">저장</string>
+
+
+    //*add_exercise
+    <string name="add_exercise_category_today">요일</string>
+    <string name="add_exercise_category_time">시간</string>
+    <string name="add_exercise_list">운동부위</string>
+    <string name="add_exercise_save">저장</string>
+    <string name="add_exercise_cancel">취소</string>
+    <string name="add_exercise_main">운동 추가</string>
+    <string name="add_exercise_hint_name">운동종목을 입력하세요</string>
+    <string name="add_exercise_hint_kg">kg</string>
+    <string name="add_exercise_hint_count">횟수</string>
+
+
+    //*update_or_delete_eat
+    <string name="update_or_delete_eat_delete">기록 삭제</string>
+    <string name="update_or_delete_eat_delete_message">선택한 기록을 삭제하시겠습니까?</string>
+    <string name="update_or_delete_eat_category">식단 수정</string>
+
+    //*update_or_delete_exercise
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
     <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
 

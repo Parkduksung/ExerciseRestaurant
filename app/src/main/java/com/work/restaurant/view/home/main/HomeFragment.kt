@@ -115,7 +115,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
                     startActivity(intent)
                 } else {
                     Toast.makeText(
-                        this.context,
+                        context,
                         getString(R.string.home_no_access),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -172,7 +172,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
                 } else {
                     Toast.makeText(
-                        this.context,
+                        context,
                         getString(R.string.home_no_access),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -186,7 +186,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
         when (result) {
             HomePresenter.ADD_BOOKMARK -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_state_ok),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -196,7 +196,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
             HomePresenter.DELETE_BOOKMARK -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_state_no),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -206,7 +206,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
             HomePresenter.FAIL_ADD -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_add_no_message),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -214,7 +214,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
             HomePresenter.FAIL_DELETE -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_delete_no_message),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -231,7 +231,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             MapFragment.NO_NEW_RESULT -> {
                 ll_marker_refresh.visibility = View.GONE
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.home_no_result),
                     Toast.LENGTH_SHORT
                 ).show()
@@ -318,7 +318,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
                 }
             } else {
                 Toast.makeText(
-                    this.context,
+                   context,
                     getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_SHORT
                 ).show()

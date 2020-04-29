@@ -244,7 +244,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
             } else {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.calendar_login_state_no),
                     Toast.LENGTH_SHORT
                 ).show()

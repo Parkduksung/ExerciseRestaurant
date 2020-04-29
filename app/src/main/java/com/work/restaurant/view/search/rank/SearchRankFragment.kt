@@ -242,7 +242,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
             SearchRankPresenter.ADD_BOOKMARK -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_state_ok),
                     Toast.LENGTH_LONG
                 ).show()
@@ -252,7 +252,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
             SearchRankPresenter.DELETE_BOOKMARK -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_state_no),
                     Toast.LENGTH_LONG
                 ).show()
@@ -262,7 +262,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
             SearchRankPresenter.FAIL_ADD -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_add_no_message),
                     Toast.LENGTH_LONG
                 ).show()
@@ -270,7 +270,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
             SearchRankPresenter.FAIL_DELETE -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_delete_no_message),
                     Toast.LENGTH_LONG
                 ).show()
@@ -355,7 +355,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
             SearchRankAdapter.NOT_LOGIN_STATE -> {
                 Toast.makeText(
-                    this.context,
+                    context,
                     getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_LONG
                 ).show()

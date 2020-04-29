@@ -11,18 +11,19 @@ class UpdateOrDeleteExercisePresenter(
 ) : UpdateOrDeleteExerciseContract.Presenter {
     override fun deleteExercise(exerciseModel: ExerciseModel) {
 
-        val toExerciseEntity = exerciseModel.toExerciseEntity()
+        val toExerciseEntity =
+            exerciseModel.toExerciseEntity()
 
         exerciseRepository.deleteEat(
             toExerciseEntity,
             object : ExerciseRepositoryCallback.DeleteExerciseCallback {
                 override fun onSuccess() {
 
-                    updateOrDeleteView.showResult(1)
+                    updateOrDeleteView.showResult(SUCCESS_DELETE)
                 }
 
                 override fun onFailure() {
-                    updateOrDeleteView.showResult(0)
+                    updateOrDeleteView.showResult(FAIL_DELETE)
                 }
             })
     }
@@ -35,7 +36,8 @@ class UpdateOrDeleteExercisePresenter(
         exerciseModel: ExerciseModel
     ) {
 
-        val toExerciseSetResponse = changeExerciseSet.map { it.toExerciseSetResponse() }
+        val toExerciseSetResponse =
+            changeExerciseSet.map { it.toExerciseSetResponse() }
 
         exerciseRepository.updateExercise(
             changeTime,
@@ -46,14 +48,21 @@ class UpdateOrDeleteExercisePresenter(
             exerciseModel.exerciseNum,
             object : ExerciseRepositoryCallback.UpdateExerciseCallback {
                 override fun onSuccess() {
-                    updateOrDeleteView.showResult(2)
+                    updateOrDeleteView.showResult(SUCCESS_UPDATE)
                 }
 
                 override fun onFailure() {
-                    updateOrDeleteView.showResult(0)
+                    updateOrDeleteView.showResult(FAIL_UPDATE)
                 }
             })
+    }
 
+    companion object {
+
+        const val FAIL_UPDATE = 0
+        const val FAIL_DELETE = 1
+        const val SUCCESS_UPDATE = 2
+        const val SUCCESS_DELETE = 3
 
     }
 }

@@ -20,8 +20,6 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
-        <!--        <item name="textInputStyle">@style/TextAppearance.MyApp.Headline1</item>-->
-
     </style>
 
     <style name="tab_text" parent="TextAppearance.Design.Tab">
@@ -29,11 +27,6 @@
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
     </style>
-
-    <!--    <style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">-->
-    <!--        <item name="android:textStyle">normal</item>-->
-    <!--        <item name="android:textSize">1dp</item>-->
-    <!--    </style>-->
 
 
     <style name="HintText" parent="TextAppearance.Design.Hint">
@@ -49,13 +42,10 @@
         <item name="android:textColor">@drawable/button_refresh_textcolor</item>
         <item name="android:textSize">8dp</item>
         <item name="android:background">@color/colorWhite</item>
-        <!--        <item name="android:background">@drawable/button_refresh</item>-->
-
     </style>
 
 
     <style name="ErrorText" parent="TextAppearance.Design.Error">
-        <!--        <item name="android:textColor">@color/</item>-->
         <item name="android:textSize">8dp</item>
     </style>
 

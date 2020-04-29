@@ -155,7 +155,7 @@
                 android:layout_margin="1dp"
                 android:background="@color/colorWhite"
                 android:gravity="center"
-                android:hint="@string/hint_add_exercise_name"
+                android:hint="@string/add_exercise_hint_name"
                 android:imeActionLabel="완료"
                 android:imeOptions="actionDone"
                 android:inputType="text"

@@ -25,21 +25,4 @@ class AddEatPresenter(
             })
     }
 
-
-//    override fun deleteEat() {
-//
-//        val toEatEntity = data.toEatEntity()
-//
-//        eatRepository.deleteEat(toEatEntity, object : EatRepositoryCallback.DeleteEatCallback {
-//            override fun onSuccess() {
-//                diaryView.showResult(true)
-//            }
-//
-//            override fun onFailure() {
-//                diaryView.showResult(false)
-//            }
-//        })
-//    }
-
-
 }

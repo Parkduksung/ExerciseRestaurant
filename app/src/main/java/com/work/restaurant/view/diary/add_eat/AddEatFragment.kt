@@ -2,7 +2,6 @@ package com.work.restaurant.view.diary.add_eat
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioGroup
@@ -10,8 +9,9 @@ import android.widget.TimePicker
 import android.widget.Toast
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
+import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
@@ -23,15 +23,19 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
 
     private lateinit var presenter: AddEatPresenter
 
-    override fun showAddSuccess() {
-        targetFragment?.onActivityResult(
-            targetRequestCode,
-            Activity.RESULT_OK,
-            null
-        )
-        dismiss()
-        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT)
-            .show()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        presenter =
+            AddEatPresenter(
+                this,
+                Injection.provideEatRepository()
+            )
+        startView()
+
+        tv_add_eat_time.setOnClickListener(this)
+        tv_add_eat_today.setOnClickListener(this)
+        add_eat_cancel.setOnClickListener(this)
+        add_eat_save.setOnClickListener(this)
 
     }
 
@@ -42,7 +46,6 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             R.id.tv_add_eat_today -> {
                 getDatePicker()
             }
-
             R.id.tv_add_eat_time -> {
                 getTimePicker()
             }
@@ -51,12 +54,11 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             }
             R.id.add_eat_save -> {
 
-                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
-
-                    if (radioClick <= 1 && et_add_eat_memo.text.isNotBlank()) {
+                if (RelateLogin.loginState()) {
+                    if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank()) {
                         if (et_add_eat_memo.text.trim().isNotEmpty()) {
                             presenter.addEat(
-                                App.prefs.login_state_id,
+                                RelateLogin.getLoginId(),
                                 tv_add_eat_today.text.toString(),
                                 DateAndTime.convertSaveTime(tv_add_eat_time.text.toString()),
                                 radioClick,
@@ -65,40 +67,40 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
                             radioClick = 2
                         } else {
                             Toast.makeText(
-                                this.context,
-                                getString(R.string.input_context_error_message1),
+                                context,
+                                getString(R.string.common_context_error_message1),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    } else if (radioClick > 1 && et_add_eat_memo.text.isNotBlank()) {
+                    } else if (radioClick > CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank()) {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.input_context_error_message2),
+                            context,
+                            getString(R.string.common_context_error_message2),
                             Toast.LENGTH_SHORT
                         ).show()
-                    } else if (radioClick <= 1 && et_add_eat_memo.text.isEmpty()) {
+                    } else if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isEmpty()) {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.input_context_error_message1),
+                            context,
+                            getString(R.string.common_context_error_message1),
                             Toast.LENGTH_SHORT
                         ).show()
-                    } else if (radioClick <= 1 && et_add_eat_memo.text.trim().isEmpty()) {
+                    } else if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.trim().isEmpty()) {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.input_context_error_message1),
+                            context,
+                            getString(R.string.common_context_error_message1),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.input_context_error_message3),
+                            context,
+                            getString(R.string.common_context_error_message3),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
                     Toast.makeText(
-                        this.context,
-                        getString(R.string.logout_write_error_message),
+                        context,
+                        getString(R.string.common_when_logout_not_save_records),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -108,36 +110,7 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
         }
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        init()
-        presenter = AddEatPresenter(
-            this,
-            Injection.provideEatRepository()
-        )
-        tv_add_eat_time.setOnClickListener(this)
-        tv_add_eat_today.setOnClickListener(this)
-        add_eat_cancel.setOnClickListener(this)
-        add_eat_save.setOnClickListener(this)
-
-    }
-
-    private fun getRadioClickNum(radioGroup: RadioGroup) {
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.rb_meal -> {
-                    radioClick = 0
-                }
-                R.id.rb_snack -> {
-                    radioClick = 1
-                }
-            }
-        }
-    }
-
-    private fun init() {
+    private fun startView() {
         tv_add_eat_today.text =
             arguments?.getString(DATE)
         tv_add_eat_time.text =
@@ -145,30 +118,48 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
         getRadioClickNum(add_eat_radio_group)
     }
 
+    override fun showAddSuccess() {
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            null
+        )
+        dismiss()
+        Toast.makeText(context, getString(R.string.common_save_ok), Toast.LENGTH_SHORT)
+            .show()
+
+    }
+
+    private fun getRadioClickNum(radioGroup: RadioGroup) {
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.rb_meal -> {
+                    radioClick = CHECK_MEAL
+                }
+                R.id.rb_snack -> {
+                    radioClick = CHECK_SNACK
+                }
+            }
+        }
+    }
+
     private fun getTimePicker() {
-        val dialogView = View.inflate(context, R.layout.time_picker, null)
-        val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
+        val dialogView =
+            View.inflate(context, R.layout.time_picker, null)
+        val timePicker =
+            dialogView.findViewById<TimePicker>(R.id.time_picker)
 
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
 
-        alertDialog.setView(dialogView)
-            .setCancelable(false)
-            .setPositiveButton("변경") { _, _ ->
-
+        ShowAlertDialog(context).apply {
+            alertDialog.setView(dialogView)
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 tv_add_eat_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
-
             }
-            .setNegativeButton("취소") { _, _ ->
-
-            }
-            .show()
+            alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+            showDialog()
+        }
 
     }
 
@@ -177,17 +168,10 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
         val dialogView = View.inflate(context, R.layout.date_picker, null)
         val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
 
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
-
-        alertDialog.setView(dialogView)
-            .setCancelable(false)
-            .setPositiveButton("변경") { _, _ ->
+        ShowAlertDialog(context).apply {
+            alertDialog.setView(dialogView)
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 tv_add_eat_today.text =
                     getString(
                         R.string.current_date,
@@ -196,10 +180,9 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
                         datePicker.dayOfMonth.toString()
                     )
             }
-            .setNegativeButton("취소") { _, _ ->
-
-            }
-            .show()
+            alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+            showDialog()
+        }
     }
 
     override fun onResume() {
@@ -212,6 +195,10 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
         private var radioClick = 2
         private const val DATE = "date"
 
+        private const val CHECK_MEAL = 0
+        private const val CHECK_SNACK = 1
+
+        private const val CHECK_RADIO_STATE = 1
 
         fun newInstance(
             date: String

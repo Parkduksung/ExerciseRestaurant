@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.TimePicker
 import android.widget.Toast
@@ -14,9 +17,7 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.data.model.ExerciseSet
-import com.work.restaurant.util.App
-import com.work.restaurant.util.DateAndTime
-import com.work.restaurant.util.Keyboard
+import com.work.restaurant.util.*
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
@@ -30,44 +31,30 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
     private lateinit var presenter: UpdateOrDeleteExercisePresenter
 
-    override fun showResult(sort: Int) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewList = ArrayList()
+    }
 
-        when (sort) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            1 -> {
-                val data = Intent().apply {
-                    putExtra(SEND_RESULT_NUM, DELETE_EXERCISE)
-                }
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
-                dismiss()
-                Toast.makeText(App.instance.context(), "삭제되었습니다.", Toast.LENGTH_SHORT).show()
-            }
+        presenter =
+            UpdateOrDeleteExercisePresenter(
+                this,
+                Injection.provideExerciseRepository()
+            )
+        startView()
 
-            2 -> {
-                val data = Intent().apply {
-                    putExtra(SEND_RESULT_NUM, UPDATE_EXERCISE)
-                }
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    data
-                )
-                dismiss()
-                Toast.makeText(App.instance.context(), "수정되었습니다.", Toast.LENGTH_SHORT).show()
-            }
+        iv_renew_add_exercise.setOnClickListener(this)
+        iv_renew_remove_exercise.setOnClickListener(this)
+        btn_renew_exercise_category.setOnClickListener(this)
+        btn_renew_exercise_time.setOnClickListener(this)
+        renew_exercise_cancel.setOnClickListener(this)
+        renew_exercise_save.setOnClickListener(this)
+        iv_delete_exercise.setOnClickListener(this)
 
-
-            0 -> {
-                Toast.makeText(App.instance.context(), "실패하였습니다.", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-
+        getExerciseData()
     }
 
     override fun onClick(v: View?) {
@@ -76,9 +63,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.iv_renew_add_exercise -> {
 
-                context?.let {
-                    Keyboard.hideEditText(it, et_renew_exercise_name)
-                }
+                Keyboard.hideEditText(context, et_renew_exercise_name)
+
 
                 val addExerciseItem =
                     layoutInflater.inflate(R.layout.add_exercise_item, null)
@@ -90,9 +76,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.iv_renew_remove_exercise -> {
 
-                context?.let {
-                    Keyboard.hideEditText(it, et_renew_exercise_name)
-                }
+
+                Keyboard.hideEditText(context, et_renew_exercise_name)
 
                 if (viewList.size != 0) {
                     ll_renew_add_remove_exercise.removeView(viewList[viewList.size - 1])
@@ -103,11 +88,22 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.iv_delete_exercise -> {
 
-                val getExerciseModel =
-                    arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
+                ShowAlertDialog(context).apply {
+                    titleAndMessage(
+                        getString(R.string.update_or_delete_eat_delete),
+                        getString(R.string.update_or_delete_eat_delete_message)
+                    )
+                    alertDialog.setCancelable(false)
+                    alertDialog.setPositiveButton(getString(R.string.common_delete)) { _, _ ->
+                        val getExerciseModel =
+                            arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
 
-                getExerciseModel?.let {
-                    presenter.deleteExercise(it)
+                        getExerciseModel?.let {
+                            presenter.deleteExercise(it)
+                        }
+                    }
+                    alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+                    showDialog()
                 }
 
             }
@@ -126,7 +122,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             R.id.renew_exercise_save -> {
 
-                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                if (RelateLogin.loginState()) {
 
                     if (btn_renew_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_renew_exercise_name.text.isNotEmpty()) {
                         val setList = mutableListOf<ExerciseSet>()
@@ -161,57 +157,42 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                             }
                         } else {
                             Toast.makeText(
-                                this.context,
-                                getString(R.string.exercise_no_input_kg_and_count_error_message),
+                                context,
+                                getString(R.string.common_exercise_no_input_kg_and_count_error_message),
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
                         }
                     } else {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.diary_add_no_message),
+                            context,
+                            getString(R.string.common_save_no),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
                     Toast.makeText(
-                        this.context,
-                        getString(R.string.logout_write_error_message),
+                        context,
+                        getString(R.string.common_when_logout_not_save_records),
                         Toast.LENGTH_SHORT
                     )
                         .show()
                 }
             }
-
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewList = ArrayList()
+    private fun startView() {
+        tv_renew_exercise_today.text =
+            DateAndTime.currentDate()
+        btn_renew_exercise_time.text =
+            DateAndTime.convertShowTime(DateAndTime.currentTime())
     }
 
+    private fun getExerciseData() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter = UpdateOrDeleteExercisePresenter(
-            this,
-            Injection.provideExerciseRepository()
-        )
-        init()
-
-        iv_renew_add_exercise.setOnClickListener(this)
-        iv_renew_remove_exercise.setOnClickListener(this)
-        btn_renew_exercise_category.setOnClickListener(this)
-        btn_renew_exercise_time.setOnClickListener(this)
-        renew_exercise_cancel.setOnClickListener(this)
-        renew_exercise_save.setOnClickListener(this)
-        iv_delete_exercise.setOnClickListener(this)
-
-
-        val getExerciseModel = arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
+        val getExerciseModel =
+            arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
 
         getExerciseModel?.let {
             tv_renew_exercise_today.text = it.date
@@ -219,57 +200,108 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
             btn_renew_exercise_category.text = it.type
             et_renew_exercise_name.setText(it.exerciseSetName)
 
-            it.exerciseSet.forEach {
-                val addExerciseItem = layoutInflater.inflate(R.layout.add_exercise_item, null)
+            it.exerciseSet.forEach { set ->
+                val addExerciseItem =
+                    layoutInflater.inflate(R.layout.add_exercise_item, null)
                 val addExerciseKg: EditText =
                     addExerciseItem.findViewById(R.id.et_add_exercise_kg)
                 val addExerciseCount: EditText =
                     addExerciseItem.findViewById(R.id.et_add_exercise_count)
-                addExerciseKg.setText(it.exerciseSetKg)
-                addExerciseCount.setText(it.exerciseSetCount)
+                addExerciseKg.setText(set.exerciseSetKg)
+                addExerciseCount.setText(set.exerciseSetCount)
                 viewList.add(addExerciseItem)
                 ll_renew_add_remove_exercise.addView(addExerciseItem)
             }
         }
     }
 
-    private fun init() {
-        tv_renew_exercise_today.text =
-            DateAndTime.currentDate()
-        btn_renew_exercise_time.text =
-            DateAndTime.convertShowTime(DateAndTime.currentTime())
+    override fun showResult(sort: Int) {
+
+        when (sort) {
+
+            UpdateOrDeleteExercisePresenter.SUCCESS_UPDATE -> {
+                val data =
+                    Intent().apply {
+                        putExtra(SEND_RESULT_NUM, UPDATE_EXERCISE)
+                    }
+                targetFragment?.onActivityResult(
+                    targetRequestCode,
+                    Activity.RESULT_OK,
+                    data
+                )
+                Toast.makeText(
+                    App.instance.context(),
+                    getString(R.string.common_update_ok),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                dismiss()
+            }
+
+            UpdateOrDeleteExercisePresenter.SUCCESS_DELETE -> {
+                val data =
+                    Intent().apply {
+                        putExtra(SEND_RESULT_NUM, DELETE_EXERCISE)
+                    }
+                targetFragment?.onActivityResult(
+                    targetRequestCode,
+                    Activity.RESULT_OK,
+                    data
+                )
+                Toast.makeText(
+                    App.instance.context(),
+                    getString(R.string.common_delete_ok),
+                    Toast.LENGTH_SHORT
+                ).show()
+                dismiss()
+
+
+            }
+
+            UpdateOrDeleteExercisePresenter.FAIL_UPDATE -> {
+                Toast.makeText(
+                    App.instance.context(),
+                    getString(R.string.common_update_fail),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            UpdateOrDeleteExercisePresenter.FAIL_DELETE -> {
+                Toast.makeText(
+                    App.instance.context(),
+                    getString(R.string.common_delete_fail),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun getTimePicker() {
-        val dialogView = View.inflate(context, R.layout.time_picker, null)
-        val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
-        alertDialog.setView(dialogView)
-            .setPositiveButton("변경") { _, _ ->
+        val dialogView =
+            View.inflate(context, R.layout.time_picker, null)
+        val timePicker =
+            dialogView.findViewById<TimePicker>(R.id.time_picker)
 
+        ShowAlertDialog(context).apply {
+            alertDialog.setView(dialogView)
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 btn_renew_exercise_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
-
             }
-            .setNegativeButton("취소") { _, _ ->
+            alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+            showDialog()
+        }
 
-            }
-            .show()
     }
 
     @SuppressLint("RtlHardcoded")
     private fun getMenuClick() {
-        val menuBuilder = MenuBuilder(this.context)
-        val inflater = MenuInflater(this.context)
+        val menuBuilder = MenuBuilder(context)
+        val inflater = MenuInflater(context)
         inflater.inflate(R.menu.exercise_menu, menuBuilder)
         val optionMenu =
-            MenuPopupHelper(this.requireContext(), menuBuilder, btn_renew_exercise_category)
+            MenuPopupHelper(requireContext(), menuBuilder, btn_renew_exercise_category)
         optionMenu.setForceShowIcon(true)
 
         optionMenu.gravity = Gravity.LEFT
@@ -314,6 +346,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
         const val SEND_RESULT_NUM = "result"
         const val DELETE_EXERCISE = 1
         const val UPDATE_EXERCISE = 2
+
         fun newInstance(
             exerciseModel: ExerciseModel
         ) = UpdateOrDeleteExerciseFragment().apply {

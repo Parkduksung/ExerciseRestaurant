@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="15"
-    tools:ignore="UselessParent, NestedWeights, ContentDescription,SpUsage, DisableBaselineAlignment,RtlHardcoded">
+    tools:ignore="UselessParent, NestedWeights, ContentDescription,SpUsage,RtlHardcoded">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -87,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/diary_main_no_login_state" />
+                    android:text="@string/diary_login_state_no2" />
 
                 <ProgressBar
                     android:id="@+id/pb_diary_details"
@@ -100,65 +101,51 @@
 
             </RelativeLayout>
 
-
         </LinearLayout>
 
 
     </RelativeLayout>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="@color/colorWhite"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:background="@color/colorWhite">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <Button
+            android:id="@+id/btn_add_eat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/select_diary_item"
+            android:drawableTop="@drawable/ic_food"
+            android:paddingTop="5dp"
+            android:stateListAnimator="@null"
+            android:text="@string/tv_diary_add_eat"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_add_eat"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/select_diary_item"
-                android:drawableTop="@drawable/ic_food"
-                android:orientation="vertical"
-                android:paddingTop="5dp"
-                android:stateListAnimator="@null"
-                android:text="@string/tv_diary_add_eat"
-                android:textSize="10dp"
-                android:weightSum="6" />
-        </RelativeLayout>
+        <Button
+            android:id="@+id/btn_add_exercise"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/select_diary_item"
+            android:drawableTop="@drawable/ic_exercise"
+            android:paddingTop="5dp"
+            android:stateListAnimator="@null"
+            android:text="@string/tv_diary_add_exercise"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <Button
-                android:id="@+id/btn_add_exercise"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/select_diary_item"
-                android:drawableTop="@drawable/ic_exercise"
-                android:orientation="vertical"
-                android:paddingTop="5dp"
-                android:stateListAnimator="@null"
-                android:text="@string/tv_diary_add_exercise"
-                android:textSize="10dp"
-                android:weightSum="6" />
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

@@ -12,7 +12,7 @@ import io.fabric.sdk.android.Fabric
 
 abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
 
-    var mBackWait: Long = 0
+    var mBackWait: Long = INIT_TIME
 
     override fun onBackPressed() {
 
@@ -30,7 +30,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
 
         if (!handled) {
             if (layoutId == R.layout.activity_main) {
-                if (System.currentTimeMillis() - mBackWait >= 2000) {
+                if (System.currentTimeMillis() - mBackWait >= LIMIT_TIME) {
                     mBackWait = System.currentTimeMillis()
                     Toast.makeText(
                         App.instance.context(),
@@ -54,4 +54,13 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
 
         Fabric.with(this, Crashlytics())
     }
+
+    companion object {
+
+        private const val INIT_TIME = 0L
+        private const val LIMIT_TIME = 2000
+
+
+    }
+
 }

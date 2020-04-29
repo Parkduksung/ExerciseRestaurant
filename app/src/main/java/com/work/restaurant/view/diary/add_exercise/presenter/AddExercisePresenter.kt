@@ -29,6 +29,7 @@ class AddExercisePresenter(
                 override fun onSuccess() {
                     addExerciseView.showAddSuccess()
                 }
+
                 override fun onFailure() {
 
                 }

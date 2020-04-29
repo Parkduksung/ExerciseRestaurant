@@ -20,10 +20,4 @@ data class DiaryModel(
     fun toEatModel(): EatModel =
         EatModel(eatNum, userId, date, time, type.toInt(), memo)
 
-    companion object {
-        const val EAT = 0
-        const val EXERCISE = 1
-        const val NO_DATA = 2
-    }
-
 }

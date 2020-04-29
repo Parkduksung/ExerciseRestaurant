@@ -25,7 +25,7 @@ class DiaryDetailsAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
-            DiaryModel.EAT -> {
+            KIND_EAT -> {
                 val view =
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.eat_item,
@@ -34,7 +34,7 @@ class DiaryDetailsAdapter :
                     )
                 return EatViewHolder(view)
             }
-            DiaryModel.EXERCISE -> {
+            KIND_EXERCISE -> {
                 val view =
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.exercise_item,
@@ -43,7 +43,7 @@ class DiaryDetailsAdapter :
                     )
                 return ExerciseViewHolder(view)
             }
-            DiaryModel.NO_DATA -> {
+            KIND_NO_DATA -> {
                 val view =
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.no_diary_item,
@@ -53,7 +53,7 @@ class DiaryDetailsAdapter :
                 return NoDataViewHolder(view)
 
             }
-            else -> throw RuntimeException("알 수 없는 뷰 타입 에러")
+            else -> throw RuntimeException(UNKNOWN_ERROR_TYPE)
         }
     }
 
@@ -67,13 +67,13 @@ class DiaryDetailsAdapter :
 
         val obj = diaryList[position]
         when (obj.kind) {
-            DiaryModel.EAT -> {
+            KIND_EAT -> {
                 (holder as EatViewHolder).bind(obj)
             }
-            DiaryModel.EXERCISE -> {
+            KIND_EXERCISE -> {
                 (holder as ExerciseViewHolder).bind(obj)
             }
-            DiaryModel.NO_DATA -> {
+            KIND_NO_DATA -> {
                 (holder as NoDataViewHolder).bind()
             }
         }
@@ -105,7 +105,6 @@ class DiaryDetailsAdapter :
 
             addSet.removeAllViews()
 
-
             if (::adapterListener.isInitialized) {
                 itemView.setOnLongClickListener {
                     adapterListener.getData(item)
@@ -123,41 +122,42 @@ class DiaryDetailsAdapter :
                 }
             }
 
-            var i = 0
-            addType.text = "운동"
+            var allSetNum = INIT_SET
+            addType.text = EXERCISE
             addExerciseType.text = item.type
             addTime.text = DateAndTime.convertShowTime(item.time)
             addName.text = item.exerciseSetName
 
             when (item.type) {
-                itemView.resources.getStringArray(R.array.add_exercise_part)[0] -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[CHEST] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorAccent)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[1] -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[BACK] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorYellow)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[2] -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[SHOULDER] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorMint)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[3] -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[ARMS] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorPurple)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[4] -> {
+                itemView.resources.getStringArray(R.array.add_exercise_part)[LEGS] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorBlue)
                 }
             }
 
             item.exerciseSet.forEach {
-                i += 1
-                val exerciseSetView = LayoutInflater.from(App.instance.context()).inflate(
-                    R.layout.exercise_set_item,
-                    null
-                )
+                allSetNum += 1
+                val exerciseSetView =
+                    LayoutInflater.from(App.instance.context()).inflate(
+                        R.layout.exercise_set_item,
+                        null
+                    )
                 exerciseSetView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -168,7 +168,7 @@ class DiaryDetailsAdapter :
                 val setKg: TextView = exerciseSetView.findViewById(R.id.set_kg)
                 val setCount: TextView = exerciseSetView.findViewById(R.id.set_count)
 
-                setNum.text = i.toString() + "세트"
+                setNum.text = allSetNum.toString() + "세트"
                 setKg.text = it.exerciseSetKg + "Kg"
                 setCount.text = it.exerciseSetCount + "회"
 
@@ -185,7 +185,8 @@ class DiaryDetailsAdapter :
         private val addTime: TextView = itemView.findViewById(R.id.add_eat_time)
         private val addMemo: TextView = itemView.findViewById(R.id.add_eat_memo)
 
-        private val type = listOf("식사", "간식")
+        private val type = listOf(MEAL, SNACK)
+
         fun bind(item: DiaryModel) {
 
             if (::adapterListener.isInitialized) {
@@ -208,7 +209,7 @@ class DiaryDetailsAdapter :
             addType.text = type[item.type.toInt()]
             addTime.text = DateAndTime.convertShowTime(item.time)
 
-            if (item.memo.contains("\n")) {
+            if (item.memo.contains(ENTER)) {
                 addMemo.gravity = Gravity.CENTER_VERTICAL
             } else {
                 addMemo.gravity = Gravity.CENTER
@@ -219,18 +220,18 @@ class DiaryDetailsAdapter :
     }
 
     fun addAllData(diaryModel: List<DiaryModel>) {
-
         if (diaryModel.isEmpty()) {
             val emptyDiaryModel =
                 DiaryModel(
-                    0,
-                    0,
-                    "",
-                    2, "",
-                    "",
-                    "",
-                    "",
-                    "",
+                    EMPTY_NUM,
+                    EMPTY_NUM,
+                    EMPTY_TEXT,
+                    KIND_NO_DATA,
+                    EMPTY_TEXT,
+                    EMPTY_TEXT,
+                    EMPTY_TEXT,
+                    EMPTY_TEXT,
+                    EMPTY_TEXT,
                     emptyList()
                 )
             diaryList.add(emptyDiaryModel)
@@ -246,6 +247,31 @@ class DiaryDetailsAdapter :
 
     fun setItemClickListener(listener: AdapterDataListener.GetList) {
         adapterListener = listener
+    }
+
+    companion object {
+
+        const val KIND_EAT = 0
+        const val KIND_EXERCISE = 1
+        private const val KIND_NO_DATA = 2
+
+        private const val INIT_SET = 0
+
+        private const val ENTER = "\n"
+
+        private const val EMPTY_NUM = 0
+        private const val EMPTY_TEXT = ""
+        private const val SNACK = "간식"
+        private const val MEAL = "식사"
+        private const val EXERCISE = "운동"
+        private const val UNKNOWN_ERROR_TYPE = "알 수 없는 뷰 타입 에러"
+
+        private const val CHEST = 0
+        private const val BACK = 1
+        private const val SHOULDER = 2
+        private const val ARMS = 3
+        private const val LEGS = 4
+
     }
 
 }

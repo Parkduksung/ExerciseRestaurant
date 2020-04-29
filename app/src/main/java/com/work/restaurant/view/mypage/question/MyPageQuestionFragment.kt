@@ -61,7 +61,7 @@ class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
             fragmentManager?.popBackStack()
         } else {
             Toast.makeText(
-                this.context,
+               context,
                 getString(R.string.question_send_no),
                 Toast.LENGTH_SHORT
             ).show()

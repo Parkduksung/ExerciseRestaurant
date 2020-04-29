@@ -2,10 +2,11 @@ package com.work.restaurant.view.diary.add_exercise
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.view.*
-import android.view.inputmethod.InputMethodManager
+import android.view.Gravity
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
@@ -15,9 +16,10 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
-import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.Keyboard
+import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
 import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
@@ -31,16 +33,29 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
     private lateinit var presenter: AddExercisePresenter
 
-    override fun showAddSuccess() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewList = ArrayList()
+    }
 
-        targetFragment?.onActivityResult(
-            targetRequestCode,
-            Activity.RESULT_OK,
-            null
-        )
-        dismiss()
-        Toast.makeText(this.context, getString(R.string.diary_add_ok_message), Toast.LENGTH_SHORT)
-            .show()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter =
+            AddExercisePresenter(
+                this,
+                Injection.provideExerciseRepository()
+            )
+        startView()
+
+        iv_add_exercise.setOnClickListener(this)
+        iv_remove_exercise.setOnClickListener(this)
+        btn_add_exercise_category.setOnClickListener(this)
+        tv_add_exercise_time.setOnClickListener(this)
+        add_exercise_cancel.setOnClickListener(this)
+        add_exercise_save.setOnClickListener(this)
+
+        tv_add_exercise_today.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -53,11 +68,10 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
             R.id.iv_add_exercise -> {
 
-                context?.let {
-                    Keyboard.hideEditText(it, et_add_exercise_name)
-                }
+                Keyboard.hideEditText(context, et_add_exercise_name)
 
-                val addExerciseItem = layoutInflater.inflate(R.layout.add_exercise_item, null)
+                val addExerciseItem =
+                    layoutInflater.inflate(R.layout.add_exercise_item, null)
 
                 viewList.add(addExerciseItem)
 
@@ -66,15 +80,12 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
             R.id.iv_remove_exercise -> {
 
-                context?.let {
-                    Keyboard.hideEditText(it, et_add_exercise_name)
-                }
+                Keyboard.hideEditText(context, et_add_exercise_name)
 
                 if (viewList.size != 0) {
                     ll_add_remove_exercise.removeView(viewList[viewList.size - 1])
                     viewList.removeAt(viewList.size - 1)
                 }
-
             }
 
             R.id.btn_add_exercise_category -> {
@@ -91,10 +102,11 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
             R.id.add_exercise_save -> {
 
-                if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                if (RelateLogin.loginState()) {
 
                     if (btn_add_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
-                        val setList = mutableListOf<ExerciseSet>()
+                        val setList =
+                            mutableListOf<ExerciseSet>()
                         viewList.forEach {
                             val addExerciseKg: EditText =
                                 it.findViewById(R.id.et_add_exercise_kg)
@@ -102,17 +114,17 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                                 it.findViewById(R.id.et_add_exercise_count)
 
                             if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
-                                val exerciseSet = ExerciseSet(
-                                    addExerciseKg.text.toString(),
-                                    addExerciseCount.text.toString()
-                                )
+                                val exerciseSet =
+                                    ExerciseSet(
+                                        addExerciseKg.text.toString(),
+                                        addExerciseCount.text.toString()
+                                    )
                                 setList.add(exerciseSet)
                             }
                         }
-
                         if (setList.isNotEmpty()) {
                             presenter.addExercise(
-                                App.prefs.login_state_id,
+                                RelateLogin.getLoginId(),
                                 tv_add_exercise_today.text.toString(),
                                 DateAndTime.convertSaveTime(tv_add_exercise_time.text.toString()),
                                 btn_add_exercise_category.text.toString(),
@@ -121,24 +133,24 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                             )
                         } else {
                             Toast.makeText(
-                                this.context,
-                                getString(R.string.exercise_no_input_kg_and_count_error_message),
+                                context,
+                                getString(R.string.common_exercise_no_input_kg_and_count_error_message),
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
                         }
                     } else {
                         Toast.makeText(
-                            this.context,
-                            getString(R.string.diary_add_no_message),
+                            context,
+                            getString(R.string.common_save_no),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
 
                 } else {
                     Toast.makeText(
-                        this.context,
-                        getString(R.string.logout_write_error_message),
+                        context,
+                        getString(R.string.common_when_logout_not_save_records),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -150,78 +162,53 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewList = ArrayList()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter = AddExercisePresenter(
-            this,
-            Injection.provideExerciseRepository()
-        )
-        init()
-
-        iv_add_exercise.setOnClickListener(this)
-        iv_remove_exercise.setOnClickListener(this)
-        btn_add_exercise_category.setOnClickListener(this)
-        tv_add_exercise_time.setOnClickListener(this)
-        add_exercise_cancel.setOnClickListener(this)
-        add_exercise_save.setOnClickListener(this)
-
-        tv_add_exercise_today.setOnClickListener(this)
-    }
-
-
-    private fun init() {
+    private fun startView() {
         tv_add_exercise_today.text =
             arguments?.getString(DATE)
         tv_add_exercise_time.text =
             DateAndTime.convertShowTime(DateAndTime.currentTime())
     }
 
-    private fun getTimePicker() {
-        val dialogView = View.inflate(context, R.layout.time_picker, null)
-        val timePicker = dialogView.findViewById<TimePicker>(R.id.time_picker)
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
-        alertDialog.setView(dialogView)
-            .setCancelable(false)
-            .setPositiveButton("변경") { _, _ ->
+    override fun showAddSuccess() {
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            Activity.RESULT_OK,
+            null
+        )
+        dismiss()
+        Toast.makeText(context, getString(R.string.common_save_ok), Toast.LENGTH_SHORT)
+            .show()
+    }
 
+    private fun getTimePicker() {
+        val dialogView =
+            View.inflate(context, R.layout.time_picker, null)
+        val timePicker =
+            dialogView.findViewById<TimePicker>(R.id.time_picker)
+
+        ShowAlertDialog(context).apply {
+            alertDialog.setView(dialogView)
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 tv_add_exercise_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
-
             }
-            .setNegativeButton("취소") { _, _ ->
-
-            }
-            .show()
+            alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+            showDialog()
+        }
     }
 
     private fun getDatePicker() {
 
-        val dialogView = View.inflate(context, R.layout.date_picker, null)
-        val datePicker = dialogView.findViewById<DatePicker>(R.id.date_picker)
+        val dialogView =
+            View.inflate(context, R.layout.date_picker, null)
+        val datePicker =
+            dialogView.findViewById<DatePicker>(R.id.date_picker)
 
-        val alertDialog =
-            android.app.AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
-            )
-
-        alertDialog.setView(dialogView)
-            .setCancelable(false)
-            .setPositiveButton("변경") { _, _ ->
+        ShowAlertDialog(context).apply {
+            alertDialog.setView(dialogView)
+            alertDialog.setCancelable(false)
+            alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 tv_add_exercise_today.text =
                     getString(
                         R.string.current_date,
@@ -230,19 +217,18 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                         datePicker.dayOfMonth.toString()
                     )
             }
-            .setNegativeButton("취소") { _, _ ->
-
-            }
-            .show()
+            alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
+            showDialog()
+        }
     }
 
     @SuppressLint("RtlHardcoded")
     private fun getMenuClick() {
-        val menuBuilder = MenuBuilder(this.context)
-        val inflater = MenuInflater(this.context)
+        val menuBuilder = MenuBuilder(context)
+        val inflater = MenuInflater(context)
         inflater.inflate(R.menu.exercise_menu, menuBuilder)
         val optionMenu =
-            MenuPopupHelper(this.requireContext(), menuBuilder, btn_add_exercise_category)
+            MenuPopupHelper(requireContext(), menuBuilder, btn_add_exercise_category)
         optionMenu.setForceShowIcon(true)
 
         optionMenu.gravity = Gravity.LEFT

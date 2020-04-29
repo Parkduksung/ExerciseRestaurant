@@ -15,7 +15,8 @@ import androidx.fragment.app.DialogFragment
 abstract class BaseDialogFragment(@LayoutRes val layoutId: Int) : DialogFragment() {
 
     override fun onResume() {
-        val windowManager = (activity?.getSystemService(Context.WINDOW_SERVICE)) as WindowManager
+        val windowManager =
+            (activity?.getSystemService(Context.WINDOW_SERVICE)) as WindowManager
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
