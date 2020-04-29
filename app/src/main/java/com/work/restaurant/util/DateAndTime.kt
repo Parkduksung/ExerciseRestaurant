@@ -27,7 +27,6 @@ object DateAndTime {
         return list
     }
 
-
     fun convertDayOfWeek(date: String): String {
 
         val list = convertDate(date)
@@ -81,6 +80,11 @@ object DateAndTime {
         val currentTime = Calendar.getInstance().time
         return SimpleDateFormat("ahhmm", Locale.getDefault()).format(currentTime)
     }
+
+    fun lastDayOfThisMonth() : Int =
+        Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH)
+
+
 
     fun convertSaveTime(time: String): String {
 

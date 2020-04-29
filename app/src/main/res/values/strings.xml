@@ -64,20 +64,8 @@
     <string name="item_legs">다리</string>
     <string name="item_arm">팔</string>
 
-
     <string name="exercise_sort_accuracy">정확도순</string>
     <string name="exercise_sort_distance">거리순</string>
-    <string name="tv_calendar_main_exercise">운동</string>
-    <string name="tv_calendar_main_eat">식단</string>
-    <string name="et_calendar_main_context_ok_login_state">등록된 기록이 없습니다. \n많은 기록은 건강한 나를 만들수 있어요!</string>
-    <string name="et_calendar_main_context_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
-
-
-    <string name="calendar_login_state_no">기록을 확인하기 위해선 로그인이 필요합니다.</string>
-
-
-
-    <string name="update_or_delete_exercise_main">운동 수정</string>
 
 
     //-----------------------Common------------------------
@@ -119,6 +107,8 @@
     <string name="common_when_logout_not_save_records">로그아웃시에는 기록을 저장할 수 없습니다.</string>
 
     <string name="baseActivity_backPressed">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
+
+    <string name="common_ok_login_state_but_not_have_data">등록된 기록이 없습니다. \n많은 기록은 건강한 나를 만들수 있어요!</string>
 
     <string name="bookmark_state_no">즐겨찾기에 제거되었습니다.</string>
     <string name="bookmark_state_ok">즐겨찾기에 추가되었습니다.</string>
@@ -339,7 +329,7 @@
     <string name="add_exercise_list">운동부위</string>
     <string name="add_exercise_save">저장</string>
     <string name="add_exercise_cancel">취소</string>
-    <string name="add_exercise_main">운동 추가</string>
+    <string name="add_exercise_category">운동 추가</string>
     <string name="add_exercise_hint_name">운동종목을 입력하세요</string>
     <string name="add_exercise_hint_kg">kg</string>
     <string name="add_exercise_hint_count">횟수</string>
@@ -351,7 +341,13 @@
     <string name="update_or_delete_eat_category">식단 수정</string>
 
     //*update_or_delete_exercise
-    <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
-    <!--    <string name="tv_diary_add_eat">식단 추가</string>-->
+    <string name="update_or_delete_exercise_main">운동 수정</string>
+
+
+    //-----------------------Calendar-------------------------
+    <string name="calendar_login_state_no">기록을 확인하기 위해선 로그인이 필요합니다.</string>
+    <string name="calendar_exercise_context">운동</string>
+    <string name="calendar_eat_context">식단</string>
+    <string name="calendar_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
 
 </resources>

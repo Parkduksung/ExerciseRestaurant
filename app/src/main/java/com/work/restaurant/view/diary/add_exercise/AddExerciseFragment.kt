@@ -50,7 +50,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
         iv_add_exercise.setOnClickListener(this)
         iv_remove_exercise.setOnClickListener(this)
-        btn_add_exercise_category.setOnClickListener(this)
+        tv_add_exercise_category.setOnClickListener(this)
         tv_add_exercise_time.setOnClickListener(this)
         add_exercise_cancel.setOnClickListener(this)
         add_exercise_save.setOnClickListener(this)
@@ -88,7 +88,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 }
             }
 
-            R.id.btn_add_exercise_category -> {
+            R.id.tv_add_exercise_category -> {
                 getMenuClick()
             }
 
@@ -104,7 +104,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
                 if (RelateLogin.loginState()) {
 
-                    if (btn_add_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
+                    if (tv_add_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
                         val setList =
                             mutableListOf<ExerciseSet>()
                         viewList.forEach {
@@ -127,7 +127,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                                 RelateLogin.getLoginId(),
                                 tv_add_exercise_today.text.toString(),
                                 DateAndTime.convertSaveTime(tv_add_exercise_time.text.toString()),
-                                btn_add_exercise_category.text.toString(),
+                                tv_add_exercise_category.text.toString(),
                                 et_add_exercise_name.text.toString(),
                                 setList
                             )
@@ -228,7 +228,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
         val inflater = MenuInflater(context)
         inflater.inflate(R.menu.exercise_menu, menuBuilder)
         val optionMenu =
-            MenuPopupHelper(requireContext(), menuBuilder, btn_add_exercise_category)
+            MenuPopupHelper(requireContext(), menuBuilder, tv_add_exercise_category)
         optionMenu.setForceShowIcon(true)
 
         optionMenu.gravity = Gravity.LEFT
@@ -240,23 +240,23 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
                 when (item?.itemId) {
                     R.id.chest -> {
-                        btn_add_exercise_category.text =
+                        tv_add_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[0]
                     }
                     R.id.back -> {
-                        btn_add_exercise_category.text =
+                        tv_add_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[1]
                     }
                     R.id.shoulder -> {
-                        btn_add_exercise_category.text =
+                        tv_add_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[2]
                     }
                     R.id.legs -> {
-                        btn_add_exercise_category.text =
+                        tv_add_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[4]
                     }
                     R.id.arm -> {
-                        btn_add_exercise_category.text =
+                        tv_add_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[3]
                     }
                 }

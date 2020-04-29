@@ -13,6 +13,8 @@ object RelateLogin {
     fun getLoginId(): String =
         preference.login_state_id
 
+    fun getLoginState(): Boolean =
+        preference.login_state
 
     fun isValidEmail(charSequence: CharSequence): Boolean =
         !TextUtils.isEmpty(charSequence) && Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()

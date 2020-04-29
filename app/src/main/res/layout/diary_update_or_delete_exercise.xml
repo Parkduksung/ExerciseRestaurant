@@ -4,171 +4,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingTop="100dp"
     android:paddingRight="20dp"
     android:paddingBottom="120dp"
-    tools:ignore="SpUsage, NestedWeights, DisableBaselineAlignment">
+    tools:ignore="SpUsage, ScrollViewSize, ContentDescription,UnusedAttribute,Autofill">
 
-    <LinearLayout
-        android:id="@+id/ll_add_eat_main"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/button_background"
-        android:backgroundTint="@color/colorWhite"
-        android:orientation="vertical"
-        android:weightSum="10">
+        android:backgroundTint="@color/colorWhite">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_add_eat_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/update_or_delete_exercise_main"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.02" />
+
+        <ImageView
+            android:id="@+id/iv_delete_exercise"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:layout_weight="2"
+            android:src="@drawable/delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toEndOf="@id/tv_add_eat_main"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.02"
+            tools:ignore="ContentDescription" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2" />
+        <TextView
+            android:id="@+id/tv_day_of_week"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_eat_today"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_renew_exercise_today"
+            app:layout_constraintWidth_percent="0.1" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:text="@string/update_or_delete_exercise_main"
-                android:textSize="30dp" />
-
-            <ImageView
-                android:id="@+id/iv_delete_exercise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:src="@drawable/delete"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_renew_exercise_today"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:autoSizeMaxTextSize="14dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/select_diary_item"
+            android:gravity="center"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toEndOf="@id/tv_day_of_week"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15"
+            app:layout_constraintWidth_percent="0.35" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="10">
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_eat_today_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_renew_exercise_time"
+            app:layout_constraintWidth_percent="0.1" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:text="@string/add_exercise_category_today" />
-
-                <TextView
-                    android:id="@+id/tv_renew_exercise_today"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="8"
-                    android:background="@drawable/select_diary_item"
-                    android:gravity="center"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="2"
-                    android:text="@string/add_exercise_category_time" />
-
-                <Button
-                    android:id="@+id/btn_renew_exercise_time"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="8"
-                    android:background="@drawable/select_diary_item"
-                    android:gravity="center"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_renew_exercise_time"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:background="@drawable/select_diary_item"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toEndOf="@id/tv_time"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15"
+            app:layout_constraintWidth_percent="0.35" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:text="@string/add_exercise_list" />
 
-            <Button
-                android:id="@+id/btn_renew_exercise_category"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="4"
-                android:background="@drawable/select_diary_item"
-                android:gravity="center"
-                android:textColor="@color/colorBlack"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_exercise_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_renew_exercise_category"
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintWidth_percent="0.1" />
 
-            <ImageView
-                android:id="@+id/iv_renew_add_exercise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2.5"
-                app:srcCompat="@drawable/add"
-                tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:id="@+id/iv_renew_remove_exercise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2.5"
-                app:srcCompat="@drawable/remove"
-                tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/tv_renew_exercise_category"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMaxTextSize="14dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/select_diary_item"
+            android:gravity="center"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toEndOf="@id/tv_day_of_week"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.27"
+            app:layout_constraintWidth_percent="0.35" />
 
-        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_renew_add_exercise"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toEndOf="@id/tv_renew_exercise_category"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.27"
+            app:layout_constraintWidth_percent="0.1"
+            app:srcCompat="@drawable/add" />
+
+        <ImageView
+            android:id="@+id/iv_renew_remove_exercise"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toEndOf="@id/tv_renew_exercise_category"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.27"
+            app:layout_constraintWidth_percent="0.1"
+            app:srcCompat="@drawable/remove" />
+
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/til_renew_exercise"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/border1">
+            android:background="@drawable/border1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintWidth_percent="0.95">
 
             <EditText
                 android:id="@+id/et_renew_exercise_name"
@@ -178,72 +195,308 @@
                 android:background="@color/colorWhite"
                 android:gravity="center"
                 android:hint="@string/add_exercise_hint_name"
-                android:imeActionLabel="완료"
+                android:imeActionLabel="@string/common_complete"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:singleLine="true"
-                android:textSize="20dp"
-                tools:ignore="Autofill" />
+                android:textSize="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <ScrollView
-            android:layout_width="match_parent"
+            android:id="@+id/sv_renew_exercise"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="4.5">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_renew_exercise"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintWidth_percent="0.95">
 
             <LinearLayout
                 android:id="@+id/ll_renew_add_remove_exercise"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:ignore="ScrollViewSize">
-
-            </LinearLayout>
-
+                android:orientation="vertical" />
         </ScrollView>
 
+        <Button
+            android:id="@+id/renew_exercise_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_diary_item"
+            android:text="@string/add_exercise_cancel"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_renew_exercise" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:orientation="horizontal"
-            android:weightSum="2">
+        <Button
+            android:id="@+id/renew_exercise_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_diary_item"
+            android:text="@string/add_exercise_save"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_renew_exercise" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/renew_exercise_cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/select_diary_item"
-                    android:text="@string/add_exercise_cancel"
-                    android:textSize="20dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/renew_exercise_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/select_diary_item"
-                    android:text="@string/add_exercise_save"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:paddingLeft="20dp"-->
+    <!--    android:paddingTop="100dp"-->
+    <!--    android:paddingRight="20dp"-->
+    <!--    android:paddingBottom="120dp"-->
+    <!--    tools:ignore="SpUsage, NestedWeights, DisableBaselineAlignment">-->
+
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/ll_add_eat_main"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@drawable/button_background"-->
+    <!--        android:backgroundTint="@color/colorWhite"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:weightSum="10">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_marginBottom="10dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:weightSum="10">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="2" />-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="6"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="@string/update_or_delete_exercise_main"-->
+    <!--                android:textSize="30dp" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_delete_exercise"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="2"-->
+    <!--                android:src="@drawable/delete"-->
+    <!--                tools:ignore="ContentDescription" />-->
+    <!--        </LinearLayout>-->
+
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_marginTop="10dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:weightSum="2">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                android:weightSum="10">-->
+
+    <!--                <TextView-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_marginStart="10dp"-->
+    <!--                    android:layout_weight="2"-->
+    <!--                    android:text="@string/add_exercise_category_today" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/tv_renew_exercise_today"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_margin="5dp"-->
+    <!--                    android:layout_weight="8"-->
+    <!--                    android:background="@drawable/select_diary_item"-->
+    <!--                    android:gravity="center"-->
+    <!--                    android:textColor="@color/colorBlack"-->
+    <!--                    android:textSize="14dp"-->
+    <!--                    android:textStyle="bold" />-->
+
+    <!--            </LinearLayout>-->
+
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                android:weightSum="10">-->
+
+    <!--                <TextView-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_marginStart="10dp"-->
+    <!--                    android:layout_weight="2"-->
+    <!--                    android:text="@string/add_exercise_category_time" />-->
+
+    <!--                <Button-->
+    <!--                    android:id="@+id/btn_renew_exercise_time"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_margin="5dp"-->
+    <!--                    android:layout_weight="8"-->
+    <!--                    android:background="@drawable/select_diary_item"-->
+    <!--                    android:gravity="center"-->
+    <!--                    android:textColor="@color/colorBlack"-->
+    <!--                    android:textSize="14dp"-->
+    <!--                    android:textStyle="bold" />-->
+    <!--            </LinearLayout>-->
+
+
+    <!--        </LinearLayout>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_marginTop="10dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:weightSum="10">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_marginStart="10dp"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:text="@string/add_exercise_list" />-->
+
+    <!--            <Button-->
+    <!--                android:id="@+id/btn_renew_exercise_category"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_margin="5dp"-->
+    <!--                android:layout_weight="4"-->
+    <!--                android:background="@drawable/select_diary_item"-->
+    <!--                android:gravity="center"-->
+    <!--                android:textColor="@color/colorBlack"-->
+    <!--                android:textSize="14dp"-->
+    <!--                android:textStyle="bold" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_renew_add_exercise"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="2.5"-->
+    <!--                app:srcCompat="@drawable/add"-->
+    <!--                tools:ignore="ContentDescription" />-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_renew_remove_exercise"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="2.5"-->
+    <!--                app:srcCompat="@drawable/remove"-->
+    <!--                tools:ignore="ContentDescription" />-->
+
+    <!--        </LinearLayout>-->
+
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_marginStart="5dp"-->
+    <!--            android:layout_marginEnd="5dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@drawable/border1">-->
+
+    <!--            <EditText-->
+    <!--                android:id="@+id/et_renew_exercise_name"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_margin="1dp"-->
+    <!--                android:background="@color/colorWhite"-->
+    <!--                android:gravity="center"-->
+    <!--                android:hint="@string/add_exercise_hint_name"-->
+    <!--                android:imeActionLabel="완료"-->
+    <!--                android:imeOptions="actionDone"-->
+    <!--                android:inputType="text"-->
+    <!--                android:singleLine="true"-->
+    <!--                android:textSize="20dp"-->
+    <!--                tools:ignore="Autofill" />-->
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+
+    <!--        <ScrollView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="4.5">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/ll_renew_add_remove_exercise"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:orientation="vertical"-->
+    <!--                tools:ignore="ScrollViewSize">-->
+
+    <!--            </LinearLayout>-->
+
+    <!--        </ScrollView>-->
+
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_weight="1.5"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:weightSum="2">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:gravity="center">-->
+
+    <!--                <Button-->
+    <!--                    android:id="@+id/renew_exercise_cancel"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:background="@drawable/select_diary_item"-->
+    <!--                    android:text="@string/add_exercise_cancel"-->
+    <!--                    android:textSize="20dp" />-->
+
+    <!--            </LinearLayout>-->
+
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:gravity="center">-->
+
+    <!--                <Button-->
+    <!--                    android:id="@+id/renew_exercise_save"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:background="@drawable/select_diary_item"-->
+    <!--                    android:text="@string/add_exercise_save"-->
+    <!--                    android:textSize="20dp" />-->
+    <!--            </LinearLayout>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+
+    <!--</LinearLayout>-->

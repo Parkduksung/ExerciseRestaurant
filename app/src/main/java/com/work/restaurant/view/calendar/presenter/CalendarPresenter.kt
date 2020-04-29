@@ -18,9 +18,11 @@ class CalendarPresenter(
         eatRepository.getList(userId, object : EatRepositoryCallback.GetAllList {
             override fun onSuccess(list: List<EatEntity>) {
 
-                val toEatModel = list.map { it.toEatModel() }
+                val toEatModel =
+                    list.map { it.toEatModel() }
 
-                val toOnlyDateFromEatModelList = toEatModel.map { it.date }.toSet()
+                val toOnlyDateFromEatModelList =
+                    toEatModel.map { it.date }.toSet()
 
                 calendarContract.showAllDayIncludeEatData(toOnlyDateFromEatModelList)
 
@@ -38,9 +40,11 @@ class CalendarPresenter(
         exerciseRepository.getList(userId, object : ExerciseRepositoryCallback.GetAllList {
             override fun onSuccess(list: List<ExerciseEntity>) {
 
-                val toExerciseModel = list.map { it.toExerciseModel() }
+                val toExerciseModel =
+                    list.map { it.toExerciseModel() }
 
-                val toOnlyDateFromExerciseModelList = toExerciseModel.map { it.date }.toSet()
+                val toOnlyDateFromExerciseModelList =
+                    toExerciseModel.map { it.date }.toSet()
 
                 calendarContract.showAllDayIncludeExerciseData(toOnlyDateFromExerciseModelList)
 
@@ -84,7 +88,6 @@ class CalendarPresenter(
                     val toEatModelList = list.map {
                         it.toEatModel()
                     }
-
                     calendarContract.showEatData(toEatModelList)
                 }
 

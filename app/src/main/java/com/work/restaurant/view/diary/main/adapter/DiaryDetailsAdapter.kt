@@ -85,7 +85,7 @@ class DiaryDetailsAdapter :
 
         fun bind() {
             noDataMessage.text =
-                itemView.resources.getString(R.string.et_calendar_main_context_ok_login_state)
+                itemView.resources.getString(R.string.common_ok_login_state_but_not_have_data)
         }
     }
 

@@ -21,7 +21,6 @@ import com.work.restaurant.util.*
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
-import kotlinx.android.synthetic.main.diary_add_exercise.*
 import kotlinx.android.synthetic.main.diary_update_or_delete_exercise.*
 
 class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_or_delete_exercise),
@@ -48,8 +47,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
         iv_renew_add_exercise.setOnClickListener(this)
         iv_renew_remove_exercise.setOnClickListener(this)
-        btn_renew_exercise_category.setOnClickListener(this)
-        btn_renew_exercise_time.setOnClickListener(this)
+        tv_renew_exercise_category.setOnClickListener(this)
+        tv_renew_exercise_time.setOnClickListener(this)
         renew_exercise_cancel.setOnClickListener(this)
         renew_exercise_save.setOnClickListener(this)
         iv_delete_exercise.setOnClickListener(this)
@@ -108,11 +107,11 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
             }
 
-            R.id.btn_renew_exercise_category -> {
+            R.id.tv_renew_exercise_category -> {
                 getMenuClick()
             }
 
-            R.id.btn_renew_exercise_time -> {
+            R.id.tv_renew_exercise_time -> {
                 getTimePicker()
             }
 
@@ -124,7 +123,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
                 if (RelateLogin.loginState()) {
 
-                    if (btn_renew_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_renew_exercise_name.text.isNotEmpty()) {
+                    if (tv_renew_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_renew_exercise_name.text.isNotEmpty()) {
                         val setList = mutableListOf<ExerciseSet>()
 
                         viewList.forEach {
@@ -148,8 +147,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
                             getExerciseModel?.let {
                                 presenter.updateExercise(
-                                    DateAndTime.convertSaveTime(btn_renew_exercise_time.text.toString()),
-                                    btn_renew_exercise_category.text.toString(),
+                                    DateAndTime.convertSaveTime(tv_renew_exercise_time.text.toString()),
+                                    tv_renew_exercise_category.text.toString(),
                                     et_renew_exercise_name.text.toString(),
                                     setList,
                                     getExerciseModel
@@ -185,7 +184,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
     private fun startView() {
         tv_renew_exercise_today.text =
             DateAndTime.currentDate()
-        btn_renew_exercise_time.text =
+        tv_renew_exercise_time.text =
             DateAndTime.convertShowTime(DateAndTime.currentTime())
     }
 
@@ -196,8 +195,8 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
         getExerciseModel?.let {
             tv_renew_exercise_today.text = it.date
-            btn_renew_exercise_time.text = DateAndTime.convertShowTime(it.time)
-            btn_renew_exercise_category.text = it.type
+            tv_renew_exercise_time.text = DateAndTime.convertShowTime(it.time)
+            tv_renew_exercise_category.text = it.type
             et_renew_exercise_name.setText(it.exerciseSetName)
 
             it.exerciseSet.forEach { set ->
@@ -286,7 +285,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
             alertDialog.setView(dialogView)
             alertDialog.setCancelable(false)
             alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
-                btn_renew_exercise_time.text =
+                tv_renew_exercise_time.text =
                     DateAndTime.convertPickerTime(timePicker.hour, timePicker.minute)
             }
             alertDialog.setNegativeButton(getString(R.string.common_no)) { _, _ -> }
@@ -301,7 +300,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
         val inflater = MenuInflater(context)
         inflater.inflate(R.menu.exercise_menu, menuBuilder)
         val optionMenu =
-            MenuPopupHelper(requireContext(), menuBuilder, btn_renew_exercise_category)
+            MenuPopupHelper(requireContext(), menuBuilder, tv_renew_exercise_category)
         optionMenu.setForceShowIcon(true)
 
         optionMenu.gravity = Gravity.LEFT
@@ -313,23 +312,23 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
                 when (item?.itemId) {
                     R.id.chest -> {
-                        btn_add_exercise_category.text =
+                        tv_renew_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[0]
                     }
                     R.id.back -> {
-                        btn_add_exercise_category.text =
+                        tv_renew_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[1]
                     }
                     R.id.shoulder -> {
-                        btn_add_exercise_category.text =
+                        tv_renew_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[2]
                     }
                     R.id.legs -> {
-                        btn_add_exercise_category.text =
+                        tv_renew_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[4]
                     }
                     R.id.arm -> {
-                        btn_add_exercise_category.text =
+                        tv_renew_exercise_category.text =
                             resources.getStringArray(R.array.add_exercise_part)[3]
                     }
                 }
