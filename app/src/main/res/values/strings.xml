@@ -43,13 +43,6 @@
     </string-array>
 
 
-    <string name="address_title">주소 설정</string>
-    <string name="address_select1">광역시/도</string>
-    <string name="address_select2">시/군/구</string>
-    <string name="address_select3">읍/면/동</string>
-    <string name="address_change_cancel">취소</string>
-    <string name="address_change_title">선택주소</string>
-    <string name="address_change_ok">변경</string>
     <string name="loading_title">운동맛집</string>
 
 
@@ -75,6 +68,7 @@
 
     <string name="common_ok">확인</string>
     <string name="common_no">취소</string>
+    <string name="common_settings">설정</string>
 
     <string name="common_change">변경</string>
     <string name="common_delete">삭제</string>
@@ -350,4 +344,23 @@
     <string name="calendar_eat_context">식단</string>
     <string name="calendar_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
 
+
+    //-----------------------Home-------------------------
+    //*main
+
+
+    //*map
+    <string name="map_no_denied">권한이 거부되었습니다.\n\n%s</string>
+    <string name="map_update_location_denied">앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" + "위치 설정을 수정하실래요?\n위치 서비스 비활성화</string>
+    <string name="map_no_location_denied">위치 서비스 비활성화</string>
+
+
+    //*address
+    <string name="address_title">주소 설정</string>
+    <string name="address_select1">광역시/도</string>
+    <string name="address_select2">시/군/구</string>
+    <string name="address_select3">읍/면/동</string>
+    <string name="address_change_cancel">취소</string>
+    <string name="address_change_title">선택주소</string>
+    <string name="address_change_ok">변경</string>
 </resources>

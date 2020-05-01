@@ -35,7 +35,6 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
     private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity as? RenewBookmarkAndRankListener)?.let {
@@ -57,46 +56,6 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
         startMaps()
 
-    }
-
-    private fun startMaps() {
-        childFragmentManager.beginTransaction()
-            .add(
-                R.id.maps_fl,
-                MapFragment()
-            ).addToBackStack(null)
-            .commit()
-    }
-
-    private fun startHomeAddress() {
-        val homeAddressActivity =
-            Intent(this.context, HomeAddressActivity::class.java)
-        startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            ADDRESS_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val getAddressData =
-                        data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
-
-                    getAddressData?.let {
-                        requireFragmentManager().fragments.forEach { ParentFragment ->
-                            if (ParentFragment is HomeFragment) {
-                                ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                                    if (ChildFragment is MapFragment) {
-                                        MapFragment.toggleSelectLocation = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     override fun onClick(v: View?) {
@@ -181,6 +140,46 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
         }
     }
 
+    private fun startMaps() {
+        childFragmentManager.beginTransaction()
+            .add(
+                R.id.maps_fl,
+                MapFragment()
+            ).addToBackStack(null)
+            .commit()
+    }
+
+    private fun startHomeAddress() {
+        val homeAddressActivity =
+            Intent(context, HomeAddressActivity::class.java)
+        startActivityForResult(homeAddressActivity, ADDRESS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            ADDRESS_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val getAddressData =
+                        data?.getStringExtra(HomeAddressSelectAllFragment.ADDRESS)
+
+                    getAddressData?.let {
+                        requireFragmentManager().fragments.forEach { ParentFragment ->
+                            if (ParentFragment is HomeFragment) {
+                                ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
+                                    if (ChildFragment is MapFragment) {
+                                        MapFragment.toggleSelectLocation = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun showBookmarkResult(result: Int) {
 
         when (result) {
@@ -227,7 +226,6 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
     override fun findFitnessResult(sort: Int) {
 
         when (sort) {
-
             MapFragment.NO_NEW_RESULT -> {
                 ll_marker_refresh.visibility = View.GONE
                 Toast.makeText(
@@ -318,7 +316,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
                 }
             } else {
                 Toast.makeText(
-                   context,
+                    context,
                     getString(R.string.bookmark_state_no_login_message),
                     Toast.LENGTH_SHORT
                 ).show()

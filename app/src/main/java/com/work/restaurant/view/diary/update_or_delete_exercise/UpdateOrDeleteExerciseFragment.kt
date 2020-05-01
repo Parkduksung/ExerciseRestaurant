@@ -355,6 +355,4 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
         }
 
     }
-
-
 }

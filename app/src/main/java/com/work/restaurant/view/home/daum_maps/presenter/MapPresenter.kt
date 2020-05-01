@@ -36,7 +36,7 @@ class MapPresenter(
     private fun getKakaoRankList(
         currentX: Double,
         currentY: Double,
-        sort: String,
+        sort: String = SORT_ACCURACY,
         itemCount: Int,
         radius: Int
     ) {
@@ -151,7 +151,7 @@ class MapPresenter(
         kakaoRepository.getKakaoResult(
             currentX,
             currentY,
-            PAGENUM,
+            PAGE_NUM,
             SORT_ACCURACY,
             KakaoApi.RADIUS,
             object : KakaoRepositoryCallback {
@@ -213,7 +213,7 @@ class MapPresenter(
 
 
     companion object {
-        private const val PAGENUM = 1
+        private const val PAGE_NUM = 1
         private const val SORT_DISTANCE = "distance"
         private const val SORT_ACCURACY = "accuracy"
 

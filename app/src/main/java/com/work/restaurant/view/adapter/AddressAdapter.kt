@@ -32,16 +32,16 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
         private val addressItem: Button = itemView.findViewById(R.id.btn_address_item)
 
         fun bind(item: String) {
 
-            val address: String = item
-            addressItem.text = address
+            addressItem.text = item
 
             if (::adapterListener.isInitialized) {
                 addressItem.setOnClickListener {
-                    adapterListener.getData(address)
+                    adapterListener.getData(item)
                 }
             }
         }
@@ -53,7 +53,7 @@ class AddressAdapter : RecyclerView.Adapter<AddressAdapter.ViewHolder>() {
     }
 
     fun addData(item: String?) {
-        if (item != null) {
+        item?.let {
             addressList.add(item)
         }
     }

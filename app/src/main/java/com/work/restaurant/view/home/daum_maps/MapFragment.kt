@@ -1,7 +1,6 @@
 package com.work.restaurant.view.home.daum_maps
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -9,7 +8,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.contains
@@ -21,6 +19,7 @@ import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.home.MapInterface
@@ -70,7 +69,11 @@ class MapFragment : BaseFragment(R.layout.map),
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-                Toast.makeText(context, "권한이 거부되었습니다.\n\n$deniedPermissions", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    context,
+                    getString(R.string.map_no_denied, deniedPermissions),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -103,9 +106,7 @@ class MapFragment : BaseFragment(R.layout.map),
                 Injection.provideKakaoRepository(),
                 Injection.provideBookmarkRepository()
             )
-
     }
-
 
     private fun loadMap() {
         Toast.makeText(
@@ -114,7 +115,6 @@ class MapFragment : BaseFragment(R.layout.map),
             Toast.LENGTH_SHORT
         ).show()
         mapView = MapView(context)
-
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
 
@@ -128,7 +128,6 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             GPS_ENABLE_REQUEST_CODE ->
-                //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     mapView =
                         MapView(requireContext())
@@ -140,7 +139,6 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-    //MapViewEventListener
     override fun showMarkerData(list: List<DisplayBookmarkKakaoModel>) {
         if (list.isNotEmpty()) {
             if (::markerInterface.isInitialized) {
@@ -166,8 +164,7 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-
-        if (p0 != null) {
+        p0?.let {
             if (::mapInterface.isInitialized) {
                 mapInterface.clickMap(false)
             } else {
@@ -178,9 +175,7 @@ class MapFragment : BaseFragment(R.layout.map),
                 mapInterface.clickMap(false)
             }
         }
-
     }
-
 
     private fun getDistance(oldCenter: MapPoint, currentCenter: MapPoint): Int {
 
@@ -196,7 +191,6 @@ class MapFragment : BaseFragment(R.layout.map),
         return locationA.distanceTo(locationB).toInt()
     }
 
-
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
 
     }
@@ -205,7 +199,6 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (p0 != null && p1 != null) {
             if (getDistance(oldCenterPoint, p1) >= zoomLevelToRadius(p0.zoomLevel)) {
-
                 if (::searchInterface.isInitialized) {
                     oldCenterPoint = p0.mapCenterPoint
                     searchInterface.findFitnessResult(RENEW_SEARCHABLE_STATE)
@@ -243,7 +236,6 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
 
-    //POIItemEventListener
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
 
     }
@@ -418,7 +410,6 @@ class MapFragment : BaseFragment(R.layout.map),
         mapView.setMapCenterPoint(mapPoint, true)
     }
 
-
     fun showCurrentLocation() {
         if (::mapView.isInitialized) {
 
@@ -462,7 +453,6 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-    //주소 변경한 위치 좌표얻어오는것
     private fun getLocation(location: String) {
         if (::mapView.isInitialized) {
 
@@ -487,8 +477,6 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-
-    //Gps잡히는지 확인하는것. 등 GPS관련
     private fun checkLocationServicesStatus(): Boolean {
         val locationManager =
             context?.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -508,32 +496,25 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     private fun showDialogForLocationServiceSetting() {
-        val alertDialog =
-            AlertDialog.Builder(
-                ContextThemeWrapper(
-                    activity,
-                    R.style.Theme_AppCompat_Light_Dialog
-                )
+        ShowAlertDialog(context).apply {
+            titleAndMessage(
+                getString(R.string.map_no_location_denied),
+                getString(R.string.map_update_location_denied)
             )
-
-        alertDialog.setTitle("위치 서비스 비활성화")
-        alertDialog.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" + "위치 설정을 수정하실래요?")
-        alertDialog.setPositiveButton(
-            "설정"
-        ) { _, _ ->
-            val callGPSSettingIntent =
-                Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE)
+            alertDialog.setPositiveButton(
+                getString(R.string.common_settings)
+            ) { _, _ ->
+                val callGPSSettingIntent =
+                    Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE)
+            }
+            alertDialog.setNegativeButton(
+                getString(R.string.common_no)
+            ) { dialog, _ ->
+                dialog.cancel()
+            }
+            showDialog()
         }
-        alertDialog.setNegativeButton(
-            "취소"
-        ) { dialog, _ ->
-            dialog.cancel()
-        }
-
-        alertDialog.show()
-
-
     }
 
     override fun onResume() {
@@ -555,7 +536,6 @@ class MapFragment : BaseFragment(R.layout.map),
                     if (toggleSelectLocation) {
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
-//                        toggleSelectLocation = false
                     }
                     //다시 page로 돌오왔을시 현재 위치로 돌아오게 하고싶으면 풀어서 사용.
 //                    else {
