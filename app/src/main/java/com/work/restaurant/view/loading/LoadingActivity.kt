@@ -2,7 +2,6 @@ package com.work.restaurant.view.loading
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -11,12 +10,14 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
-import android.widget.Toast
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.ext.isConnectedToGPS
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.base.BaseActivity
 import kotlinx.android.synthetic.main.loading_fragment.*
@@ -35,60 +36,45 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
             override fun onPermissionGranted() {
 
-                if (checkLocationServicesStatus()) {
+                if (isConnectedToGPS()) {
                     saveCurrentLocation()
                 } else {
-                    AlertDialog.Builder(this@LoadingActivity)
-                        .setTitle("GPS 오류")
-                        .setMessage("GPS 상태를 활성상태로 변경후 다시 시작해 주세요.")
-                        .setPositiveButton(
-                            "변경하기"
+                    ShowAlertDialog(this@LoadingActivity).apply {
+                        titleAndMessage(
+                            getString(R.string.loading_gps_error_title),
+                            getString(R.string.loading_gps_error_message)
+                        )
+                        alertDialog.setPositiveButton(
+                            getString(R.string.common_change)
                         ) { _, _ ->
                             startActivity(
                                 Intent(ACTION_LOCATION_SOURCE_SETTINGS)
                             )
                             finish()
                         }
-                        .setNegativeButton(
-                            "취소"
+                        alertDialog.setNegativeButton(
+                            getString(R.string.common_no)
                         ) { _, _ ->
                             finish()
                         }
-                        .show()
+                        showDialog()
+                    }
                 }
-
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-                Toast.makeText(
-                    App.instance.context(),
-                    "권한이 거부되었습니다.\n\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                showToast(getString(R.string.common_no_denied))
                 finish()
             }
         }
     }
 
-    //Gps잡히는지 확인하는것. 등 GPS관련
-    private fun checkLocationServicesStatus(): Boolean {
-        val locationManager =
-            this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
-
     override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
-        if (result) {
-            App.prefs.login_state = true
-            App.prefs.login_state_id = userId
-            App.prefs.login_state_nickname = userNickname
-        } else {
-            App.prefs.login_state = false
-            App.prefs.login_state_id = userId
-            App.prefs.login_state_nickname = userNickname
+
+        App.prefs.apply {
+            login_state = result
+            login_state_id = userId
+            login_state_nickname = userNickname
         }
     }
 
@@ -144,7 +130,6 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
             .setRationaleMessage(getString(R.string.tedPermission_setRationaleMessage))
             .setDeniedMessage(getString(R.string.tedPermission_setDeniedMessage))
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-//            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
 
@@ -155,7 +140,6 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
             delayTime()
             getAddressDataCount()
         }
-
     }
 
 
@@ -174,12 +158,13 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
             this@LoadingActivity.finish()
 
-        }, 100L)
+        }, DELAY_TIME)
     }
 
     companion object {
         private const val TAG = "LoadingActivity"
 
+        private const val DELAY_TIME = 100L
     }
 
 }

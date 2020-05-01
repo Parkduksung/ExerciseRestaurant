@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.*
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterContract
@@ -86,9 +87,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                 setImageResource(R.drawable.ic_no)
                 tag = R.drawable.ic_no
             }
-
-            Toast.makeText(context, getString(R.string.register_duplicate), Toast.LENGTH_SHORT)
-                .show()
+            showToast(getString(R.string.register_duplicate))
         }
     }
 
@@ -165,11 +164,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
         if (checkNum.isEmpty()) {
 
-            Toast.makeText(
-                context,
-                getString(R.string.register_not_input_checkNum),
-                Toast.LENGTH_SHORT
-            ).show()
+            showToast(getString(R.string.register_not_input_checkNum))
 
             iv_email_state.apply {
                 isVisible = true
@@ -179,8 +174,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
         } else {
             if (checkNum.contains(EMPTY_TEXT)) {
-                Toast.makeText(context, getString(R.string.common_have_trim), Toast.LENGTH_SHORT)
-                    .show()
+                showToast(getString(R.string.common_have_trim))
 
                 iv_email_state.apply {
                     isVisible = true
@@ -191,11 +185,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
             } else {
 
                 if (checkNum.toInt() == randomVerifyNum) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.register_checkNum_ok),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.register_checkNum_ok))
 
                     iv_email_state.apply {
                         isVisible = true
@@ -215,13 +205,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                     Keyboard.hideEditText(context, et_register_email_verified)
 
                 } else {
-
-                    Toast.makeText(
-                        context,
-                        getString(R.string.register_not_same_checkNum),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+                    showToast(getString(R.string.register_not_same_checkNum))
                     iv_email_state.apply {
                         isVisible = true
                         setImageResource(R.drawable.ic_no)
@@ -254,53 +238,32 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                 iv_pass_state.tag == R.drawable.ic_ok &&
                 iv_pass_ok_state.tag == R.drawable.ic_ok
             ) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_proper_nickname),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_proper_nickname))
+
             } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
                 iv_email_state.tag == R.drawable.ic_no &&
                 iv_pass_state.tag == R.drawable.ic_ok &&
                 iv_pass_ok_state.tag == R.drawable.ic_ok
             ) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_proper_email),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_proper_email))
             } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
                 iv_email_state.tag == R.drawable.ic_ok &&
                 iv_pass_state.tag == R.drawable.ic_no &&
                 iv_pass_ok_state.tag == R.drawable.ic_ok
             ) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_proper_pass),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_proper_pass))
+
             } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
                 iv_email_state.tag == R.drawable.ic_ok &&
                 iv_pass_state.tag == R.drawable.ic_ok &&
                 iv_pass_ok_state.tag == R.drawable.ic_no
             ) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_proper_passOk),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_proper_passOk))
+
             } else if (!toggleVerifiedEmail) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_verified_email),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_verified_email))
             } else {
-                Toast.makeText(
-                    context,
-                    getString(R.string.register_not_enough),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.register_not_enough))
             }
         }
 
@@ -594,11 +557,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                     showProgressState(false)
                     ll_register_email_verified.isVisible = true
                     et_register_email_verified.requestFocus()
-                    Toast.makeText(
-                        App.instance.context(),
-                        getString(R.string.register_send_checkNum),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.register_send_checkNum))
                 }
 
             } catch (e: MessagingException) {

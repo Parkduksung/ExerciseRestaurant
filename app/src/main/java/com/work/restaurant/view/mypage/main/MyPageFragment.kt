@@ -6,11 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
@@ -242,8 +242,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     override fun showLoginNo() {
-        Toast.makeText(context, getString(R.string.myPage_login_fail), Toast.LENGTH_SHORT)
-            .show()
+        showToast(getString(R.string.myPage_login_fail))
         showProgressState(false)
     }
 
@@ -270,45 +269,23 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             }
 
             MyPagePresenter.NOT_VALID_EMAIL -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.myPage_not_valid_email),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                showToast(getString(R.string.myPage_not_valid_email))
             }
 
             MyPagePresenter.HAVE_TRIM -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.common_have_trim),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                showToast(getString(R.string.common_have_trim))
             }
 
             MyPagePresenter.NOT_INPUT_PASS -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.myPage_not_input_pass),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.myPage_not_input_pass))
             }
 
             MyPagePresenter.NOT_INPUT_EMAIL -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.myPage_not_input_email),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.myPage_not_input_email))
             }
 
             MyPagePresenter.NOT_INPUT_ALL -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.myPage_not_input_all),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.myPage_not_input_all))
             }
         }
     }

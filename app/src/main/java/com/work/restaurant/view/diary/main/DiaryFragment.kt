@@ -17,6 +17,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
@@ -173,12 +174,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addEatFragment.show(it, AddEatFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.diary_login_state_no1),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.diary_login_state_no1))
                 }
             }
 
@@ -194,12 +190,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         addExerciseFragment.show(it, AddExerciseFragment.TAG)
                     }
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.diary_login_state_no1),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.diary_login_state_no1))
                 }
 
             }
@@ -293,17 +284,9 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun showResult(msg: Boolean) {
         if (msg) {
             renewDot()
-            Toast.makeText(
-                context,
-                getString(R.string.common_delete_ok),
-                Toast.LENGTH_SHORT
-            ).show()
+            showToast(getString(R.string.common_delete_ok))
         } else {
-            Toast.makeText(
-                context,
-                getString(R.string.common_delete_no),
-                Toast.LENGTH_SHORT
-            ).show()
+            showToast(getString(R.string.common_delete_no))
         }
     }
 

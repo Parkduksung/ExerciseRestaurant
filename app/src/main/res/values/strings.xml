@@ -1,4 +1,23 @@
 <resources>
+    <string-array name="select">
+        <item>강원</item>
+        <item>경기</item>
+        <item>경남</item>
+        <item>경북</item>
+        <item>광주</item>
+        <item>대구</item>
+        <item>대전</item>
+        <item>부산</item>
+        <item>서울</item>
+        <item>세종</item>
+        <item>울산</item>
+        <item>인천</item>
+        <item>전남</item>
+        <item>전북</item>
+        <item>제주</item>
+        <item>충남</item>
+        <item>충북</item>
+    </string-array>
 
     <string-array name="tab_main">
         <item>홈</item>
@@ -13,25 +32,20 @@
         <item>관심맛집</item>
     </string-array>
 
-    <string-array name="tab_address">
-        <item>광역시/도</item>
-        <item>시/군/구</item>
-        <item>읍/면/동</item>
-    </string-array>
 
-    <string-array name="tab_community">
-        <item>헬스장리뷰</item>
-        <item>운동일지</item>
-        <item>영양일지</item>
-    </string-array>
-
-    <string-array name="add_exercise_part">
+    <string-array name="exercise_part">
         <item>가슴</item>
         <item>등</item>
         <item>어깨</item>
         <item>팔</item>
         <item>다리</item>
     </string-array>
+
+    <string name="item_chest">가슴</string>
+    <string name="item_back">등</string>
+    <string name="item_shoulder">어깨</string>
+    <string name="item_legs">다리</string>
+    <string name="item_arm">팔</string>
 
     <string-array name="load_string">
         <item>오늘도 운동을 Flex!</item>
@@ -42,20 +56,7 @@
         <item>운동인들을 위한 세상</item>
     </string-array>
 
-
-    <string name="loading_title">운동맛집</string>
-
-
     <string name="kakao_map_api_key">785b8c0fb5d7046009351ac6fe2fed8b</string>
-
-
-    <string name="current_date">%s년 %s월 %s일</string>
-
-    <string name="item_chest">가슴</string>
-    <string name="item_back">등</string>
-    <string name="item_shoulder">어깨</string>
-    <string name="item_legs">다리</string>
-    <string name="item_arm">팔</string>
 
     <string name="exercise_sort_accuracy">정확도순</string>
     <string name="exercise_sort_distance">거리순</string>
@@ -79,6 +80,8 @@
     <string name="common_next">다음</string>
     <string name="common_complete">완료</string>
 
+    <string name="common_date">%s년 %s월 %s일</string>
+
     <string name="email">이메일</string>
     <string name="pass">비밀번호</string>
     <string name="log_out">로그아웃</string>
@@ -91,6 +94,7 @@
     <string name="common_update_ok">수정되었습니다.</string>
     <string name="common_update_fail">수정을 실패하였습니다.</string>
 
+    <string name="common_no_denied">권한이 거부되었습니다.\n\n%s</string>
 
     <string name="common_have_trim">입력한 정보에 공백을 제거하세요.</string>
     <string name="common_context_error_message1">내용을 입력하세요.</string>
@@ -112,6 +116,12 @@
 
     <string name="tedPermission_setRationaleMessage"> 앱의 기능을 사용하기 위해서는 권한이 필요합니다.</string>
     <string name="tedPermission_setDeniedMessage">만약 권한을 다시 얻으려면,\n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
+
+
+    //----------- Loading-------------
+    <string name="loading_title">운동맛집</string>
+    <string name="loading_gps_error_title">GPS 오류</string>
+    <string name="loading_gps_error_message">GPS 상태를 활성상태로 변경후 다시 시작해 주세요.</string>
 
     //----------- ExerciseRestaurantActivity-------------
 
@@ -344,7 +354,6 @@
     <string name="calendar_eat_context">식단</string>
     <string name="calendar_no_login_state">로그인을 하면 기록을 볼 수 있어요!</string>
 
-
     //-----------------------Home-------------------------
     //*main
 
@@ -354,13 +363,12 @@
     <string name="map_update_location_denied">앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" + "위치 설정을 수정하실래요?\n위치 서비스 비활성화</string>
     <string name="map_no_location_denied">위치 서비스 비활성화</string>
 
-
     //*address
     <string name="address_title">주소 설정</string>
     <string name="address_select1">광역시/도</string>
     <string name="address_select2">시/군/구</string>
     <string name="address_select3">읍/면/동</string>
-    <string name="address_change_cancel">취소</string>
-    <string name="address_change_title">선택주소</string>
-    <string name="address_change_ok">변경</string>
+
+    //*address_select_all
+    <string name="address_select_all_title">선택주소</string>
 </resources>

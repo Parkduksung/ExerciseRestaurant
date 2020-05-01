@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.RelateLogin
@@ -241,39 +242,21 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         when (msg) {
 
             SearchRankPresenter.ADD_BOOKMARK -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_state_ok),
-                    Toast.LENGTH_LONG
-                ).show()
-
+                showToast(getString(R.string.bookmark_state_ok))
                 searchRankAdapter.stateChange(selectPosition)
 
             }
             SearchRankPresenter.DELETE_BOOKMARK -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_state_no),
-                    Toast.LENGTH_LONG
-                ).show()
-
+                showToast(getString(R.string.bookmark_state_no))
                 searchRankAdapter.stateChange(selectPosition)
 
             }
             SearchRankPresenter.FAIL_ADD -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_add_no_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_add_no_message))
             }
 
             SearchRankPresenter.FAIL_DELETE -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_delete_no_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_delete_no_message))
             }
         }
     }
@@ -286,28 +269,13 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             when (sort) {
 
                 SearchRankPresenter.LOAD_LOCATION_ERROR -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.rank_error_location),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.rank_error_location))
                 }
                 SearchRankPresenter.LOAD_DATA_ERROR -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.rank_error_load_data),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.rank_error_load_data))
                 }
                 SearchRankPresenter.NOT_REMAIN_DATA -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.rank_unRemain_result),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.rank_unRemain_result))
                 }
             }
         }
@@ -354,11 +322,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                 }
             }
             SearchRankAdapter.NOT_LOGIN_STATE -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_state_no_login_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_state_no_login_message))
             }
 
         }

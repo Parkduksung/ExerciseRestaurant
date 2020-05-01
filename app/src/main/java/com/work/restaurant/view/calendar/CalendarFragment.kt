@@ -2,7 +2,6 @@ package com.work.restaurant.view.calendar
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -14,6 +13,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
@@ -96,7 +96,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 toggleMessage = false
                 val msg =
                     getString(
-                        R.string.current_date,
+                        R.string.common_date,
                         date.year.toString(),
                         (date.month + 1).toString(),
                         date.day.toString()
@@ -108,11 +108,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 }
 
             } else {
-                Toast.makeText(
-                    context,
-                    getString(R.string.calendar_login_state_no),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.calendar_login_state_no))
             }
         }
     }

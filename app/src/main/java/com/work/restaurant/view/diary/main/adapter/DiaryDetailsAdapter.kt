@@ -129,23 +129,23 @@ class DiaryDetailsAdapter :
             addName.text = item.exerciseSetName
 
             when (item.type) {
-                itemView.resources.getStringArray(R.array.add_exercise_part)[CHEST] -> {
+                itemView.resources.getStringArray(R.array.exercise_part)[CHEST] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorAccent)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[BACK] -> {
+                itemView.resources.getStringArray(R.array.exercise_part)[BACK] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorYellow)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[SHOULDER] -> {
+                itemView.resources.getStringArray(R.array.exercise_part)[SHOULDER] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorMint)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[ARMS] -> {
+                itemView.resources.getStringArray(R.array.exercise_part)[ARMS] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorPurple)
                 }
-                itemView.resources.getStringArray(R.array.add_exercise_part)[LEGS] -> {
+                itemView.resources.getStringArray(R.array.exercise_part)[LEGS] -> {
                     addBtnType.backgroundTintList =
                         ContextCompat.getColorStateList(App.instance.context(), R.color.colorBlue)
                 }

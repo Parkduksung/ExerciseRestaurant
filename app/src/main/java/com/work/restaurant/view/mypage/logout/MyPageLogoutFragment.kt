@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
@@ -69,12 +69,7 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
                     showProgressState(true)
                     presenter.logoutOk(getUserId)
                 } else {
-                    Toast.makeText(
-                        App.instance.context(),
-                        getString(R.string.logout_no),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.logout_no))
                 }
             }
         }
@@ -110,8 +105,7 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     override fun showLogoutNo() {
         showProgressState(false)
-        Toast.makeText(App.instance.context(), getString(R.string.logout_no), Toast.LENGTH_SHORT)
-            .show()
+        showToast(getString(R.string.logout_no))
     }
 
     companion object {

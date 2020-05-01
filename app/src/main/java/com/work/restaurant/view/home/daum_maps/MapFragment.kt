@@ -2,14 +2,11 @@ package com.work.restaurant.view.home.daum_maps
 
 import android.Manifest
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.contains
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -17,6 +14,8 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.ext.isConnectedToGPS
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.ShowAlertDialog
@@ -61,7 +60,7 @@ class MapFragment : BaseFragment(R.layout.map),
         object : PermissionListener {
 
             override fun onPermissionGranted() {
-                if (checkLocationServicesStatus()) {
+                if (isConnectedToGPS()) {
                     loadMap()
                 } else {
                     showDialogForLocationServiceSetting()
@@ -69,12 +68,7 @@ class MapFragment : BaseFragment(R.layout.map),
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.map_no_denied, deniedPermissions),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                showToast(getString(R.string.common_no_denied))
             }
         }
     }
@@ -109,11 +103,7 @@ class MapFragment : BaseFragment(R.layout.map),
     }
 
     private fun loadMap() {
-        Toast.makeText(
-            context,
-            getString(R.string.map_gps_and_authorization_on),
-            Toast.LENGTH_SHORT
-        ).show()
+        showToast(getString(R.string.map_gps_and_authorization_on))
         mapView = MapView(context)
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
@@ -128,12 +118,11 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             GPS_ENABLE_REQUEST_CODE ->
-                if (checkLocationServicesStatus()) {
+                if (isConnectedToGPS()) {
                     mapView =
                         MapView(requireContext())
                     map_view.addView(mapView)
-                    Toast.makeText(context, getString(R.string.map_gps_on), Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(getString(R.string.map_gps_on))
                     return
                 }
         }
@@ -339,7 +328,6 @@ class MapFragment : BaseFragment(R.layout.map),
                         customImageResourceId = R.drawable.asdf4_4
                         selectedMarkerType = MapPOIItem.MarkerType.CustomImage
                         customSelectedImageResourceId = R.drawable.asdf7
-                        userObject = R.drawable.animation
                         isShowDisclosureButtonOnCalloutBalloon = false
                         isShowCalloutBalloonOnTouch = false
                     }
@@ -477,13 +465,6 @@ class MapFragment : BaseFragment(R.layout.map),
         }
     }
 
-    private fun checkLocationServicesStatus(): Boolean {
-        val locationManager =
-            context?.getSystemService(LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
 
     private fun checkPermission() {
         TedPermission.with(context)
@@ -491,7 +472,6 @@ class MapFragment : BaseFragment(R.layout.map),
             .setRationaleMessage(getString(R.string.tedPermission_setRationaleMessage))
             .setDeniedMessage(getString(R.string.tedPermission_setDeniedMessage))
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-//            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
 
@@ -521,9 +501,10 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onResume()
 
         if (::mapView.isInitialized) {
-            if (!checkLocationServicesStatus()) {
+            if (isConnectedToGPS()) {
                 map_view.removeView(mapView)
-                Toast.makeText(context, getString(R.string.map_gps_off), Toast.LENGTH_SHORT).show()
+                showToast(getString(R.string.map_gps_off))
+
             } else {
                 if (!map_view.contains(mapView)) {
                     kakaoMarkerList.clear()

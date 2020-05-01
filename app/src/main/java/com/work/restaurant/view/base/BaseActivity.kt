@@ -6,6 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.crashlytics.android.Crashlytics
 import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import io.fabric.sdk.android.Fabric
 
@@ -32,11 +33,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
             if (layoutId == R.layout.activity_main) {
                 if (System.currentTimeMillis() - mBackWait >= LIMIT_TIME) {
                     mBackWait = System.currentTimeMillis()
-                    Toast.makeText(
-                        App.instance.context(),
-                        getString(R.string.baseActivity_backPressed),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    showToast(getString(R.string.baseActivity_backPressed))
                 } else {
                     finish()
                 }

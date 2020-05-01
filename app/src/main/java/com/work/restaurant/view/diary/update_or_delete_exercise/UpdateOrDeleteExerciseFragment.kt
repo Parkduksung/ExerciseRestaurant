@@ -10,14 +10,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.data.model.ExerciseSet
-import com.work.restaurant.util.*
+import com.work.restaurant.ext.showToast
+import com.work.restaurant.util.DateAndTime
+import com.work.restaurant.util.Keyboard
+import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
@@ -155,27 +158,13 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                                 )
                             }
                         } else {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.common_exercise_no_input_kg_and_count_error_message),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
                         }
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_save_no),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_save_no))
                     }
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.common_when_logout_not_save_records),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.common_when_logout_not_save_records))
                 }
             }
         }
@@ -228,12 +217,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                     Activity.RESULT_OK,
                     data
                 )
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_update_ok),
-                    Toast.LENGTH_SHORT
-                ).show()
-
+                showToast(getString(R.string.common_update_ok))
                 dismiss()
             }
 
@@ -247,30 +231,18 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                     Activity.RESULT_OK,
                     data
                 )
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_delete_ok),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_delete_ok))
                 dismiss()
 
 
             }
 
             UpdateOrDeleteExercisePresenter.FAIL_UPDATE -> {
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_update_fail),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_update_fail))
             }
 
             UpdateOrDeleteExercisePresenter.FAIL_DELETE -> {
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_delete_fail),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_delete_fail))
             }
         }
     }
@@ -313,23 +285,23 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
                 when (item?.itemId) {
                     R.id.chest -> {
                         tv_renew_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[0]
+                            resources.getStringArray(R.array.exercise_part)[0]
                     }
                     R.id.back -> {
                         tv_renew_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[1]
+                            resources.getStringArray(R.array.exercise_part)[1]
                     }
                     R.id.shoulder -> {
                         tv_renew_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[2]
+                            resources.getStringArray(R.array.exercise_part)[2]
                     }
                     R.id.legs -> {
                         tv_renew_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[4]
+                            resources.getStringArray(R.array.exercise_part)[4]
                     }
                     R.id.arm -> {
                         tv_renew_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[3]
+                            resources.getStringArray(R.array.exercise_part)[3]
                     }
                 }
                 return true

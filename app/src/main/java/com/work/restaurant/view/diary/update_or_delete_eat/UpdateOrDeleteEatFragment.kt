@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.TimePicker
-import android.widget.Toast
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.EatModel
-import com.work.restaurant.util.App
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
@@ -73,44 +72,19 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                             }
 
                         } else {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.common_context_error_message1),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showToast(getString(R.string.common_context_error_message1))
                         }
                     } else if (radioClick > 1 && et_renew_eat_memo.text.isNotBlank()) {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_context_error_message2),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_context_error_message2))
                     } else if (radioClick <= 1 && et_renew_eat_memo.text.isEmpty()) {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_context_error_message1),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_context_error_message1))
                     } else if (radioClick <= 1 && et_renew_eat_memo.text.trim().isEmpty()) {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_context_error_message1),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_context_error_message1))
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_context_error_message3),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_context_error_message3))
                     }
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.common_when_logout_not_save_records),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.common_when_logout_not_save_records))
                 }
             }
 
@@ -175,11 +149,7 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                     Activity.RESULT_OK,
                     data
                 )
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_update_ok),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_update_ok))
                 dismiss()
             }
             UpdateOrDeleteEatPresenter.SUCCESS_DELETE -> {
@@ -193,27 +163,15 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
                     Activity.RESULT_OK,
                     data
                 )
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_delete_ok),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_delete_ok))
                 dismiss()
             }
             UpdateOrDeleteEatPresenter.FAIL_UPDATE -> {
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_update_fail),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_update_fail))
             }
 
             UpdateOrDeleteEatPresenter.FAIL_DELETE -> {
-                Toast.makeText(
-                    App.instance.context(),
-                    getString(R.string.common_delete_fail),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(getString(R.string.common_delete_fail))
             }
 
         }

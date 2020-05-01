@@ -2,11 +2,10 @@ package com.work.restaurant.view.mypage.find
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
-import com.work.restaurant.util.App
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
@@ -49,11 +48,7 @@ class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View
 
         showProgressState(false)
 
-        Toast.makeText(
-            App.instance.context(),
-            getString(R.string.find_ok_message),
-            Toast.LENGTH_SHORT
-        ).show()
+        showToast(getString(R.string.find_ok_message))
 
         requireFragmentManager().beginTransaction().replace(
             R.id.myPage_find_container,

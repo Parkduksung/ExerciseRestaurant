@@ -29,24 +29,9 @@ class LoadingPresenter(
         )
             .registerAddress(object : Callback {
                 override fun onSuccess(list: List<AddressEntity>) {
-
-//                    val roadList =
-//                        mutableListOf<RoadModel>()
-//
-//                    list.forEach {
-//                        val roadModel =
-//                            RoadModel(it.si, it.gunGu, it.dong)
-//                        roadList.add(roadModel)
-//                    }
-//
-//                    roadList.forEach {
-//                        it.toAddressEntity()
-//                    }
-
                 }
 
                 override fun onFailure(message: String) {
-
                 }
             })
 
@@ -83,6 +68,7 @@ class LoadingPresenter(
 
                     }
                 }
+
                 override fun onFailure(message: String) {
 
                 }
@@ -99,8 +85,15 @@ class LoadingPresenter(
             }
 
             override fun onFailure() {
-                loadingView.showLoginState(false, "", "")
+                loadingView.showLoginState(false, EMPTY_TEXT, EMPTY_TEXT)
             }
         })
+    }
+
+
+    companion object {
+
+        private const val EMPTY_TEXT = ""
+
     }
 }

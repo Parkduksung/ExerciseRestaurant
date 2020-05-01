@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
-import com.work.restaurant.util.App
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.Keyboard
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
@@ -176,12 +175,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             lookForAdapter.clearListData()
             lookForAdapter.addAllData(searchModel)
         } else {
-            Toast.makeText(
-                App.instance.context(),
-                getString(R.string.lookFor_no_result),
-                Toast.LENGTH_SHORT
-            ).show()
-
+            showToast(getString(R.string.lookFor_no_result))
         }
         presenter.resetData()
         toggleSearch = true
@@ -214,8 +208,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
                 setResult(RESULT_OK, addressAllIntent)
 
-                Toast.makeText(this, getString(R.string.bookmark_state_ok), Toast.LENGTH_LONG)
-                    .show()
+                showToast(getString(R.string.bookmark_state_ok))
 
                 lookForAdapter.stateChange(selectPosition)
             }
@@ -230,23 +223,14 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                     }
 
                 setResult(RESULT_OK, addressAllIntent)
-                Toast.makeText(this, getString(R.string.bookmark_state_no), Toast.LENGTH_LONG)
-                    .show()
-                lookForAdapter.stateChange(selectPosition)
-
+                showToast(getString(R.string.bookmark_state_no))
             }
             SearchLookForPresenter.FAIL_ADD -> {
-                Toast.makeText(this, getString(R.string.bookmark_add_no_message), Toast.LENGTH_LONG)
-                    .show()
+                showToast(getString(R.string.bookmark_add_no_message))
             }
 
             SearchLookForPresenter.FAIL_DELETE -> {
-                Toast.makeText(
-                    this,
-                    getString(R.string.bookmark_delete_no_message),
-                    Toast.LENGTH_LONG
-                )
-                    .show()
+                showToast(getString(R.string.bookmark_delete_no_message))
             }
         }
     }
@@ -269,11 +253,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
             }
             LookForAdapter.NOT_LOGIN_STATE -> {
-                Toast.makeText(
-                    this,
-                    getString(R.string.bookmark_state_no_login_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_state_no_login_message))
             }
         }
     }

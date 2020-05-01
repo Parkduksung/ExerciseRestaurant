@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
@@ -64,18 +64,11 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         when (msg) {
             SearchBookmarksPresenter.RESULT_SUCCESS -> {
                 renewBookmarkAndRankListener.renewBookmarkAndRank()
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_state_no),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_state_no))
+
             }
             SearchBookmarksPresenter.RESULT_FAILURE -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.bookmark_delete_no_message),
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.bookmark_delete_no_message))
             }
         }
     }

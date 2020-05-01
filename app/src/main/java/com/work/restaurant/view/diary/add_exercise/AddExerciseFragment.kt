@@ -10,12 +10,12 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseSet
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.Keyboard
 import com.work.restaurant.util.RelateLogin
@@ -132,28 +132,14 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                                 setList
                             )
                         } else {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.common_exercise_no_input_kg_and_count_error_message),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
                         }
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.common_save_no),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.common_save_no))
                     }
 
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.common_when_logout_not_save_records),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast(getString(R.string.common_when_logout_not_save_records))
                 }
 
 
@@ -176,8 +162,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
             null
         )
         dismiss()
-        Toast.makeText(context, getString(R.string.common_save_ok), Toast.LENGTH_SHORT)
-            .show()
+        showToast(getString(R.string.common_save_ok))
     }
 
     private fun getTimePicker() {
@@ -211,7 +196,7 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
             alertDialog.setPositiveButton(getString(R.string.common_change)) { _, _ ->
                 tv_add_exercise_today.text =
                     getString(
-                        R.string.current_date,
+                        R.string.common_date,
                         datePicker.year.toString(),
                         (datePicker.month + 1).toString(),
                         datePicker.dayOfMonth.toString()
@@ -241,23 +226,23 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
                 when (item?.itemId) {
                     R.id.chest -> {
                         tv_add_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[0]
+                            resources.getStringArray(R.array.exercise_part)[0]
                     }
                     R.id.back -> {
                         tv_add_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[1]
+                            resources.getStringArray(R.array.exercise_part)[1]
                     }
                     R.id.shoulder -> {
                         tv_add_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[2]
+                            resources.getStringArray(R.array.exercise_part)[2]
                     }
                     R.id.legs -> {
                         tv_add_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[4]
+                            resources.getStringArray(R.array.exercise_part)[4]
                     }
                     R.id.arm -> {
                         tv_add_exercise_category.text =
-                            resources.getStringArray(R.array.add_exercise_part)[3]
+                            resources.getStringArray(R.array.exercise_part)[3]
                     }
                 }
                 return true

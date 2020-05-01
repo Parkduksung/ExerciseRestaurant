@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.work.restaurant.Injection
 import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
@@ -75,13 +75,7 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
                     }
                 } else {
                     showProgressState(false)
-                    Toast.makeText(
-                        App.instance.context(),
-                        getString(R.string.withdrawal_no),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-
+                    showToast(getString(R.string.withdrawal_no))
                 }
 
             }
