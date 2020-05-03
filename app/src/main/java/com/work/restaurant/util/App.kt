@@ -2,6 +2,8 @@ package com.work.restaurant.util
 
 import android.app.Application
 import android.content.Context
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 
 class App : Application() {
     companion object {
@@ -16,6 +18,7 @@ class App : Application() {
         instance = this
         prefs = MySharedPreferences(applicationContext)
 
+        Fabric.with(this, Crashlytics())
     }
 
     fun context(): Context = applicationContext

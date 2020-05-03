@@ -1,14 +1,10 @@
 package com.work.restaurant.view.base
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.crashlytics.android.Crashlytics
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
-import com.work.restaurant.util.App
-import io.fabric.sdk.android.Fabric
 
 
 abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
@@ -49,7 +45,6 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
 
-        Fabric.with(this, Crashlytics())
     }
 
     companion object {

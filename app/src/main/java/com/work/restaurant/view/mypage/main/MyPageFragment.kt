@@ -291,8 +291,15 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     private fun loginState(state: Boolean) {
-        ll_myPage_login.isVisible = state
-        ll_myPage_init.isInvisible = state
+
+        ll_myPage_init?.let {
+            ll_myPage_init.isInvisible = state
+        }
+        ll_myPage_login?.let {
+            ll_myPage_login.isInvisible = state
+        }
+//        ll_myPage_login.isVisible = state
+//        ll_myPage_init.isInvisible = state
     }
 
     private fun clearInputText() {

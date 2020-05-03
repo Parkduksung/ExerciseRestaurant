@@ -501,10 +501,9 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onResume()
 
         if (::mapView.isInitialized) {
-            if (isConnectedToGPS()) {
+            if (!isConnectedToGPS()) {
                 map_view.removeView(mapView)
                 showToast(getString(R.string.map_gps_off))
-
             } else {
                 if (!map_view.contains(mapView)) {
                     kakaoMarkerList.clear()

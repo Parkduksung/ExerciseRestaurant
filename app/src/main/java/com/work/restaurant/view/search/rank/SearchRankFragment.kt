@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.core.view.isVisible
@@ -272,7 +271,9 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                     showToast(getString(R.string.rank_error_location))
                 }
                 SearchRankPresenter.LOAD_DATA_ERROR -> {
-                    showToast(getString(R.string.rank_error_load_data))
+                    if (RelateLogin.loginState()) {
+                        showToast(getString(R.string.rank_error_load_data))
+                    }
                 }
                 SearchRankPresenter.NOT_REMAIN_DATA -> {
                     showToast(getString(R.string.rank_unRemain_result))

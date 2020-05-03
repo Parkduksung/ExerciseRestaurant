@@ -64,7 +64,6 @@ class SearchBookmarksPresenter(
         const val RESULT_SUCCESS = true
         const val RESULT_FAILURE = false
 
-
     }
 
 
