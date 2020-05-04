@@ -12,17 +12,18 @@ class ExerciseLocalDataSourceImpl(
 ) : ExerciseLocalDataSource {
     override fun deleteEat(
         data: ExerciseEntity,
-        callback: ExerciseLocalDataSourceCallback.DeleteExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
-            val deleteExercise = exerciseDatabase.exerciseDao().deleteExercise(data)
+            val deleteExercise =
+                exerciseDatabase.exerciseDao().deleteExercise(data)
 
             appExecutors.mainThread.execute {
                 if (deleteExercise >= 1) {
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onSuccess()
+                    callback(true)
                 }
             }
         }
@@ -35,26 +36,27 @@ class ExerciseLocalDataSourceImpl(
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: ExerciseLocalDataSourceCallback.UpdateExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
 
-            val updateExercise = exerciseDatabase.exerciseDao()
-                .updateEat(
-                    changeTime,
-                    changeType,
-                    changeExerciseName,
-                    changeExerciseSet,
-                    currentId,
-                    currentExerciseNum
-                )
+            val updateExercise =
+                exerciseDatabase.exerciseDao()
+                    .updateEat(
+                        changeTime,
+                        changeType,
+                        changeExerciseName,
+                        changeExerciseSet,
+                        currentId,
+                        currentExerciseNum
+                    )
 
             appExecutors.mainThread.execute {
                 if (updateExercise >= 1) {
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onSuccess()
+                    callback(false)
                 }
             }
 
@@ -66,18 +68,15 @@ class ExerciseLocalDataSourceImpl(
     override fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: ExerciseLocalDataSourceCallback.GetDataOfTheDay
+        callback: (List<ExerciseEntity>) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
-            val getDataOfTheDay = exerciseDatabase.exerciseDao().getTodayItem(userId, date)
+            val getDataOfTheDay =
+                exerciseDatabase.exerciseDao().getTodayItem(userId, date)
 
             appExecutors.mainThread.execute {
-                getDataOfTheDay.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getDataOfTheDay)
-                    } ?: callback.onFailure()
-
+                callback(getDataOfTheDay)
             }
 
         }
@@ -90,69 +89,53 @@ class ExerciseLocalDataSourceImpl(
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callbackLocal: ExerciseLocalDataSourceCallback.AddExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
 
-            val exerciseSetResponseList = list.map {
-                it.toExerciseSetResponse()
-            }
+            val exerciseSetResponseList =
+                list.map {
+                    it.toExerciseSetResponse()
+                }
 
-            val exerciseEntity = ExerciseEntity(
-                userId = userId,
-                date = date,
-                time = time,
-                type = type,
-                exerciseName = exerciseName,
-                exerciseSetList = exerciseSetResponseList
-            )
-            val registerExercise = exerciseDatabase.exerciseDao().registerExercise(exerciseEntity)
+            val exerciseEntity =
+                ExerciseEntity(
+                    userId = userId,
+                    date = date,
+                    time = time,
+                    type = type,
+                    exerciseName = exerciseName,
+                    exerciseSetList = exerciseSetResponseList
+                )
+            val registerExercise =
+                exerciseDatabase.exerciseDao().registerExercise(exerciseEntity)
 
 
             appExecutors.mainThread.execute {
                 if (registerExercise >= 1) {
-                    callbackLocal.onSuccess()
+                    callback(true)
                 } else {
-                    callbackLocal.onFailure()
+                    callback(false)
                 }
             }
         }
 
     }
 
-    override fun getAllList(userId: String, callback: ExerciseLocalDataSourceCallback.GetAllList) {
+    override fun getAllList(userId: String, callback: (List<ExerciseEntity>) -> Unit) {
 
 
         appExecutors.diskIO.execute {
 
-            val getAllList = exerciseDatabase.exerciseDao().getAll(userId)
+            val getAllList =
+                exerciseDatabase.exerciseDao().getAll(userId)
 
             appExecutors.mainThread.execute {
-                getAllList.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getAllList)
-                    } ?: callback.onFailure()
+                callback(getAllList)
             }
         }
 
     }
-
-    companion object {
-
-        private var instance: ExerciseLocalDataSourceImpl? = null
-
-        fun getInstance(
-            appExecutors: AppExecutors,
-            eatDatabase: ExerciseDatabase
-        ): ExerciseLocalDataSourceImpl =
-            instance ?: ExerciseLocalDataSourceImpl(
-                appExecutors,
-                eatDatabase
-            ).also {
-                instance = it
-            }
-    }
-
 
 }

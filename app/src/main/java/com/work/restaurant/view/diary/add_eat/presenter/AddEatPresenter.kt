@@ -1,7 +1,6 @@
 package com.work.restaurant.view.diary.add_eat.presenter
 
 import com.work.restaurant.data.repository.eat.EatRepository
-import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 
 class AddEatPresenter(
     private val addEatView: AddEatContract.View,
@@ -14,15 +13,11 @@ class AddEatPresenter(
             time,
             type,
             memo,
-            object : EatRepositoryCallback.AddEatCallback {
-                override fun onSuccess() {
-                    addEatView.showAddSuccess()
-                }
+            callback = { add ->
+                if (add) addEatView.showAddSuccess()
+            }
+        )
 
-                override fun onFailure() {
-
-                }
-            })
     }
 
 }

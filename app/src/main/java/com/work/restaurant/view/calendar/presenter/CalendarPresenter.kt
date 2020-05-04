@@ -1,11 +1,7 @@
 package com.work.restaurant.view.calendar.presenter
 
 import com.work.restaurant.data.repository.eat.EatRepository
-import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
-import com.work.restaurant.data.repository.exercise.ExerciseRepositoryCallback
-import com.work.restaurant.network.room.entity.EatEntity
-import com.work.restaurant.network.room.entity.ExerciseEntity
 
 class CalendarPresenter(
     private val calendarContract: CalendarContract.View,
@@ -15,45 +11,43 @@ class CalendarPresenter(
 
     override fun getAllEatData(userId: String) {
 
-        eatRepository.getList(userId, object : EatRepositoryCallback.GetAllList {
-            override fun onSuccess(list: List<EatEntity>) {
+        eatRepository.getList(
+            userId,
+            callback = { list ->
 
-                val toEatModel =
-                    list.map { it.toEatModel() }
+                if (list.isNotEmpty()) {
 
-                val toOnlyDateFromEatModelList =
-                    toEatModel.map { it.date }.toSet()
+                    val toEatModel =
+                        list.map { it.toEatModel() }
 
-                calendarContract.showAllDayIncludeEatData(toOnlyDateFromEatModelList)
+                    val toOnlyDateFromEatModelList =
+                        toEatModel.map { it.date }.toSet()
 
-            }
-
-            override fun onFailure() {
-
-            }
-        })
+                    calendarContract.showAllDayIncludeEatData(toOnlyDateFromEatModelList)
+                } else {
+                    calendarContract.showAllDayIncludeExerciseData(emptySet())
+                }
+            })
 
     }
 
     override fun getAllExerciseData(userId: String) {
 
-        exerciseRepository.getList(userId, object : ExerciseRepositoryCallback.GetAllList {
-            override fun onSuccess(list: List<ExerciseEntity>) {
+        exerciseRepository.getAllList(
+            userId,
+            callback = { list ->
+                if (list.isNotEmpty()) {
+                    val toExerciseModel =
+                        list.map { it.toExerciseModel() }
 
-                val toExerciseModel =
-                    list.map { it.toExerciseModel() }
+                    val toOnlyDateFromExerciseModelList =
+                        toExerciseModel.map { it.date }.toSet()
 
-                val toOnlyDateFromExerciseModelList =
-                    toExerciseModel.map { it.date }.toSet()
-
-                calendarContract.showAllDayIncludeExerciseData(toOnlyDateFromExerciseModelList)
-
-            }
-
-            override fun onFailure() {
-
-            }
-        })
+                    calendarContract.showAllDayIncludeExerciseData(toOnlyDateFromExerciseModelList)
+                } else {
+                    calendarContract.showAllDayIncludeExerciseData(emptySet())
+                }
+            })
 
     }
 
@@ -63,16 +57,14 @@ class CalendarPresenter(
         exerciseRepository.getDataOfTheDay(
             userId,
             date,
-            object : ExerciseRepositoryCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<ExerciseEntity>) {
+            callback = { list ->
+                if (list.isNotEmpty()) {
                     val toExerciseModelList = list.map {
                         it.toExerciseModel()
                     }
                     calendarContract.showExerciseData(toExerciseModelList)
-                }
-
-                override fun onFailure() {
-
+                } else {
+                    calendarContract.showExerciseData(emptyList())
                 }
             })
 
@@ -83,18 +75,18 @@ class CalendarPresenter(
         eatRepository.getDataOfTheDay(
             userId,
             date,
-            object : EatRepositoryCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<EatEntity>) {
-                    val toEatModelList = list.map {
-                        it.toEatModel()
-                    }
+            callback = { list ->
+                if (list.isNotEmpty()) {
+                    val toEatModelList =
+                        list.map {
+                            it.toEatModel()
+                        }
                     calendarContract.showEatData(toEatModelList)
+                } else {
+                    calendarContract.showEatData(emptyList())
                 }
-
-                override fun onFailure() {
-
-                }
-            })
+            }
+        )
 
     }
 

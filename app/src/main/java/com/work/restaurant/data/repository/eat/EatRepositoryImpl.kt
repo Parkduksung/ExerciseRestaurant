@@ -1,10 +1,9 @@
 package com.work.restaurant.data.repository.eat
 
-import com.work.restaurant.data.source.local.eat.EatLocalDataSourceCallback
 import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
 import com.work.restaurant.network.room.entity.EatEntity
 
-class EatRepositoryImpl private constructor(
+class EatRepositoryImpl(
     private val eatLocalDataSourceImpl: EatLocalDataSourceImpl
 ) : EatRepository {
     override fun updateEat(
@@ -12,71 +11,39 @@ class EatRepositoryImpl private constructor(
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: EatRepositoryCallback.UpdateEatCallback
+        callback: (Boolean) -> Unit
     ) {
         eatLocalDataSourceImpl.updateEat(
             time,
             type,
             memo,
             data,
-            object : EatLocalDataSourceCallback.UpdateEatCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+            callback
+        )
     }
 
-    override fun deleteEat(data: EatEntity, callback: EatRepositoryCallback.DeleteEatCallback) {
+    override fun deleteEat(data: EatEntity, callback: (Boolean) -> Unit) {
         eatLocalDataSourceImpl.deleteEat(
             data,
-            object : EatLocalDataSourceCallback.DeleteEatCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            }
+            callback
         )
     }
 
     override fun getDataOfTheDay(
         userId: String,
         today: String,
-        callback: EatRepositoryCallback.GetDataOfTheDay
+        callback: (List<EatEntity>) -> Unit
     ) {
         eatLocalDataSourceImpl.getDataOfTheDay(
             userId,
             today,
-            object : EatLocalDataSourceCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<EatEntity>) {
-                    callback.onSuccess(list)
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
-
+            callback
+        )
     }
 
 
-    override fun getList(userId: String, callback: EatRepositoryCallback.GetAllList) {
-        eatLocalDataSourceImpl.getAllList(userId, object : EatLocalDataSourceCallback.GetAllList {
-            override fun onSuccess(list: List<EatEntity>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
-
+    override fun getList(userId: String, callback: (List<EatEntity>) -> Unit) {
+        eatLocalDataSourceImpl.getAllList(userId, callback)
     }
 
 
@@ -86,7 +53,7 @@ class EatRepositoryImpl private constructor(
         time: String,
         type: Int,
         memo: String,
-        callback: EatRepositoryCallback.AddEatCallback
+        callback: (Boolean) -> Unit
     ) {
         eatLocalDataSourceImpl.addEat(
             userId,
@@ -94,31 +61,23 @@ class EatRepositoryImpl private constructor(
             time,
             type,
             memo,
-            object : EatLocalDataSourceCallback.AddEatCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-
-            })
+            callback
+        )
     }
 
-    companion object {
-
-        private var instance: EatRepositoryImpl? = null
-
-        fun getInstance(
-            eatLocalDataSourceImpl: EatLocalDataSourceImpl
-        ): EatRepository =
-            instance ?: EatRepositoryImpl(eatLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
-    }
+//    companion object {
+//
+//        private var instance: EatRepositoryImpl? = null
+//
+//        fun getInstance(
+//            eatLocalDataSourceImpl: EatLocalDataSourceImpl
+//        ): EatRepository =
+//            instance ?: EatRepositoryImpl(eatLocalDataSourceImpl)
+//                .also {
+//                    instance = it
+//                }
+//
+//    }
 
 
 }

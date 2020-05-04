@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.remote.kakao
 
-import android.util.Log
 import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoAddress.KakaoAddressSearch
 import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressResponse
@@ -87,7 +86,7 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
                         val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
 
                         response.body().documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
+                            if (it.categoryName.contains(SEARCH_CATEGORY)) {
                                 toSortDocuments.add(it)
                             }
                         }
@@ -123,10 +122,8 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
 
                         val toSortDocuments = mutableListOf<KakaoSearchDocuments>()
 
-                        Log.d("페이지여부확인", response.body().kakaoSearchMeta.pageableCount.toString())
-
                         response.body().documents.forEach {
-                            if (it.categoryName.contains("스포츠,레저 > 스포츠시설 > 헬스클럽")) {
+                            if (it.categoryName.contains(SEARCH_CATEGORY)) {
                                 toSortDocuments.add(it)
                             }
                         }
@@ -179,6 +176,8 @@ class KakaoRemoteDataSourceImpl private constructor(private val kakaoApi: KakaoA
     companion object {
 
         private var instance: KakaoRemoteDataSourceImpl? = null
+
+        private const val SEARCH_CATEGORY = "스포츠,레저 > 스포츠시설 > 헬스클럽"
 
         fun getInstance(kakaoApi: KakaoApi): KakaoRemoteDataSourceImpl =
             instance ?: KakaoRemoteDataSourceImpl(kakaoApi).also {

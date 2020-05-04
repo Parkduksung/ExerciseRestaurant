@@ -1,7 +1,6 @@
 package com.work.restaurant.data.repository.exercise
 
 import com.work.restaurant.data.model.ExerciseSet
-import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceCallback
 import com.work.restaurant.data.source.local.exercise.ExerciseLocalDataSourceImpl
 import com.work.restaurant.network.room.entity.ExerciseEntity
 import com.work.restaurant.network.room.entity.ExerciseSetResponse
@@ -16,7 +15,7 @@ class ExerciseRepositoryImpl(
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: ExerciseRepositoryCallback.UpdateExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
 
         exerciseLocalDataSourceImpl.updateExercise(
@@ -26,49 +25,26 @@ class ExerciseRepositoryImpl(
             changeExerciseSet,
             currentId,
             currentExerciseNum,
-            object : ExerciseLocalDataSourceCallback.UpdateExerciseCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            }
-
+            callback
         )
 
     }
 
     override fun deleteEat(
         data: ExerciseEntity,
-        callback: ExerciseRepositoryCallback.DeleteExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
         exerciseLocalDataSourceImpl.deleteEat(
             data,
-            object : ExerciseLocalDataSourceCallback.DeleteExerciseCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+            callback
+        )
     }
 
-    override fun getList(userId: String, callback: ExerciseRepositoryCallback.GetAllList) {
+    override fun getAllList(userId: String, callback: (List<ExerciseEntity>) -> Unit) {
         exerciseLocalDataSourceImpl.getAllList(
             userId,
-            object : ExerciseLocalDataSourceCallback.GetAllList {
-                override fun onSuccess(list: List<ExerciseEntity>) {
-                    callback.onSuccess(list)
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+            callback
+        )
     }
 
     override fun addExercise(
@@ -78,7 +54,7 @@ class ExerciseRepositoryImpl(
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: ExerciseRepositoryCallback.AddExerciseCallback
+        callback: (Boolean) -> Unit
     ) {
 
         exerciseLocalDataSourceImpl.addExercise(
@@ -88,52 +64,37 @@ class ExerciseRepositoryImpl(
             type,
             exerciseName,
             list,
-            object : ExerciseLocalDataSourceCallback.AddExerciseCallback {
-
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+            callback
+        )
 
 
     }
 
     override fun getDataOfTheDay(
         userId: String,
-        today: String,
-        callback: ExerciseRepositoryCallback.GetDataOfTheDay
+        date: String,
+        callback: (List<ExerciseEntity>) -> Unit
     ) {
         exerciseLocalDataSourceImpl.getDataOfTheDay(
             userId,
-            today,
-            object : ExerciseLocalDataSourceCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<ExerciseEntity>) {
-                    callback.onSuccess(list)
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+            date,
+            callback
+        )
     }
 
-
-    companion object {
-
-        private var instance: ExerciseRepositoryImpl? = null
-
-        fun getInstance(
-            exerciseLocalDataSourceImpl: ExerciseLocalDataSourceImpl
-        ): ExerciseRepository =
-            instance ?: ExerciseRepositoryImpl(exerciseLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
-    }
+//
+//    companion object {
+//
+//        private var instance: ExerciseRepositoryImpl? = null
+//
+//        fun getInstance(
+//            exerciseLocalDataSourceImpl: ExerciseLocalDataSourceImpl
+//        ): ExerciseRepository =
+//            instance ?: ExerciseRepositoryImpl(exerciseLocalDataSourceImpl)
+//                .also {
+//                    instance = it
+//                }
+//
+//    }
 
 }

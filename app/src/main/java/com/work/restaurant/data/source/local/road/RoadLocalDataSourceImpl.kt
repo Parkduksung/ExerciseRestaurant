@@ -56,16 +56,11 @@ class RoadLocalDataSourceImpl private constructor(
 
             val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
 
-            Log.d("결과결과", getAddressCount.toString())
-
             if (addressDatabase?.isOpen!!) {
                 if (getAddressCount != null) {
-
                     callback.onSuccess(true)
-                    Log.d("결과결과", "true가 나와야함.")
                 } else {
                     callback.onSuccess(false)
-                    Log.d("결과결과", "false가 나와야함.")
                 }
             } else {
                 callback.onFailure("error!")
@@ -83,10 +78,8 @@ class RoadLocalDataSourceImpl private constructor(
 
             val getAddressCount = addressDatabase.addressDao().getAllCount()
 
-            Log.d("결과결과", getAddressCount.toString())
-
             if (addressDatabase.isOpen) {
-                Log.d("결과결과55", getAddressCount.toString())
+
                 appExecutors.mainThread.execute {
                     callback.onSuccess(true)
                 }

@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.eat
 
-import android.util.Log
 import com.work.restaurant.network.room.database.EatDatabase
 import com.work.restaurant.network.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
@@ -14,54 +13,45 @@ class EatLocalDataSourceImpl(
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: EatLocalDataSourceCallback.UpdateEatCallback
+        callback: (Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
-
 
             val updateEat =
                 eatDatabase.eatDao().updateEat(time, type, memo, data.userId, data.eatNum)
 
-
             appExecutors.mainThread.execute {
                 if (updateEat == 1) {
-
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onFailure()
-
-
+                    callback(false)
                 }
-
             }
-
         }
-
-
     }
 
     override fun deleteEat(
         data: EatEntity,
-        callback: EatLocalDataSourceCallback.DeleteEatCallback
+        callback: (Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
-            val deleteEat = eatDatabase.eatDao().deleteEat(data)
+            val deleteEat =
+                eatDatabase.eatDao().deleteEat(data)
 
             appExecutors.mainThread.execute {
                 if (deleteEat >= 1) {
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onSuccess()
+                    callback(false)
                 }
-
             }
 
         }
     }
 
-    override fun getAllList(userId: String, callback: EatLocalDataSourceCallback.GetAllList) {
+    override fun getAllList(userId: String, callback: (List<EatEntity>) -> Unit) {
 
         appExecutors.diskIO.execute {
 
@@ -69,10 +59,7 @@ class EatLocalDataSourceImpl(
                 eatDatabase.eatDao().getAll(userId)
 
             appExecutors.mainThread.execute {
-                getAllList.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getAllList)
-                    } ?: callback.onFailure()
+                callback(getAllList)
             }
 
         }
@@ -84,18 +71,16 @@ class EatLocalDataSourceImpl(
     override fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: EatLocalDataSourceCallback.GetDataOfTheDay
+        callback: (List<EatEntity>) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
 
-            val getDataOfTheDay = eatDatabase.eatDao().getTodayItem(userId, date)
+            val getDataOfTheDay =
+                eatDatabase.eatDao().getTodayItem(userId, date)
 
             appExecutors.mainThread.execute {
-                getDataOfTheDay.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getDataOfTheDay)
-                    } ?: callback.onFailure()
+                callback(getDataOfTheDay)
             }
 
         }
@@ -109,42 +94,27 @@ class EatLocalDataSourceImpl(
         time: String,
         type: Int,
         memo: String,
-        callback: EatLocalDataSourceCallback.AddEatCallback
+        callback: (Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
             val eatEntity =
                 EatEntity(userId = userId, date = date, time = time, type = type, memo = memo)
 
-            val registerEat = eatDatabase.eatDao().registerEat(eatEntity)
+            val registerEat =
+                eatDatabase.eatDao().registerEat(eatEntity)
+
 
             appExecutors.mainThread.execute {
                 if (registerEat >= 1) {
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onSuccess()
+                    callback(false)
                 }
             }
 
         }
 
-    }
-
-
-    companion object {
-
-        private var instance: EatLocalDataSourceImpl? = null
-
-        fun getInstance(
-            appExecutors: AppExecutors,
-            eatDatabase: EatDatabase
-        ): EatLocalDataSourceImpl =
-            instance ?: EatLocalDataSourceImpl(
-                appExecutors,
-                eatDatabase
-            ).also {
-                instance = it
-            }
     }
 }
 

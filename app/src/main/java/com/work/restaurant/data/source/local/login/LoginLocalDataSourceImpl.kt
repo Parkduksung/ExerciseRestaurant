@@ -21,8 +21,6 @@ class LoginLocalDataSourceImpl(
 
             val findUser = loginDatabase.loginDao().findUser(id, pw, nickname)
 
-            Log.d("숫자가어떻게나오나?", findUser.toString())
-
             appExecutors.mainThread.execute {
 
                 if (findUser < 1) {
@@ -121,21 +119,6 @@ class LoginLocalDataSourceImpl(
             val loginListOfTrue = loginDatabase.loginDao().getLoginState(true)
 
             val loginListOfTrue1 = loginDatabase.loginDao().getAllList()
-
-            loginListOfTrue1.forEach {
-                Log.d("결과가머더냐아이디들?", it.loginId)
-            }
-//
-////
-//            loginDatabase.loginDao().delete(loginListOfTrue1)
-//
-//            if (loginDatabase.loginDao().delete(loginListOfTrue) == 1) {
-//                Log.d("결과가머더냐?", loginListOfTrue.size.toString())
-//            }
-
-            Log.d("결과가머더냐?", loginListOfTrue.size.toString())
-////
-            Log.d("결과가머더냐총갯수?", loginListOfTrue1.size.toString())
 
             appExecutors.mainThread.execute {
 

@@ -10,33 +10,31 @@ interface EatLocalDataSource {
         time: String,
         type: Int,
         memo: String,
-        callback: EatLocalDataSourceCallback.AddEatCallback
+        callback: (Boolean) -> Unit
     )
 
     fun deleteEat(
         data: EatEntity,
-        callback: EatLocalDataSourceCallback.DeleteEatCallback
+        callback: (Boolean) -> Unit
     )
 
     fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: EatLocalDataSourceCallback.GetDataOfTheDay
+        callback: (List<EatEntity>) -> Unit
     )
-
 
     fun getAllList(
         userId: String,
-        callback: EatLocalDataSourceCallback.GetAllList
+        callback: (List<EatEntity>) -> Unit
     )
-
 
     fun updateEat(
         time: String,
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: EatLocalDataSourceCallback.UpdateEatCallback
+        callback: (Boolean) -> Unit
     )
 
 }

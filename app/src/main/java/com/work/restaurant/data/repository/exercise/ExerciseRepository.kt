@@ -13,23 +13,23 @@ interface ExerciseRepository {
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: ExerciseRepositoryCallback.AddExerciseCallback
+        callback: (Boolean) -> Unit
     )
 
-    fun deleteEat(
-        data: ExerciseEntity,
-        callback: ExerciseRepositoryCallback.DeleteExerciseCallback
-    )
-
-    fun getList(
+    fun getAllList(
         userId: String,
-        callback: ExerciseRepositoryCallback.GetAllList
+        callback: (List<ExerciseEntity>) -> Unit
     )
 
     fun getDataOfTheDay(
         userId: String,
-        today: String,
-        callback: ExerciseRepositoryCallback.GetDataOfTheDay
+        date: String,
+        callback: (List<ExerciseEntity>) -> Unit
+    )
+
+    fun deleteEat(
+        data: ExerciseEntity,
+        callback: (Boolean) -> Unit
     )
 
     fun updateExercise(
@@ -39,7 +39,7 @@ interface ExerciseRepository {
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: ExerciseRepositoryCallback.UpdateExerciseCallback
+        callback: (Boolean) -> Unit
     )
 
 }

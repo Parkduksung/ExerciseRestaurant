@@ -3,7 +3,6 @@ package com.work.restaurant.view.diary.update_or_delete_exercise.presenter
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
-import com.work.restaurant.data.repository.exercise.ExerciseRepositoryCallback
 
 class UpdateOrDeleteExercisePresenter(
     private val updateOrDeleteView: UpdateOrDeleteExerciseContract.View,
@@ -16,16 +15,14 @@ class UpdateOrDeleteExercisePresenter(
 
         exerciseRepository.deleteEat(
             toExerciseEntity,
-            object : ExerciseRepositoryCallback.DeleteExerciseCallback {
-                override fun onSuccess() {
-
+            callback = { delete ->
+                if (delete) {
                     updateOrDeleteView.showResult(SUCCESS_DELETE)
-                }
-
-                override fun onFailure() {
+                } else {
                     updateOrDeleteView.showResult(FAIL_DELETE)
                 }
             })
+
     }
 
     override fun updateExercise(
@@ -46,12 +43,10 @@ class UpdateOrDeleteExercisePresenter(
             toExerciseSetResponse,
             exerciseModel.userId,
             exerciseModel.exerciseNum,
-            object : ExerciseRepositoryCallback.UpdateExerciseCallback {
-                override fun onSuccess() {
+            callback = { update ->
+                if (update) {
                     updateOrDeleteView.showResult(SUCCESS_UPDATE)
-                }
-
-                override fun onFailure() {
+                } else {
                     updateOrDeleteView.showResult(FAIL_UPDATE)
                 }
             })

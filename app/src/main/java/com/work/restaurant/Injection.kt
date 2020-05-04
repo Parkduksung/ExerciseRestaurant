@@ -35,9 +35,10 @@ import com.work.restaurant.util.AppExecutors
 
 object Injection {
     fun provideEatRepository(): EatRepository =
-        EatRepositoryImpl.getInstance(
+        EatRepositoryImpl(
             EatLocalDataSourceImpl(
-                AppExecutors(), EatDatabase.getInstance(
+                AppExecutors(),
+                EatDatabase.getInstance(
                     App.instance.context()
                 )
             )
@@ -46,7 +47,8 @@ object Injection {
     fun provideBookmarkRepository(): BookmarkRepository =
         BookmarkRepositoryImpl.getInstance(
             BookmarkLocalDataSourceImpl(
-                AppExecutors(), BookmarkDatabase.getInstance(
+                AppExecutors(),
+                BookmarkDatabase.getInstance(
                     App.instance.context()
                 )
             )
@@ -54,7 +56,7 @@ object Injection {
 
 
     fun provideExerciseRepository(): ExerciseRepository =
-        ExerciseRepositoryImpl.getInstance(
+        ExerciseRepositoryImpl(
             ExerciseLocalDataSourceImpl(
                 AppExecutors(),
                 ExerciseDatabase.getInstance(
