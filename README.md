@@ -13,7 +13,7 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 
 ## 결과
 
-![start](https://user-images.githubusercontent.com/54328309/80931908-cc2a8a80-8df7-11ea-90bf-c6aa94556029.gif = 250x250)
+![start](https://user-images.githubusercontent.com/54328309/80931908-cc2a8a80-8df7-11ea-90bf-c6aa94556029.gif=250x250)
 
 ![1](https://user-images.githubusercontent.com/54328309/80931924-e06e8780-8df7-11ea-9e4c-73382ef71e1e.gif)
 
