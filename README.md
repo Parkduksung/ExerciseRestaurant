@@ -1,6 +1,7 @@
 # **ExerciseRestaurant**
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e1236589-c4b1-441e-bbed-64c3f0fd83d6/exercise_restaurant_main_icon.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e1236589-c4b1-441e-bbed-64c3f0fd83d6/exercise_restaurant_main_icon.png)
+![exercise_restaurant_main_icon](https://user-images.githubusercontent.com/54328309/80931858-76ee7900-8df7-11ea-900a-e5a0f8fd6988.PNG)
+
 
 ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 운동을 기록하여 볼 수 있는 앱이다. 
 
