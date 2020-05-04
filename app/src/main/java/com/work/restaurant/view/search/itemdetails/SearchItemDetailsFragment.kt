@@ -104,8 +104,6 @@ class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_frag
                 return false
             }
 
-
-            //페이지가 켜졌을때
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 

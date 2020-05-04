@@ -253,12 +253,14 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
             tv_calendar_main_context.text =
                 getString(R.string.common_ok_login_state_but_not_have_data)
+
             presenter.run {
                 getAllEatData(loginStateId)
                 getAllExerciseData(loginStateId)
                 getDataOfTheDayEatData(loginStateId, DateAndTime.currentDate())
                 getDataOfTheDayExerciseData(loginStateId, DateAndTime.currentDate())
             }
+
             calender_view.selectedDate = CalendarDay.today()
             toggleMessage = true
 

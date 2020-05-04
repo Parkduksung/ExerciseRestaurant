@@ -78,19 +78,6 @@
             android:layout_weight="1"
             android:button="@drawable/selector_checkbox_bookmark1"
             android:gravity="center" />
-
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/ib_more_vert"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:layout_weight="0.5"-->
-<!--            android:background="@drawable/button_round"-->
-<!--            android:backgroundTint="@color/colorWhite"-->
-<!--            app:srcCompat="@drawable/more_vert"-->
-<!--            tools:ignore="NestedWeights,RtlHardcoded" />-->
-
     </LinearLayout>
 
 

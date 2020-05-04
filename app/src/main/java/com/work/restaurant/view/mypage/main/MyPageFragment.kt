@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.mypage_fragment.*
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
 
-
     private lateinit var presenter: MyPageContract.Presenter
 
     private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
@@ -291,15 +290,12 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     private fun loginState(state: Boolean) {
-
         ll_myPage_init?.let {
             ll_myPage_init.isInvisible = state
         }
         ll_myPage_login?.let {
-            ll_myPage_login.isInvisible = state
+            ll_myPage_login.isVisible = state
         }
-//        ll_myPage_login.isVisible = state
-//        ll_myPage_init.isInvisible = state
     }
 
     private fun clearInputText() {

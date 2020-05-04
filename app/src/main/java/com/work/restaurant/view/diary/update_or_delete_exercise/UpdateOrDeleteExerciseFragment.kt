@@ -126,7 +126,10 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
 
                 if (RelateLogin.loginState()) {
 
-                    if (tv_renew_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_renew_exercise_name.text.isNotEmpty()) {
+                    if (tv_renew_exercise_category.text.isNotEmpty() &&
+                        viewList.isNotEmpty() &&
+                        et_renew_exercise_name.text.isNotEmpty()
+                    ) {
                         val setList = mutableListOf<ExerciseSet>()
 
                         viewList.forEach {

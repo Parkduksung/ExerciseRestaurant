@@ -402,7 +402,6 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         }
     }
 
-    //다음날로 넘어가는데 이전에 키다가 shared 쓰면 안넘어가니까.
     override fun onResume() {
         if (oldTodayDate != DateAndTime.currentDate()) {
             tv_diary_day.text = DateAndTime.currentDate()

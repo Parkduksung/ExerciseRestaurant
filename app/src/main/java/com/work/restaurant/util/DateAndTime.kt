@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-//showing date easily
 @SuppressLint("SimpleDateFormat")
 object DateAndTime {
 

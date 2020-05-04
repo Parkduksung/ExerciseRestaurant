@@ -13,7 +13,6 @@ class KakaoRepositoryImpl private constructor(
     private val kakaoRemoteDataSource: KakaoRemoteDataSource
 ) : KakaoRepository {
 
-
     override fun getKakaoLocationToAddress(
         currentX: Double,
         currentY: Double,

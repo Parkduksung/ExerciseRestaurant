@@ -98,7 +98,6 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     }
 
 
-
     override fun loginCallbackListener() {
         tl_main.run {
             getTabAt(MY_PAGE)?.select()
