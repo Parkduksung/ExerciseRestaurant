@@ -42,4 +42,4 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 
 이 앱은 MVP 구조를 사용하였습니다.
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/198597f4-aafe-4cbc-9df2-61d751b16fc7/.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/198597f4-aafe-4cbc-9df2-61d751b16fc7/.png)
+![구조](https://user-images.githubusercontent.com/54328309/80933982-eddc3f80-8e00-11ea-9a4f-b6f2a7d9ac68.PNG)
