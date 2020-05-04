@@ -138,7 +138,6 @@ class MapPresenter(
                                 }
                             mapView.showMarkerData(toDisplayBookmarkKakaoModel)
                         }
-
                     }
                 }
 
@@ -186,12 +185,13 @@ class MapPresenter(
                         list.map { it.toBookmarkModel() }
 
                     val displayBookmarkKakaoList =
-                        convertFromKakaoListToBookmarkModel.map {
-                            if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
-                                it.toDisplayBookmarkKakaoList(true)
-                            } else {
-                                it.toDisplayBookmarkKakaoList(false)
-                            }
+                        convertFromKakaoListToBookmarkModel.map { bookmarkModel ->
+
+                            bookmarkModel.toDisplayBookmarkKakaoList(
+                                convertFromBookmarkEntityToBookmarkModel.contains(
+                                    bookmarkModel
+                                )
+                            )
                         }
 
                     mapView.showMarkerData(displayBookmarkKakaoList)

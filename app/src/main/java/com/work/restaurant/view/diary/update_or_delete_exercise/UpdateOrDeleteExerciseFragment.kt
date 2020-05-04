@@ -125,7 +125,6 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
             R.id.renew_exercise_save -> {
 
                 if (RelateLogin.loginState()) {
-
                     if (tv_renew_exercise_category.text.isNotEmpty() &&
                         viewList.isNotEmpty() &&
                         et_renew_exercise_name.text.isNotEmpty()
