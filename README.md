@@ -13,15 +13,15 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 
 ## 결과
 
-![ezgif com-resize (2)](https://user-images.githubusercontent.com/54328309/80933419-a1900000-8dfe-11ea-97f6-e1accfcb076f.gif)
+![start!](https://user-images.githubusercontent.com/54328309/80933840-4bbc5780-8e00-11ea-96d5-a4eef147c9d7.gif)
 
-![1](https://user-images.githubusercontent.com/54328309/80931924-e06e8780-8df7-11ea-9e4c-73382ef71e1e.gif)
+![1!](https://user-images.githubusercontent.com/54328309/80933801-0f88f700-8e00-11ea-8616-a08d0c2ca846.gif)
 
-![2](https://user-images.githubusercontent.com/54328309/80932278-ccc42080-8df9-11ea-983c-9378e11385fd.gif)
+![2!](https://user-images.githubusercontent.com/54328309/80933815-2b8c9880-8e00-11ea-9518-0abe6b540d83.gif)
 
-![3](https://user-images.githubusercontent.com/54328309/80931940-f4b28480-8df7-11ea-8fbd-8af8f7932410.gif)
+![3!](https://user-images.githubusercontent.com/54328309/80933881-83c39a80-8e00-11ea-8eaf-3ae8cd9c20ef.gif)
 
-![4](https://user-images.githubusercontent.com/54328309/80931950-0300a080-8df8-11ea-98f4-fef93a3c431b.gif)
+![4!](https://user-images.githubusercontent.com/54328309/80933831-3fd09580-8e00-11ea-9dff-d33a5c28c32e.gif)
 
 ## Libraries and tools
 
