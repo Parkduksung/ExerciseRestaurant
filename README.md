@@ -13,15 +13,15 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 
 ## 결과
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/787d2728-2eea-4721-b6db-688eaa051138/GIF-200503_192159.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/787d2728-2eea-4721-b6db-688eaa051138/GIF-200503_192159.gif)
+![start](https://user-images.githubusercontent.com/54328309/80931908-cc2a8a80-8df7-11ea-90bf-c6aa94556029.gif)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8dbba82b-a89c-42e3-81e4-de09143eaae5/3.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8dbba82b-a89c-42e3-81e4-de09143eaae5/3.gif)
+![1](https://user-images.githubusercontent.com/54328309/80931924-e06e8780-8df7-11ea-9e4c-73382ef71e1e.gif)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/42de493a-8c98-4313-9227-7f347341a64b/1.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/42de493a-8c98-4313-9227-7f347341a64b/1.gif)
+![2](https://user-images.githubusercontent.com/54328309/80932278-ccc42080-8df9-11ea-983c-9378e11385fd.gif)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e2d274af-9949-4830-878e-676aec06ce23/4.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e2d274af-9949-4830-878e-676aec06ce23/4.gif)
+![3](https://user-images.githubusercontent.com/54328309/80931940-f4b28480-8df7-11ea-8fbd-8af8f7932410.gif)
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b53ae6b6-ef86-4c10-bfcc-277d1e0174d2/2.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b53ae6b6-ef86-4c10-bfcc-277d1e0174d2/2.gif)
+![4](https://user-images.githubusercontent.com/54328309/80931950-0300a080-8df8-11ea-98f4-fef93a3c431b.gif)
 
 ## Libraries and tools
 
