@@ -517,10 +517,7 @@ class MapFragment : BaseFragment(R.layout.map),
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
                     }
-                    //다시 page로 돌오왔을시 현재 위치로 돌아오게 하고싶으면 풀어서 사용.
-//                    else {
-//                        showCurrentLocation()
-//                    }
+
                 }
             }
         }

@@ -79,9 +79,8 @@ object DateAndTime {
         return SimpleDateFormat("ahhmm", Locale.getDefault()).format(currentTime)
     }
 
-    fun lastDayOfThisMonth() : Int =
+    fun lastDayOfThisMonth(): Int =
         Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH)
-
 
 
     fun convertSaveTime(time: String): String {
@@ -120,16 +119,24 @@ object DateAndTime {
 
     fun convertPickerTime(hour: Int, minute: Int): String {
 
-        val getAmPm = if (hour >= 12) {
+        val getAmPm = if (hour > 12) {
             "오후"
         } else {
             "오전"
         }
-        val getHour = if (hour > 12) {
-            "${hour - 12}시"
-        } else {
-            "${hour}시"
-        }
+        val getHour =
+            when (hour) {
+                0 -> {
+                    "${hour + 12}시"
+                }
+                in 1..12 -> {
+                    "${hour}시"
+                }
+                else -> {
+                    "${hour - 12}시"
+                }
+            }
+
         val getMinute = if (minute / 10 == 0) {
             "0${minute}분"
         } else {

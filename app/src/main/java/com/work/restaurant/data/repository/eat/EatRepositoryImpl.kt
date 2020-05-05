@@ -65,19 +65,4 @@ class EatRepositoryImpl(
         )
     }
 
-//    companion object {
-//
-//        private var instance: EatRepositoryImpl? = null
-//
-//        fun getInstance(
-//            eatLocalDataSourceImpl: EatLocalDataSourceImpl
-//        ): EatRepository =
-//            instance ?: EatRepositoryImpl(eatLocalDataSourceImpl)
-//                .also {
-//                    instance = it
-//                }
-//
-//    }
-
-
 }
