@@ -13,7 +13,7 @@ class EatLocalDataSourceImpl(
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
@@ -33,7 +33,7 @@ class EatLocalDataSourceImpl(
 
     override fun deleteEat(
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
@@ -51,7 +51,7 @@ class EatLocalDataSourceImpl(
         }
     }
 
-    override fun getAllList(userId: String, callback: (List<EatEntity>) -> Unit) {
+    override fun getAllList(userId: String, callback: (getList: List<EatEntity>) -> Unit) {
 
         appExecutors.diskIO.execute {
 
@@ -71,7 +71,7 @@ class EatLocalDataSourceImpl(
     override fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
@@ -94,7 +94,7 @@ class EatLocalDataSourceImpl(
         time: String,
         type: Int,
         memo: String,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 

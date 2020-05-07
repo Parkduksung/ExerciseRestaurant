@@ -12,7 +12,7 @@ class ExerciseLocalDataSourceImpl(
 ) : ExerciseLocalDataSource {
     override fun deleteEat(
         data: ExerciseEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
@@ -36,7 +36,7 @@ class ExerciseLocalDataSourceImpl(
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
@@ -68,7 +68,7 @@ class ExerciseLocalDataSourceImpl(
     override fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: (List<ExerciseEntity>) -> Unit
+        callback: (getList: List<ExerciseEntity>) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
@@ -89,7 +89,7 @@ class ExerciseLocalDataSourceImpl(
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
@@ -123,7 +123,7 @@ class ExerciseLocalDataSourceImpl(
 
     }
 
-    override fun getAllList(userId: String, callback: (List<ExerciseEntity>) -> Unit) {
+    override fun getAllList(userId: String, callback: (getList: List<ExerciseEntity>) -> Unit) {
 
 
         appExecutors.diskIO.execute {

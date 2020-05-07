@@ -10,24 +10,24 @@ interface EatRepository {
         time: String,
         type: Int,
         memo: String,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
 
     fun getList(
         userId: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun getDataOfTheDay(
         userId: String,
         today: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun deleteEat(
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun updateEat(
@@ -35,7 +35,7 @@ interface EatRepository {
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
 }

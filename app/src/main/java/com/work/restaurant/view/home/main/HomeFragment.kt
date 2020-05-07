@@ -80,11 +80,11 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             R.id.ll_marker_refresh -> {
 
                 if (toggleClickEffect) {
-                    requireFragmentManager().fragments.forEach { ParentFragment ->
-                        if (ParentFragment is HomeFragment) {
-                            ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                                if (ChildFragment is MapFragment) {
-                                    ChildFragment.searchByZoomLevel()
+                    requireFragmentManager().fragments.forEach { parentFragment ->
+                        if (parentFragment is HomeFragment) {
+                            parentFragment.childFragmentManager.fragments.forEach { childFragment ->
+                                if (childFragment is MapFragment) {
+                                    childFragment.searchByZoomLevel()
                                 }
                             }
                         }
@@ -97,11 +97,11 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             }
 
             R.id.ib_current_location -> {
-                requireFragmentManager().fragments.forEach { ParentFragment ->
-                    if (ParentFragment is HomeFragment) {
-                        ParentFragment.childFragmentManager.fragments.forEach { ChildFragment ->
-                            if (ChildFragment is MapFragment) {
-                                ChildFragment.showCurrentLocation()
+                requireFragmentManager().fragments.forEach { parentFragment ->
+                    if (parentFragment is HomeFragment) {
+                        parentFragment.childFragmentManager.fragments.forEach { childFragment ->
+                            if (childFragment is MapFragment) {
+                                childFragment.showCurrentLocation()
                             }
                         }
                     }
@@ -113,7 +113,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             R.id.ib_marker_url -> {
                 if (getMarkerUrl.isNotEmpty()) {
                     val intent =
-                        Intent(activity?.application, SearchLookForActivity()::class.java).apply {
+                        Intent(context, SearchLookForActivity()::class.java).apply {
                             putExtra(MARKER_CLICK_DATA, getMarkerUrl)
                             putExtra(MARKER_CLICK_TOGGLE, true)
                         }

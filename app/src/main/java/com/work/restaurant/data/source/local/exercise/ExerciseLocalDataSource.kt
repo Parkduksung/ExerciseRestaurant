@@ -13,23 +13,23 @@ interface ExerciseLocalDataSource {
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun getAllList(
         userId: String,
-        callback: (List<ExerciseEntity>) -> Unit
+        callback: (getList: List<ExerciseEntity>) -> Unit
     )
 
     fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: (List<ExerciseEntity>) -> Unit
+        callback: (getList: List<ExerciseEntity>) -> Unit
     )
 
     fun deleteEat(
         data: ExerciseEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun updateExercise(
@@ -39,6 +39,6 @@ interface ExerciseLocalDataSource {
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 }

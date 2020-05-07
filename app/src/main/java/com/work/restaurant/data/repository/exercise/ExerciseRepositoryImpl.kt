@@ -15,7 +15,7 @@ class ExerciseRepositoryImpl(
         changeExerciseSet: List<ExerciseSetResponse>,
         currentId: String,
         currentExerciseNum: Int,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         exerciseLocalDataSourceImpl.updateExercise(
@@ -32,7 +32,7 @@ class ExerciseRepositoryImpl(
 
     override fun deleteEat(
         data: ExerciseEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         exerciseLocalDataSourceImpl.deleteEat(
             data,
@@ -40,7 +40,7 @@ class ExerciseRepositoryImpl(
         )
     }
 
-    override fun getAllList(userId: String, callback: (List<ExerciseEntity>) -> Unit) {
+    override fun getAllList(userId: String, callback: (getList: List<ExerciseEntity>) -> Unit) {
         exerciseLocalDataSourceImpl.getAllList(
             userId,
             callback
@@ -54,7 +54,7 @@ class ExerciseRepositoryImpl(
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         exerciseLocalDataSourceImpl.addExercise(
@@ -73,7 +73,7 @@ class ExerciseRepositoryImpl(
     override fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: (List<ExerciseEntity>) -> Unit
+        callback: (getList: List<ExerciseEntity>) -> Unit
     ) {
         exerciseLocalDataSourceImpl.getDataOfTheDay(
             userId,

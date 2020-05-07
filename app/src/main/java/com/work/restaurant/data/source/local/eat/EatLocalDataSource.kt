@@ -10,23 +10,23 @@ interface EatLocalDataSource {
         time: String,
         type: Int,
         memo: String,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun deleteEat(
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun getDataOfTheDay(
         userId: String,
         date: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun getAllList(
         userId: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun updateEat(
@@ -34,7 +34,7 @@ interface EatLocalDataSource {
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     )
 
 }

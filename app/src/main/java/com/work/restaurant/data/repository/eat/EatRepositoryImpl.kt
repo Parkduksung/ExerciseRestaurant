@@ -11,7 +11,7 @@ class EatRepositoryImpl(
         type: Int,
         memo: String,
         data: EatEntity,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         eatLocalDataSourceImpl.updateEat(
             time,
@@ -22,7 +22,7 @@ class EatRepositoryImpl(
         )
     }
 
-    override fun deleteEat(data: EatEntity, callback: (Boolean) -> Unit) {
+    override fun deleteEat(data: EatEntity, callback: (isSuccess: Boolean) -> Unit) {
         eatLocalDataSourceImpl.deleteEat(
             data,
             callback
@@ -32,7 +32,7 @@ class EatRepositoryImpl(
     override fun getDataOfTheDay(
         userId: String,
         today: String,
-        callback: (List<EatEntity>) -> Unit
+        callback: (getList: List<EatEntity>) -> Unit
     ) {
         eatLocalDataSourceImpl.getDataOfTheDay(
             userId,
@@ -42,7 +42,7 @@ class EatRepositoryImpl(
     }
 
 
-    override fun getList(userId: String, callback: (List<EatEntity>) -> Unit) {
+    override fun getList(userId: String, callback: (getList: List<EatEntity>) -> Unit) {
         eatLocalDataSourceImpl.getAllList(userId, callback)
     }
 
@@ -53,7 +53,7 @@ class EatRepositoryImpl(
         time: String,
         type: Int,
         memo: String,
-        callback: (Boolean) -> Unit
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         eatLocalDataSourceImpl.addEat(
             userId,
