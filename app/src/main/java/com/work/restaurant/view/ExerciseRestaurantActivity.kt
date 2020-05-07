@@ -31,7 +31,7 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
     private val viewPagerAdapter by lazy {
         ViewPagerAdapter(
-            this.supportFragmentManager,
+            supportFragmentManager,
             fragmentMap
         )
     }

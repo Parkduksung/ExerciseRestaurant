@@ -11,15 +11,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.ext.showToast
-import com.work.restaurant.util.App
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.view.InjectPresenter
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -65,11 +64,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         super.onViewCreated(view, savedInstanceState)
 
         presenter =
-            DiaryPresenter(
-                this,
-                Injection.provideEatRepository(),
-                Injection.provideExerciseRepository()
-            )
+            InjectPresenter().getDiaryPresenter(this)
 
         startView()
 
@@ -388,11 +383,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         if (RelateLogin.loginState()) {
             showLoginState(true)
             presenter.todayEatData(
-                App.prefs.login_state_id,
+                RelateLogin.getLoginId(),
                 tv_diary_day.text.toString()
             )
             presenter.todayExerciseData(
-                App.prefs.login_state_id,
+                RelateLogin.getLoginId(),
                 tv_diary_day.text.toString()
             )
         } else {

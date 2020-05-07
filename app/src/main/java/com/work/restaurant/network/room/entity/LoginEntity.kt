@@ -15,7 +15,7 @@ data class LoginEntity(
     val loginPw: String,
     @ColumnInfo(name = "login_nickname")
     val loginNickname: String,
-    @ColumnInfo(name = "login_state")
+    @ColumnInfo(name = "loginState")
     val loginState: Boolean
 ) {
 

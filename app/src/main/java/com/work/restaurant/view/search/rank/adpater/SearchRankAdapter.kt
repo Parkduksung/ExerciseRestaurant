@@ -76,7 +76,7 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
             kakaoBookmark.setOnClickListener {
                 if (::adapterListener.isInitialized) {
-                    if (App.prefs.login_state && App.prefs.login_state_id.isNotEmpty()) {
+                    if (RelateLogin.loginState()) {
                         if (kakaoBookmark.isChecked) {
                             adapterListener.getDisplayBookmarkKakaoData(
                                 ADD_BOOKMARK,

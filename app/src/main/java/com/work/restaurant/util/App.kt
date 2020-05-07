@@ -17,7 +17,6 @@ class App : Application() {
         super.onCreate()
         instance = this
         prefs = MySharedPreferences(applicationContext)
-
         Fabric.with(this, Crashlytics())
     }
 

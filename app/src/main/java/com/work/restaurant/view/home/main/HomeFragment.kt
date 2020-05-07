@@ -12,7 +12,6 @@ import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.ext.showToast
-import com.work.restaurant.util.App
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.base.BaseFragment
@@ -271,12 +270,12 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             if (RelateLogin.loginState()) {
                 if (cb_marker_bookmark.isChecked) {
                     val toBookmarkModel =
-                        data.toBookmarkModel(App.prefs.login_state_id)
+                        data.toBookmarkModel(RelateLogin.getLoginId())
 
                     presenter.addBookmark(toBookmarkModel)
                 } else {
                     val toBookmarkModel =
-                        data.toBookmarkModel(App.prefs.login_state_id)
+                        data.toBookmarkModel(RelateLogin.getLoginId())
 
                     presenter.deleteBookmark(toBookmarkModel)
                 }

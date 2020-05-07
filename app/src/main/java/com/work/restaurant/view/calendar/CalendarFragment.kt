@@ -69,20 +69,24 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         val getYearAndMonth =
             SimpleDateFormat(YEAR_MONTH, Locale.getDefault()).format(Calendar.getInstance().time)
 
-        val dateArray = getYearAndMonth.split(SPLIT_YEAR_MONTH_TEXT)
+        val dateArray =
+            getYearAndMonth.split(SPLIT_YEAR_MONTH_TEXT)
 
-        calender_view.selectedDate = CalendarDay.today()
-        calender_view.state().edit()
-            .isCacheCalendarPositionEnabled(true)
-            .setMaximumDate(
-                CalendarDay.from(
-                    dateArray[0].toInt(),
-                    (dateArray[1].toInt() - 1),
-                    DateAndTime.lastDayOfThisMonth()
+        calender_view.apply {
+            selectedDate = CalendarDay.today()
+            state().edit()
+                .isCacheCalendarPositionEnabled(true)
+                .setMaximumDate(
+                    CalendarDay.from(
+                        dateArray[0].toInt(),
+                        (dateArray[1].toInt() - 1),
+                        DateAndTime.lastDayOfThisMonth()
+                    )
                 )
-            )
-            .setCalendarDisplayMode(CalendarMode.MONTHS)
-            .commit()
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit()
+        }
+
 
         showExplain()
 

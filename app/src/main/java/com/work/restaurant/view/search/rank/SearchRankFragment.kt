@@ -112,8 +112,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         if (tv_search_locate.text.toString().isEmpty()) {
             presenter.getCurrentAddress(
-                App.prefs.current_location_long.toDouble(),
-                App.prefs.current_location_lat.toDouble()
+                App.prefs.currentLocationLong.toDouble(),
+                App.prefs.currentLocationLat.toDouble()
             )
         }
     }

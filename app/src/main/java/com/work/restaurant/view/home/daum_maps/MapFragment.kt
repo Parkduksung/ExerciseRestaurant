@@ -403,8 +403,8 @@ class MapFragment : BaseFragment(R.layout.map),
 
             val currentPosition =
                 MapPoint.mapPointWithGeoCoord(
-                    App.prefs.current_location_lat.toDouble(),
-                    App.prefs.current_location_long.toDouble()
+                    App.prefs.currentLocationLat.toDouble(),
+                    App.prefs.currentLocationLong.toDouble()
                 )
 
             if (::oldCenterPoint.isInitialized) {
@@ -422,8 +422,8 @@ class MapFragment : BaseFragment(R.layout.map),
 
             AppExecutors().diskIO.execute {
                 presenter.getKakaoData(
-                    App.prefs.current_location_long.toDouble(),
-                    App.prefs.current_location_lat.toDouble()
+                    App.prefs.currentLocationLong.toDouble(),
+                    App.prefs.currentLocationLat.toDouble()
                 )
                 showCurrentOrSelectMarker(currentPOIItem, currentPosition)
             }

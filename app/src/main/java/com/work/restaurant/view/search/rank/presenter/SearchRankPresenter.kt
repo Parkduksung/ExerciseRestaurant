@@ -206,7 +206,6 @@ class SearchRankPresenter(
 
     }
 
-
     fun resetData() {
         page = 0
         toggleLastPageCheck = false
@@ -225,6 +224,7 @@ class SearchRankPresenter(
         const val FAIL_DELETE = 1
         const val ADD_BOOKMARK = 2
         const val DELETE_BOOKMARK = 3
+
 
     }
 

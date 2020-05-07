@@ -55,33 +55,40 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
             R.id.btn_renew_save -> {
                 if (RelateLogin.loginState()) {
 
-                    if (radioClick <= 1 && et_renew_eat_memo.text.isNotBlank()) {
-                        if (et_renew_eat_memo.text.trim().isNotEmpty()) {
+                    when {
+                        radioClick <= 1 && et_renew_eat_memo.text.isNotBlank() -> {
+                            if (et_renew_eat_memo.text.trim().isNotEmpty()) {
 
-                            val getEatModel =
-                                arguments?.getParcelable<EatModel>(GET_DATA)
+                                val getEatModel =
+                                    arguments?.getParcelable<EatModel>(GET_DATA)
 
-                            getEatModel?.let {
-                                presenter.updateEat(
-                                    DateAndTime.convertSaveTime(tv_renew_eat_time.text.toString()),
-                                    radioClick,
-                                    et_renew_eat_memo.text.toString(),
-                                    it
-                                )
-                                radioClick = 2
+                                getEatModel?.let {
+                                    presenter.updateEat(
+                                        DateAndTime.convertSaveTime(tv_renew_eat_time.text.toString()),
+                                        radioClick,
+                                        et_renew_eat_memo.text.toString(),
+                                        it
+                                    )
+                                    radioClick = 2
+                                }
+
+                            } else {
+                                showToast(getString(R.string.common_context_error_message1))
                             }
+                        }
 
-                        } else {
+                        radioClick > 1 && et_renew_eat_memo.text.isNotBlank() -> {
+                            showToast(getString(R.string.common_context_error_message2))
+                        }
+                        radioClick <= 1 && et_renew_eat_memo.text.isEmpty() -> {
                             showToast(getString(R.string.common_context_error_message1))
                         }
-                    } else if (radioClick > 1 && et_renew_eat_memo.text.isNotBlank()) {
-                        showToast(getString(R.string.common_context_error_message2))
-                    } else if (radioClick <= 1 && et_renew_eat_memo.text.isEmpty()) {
-                        showToast(getString(R.string.common_context_error_message1))
-                    } else if (radioClick <= 1 && et_renew_eat_memo.text.trim().isEmpty()) {
-                        showToast(getString(R.string.common_context_error_message1))
-                    } else {
-                        showToast(getString(R.string.common_context_error_message3))
+                        radioClick <= 1 && et_renew_eat_memo.text.trim().isEmpty() -> {
+                            showToast(getString(R.string.common_context_error_message1))
+                        }
+                        else -> {
+                            showToast(getString(R.string.common_context_error_message3))
+                        }
                     }
                 } else {
                     showToast(getString(R.string.common_when_logout_not_save_records))

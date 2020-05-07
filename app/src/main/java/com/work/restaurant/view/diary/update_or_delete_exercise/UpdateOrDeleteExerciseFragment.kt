@@ -125,45 +125,49 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
             R.id.renew_exercise_save -> {
 
                 if (RelateLogin.loginState()) {
-                    if (tv_renew_exercise_category.text.isNotEmpty() &&
-                        viewList.isNotEmpty() &&
-                        et_renew_exercise_name.text.isNotEmpty()
-                    ) {
-                        val setList = mutableListOf<ExerciseSet>()
+                    when {
+                        tv_renew_exercise_category.text.isNotEmpty() &&
+                                viewList.isNotEmpty() &&
+                                et_renew_exercise_name.text.isNotEmpty() -> {
 
-                        viewList.forEach {
-                            val addExerciseKg: EditText =
-                                it.findViewById(R.id.et_add_exercise_kg)
-                            val addExerciseCount: EditText =
-                                it.findViewById(R.id.et_add_exercise_count)
+                            val setList = mutableListOf<ExerciseSet>()
 
-                            if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
-                                val exerciseSet = ExerciseSet(
-                                    addExerciseKg.text.toString(),
-                                    addExerciseCount.text.toString()
-                                )
-                                setList.add(exerciseSet)
+                            viewList.forEach {
+                                val addExerciseKg: EditText =
+                                    it.findViewById(R.id.et_add_exercise_kg)
+                                val addExerciseCount: EditText =
+                                    it.findViewById(R.id.et_add_exercise_count)
+
+                                if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
+                                    val exerciseSet = ExerciseSet(
+                                        addExerciseKg.text.toString(),
+                                        addExerciseCount.text.toString()
+                                    )
+                                    setList.add(exerciseSet)
+                                }
                             }
-                        }
 
-                        if (setList.isNotEmpty()) {
-                            val getExerciseModel =
-                                arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
+                            if (setList.isNotEmpty()) {
+                                val getExerciseModel =
+                                    arguments?.getParcelable<ExerciseModel>(EXERCISE_MODEL)
 
-                            getExerciseModel?.let {
-                                presenter.updateExercise(
-                                    DateAndTime.convertSaveTime(tv_renew_exercise_time.text.toString()),
-                                    tv_renew_exercise_category.text.toString(),
-                                    et_renew_exercise_name.text.toString(),
-                                    setList,
-                                    getExerciseModel
-                                )
+                                getExerciseModel?.let {
+                                    presenter.updateExercise(
+                                        DateAndTime.convertSaveTime(tv_renew_exercise_time.text.toString()),
+                                        tv_renew_exercise_category.text.toString(),
+                                        et_renew_exercise_name.text.toString(),
+                                        setList,
+                                        getExerciseModel
+                                    )
+                                }
+                            } else {
+                                showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
                             }
-                        } else {
-                            showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
+
                         }
-                    } else {
-                        showToast(getString(R.string.common_save_no))
+                        else -> {
+                            showToast(getString(R.string.common_save_no))
+                        }
                     }
                 } else {
                     showToast(getString(R.string.common_when_logout_not_save_records))

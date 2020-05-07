@@ -117,6 +117,8 @@ class LoginLocalDataSourceImpl(
 
             val loginListOfTrue = loginDatabase.loginDao().getLoginState(true)
 
+            val loginListOfTrue1 = loginDatabase.loginDao().getAllList()
+
             appExecutors.mainThread.execute {
 
                 if (loginListOfTrue.isNotEmpty() && loginListOfTrue.size == 1) {

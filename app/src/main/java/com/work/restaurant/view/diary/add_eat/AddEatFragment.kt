@@ -55,27 +55,34 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             R.id.add_eat_save -> {
 
                 if (RelateLogin.loginState()) {
-                    if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank()) {
-                        if (et_add_eat_memo.text.trim().isNotEmpty()) {
-                            presenter.addEat(
-                                RelateLogin.getLoginId(),
-                                tv_add_eat_today.text.toString(),
-                                DateAndTime.convertSaveTime(tv_add_eat_time.text.toString()),
-                                radioClick,
-                                et_add_eat_memo.text.toString()
-                            )
-                            radioClick = 2
-                        } else {
+                    when {
+                        radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank() -> {
+                            if (et_add_eat_memo.text.trim().isNotEmpty()) {
+                                presenter.addEat(
+                                    RelateLogin.getLoginId(),
+                                    tv_add_eat_today.text.toString(),
+                                    DateAndTime.convertSaveTime(tv_add_eat_time.text.toString()),
+                                    radioClick,
+                                    et_add_eat_memo.text.toString()
+                                )
+                                radioClick = 2
+                            } else {
+                                showToast(getString(R.string.common_context_error_message1))
+                            }
+                        }
+
+                        radioClick > CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank() -> {
+                            showToast(getString(R.string.common_context_error_message2))
+                        }
+                        radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isEmpty() -> {
                             showToast(getString(R.string.common_context_error_message1))
                         }
-                    } else if (radioClick > CHECK_RADIO_STATE && et_add_eat_memo.text.isNotBlank()) {
-                        showToast(getString(R.string.common_context_error_message2))
-                    } else if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.isEmpty()) {
-                        showToast(getString(R.string.common_context_error_message1))
-                    } else if (radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.trim().isEmpty()) {
-                        showToast(getString(R.string.common_context_error_message1))
-                    } else {
-                        showToast(getString(R.string.common_context_error_message3))
+                        radioClick <= CHECK_RADIO_STATE && et_add_eat_memo.text.trim().isEmpty() -> {
+                            showToast(getString(R.string.common_context_error_message1))
+                        }
+                        else -> {
+                            showToast(getString(R.string.common_context_error_message3))
+                        }
                     }
                 } else {
                     showToast(getString(R.string.common_when_logout_not_save_records))
@@ -122,7 +129,6 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
             View.inflate(context, R.layout.time_picker, null)
         val timePicker =
             dialogView.findViewById<TimePicker>(R.id.time_picker)
-
 
         ShowAlertDialog(context).apply {
             alertDialog.setView(dialogView)

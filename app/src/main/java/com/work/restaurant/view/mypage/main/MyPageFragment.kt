@@ -212,8 +212,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         userNickname = EMPTY_TEXT
         tv_login_nickname.text = EMPTY_TEXT
         tv_login_id.text = EMPTY_TEXT
-        App.prefs.login_state_id = EMPTY_TEXT
-        App.prefs.login_state = false
+        App.prefs.loginStateId = EMPTY_TEXT
+        App.prefs.loginState = false
         renewBookmarkAndRankListener.renewBookmarkAndRank()
     }
 
@@ -234,8 +234,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             )
         tv_login_id.text = email
         userNickname = nickname
-        App.prefs.login_state = true
-        App.prefs.login_state_id = email
+        App.prefs.loginState = true
+        App.prefs.loginStateId = email
         renewBookmarkAndRankListener.renewBookmarkAndRank()
         showProgressState(false)
     }

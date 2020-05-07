@@ -8,13 +8,13 @@ object RelateLogin {
     private val preference = App.prefs
 
     fun loginState(): Boolean =
-        preference.login_state && preference.login_state_id.isNotEmpty()
+        preference.loginState && preference.loginStateId.isNotEmpty()
 
     fun getLoginId(): String =
-        preference.login_state_id
+        preference.loginStateId
 
     fun getLoginState(): Boolean =
-        preference.login_state
+        preference.loginState
 
     fun isValidEmail(charSequence: CharSequence): Boolean =
         !TextUtils.isEmpty(charSequence) && Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()

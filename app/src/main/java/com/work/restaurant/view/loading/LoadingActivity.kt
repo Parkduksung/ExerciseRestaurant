@@ -72,9 +72,9 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
 
         App.prefs.apply {
-            login_state = result
-            login_state_id = userId
-            login_state_nickname = userNickname
+            loginState = result
+            loginStateId = userId
+            loginStateNickname = userNickname
         }
     }
 
@@ -99,8 +99,8 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
             override fun onLocationChanged(location: Location) {
 
                 if (location.longitude.isFinite() && location.latitude.isFinite()) {
-                    App.prefs.current_location_long = location.longitude.toString()
-                    App.prefs.current_location_lat = location.latitude.toString()
+                    App.prefs.currentLocationLong = location.longitude.toString()
+                    App.prefs.currentLocationLat = location.latitude.toString()
                     locationManager.removeUpdates(this)
                     start()
                 }

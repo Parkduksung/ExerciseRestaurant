@@ -9,7 +9,6 @@ import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import com.work.restaurant.network.room.entity.BookmarkEntity
-import com.work.restaurant.util.App
 import com.work.restaurant.util.RelateLogin
 
 class MapPresenter(
@@ -174,12 +173,12 @@ class MapPresenter(
 
     private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
         bookmarkRepository.getAllList(
-            App.prefs.login_state_id,
+            RelateLogin.getLoginId(),
             object : BookmarkRepositoryCallback.GetAllList {
                 override fun onSuccess(list: List<BookmarkEntity>) {
 
                     val convertFromKakaoListToBookmarkModel =
-                        searchKakaoList.map { it.toBookmarkModel(App.prefs.login_state_id) }
+                        searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
 
                     val convertFromBookmarkEntityToBookmarkModel =
                         list.map { it.toBookmarkModel() }

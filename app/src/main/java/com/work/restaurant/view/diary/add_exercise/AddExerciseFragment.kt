@@ -104,40 +104,42 @@ class AddExerciseFragment : BaseDialogFragment(R.layout.diary_add_exercise),
 
                 if (RelateLogin.loginState()) {
 
-                    if (tv_add_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_add_exercise_name.text != null) {
-                        val setList =
-                            mutableListOf<ExerciseSet>()
-                        viewList.forEach {
-                            val addExerciseKg: EditText =
-                                it.findViewById(R.id.et_add_exercise_kg)
-                            val addExerciseCount: EditText =
-                                it.findViewById(R.id.et_add_exercise_count)
+                    when {
+                        tv_add_exercise_category.text.isNotEmpty() && viewList.isNotEmpty() && et_add_exercise_name.text != null -> {
+                            val setList =
+                                mutableListOf<ExerciseSet>()
+                            viewList.forEach {
+                                val addExerciseKg: EditText =
+                                    it.findViewById(R.id.et_add_exercise_kg)
+                                val addExerciseCount: EditText =
+                                    it.findViewById(R.id.et_add_exercise_count)
 
-                            if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
-                                val exerciseSet =
-                                    ExerciseSet(
-                                        addExerciseKg.text.toString(),
-                                        addExerciseCount.text.toString()
-                                    )
-                                setList.add(exerciseSet)
+                                if (addExerciseKg.text.toString().isNotEmpty() && addExerciseCount.text.toString().isNotEmpty()) {
+                                    val exerciseSet =
+                                        ExerciseSet(
+                                            addExerciseKg.text.toString(),
+                                            addExerciseCount.text.toString()
+                                        )
+                                    setList.add(exerciseSet)
+                                }
+                            }
+                            if (setList.isNotEmpty()) {
+                                presenter.addExercise(
+                                    RelateLogin.getLoginId(),
+                                    tv_add_exercise_today.text.toString(),
+                                    DateAndTime.convertSaveTime(tv_add_exercise_time.text.toString()),
+                                    tv_add_exercise_category.text.toString(),
+                                    et_add_exercise_name.text.toString(),
+                                    setList
+                                )
+                            } else {
+                                showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
                             }
                         }
-                        if (setList.isNotEmpty()) {
-                            presenter.addExercise(
-                                RelateLogin.getLoginId(),
-                                tv_add_exercise_today.text.toString(),
-                                DateAndTime.convertSaveTime(tv_add_exercise_time.text.toString()),
-                                tv_add_exercise_category.text.toString(),
-                                et_add_exercise_name.text.toString(),
-                                setList
-                            )
-                        } else {
-                            showToast(getString(R.string.common_exercise_no_input_kg_and_count_error_message))
+                        else -> {
+                            showToast(getString(R.string.common_save_no))
                         }
-                    } else {
-                        showToast(getString(R.string.common_save_no))
                     }
-
                 } else {
                     showToast(getString(R.string.common_when_logout_not_save_records))
                 }
