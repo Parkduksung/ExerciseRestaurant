@@ -82,4 +82,15 @@ class ExerciseRepositoryImpl(
         )
     }
 
+    companion object {
+
+        private var instance: ExerciseRepositoryImpl? = null
+
+        fun getInstance(exerciseLocalDataSourceImpl: ExerciseLocalDataSourceImpl): ExerciseRepository =
+            instance ?: ExerciseRepositoryImpl(exerciseLocalDataSourceImpl)
+                .also {
+                    instance = it
+                }
+    }
+
 }

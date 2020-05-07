@@ -138,4 +138,19 @@ class ExerciseLocalDataSourceImpl(
 
     }
 
+    companion object {
+
+        private var instance: ExerciseLocalDataSourceImpl? = null
+
+        fun getInstance(
+            appExecutors: AppExecutors,
+            exerciseDatabase: ExerciseDatabase
+        ): ExerciseLocalDataSourceImpl =
+            instance ?: getInstance(
+                appExecutors, exerciseDatabase
+            ).also {
+                instance = it
+            }
+    }
+
 }

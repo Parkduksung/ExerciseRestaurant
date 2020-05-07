@@ -114,7 +114,22 @@ class EatLocalDataSourceImpl(
             }
 
         }
-
     }
+
+    companion object {
+
+        private var instance: EatLocalDataSourceImpl? = null
+
+        fun getInstance(
+            appExecutors: AppExecutors,
+            eatDatabase: EatDatabase
+        ): EatLocalDataSourceImpl =
+            instance ?: getInstance(
+                appExecutors, eatDatabase
+            ).also {
+                instance = it
+            }
+    }
+
 }
 

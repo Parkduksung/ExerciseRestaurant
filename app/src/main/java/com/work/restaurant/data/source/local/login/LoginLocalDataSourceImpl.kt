@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.login
 
-import android.util.Log
 import com.work.restaurant.network.room.database.LoginDatabase
 import com.work.restaurant.network.room.entity.LoginEntity
 import com.work.restaurant.util.AppExecutors
@@ -117,8 +116,6 @@ class LoginLocalDataSourceImpl(
 
 
             val loginListOfTrue = loginDatabase.loginDao().getLoginState(true)
-
-            val loginListOfTrue1 = loginDatabase.loginDao().getAllList()
 
             appExecutors.mainThread.execute {
 
