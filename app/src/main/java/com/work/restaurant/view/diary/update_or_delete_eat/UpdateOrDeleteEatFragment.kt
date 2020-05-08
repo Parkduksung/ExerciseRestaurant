@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.TimePicker
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.ext.showToast
@@ -17,6 +16,7 @@ import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatContract
 import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatPresenter
 import kotlinx.android.synthetic.main.diary_update_or_delete_eat.*
+import org.koin.android.ext.android.get
 
 class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_delete_eat),
     View.OnClickListener, UpdateOrDeleteEatContract.View {
@@ -30,7 +30,7 @@ class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_de
         presenter =
             UpdateOrDeleteEatPresenter(
                 this,
-                Injection.provideEatRepository()
+                get()
             )
 
         startView()

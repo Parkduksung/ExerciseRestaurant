@@ -14,6 +14,7 @@ import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.ext.showToast
+import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
@@ -26,6 +27,7 @@ import com.work.restaurant.view.calendar.presenter.CalendarContract
 import com.work.restaurant.view.calendar.presenter.CalendarPresenter
 import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
+import org.koin.android.ext.android.get
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
@@ -49,7 +51,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         presenter =
             CalendarPresenter(
                 this,
-                Injection.provideEatRepository(),
+                get(),
                 Injection.provideExerciseRepository()
             )
 

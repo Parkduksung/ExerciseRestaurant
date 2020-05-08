@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioGroup
 import android.widget.TimePicker
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
@@ -16,6 +15,7 @@ import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
 import kotlinx.android.synthetic.main.diary_add_eat.*
+import org.koin.android.ext.android.get
 
 
 class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
@@ -28,7 +28,7 @@ class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
         presenter =
             AddEatPresenter(
                 this,
-                Injection.provideEatRepository()
+                get()
             )
         startView()
 

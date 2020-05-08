@@ -13,7 +13,6 @@ interface EatRepository {
         callback: (isSuccess: Boolean) -> Unit
     )
 
-
     fun getList(
         userId: String,
         callback: (getList: List<EatEntity>) -> Unit

@@ -1,10 +1,10 @@
 package com.work.restaurant.data.repository.eat
 
-import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
+import com.work.restaurant.data.source.local.eat.EatLocalDataSource
 import com.work.restaurant.network.room.entity.EatEntity
 
 class EatRepositoryImpl(
-    private val eatLocalDataSourceImpl: EatLocalDataSourceImpl
+    private val eatLocalDataSource: EatLocalDataSource
 ) : EatRepository {
     override fun updateEat(
         time: String,
@@ -13,7 +13,7 @@ class EatRepositoryImpl(
         data: EatEntity,
         callback: (isSuccess: Boolean) -> Unit
     ) {
-        eatLocalDataSourceImpl.updateEat(
+        eatLocalDataSource.updateEat(
             time,
             type,
             memo,
@@ -23,7 +23,7 @@ class EatRepositoryImpl(
     }
 
     override fun deleteEat(data: EatEntity, callback: (isSuccess: Boolean) -> Unit) {
-        eatLocalDataSourceImpl.deleteEat(
+        eatLocalDataSource.deleteEat(
             data,
             callback
         )
@@ -34,7 +34,7 @@ class EatRepositoryImpl(
         today: String,
         callback: (getList: List<EatEntity>) -> Unit
     ) {
-        eatLocalDataSourceImpl.getDataOfTheDay(
+        eatLocalDataSource.getDataOfTheDay(
             userId,
             today,
             callback
@@ -43,7 +43,7 @@ class EatRepositoryImpl(
 
 
     override fun getList(userId: String, callback: (getList: List<EatEntity>) -> Unit) {
-        eatLocalDataSourceImpl.getAllList(userId, callback)
+        eatLocalDataSource.getAllList(userId, callback)
     }
 
 
@@ -55,7 +55,7 @@ class EatRepositoryImpl(
         memo: String,
         callback: (isSuccess: Boolean) -> Unit
     ) {
-        eatLocalDataSourceImpl.addEat(
+        eatLocalDataSource.addEat(
             userId,
             date,
             time,
@@ -63,20 +63,6 @@ class EatRepositoryImpl(
             memo,
             callback
         )
-    }
-
-    companion object {
-
-        private var instance: EatRepositoryImpl? = null
-
-        fun getInstance(
-            eatLocalDataSourceImpl: EatLocalDataSourceImpl
-        ): EatRepository =
-            instance ?: EatRepositoryImpl(eatLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
     }
 
 }

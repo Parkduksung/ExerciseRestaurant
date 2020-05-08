@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
@@ -18,7 +19,6 @@ import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
-import com.work.restaurant.view.InjectPresenter
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
@@ -30,6 +30,7 @@ import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
 import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.UpdateOrDeleteExerciseFragment
 import kotlinx.android.synthetic.main.diary_main.*
+import org.koin.android.ext.android.get
 
 
 class DiaryFragment : BaseFragment(R.layout.diary_main),
@@ -64,7 +65,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
         super.onViewCreated(view, savedInstanceState)
 
         presenter =
-            InjectPresenter().getDiaryPresenter(this)
+            DiaryPresenter(
+                this,
+                get(),
+                Injection.provideExerciseRepository()
+            )
 
         startView()
 
