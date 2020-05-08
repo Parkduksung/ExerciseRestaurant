@@ -35,6 +35,12 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 
 ## Architecture
 
-이 앱은 MVP 구조를 사용하였다. 기존에 자주 사용하던 MVC 구조에서 느꼈던 불편함을 MVP 구조를 사용하여 상호간의 의존성을 떨어트리는 동시에 유지보수하는데에 더 용이하게 되었으며 또한 데이터 혹은 결과값이 어떠한지 테스트를 하는데에도 편리하다고 생각하였다.
+이 앱은 MVP 구조를 사용하였다. 
+- Model      :  Data와 연관된 전반적인 처리를 담당 (로컬/네트워크 포함).
+- View       :  사용자 이벤트 발생시, Presenter로 전달.
+- Presenter  :  View에게 전달받은 이벤트 처리하여 다시 View로 전달. 
+- 상호 의존성을 떨어트림. 
+  (View가 전달받은 data를 Presenter에서 가공하여 전달하므로)
+- data 혹은 결과값에 대한 테스트가 편함.
 
 ![구조](https://user-images.githubusercontent.com/54328309/80933982-eddc3f80-8e00-11ea-9a4f-b6f2a7d9ac68.PNG)
