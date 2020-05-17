@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.road
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
@@ -73,7 +72,6 @@ class RoadLocalDataSourceImpl private constructor(
 
     override fun getAddressCount(callback: RoadLocalDataCountCallback) {
 
-
         appExecutors.diskIO.execute {
 
             val getAddressCount = addressDatabase.addressDao().getAllCount()
@@ -96,7 +94,6 @@ class RoadLocalDataSourceImpl private constructor(
         clickData: String,
         callback: RoadLocalDataSourceCallback
     ) {
-
 
         if (zone == "dong") {
             val assetManager = App.instance.context().assets

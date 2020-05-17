@@ -41,7 +41,6 @@ object Injection {
             )
         )
 
-
     fun provideExerciseRepository(): ExerciseRepository =
         ExerciseRepositoryImpl.getInstance(
             ExerciseLocalDataSourceImpl(
@@ -61,6 +60,7 @@ object Injection {
                 )
             )
         )
+
 
     fun provideNotificationRepository(): NotificationRepository =
         NotificationRepositoryImpl.getInstance(

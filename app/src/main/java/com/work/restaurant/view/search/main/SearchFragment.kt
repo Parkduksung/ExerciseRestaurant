@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.work.restaurant.R
-import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
+import com.work.restaurant.view.search.main.adapter.SearchViewPagerAdapter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_fragment.*
 
@@ -27,14 +25,11 @@ class SearchFragment : BaseFragment(R.layout.search_fragment),
 
     private fun startView() {
 
-        val fragmentMap: Map<String, Fragment> =
-            mapOf(
-                resources.getStringArray(R.array.tab_search)[RANK] to SearchRankFragment(),
-                resources.getStringArray(R.array.tab_search)[BOOKMARK] to SearchBookmarksFragment()
-            )
-
         vp_search.adapter =
-            ViewPagerAdapter(requireFragmentManager(), fragmentMap)
+            SearchViewPagerAdapter(
+                requireFragmentManager(),
+                resources.getStringArray(R.array.tab_search).toList()
+            )
 
         tl_search.run {
             setupWithViewPager(vp_search)

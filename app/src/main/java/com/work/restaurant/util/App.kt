@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics
 import com.work.restaurant.data.repository.di.eatRepositoryModule
 import com.work.restaurant.data.source.local.di.eatSourceModule
 import com.work.restaurant.network.di.eatNetworkModule
+import com.work.restaurant.view.presenterModule
 import io.fabric.sdk.android.Fabric
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -36,7 +37,8 @@ class App : Application() {
                     eatSourceModule,
                     eatRepositoryModule,
                     eatNetworkModule,
-                    appExecutorsModule
+                    appExecutorsModule,
+                    presenterModule
                 )
             )
         }

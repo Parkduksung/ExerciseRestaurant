@@ -9,6 +9,8 @@ class DiaryPresenter(
     private val exerciseRepository: ExerciseRepository
 ) : DiaryContract.Presenter {
 
+
+
     override fun todayExerciseData(userId: String, today: String) {
 
         diaryView.showLoadingState(true)

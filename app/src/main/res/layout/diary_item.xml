@@ -8,9 +8,7 @@
         android:id="@+id/rv_diary_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:orientation="vertical" />
 
     <TextView
         android:id="@+id/tv_diary_item_no_login_message"

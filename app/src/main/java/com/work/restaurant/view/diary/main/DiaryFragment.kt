@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
@@ -26,11 +25,11 @@ import com.work.restaurant.view.diary.add_exercise.AddExerciseFragment
 import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
 import com.work.restaurant.view.diary.main.adapter.DiaryMainAdapter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
-import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
 import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.UpdateOrDeleteExerciseFragment
 import kotlinx.android.synthetic.main.diary_main.*
 import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class DiaryFragment : BaseFragment(R.layout.diary_main),
@@ -39,7 +38,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     DiaryContract.View,
     AdapterDataListener.GetList {
 
-    private lateinit var presenter: DiaryPresenter
+    private lateinit var presenter: DiaryContract.Presenter
     private lateinit var renewDataListener: RenewDataListener
 
     private val diaryDetailsAdapter: DiaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
@@ -64,12 +63,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            DiaryPresenter(
-                this,
-                get(),
-                Injection.provideExerciseRepository()
-            )
+        presenter = get { parametersOf(this) }
 
         startView()
 

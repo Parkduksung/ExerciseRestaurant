@@ -14,5 +14,4 @@ data class ExerciseSet(
             exerciseSetKg,
             exerciseSetCount
         )
-
 }

@@ -110,16 +110,6 @@ class DiaryDetailsAdapter :
                     adapterListener.getData(item)
                     true
                 }
-            } else {
-                adapterListener = object : AdapterDataListener.GetList {
-                    override fun getData(data: DiaryModel) {
-
-                    }
-                }
-                itemView.setOnLongClickListener {
-                    adapterListener.getData(item)
-                    true
-                }
             }
 
             var allSetNum = INIT_SET

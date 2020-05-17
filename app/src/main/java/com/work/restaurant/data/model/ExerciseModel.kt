@@ -38,6 +38,5 @@ data class ExerciseModel(
             exerciseSetName,
             exerciseSet.map { it.toExerciseSetResponse() }
         )
-
 }
 

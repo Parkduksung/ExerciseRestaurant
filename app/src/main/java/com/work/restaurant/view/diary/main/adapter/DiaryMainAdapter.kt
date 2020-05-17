@@ -12,15 +12,16 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 class DiaryMainAdapter :
     RecyclerView.Adapter<DiaryMainAdapter.ViewHolder>() {
 
-    private val diaryDetailsAdapter: DiaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
+    private val diaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.diary_item,
-                parent,
-                false
-            )
+            LayoutInflater.from(parent.context)
+                .inflate(
+                    R.layout.diary_item,
+                    parent,
+                    false
+                )
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
@@ -29,7 +30,6 @@ class DiaryMainAdapter :
 
     override fun getItemCount(): Int =
         Int.MAX_VALUE
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

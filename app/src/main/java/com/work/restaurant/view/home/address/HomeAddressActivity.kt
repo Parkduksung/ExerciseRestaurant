@@ -135,7 +135,6 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                 addressAdapter.addData(it)
             }
             layoutManager = GridLayoutManager(this.context, SPAN_COUNT)
-
         }
 
     }
