@@ -4,16 +4,20 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.work.restaurant.R
+import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import com.work.restaurant.view.search.main.adapter.SearchViewPagerAdapter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : BaseFragment(R.layout.search_fragment),
     View.OnClickListener {
 
+
+    private val searchTabList = resources.getStringArray(R.array.tab_search).toList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,11 +29,22 @@ class SearchFragment : BaseFragment(R.layout.search_fragment),
 
     private fun startView() {
 
-        vp_search.adapter =
-            SearchViewPagerAdapter(
-                requireFragmentManager(),
-                resources.getStringArray(R.array.tab_search).toList()
-            )
+        vp_search.adapter = object : ViewPagerAdapter(
+            requireFragmentManager(),
+            searchTabList
+        ) {
+            override fun getItem(position: Int): Fragment =
+                when (searchTabList[position]) {
+                    "운동맛집" -> {
+                        SearchRankFragment()
+                    }
+                    "관심맛집" -> {
+                        SearchBookmarksFragment()
+                    }
+                    else -> throw RuntimeException()
+                }
+        }
+
 
         tl_search.run {
             setupWithViewPager(vp_search)

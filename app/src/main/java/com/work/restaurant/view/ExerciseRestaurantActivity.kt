@@ -1,6 +1,7 @@
 package com.work.restaurant.view
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.util.RelateLogin
@@ -10,9 +11,12 @@ import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.calendar.CalendarFragment
 import com.work.restaurant.view.diary.main.DiaryFragment
+import com.work.restaurant.view.home.main.HomeFragment
+import com.work.restaurant.view.mypage.main.MyPageFragment
 import com.work.restaurant.view.mypage.notification.NotificationDataListener
 import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDetailsFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
+import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,12 +27,33 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     RenewBookmarkAndRankListener,
     SearchRankFragment.LoginListener {
 
+    private val mainTabList = resources.getStringArray(R.array.tab_main).toList()
 
     private val viewPagerAdapter by lazy {
-        ViewPagerAdapter(
+        object : ViewPagerAdapter(
             supportFragmentManager,
-            resources.getStringArray(R.array.tab_main).toList()
-        )
+            mainTabList
+        ) {
+            override fun getItem(position: Int): Fragment =
+                when (mainTabList[position]) {
+                    "홈" -> {
+                        HomeFragment()
+                    }
+                    "헬스장검색" -> {
+                        SearchFragment()
+                    }
+                    "다이어리" -> {
+                        DiaryFragment()
+                    }
+                    "켈린더" -> {
+                        CalendarFragment()
+                    }
+                    "마이페이지" -> {
+                        MyPageFragment()
+                    }
+                    else -> throw RuntimeException()
+                }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
