@@ -32,6 +32,7 @@ ExerciseRestaurant App 은 위치에 따른 주변 헬스장 정보 및 식단, 
 - [Gson](https://github.com/google/gson/blob/master/UserGuide.md)
 - [KAKAO REST API](https://developers.kakao.com/docs/latest/ko/local/dev-guide)
 - [KAKAO MAP](https://apis.map.kakao.com/android/guide/)
+- [Koin](https://insert-koin.io/)
 
 ## Architecture
 
