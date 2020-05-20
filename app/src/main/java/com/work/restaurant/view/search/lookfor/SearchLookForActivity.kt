@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.ext.showToast
@@ -25,6 +24,8 @@ import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
 import kotlinx.android.synthetic.main.search_look_for_main.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
@@ -34,17 +35,12 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
     SearchLookForContract.View {
 
     private val lookForAdapter: LookForAdapter by lazy { LookForAdapter() }
-    private lateinit var presenter: SearchLookForPresenter
+    private lateinit var presenter: SearchLookForContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter =
-            SearchLookForPresenter(
-                this,
-                Injection.provideKakaoRepository(),
-                Injection.provideBookmarkRepository()
-            )
+        presenter = get { parametersOf(this) }
 
         rv_look.run {
             this.adapter = lookForAdapter

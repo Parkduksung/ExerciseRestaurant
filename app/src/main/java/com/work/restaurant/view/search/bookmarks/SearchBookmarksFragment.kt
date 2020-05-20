@@ -7,7 +7,6 @@ import android.view.View
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.ext.showToast
@@ -20,6 +19,8 @@ import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContra
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment),
     AdapterDataListener.GetBookmarkData,
@@ -27,7 +28,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
     private val bookMarkAdapter: BookMarkAdapter by lazy { BookMarkAdapter() }
 
-    private lateinit var presenter: SearchBookmarksPresenter
+    private lateinit var presenter: SearchBookmarksContract.Presenter
 
     private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
 
@@ -42,11 +43,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            SearchBookmarksPresenter(
-                this,
-                Injection.provideBookmarkRepository()
-            )
+        presenter = get { parametersOf(this) }
 
         rv_bookmark.run {
             this.adapter = bookMarkAdapter

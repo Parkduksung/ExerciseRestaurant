@@ -9,10 +9,11 @@ import retrofit2.Response
 
 class QuestionRemoteDataSourceImpl(private val questionApi: QuestionApi) :
     QuestionRemoteDataSource {
-    override fun sendQuestion(question: String, callback: QuestionRemoteDataSourceCallback) {
+
+    override fun sendQuestion(question: String, callback: (isSuccess: Boolean) -> Unit) {
         questionApi.register(question).enqueue(object : Callback<ResultResponse> {
             override fun onFailure(call: Call<ResultResponse>?, t: Throwable?) {
-                callback.onFailure("${t?.message}")
+                callback(false)
             }
 
             override fun onResponse(
@@ -24,9 +25,9 @@ class QuestionRemoteDataSourceImpl(private val questionApi: QuestionApi) :
 
                 if (result != null) {
                     if (result) {
-                        callback.onSuccess("success")
+                        callback(true)
                     } else {
-                        callback.onFailure(response.message())
+                        callback(false)
                     }
                 }
             }
@@ -34,15 +35,4 @@ class QuestionRemoteDataSourceImpl(private val questionApi: QuestionApi) :
         })
     }
 
-
-    companion object {
-
-        private var instance: QuestionRemoteDataSourceImpl? = null
-
-        fun getInstance(questionApi: QuestionApi): QuestionRemoteDataSourceImpl =
-            instance ?: QuestionRemoteDataSourceImpl(questionApi).also {
-                instance = it
-            }
-
-    }
 }

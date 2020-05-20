@@ -6,7 +6,7 @@ import com.work.restaurant.network.room.entity.BookmarkEntity
 class BookmarkRepositoryImpl(
     private val bookmarkLocalDataSource: BookmarkLocalDataSource
 ) : BookmarkRepository {
-    override fun getAllList(userId: String, callback: (getList: List<BookmarkEntity>) -> Unit) {
+    override fun getAllList(userId: String, callback: (getList: List<BookmarkEntity>?) -> Unit) {
         bookmarkLocalDataSource.getAllList(userId, callback)
     }
 

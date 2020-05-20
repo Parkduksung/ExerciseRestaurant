@@ -3,27 +3,23 @@ package com.work.restaurant.view.mypage.question
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionContract
-import com.work.restaurant.view.mypage.question.presenter.MyPageQuestionPresenter
 import kotlinx.android.synthetic.main.mypage_question_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageQuestionFragment : BaseFragment(R.layout.mypage_question_fragment),
     View.OnClickListener, MyPageQuestionContract.View {
 
-    private lateinit var presenter: MyPageQuestionPresenter
+    private lateinit var presenter: MyPageQuestionContract.Presenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            MyPageQuestionPresenter(
-                this,
-                Injection.provideQuestionRepository()
-            )
+        presenter = get { parametersOf(this) }
 
         ib_question_back.setOnClickListener(this)
         btn_send_question.setOnClickListener(this)

@@ -1,31 +1,32 @@
 package com.work.restaurant.data.source.remote.user
 
 interface UserRemoteDataSource {
-
     fun login(
         email: String,
         pass: String,
-        callbackRemoteSource: UserRemoteDataSourceCallback
+        callback: (resultNickname: String?) -> Unit
     )
 
     fun register(
         nickName: String,
         email: String,
         pass: String,
-        callbackRemoteSource: UserRemoteDataSourceCallback
+        callback: (resultNickname: String?) -> Unit
     )
 
     fun delete(
         userNickname: String,
         userEmail: String,
-        callbackRemoteSource: UserRemoteDataSourceCallback
+        callback: (resultNickname: String?) -> Unit
     )
 
-    fun resetPass(email: String, callbackRemoteSource: UserRemoteDataSourceCallback)
+    fun resetPass(
+        email: String,
+        callback: (resultNickname: String?) -> Unit
+    )
 
     fun emailDuplicationCheck(
         email: String,
-        callbackRemoteSource: UserRemoteDataSourceCallback.EmailDuplicationCheck
+        callback: (isSuccess: Boolean) -> Unit
     )
-
 }

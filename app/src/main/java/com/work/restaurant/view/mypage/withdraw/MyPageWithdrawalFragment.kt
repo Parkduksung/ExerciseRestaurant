@@ -7,15 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
-import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalPresenter
 import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragment),
     View.OnClickListener, MyPageWithdrawalContract.View {
@@ -43,12 +43,7 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter =
-            MyPageWithdrawalPresenter(
-                this,
-                Injection.provideUserRepository(),
-                Injection.provideLoginRepository()
-            )
+        presenter = get { parametersOf(this) }
         btn_withdraw_cancel.setOnClickListener(this)
         btn_withdraw_ok.setOnClickListener(this)
 

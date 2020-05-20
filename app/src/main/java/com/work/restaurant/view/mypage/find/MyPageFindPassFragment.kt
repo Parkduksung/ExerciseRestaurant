@@ -3,29 +3,25 @@ package com.work.restaurant.view.mypage.find
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
-import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassPresenter
 import com.work.restaurant.view.mypage.find_ok.MyPageFindOkFragment
 import kotlinx.android.synthetic.main.mypage_find_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageFindPassFragment : BaseFragment(R.layout.mypage_find_fragment), View.OnClickListener,
     MyPageFindPassContract.View {
 
-    private lateinit var presenter: MyPageFindPassPresenter
+    private lateinit var presenter: MyPageFindPassContract.Presenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            MyPageFindPassPresenter(
-                this,
-                Injection.provideUserRepository()
-            )
+        presenter = get { parametersOf(this) }
         ib_find_back.setOnClickListener(this)
         btn_request_change_pass.setOnClickListener(this)
 

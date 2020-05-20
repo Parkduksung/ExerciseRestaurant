@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
-import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutPresenter
 import kotlinx.android.synthetic.main.mypage_fragment.*
 import kotlinx.android.synthetic.main.mypage_logout_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
     MyPageLogoutContract.View {
@@ -45,11 +45,8 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter =
-            MyPageLogoutPresenter(
-                this,
-                Injection.provideLoginRepository()
-            )
+        presenter = get { parametersOf(this) }
+
         btn_logout_cancel.setOnClickListener(this)
         btn_logout_ok.setOnClickListener(this)
 

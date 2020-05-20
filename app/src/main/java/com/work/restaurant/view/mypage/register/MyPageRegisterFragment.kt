@@ -8,17 +8,20 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
-import com.work.restaurant.util.*
+import com.work.restaurant.util.AppExecutors
+import com.work.restaurant.util.Keyboard
+import com.work.restaurant.util.RelateLogin
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterContract
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterPresenter
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
 import kotlinx.android.synthetic.main.mypage_register_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 import java.util.*
 import javax.mail.Message
 import javax.mail.MessagingException
@@ -36,12 +39,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            MyPageRegisterPresenter(
-                this,
-                Injection.provideUserRepository(),
-                Injection.provideLoginRepository()
-            )
+        presenter = get { parametersOf(this) }
+
         ib_register_back.setOnClickListener(this)
         btn_register.setOnClickListener(this)
         btn_email_verified_show.setOnClickListener(this)

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
@@ -24,6 +23,8 @@ import com.work.restaurant.view.mypage.question.MyPageQuestionFragment
 import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
 import kotlinx.android.synthetic.main.mypage_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
@@ -47,12 +48,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter =
-            MyPagePresenter(
-                this,
-                Injection.provideLoginRepository(),
-                Injection.provideUserRepository()
-            )
+        presenter = get { parametersOf(this) }
         iv_login.setOnClickListener(this)
         btn_logout.setOnClickListener(this)
         tv_withdrawal.setOnClickListener(this)

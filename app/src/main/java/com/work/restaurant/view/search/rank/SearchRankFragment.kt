@@ -13,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.ext.showToast
@@ -29,13 +28,15 @@ import com.work.restaurant.view.search.rank.adpater.SearchRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import kotlinx.android.synthetic.main.search_rank_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
     SearchRankContract.View,
     AdapterDataListener.GetDisplayBookmarkKakaoModel {
 
-    private lateinit var presenter: SearchRankPresenter
+    private lateinit var presenter: SearchRankContract.Presenter
     private val searchRankAdapter: SearchRankAdapter by lazy { SearchRankAdapter() }
 
     private lateinit var loginListener: LoginListener
@@ -53,12 +54,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter =
-            SearchRankPresenter(
-                this,
-                Injection.provideKakaoRepository(),
-                Injection.provideBookmarkRepository()
-            )
+
+        presenter = get { parametersOf(this) }
 
         iv_search_settings.setOnClickListener(this)
         iv_search_filter.setOnClickListener(this)

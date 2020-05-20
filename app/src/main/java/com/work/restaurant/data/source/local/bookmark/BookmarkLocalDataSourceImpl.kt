@@ -10,7 +10,7 @@ class BookmarkLocalDataSourceImpl(
 ) : BookmarkLocalDataSource {
     override fun getAllList(
         userId: String,
-        callback: (getList: List<BookmarkEntity>) -> Unit
+        callback: (getList: List<BookmarkEntity>?) -> Unit
     ) {
 
         appExecutors.diskIO.execute {

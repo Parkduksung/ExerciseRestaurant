@@ -13,12 +13,10 @@ class MyPageLogoutPresenter(
         loginRepository.changeState(
             userId,
             LOGOUT_STATE,
-            object : LoginRepositoryCallback.ChangeState {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     myPageLogoutView.showLogoutOk()
-                }
-
-                override fun onFailure() {
+                } else {
                     myPageLogoutView.showLogoutNo()
                 }
             })

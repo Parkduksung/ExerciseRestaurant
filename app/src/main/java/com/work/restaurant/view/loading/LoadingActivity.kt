@@ -12,7 +12,6 @@ import android.os.Handler
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.ext.isConnectedToGPS
 import com.work.restaurant.ext.showToast
@@ -21,6 +20,8 @@ import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.base.BaseActivity
 import kotlinx.android.synthetic.main.loading_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 import java.util.*
 
 
@@ -81,11 +82,7 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter =
-            LoadingPresenter(
-                this,
-                Injection.provideLoginRepository()
-            )
+        presenter = get { parametersOf(this) }
         presenter.randomText(resources.getStringArray(R.array.load_string))
         checkPermission()
 

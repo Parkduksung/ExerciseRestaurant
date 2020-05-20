@@ -23,6 +23,7 @@ interface SearchLookForContract {
 
         fun deleteBookmark(bookmarkModel: BookmarkModel, selectPosition: Int)
 
+        fun resetData()
 
     }
 }

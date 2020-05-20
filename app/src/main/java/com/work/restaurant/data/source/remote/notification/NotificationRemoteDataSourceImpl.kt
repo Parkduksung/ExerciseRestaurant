@@ -9,14 +9,11 @@ import retrofit2.Response
 class NotificationRemoteDataSourceImpl(
     private val notificationApi: NotificationApi
 ) : NotificationRemoteDataSource {
-
-
-    override fun getNotificationData(callback: NotificationRemoteDataSourceCallback) {
-
+    override fun getNotificationData(callback: (notificationList: List<NotificationResponse>?) -> Unit) {
         notificationApi.notificationAllItem().enqueue(object :
             Callback<List<NotificationResponse>> {
             override fun onFailure(call: Call<List<NotificationResponse>>?, t: Throwable?) {
-                callback.onFailure("${t?.message}")
+                callback(null)
             }
 
             override fun onResponse(
@@ -27,28 +24,12 @@ class NotificationRemoteDataSourceImpl(
                 if (response != null) {
                     if (response.isSuccessful) {
                         val list = response.body()
-                        callback.onSuccess(list)
+                        callback(list)
                     } else {
-                        callback.onFailure(response.message())
+                        callback(null)
                     }
                 }
             }
         })
-
     }
-
-
-    companion object {
-
-        private var instance: NotificationRemoteDataSourceImpl? = null
-
-        fun getInstance(notificationApi: NotificationApi): NotificationRemoteDataSourceImpl =
-            instance ?: NotificationRemoteDataSourceImpl(notificationApi)
-                .also {
-                    instance = it
-                }
-
-
-    }
-
 }

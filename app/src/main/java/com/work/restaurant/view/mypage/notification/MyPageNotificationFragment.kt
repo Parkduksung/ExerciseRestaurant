@@ -4,20 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.notification.adapter.NotificationAdapter
 import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationContract
-import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationPresenter
 import kotlinx.android.synthetic.main.mypage_notification_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fragment),
     MyPageNotificationContract.View, AdapterDataListener.GetNotificationList, View.OnClickListener {
 
-    private lateinit var presenter: MyPageNotificationPresenter
+    private lateinit var presenter: MyPageNotificationContract.Presenter
 
     private lateinit var notificationDataListener: NotificationDataListener
 
@@ -34,11 +34,7 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            MyPageNotificationPresenter(
-                this,
-                Injection.provideNotificationRepository()
-            )
+        presenter = get { parametersOf(this) }
         notificationAdapter.setItemClickListener(this)
         ib_notification_back.setOnClickListener(this)
 

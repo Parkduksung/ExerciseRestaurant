@@ -2,7 +2,6 @@ package com.work.restaurant.view.mypage.register.presenter
 
 import com.work.restaurant.data.repository.login.LoginRepository
 import com.work.restaurant.data.repository.user.UserRepository
-import com.work.restaurant.data.repository.user.UserRepositoryCallback
 
 class MyPageRegisterPresenter(
     private val myPageRegisterView: MyPageRegisterContract.View,
@@ -16,17 +15,13 @@ class MyPageRegisterPresenter(
 
         userRepository.emailDuplicationCheck(
             userId,
-            object : UserRepositoryCallback.EmailDuplicationCheck {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     myPageRegisterView.showEmailDuplicationCheck(true)
-                }
-
-                override fun onFailure() {
+                } else {
                     myPageRegisterView.showEmailDuplicationCheck(false)
                 }
             })
-
-
     }
 
     private fun registerLogin(nickName: String, email: String, pass: String) {
@@ -35,16 +30,13 @@ class MyPageRegisterPresenter(
             pass,
             nickName,
             true,
-            object : LoginRepositoryCallback.RegisterCallback {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     myPageRegisterView.showRegisterOk()
-                }
-
-                override fun onFailure() {
+                } else {
                     myPageRegisterView.showRegisterNo(NOT_VERIFIED_REGISTER)
                 }
             })
-
     }
 
 
@@ -52,16 +44,17 @@ class MyPageRegisterPresenter(
 
         myPageRegisterView.showProgressState(true)
 
-        userRepository.register(nickName, email, pass, object : UserRepositoryCallback {
-            override fun onSuccess(resultNickname: String) {
-                registerLogin(nickName, email, pass)
-            }
-
-            override fun onFailure(message: String) {
-                myPageRegisterView.showRegisterNo(DUPLICATE_REGISTER)
-            }
-        })
-
+        userRepository.register(
+            nickName,
+            email,
+            pass,
+            callback = { resultNickname ->
+                if (resultNickname != null) {
+                    registerLogin(nickName, email, pass)
+                } else {
+                    myPageRegisterView.showRegisterNo(DUPLICATE_REGISTER)
+                }
+            })
     }
 
     companion object {

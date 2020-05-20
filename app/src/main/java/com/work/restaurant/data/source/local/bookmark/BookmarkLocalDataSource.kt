@@ -5,7 +5,7 @@ import com.work.restaurant.network.room.entity.BookmarkEntity
 interface BookmarkLocalDataSource {
     fun getAllList(
         userId: String,
-        callback: (getList: List<BookmarkEntity>) -> Unit
+        callback: (getList: List<BookmarkEntity>?) -> Unit
     )
 
     fun addBookmark(

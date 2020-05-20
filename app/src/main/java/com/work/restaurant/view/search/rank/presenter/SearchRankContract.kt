@@ -29,7 +29,7 @@ interface SearchRankContract {
 
         fun getCurrentAddress(currentX: Double, currentY: Double)
 
-
+        fun resetData()
 
     }
 

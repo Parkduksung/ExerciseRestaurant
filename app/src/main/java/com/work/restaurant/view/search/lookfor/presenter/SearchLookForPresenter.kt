@@ -4,7 +4,6 @@ import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepository
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
 import com.work.restaurant.util.RelateLogin
 
 class SearchLookForPresenter(
@@ -62,38 +61,39 @@ class SearchLookForPresenter(
 
         if (!toggleLastPageCheck) {
             ++page
-            kakaoRepository.getSearchKakaoList(searchItem, page, object : KakaoRepositoryCallback {
-                override fun onSuccess(kakaoList: KakaoSearchResponse) {
-                    if (!kakaoList.kakaoSearchMeta.isEnd) {
-                        val toKakaoModel =
-                            mutableListOf<KakaoSearchModel>()
+            kakaoRepository.getSearchKakaoList(
+                searchItem,
+                page,
+                callback = { list ->
+                    if (list != null) {
+                        if (!list.kakaoSearchMeta.isEnd) {
+                            val toKakaoModel =
+                                mutableListOf<KakaoSearchModel>()
 
-                        kakaoList.documents.forEach {
-                            if (it.categoryName.contains(CATEGORY)) {
-                                toKakaoModel.add(it.toKakaoModel())
+                            list.documents.forEach {
+                                if (it.categoryName.contains(CATEGORY)) {
+                                    toKakaoModel.add(it.toKakaoModel())
+                                }
                             }
+                            searchList.addAll(toKakaoModel)
+                            getSearchKakaoList(searchItem)
+                        } else {
+                            val toKakaoModel =
+                                mutableListOf<KakaoSearchModel>()
+
+                            list.documents.forEach {
+                                if (it.categoryName.contains(CATEGORY)) {
+                                    toKakaoModel.add(it.toKakaoModel())
+                                }
+                            }
+                            searchList.addAll(toKakaoModel)
+                            toggleLastPageCheck = list.kakaoSearchMeta.isEnd
+                            getSearchKakaoList(searchItem)
                         }
-                        searchList.addAll(toKakaoModel)
-                        getSearchKakaoList(searchItem)
                     } else {
-                        val toKakaoModel =
-                            mutableListOf<KakaoSearchModel>()
-
-                        kakaoList.documents.forEach {
-                            if (it.categoryName.contains(CATEGORY)) {
-                                toKakaoModel.add(it.toKakaoModel())
-                            }
-                        }
-                        searchList.addAll(toKakaoModel)
-                        toggleLastPageCheck = kakaoList.kakaoSearchMeta.isEnd
-                        getSearchKakaoList(searchItem)
+                        resetData()
                     }
-                }
-
-                override fun onFailure(message: String) {
-                    resetData()
-                }
-            })
+                })
         } else {
             if (RelateLogin.loginState()) {
                 displayAlreadyBookmark(searchList)
@@ -107,7 +107,7 @@ class SearchLookForPresenter(
         }
     }
 
-    fun resetData() {
+    override fun resetData() {
         page = 0
         toggleLastPageCheck = false
         searchList.clear()
@@ -117,21 +117,23 @@ class SearchLookForPresenter(
         bookmarkRepository.getAllList(
             RelateLogin.getLoginId(),
             callback = { getList ->
-                val convertFromKakaoListToBookmarkModel =
-                    searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
+                if (getList != null) {
+                    val convertFromKakaoListToBookmarkModel =
+                        searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
 
-                val convertFromBookmarkEntityToBookmarkModel =
-                    getList.map { it.toBookmarkModel() }
+                    val convertFromBookmarkEntityToBookmarkModel =
+                        getList.map { it.toBookmarkModel() }
 
-                val displayBookmarkKakaoList =
-                    convertFromKakaoListToBookmarkModel.map {
-                        if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
-                            it.toDisplayBookmarkKakaoList(true)
-                        } else {
-                            it.toDisplayBookmarkKakaoList(false)
+                    val displayBookmarkKakaoList =
+                        convertFromKakaoListToBookmarkModel.map {
+                            if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
+                                it.toDisplayBookmarkKakaoList(true)
+                            } else {
+                                it.toDisplayBookmarkKakaoList(false)
+                            }
                         }
-                    }
-                searchLookForView.showSearchLook(displayBookmarkKakaoList)
+                    searchLookForView.showSearchLook(displayBookmarkKakaoList)
+                }
             })
     }
 
