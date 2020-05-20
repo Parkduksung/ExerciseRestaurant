@@ -1,14 +1,19 @@
 package com.work.restaurant.view.home
 
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 
 interface MapInterface {
 
     interface CurrentLocationClickListener {
-        fun click(clickData: Boolean)
+        fun clickMap(clickData: Boolean)
     }
 
     interface SelectMarkerListener {
-        fun getMarkerData(data: KakaoSearchModel)
+        fun getMarkerData(data: DisplayBookmarkKakaoModel)
     }
+
+    interface SearchLocationListener {
+        fun findFitnessResult(sort: Int)
+    }
+
 }

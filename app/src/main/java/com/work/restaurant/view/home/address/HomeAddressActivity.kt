@@ -6,83 +6,25 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.road.RoadRepositoryImpl
-import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
-import com.work.restaurant.network.room.database.AddressDatabase
-import com.work.restaurant.util.App
-import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
-import com.work.restaurant.view.home.address.presenter.HomeAddressPresenter
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import kotlinx.android.synthetic.main.address_main.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class HomeAddressActivity : BaseActivity(R.layout.address_main),
     HomeAddressContract.View, View.OnClickListener,
     AdapterDataListener,
     HomeAddressSelectAllFragment.AddressAllDataListener {
-    override fun sendData(data: String) {
-
-        val addressAllIntent =
-            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java).apply {
-                putExtra(ADDRESS, data)
-            }
-        setResult(RESULT_OK, addressAllIntent)
-        finish()
-    }
-
-    override fun showRoadItem(address: TextView, list: List<String>) {
-
-        select(address, list.toTypedArray())
-
-    }
-
-    override fun getData(data: String) {
-
-        Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
-
-        if (address1 && !address2 && !address3) {
-            si = data
-            address2 = true
-            presenter.getRoadItem(
-                tv_address2, data,
-                si, "gunGu"
-            )
-            unSelect(tv_address1)
-            unSelect(tv_address3)
-        } else if (address1 && address2 && !address3) {
-            gunGu = data
-            address3 = true
-            presenter.getRoadItem(
-                tv_address3, data,
-                si, "dong"
-            )
-            unSelect(tv_address1)
-            unSelect(tv_address2)
-        } else if (address1 && address2 && address3) {
-            dong = data
-            selectAddress = "$si $gunGu $dong"
-
-
-            supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.address_main_container, HomeAddressSelectAllFragment.newInstance(
-                        selectAddress
-                    )
-                )
-                .addToBackStack(null)
-                .commit()
-        }
-    }
 
     private lateinit var presenter: HomeAddressContract.Presenter
     private lateinit var addressAdapter: AddressAdapter
@@ -103,7 +45,9 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                 unSelect(tv_address2)
                 unSelect(tv_address3)
 
-                Toast.makeText(this, "1", Toast.LENGTH_SHORT).show()
+                tv_address1.text = getString(R.string.address_select1)
+                tv_address2.text = getString(R.string.address_select2)
+                tv_address3.text = getString(R.string.address_select3)
 
             }
 
@@ -111,40 +55,31 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
                 address3 = false
 
-                if (address2) {
+                tv_address2.text = getString(R.string.address_select2)
+                tv_address3.text = getString(R.string.address_select3)
 
-                    //
-                    //이 부분은 만약 <시>를 선택해서 <군구>로 넘어왔는데 사용자가 <군구>를 다시 눌렀을때 다른게 안뜨는 것 방지.
-//                    select(tv_address2, resources.getStringArray(R.array.인천))
-                    //
-                    //
+                if (address2) {
                     presenter.getRoadItem(
                         tv_address2,
                         si,
-                        si, "gunGu"
+                        si, GUN_GU
                     )
                     unSelect(tv_address1)
                     unSelect(tv_address3)
                 }
 
-                Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
-
             }
 
             R.id.tv_address3 -> {
-
                 if (address3) {
                     presenter.getRoadItem(
                         tv_address2,
                         dong,
-                        si, "gunGu"
+                        si, GUN_GU
                     )
                     unSelect(tv_address1)
                     unSelect(tv_address2)
                 }
-
-                Toast.makeText(this, "3", Toast.LENGTH_SHORT).show()
-
             }
         }
     }
@@ -152,16 +87,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = HomeAddressPresenter(
-            this, RoadRepositoryImpl.getInstance(
-                RoadLocalDataSourceImpl.getInstance(
-                    AddressDatabase.getInstance(
-                        App.instance.context()
-                    ),
-                    AppExecutors()
-                )
-            )
-        )
+        presenter = get { parametersOf(this) }
         addressAdapter = AddressAdapter()
         addressAdapter.setItemClickListener(this)
         ib_home_address_back.setOnClickListener(this)
@@ -169,30 +95,88 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         tv_address2.setOnClickListener(this)
         tv_address3.setOnClickListener(this)
 
-        initView()
+        startView()
 
     }
 
-    private fun initView() {
+    private fun startView() {
 
-        tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+        tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, SELECT_FONT_SIZE)
         address1 = true
         address2 = false
         address3 = false
 
-        val loadingTextArrayList = resources.getStringArray(R.array.select)
-        val decoration = Decoration(30, 30, 30, 30)
+        unSelect(tv_address2)
+        unSelect(tv_address3)
 
-        recyclerview_address.run {
+        val loadingTextArrayList =
+            resources.getStringArray(R.array.select)
+        val decoration =
+            Decoration(DECORATION_LEFT, DECORATION_RIGHT, DECORATION_TOP, DECORATION_BOTTOM)
+
+        rv_address.run {
             this.adapter = addressAdapter
             this.addItemDecoration(decoration)
             loadingTextArrayList.forEach {
                 addressAdapter.addData(it)
             }
-            layoutManager = GridLayoutManager(this.context, 3)
-
+            layoutManager = GridLayoutManager(this.context, SPAN_COUNT)
         }
 
+    }
+
+    override fun sendData(data: String) {
+
+        val addressAllIntent =
+            Intent(this@HomeAddressActivity, ExerciseRestaurantActivity::class.java).apply {
+                putExtra(ADDRESS, data)
+            }
+        setResult(RESULT_OK, addressAllIntent)
+        finish()
+    }
+
+    override fun showRoadItem(address: TextView, list: List<String>) {
+        select(address, list.toTypedArray())
+    }
+
+    override fun getData(data: String) {
+        getAreaItem(data)
+    }
+
+    private fun getAreaItem(clickData: String) {
+        if (address1 && !address2 && !address3) {
+            si = clickData
+            tv_address1.text = clickData
+            address2 = true
+            presenter.getRoadItem(
+                tv_address2, clickData,
+                si, GUN_GU
+            )
+            unSelect(tv_address1)
+            unSelect(tv_address3)
+        } else if (address1 && address2 && !address3) {
+            gunGu = clickData
+            tv_address2.text = clickData
+            address3 = true
+            presenter.getRoadItem(
+                tv_address3, clickData,
+                si, DONG
+            )
+            unSelect(tv_address1)
+            unSelect(tv_address2)
+        } else if (address1 && address2 && address3) {
+            dong = clickData
+            tv_address3.text = clickData
+
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.address_main_container, HomeAddressSelectAllFragment.newInstance(
+                        "$si $gunGu $dong"
+                    )
+                )
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun select(address: TextView, loadingTextArrayList: Array<String?>) {
@@ -201,7 +185,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         loadingTextArrayList.forEach {
             addressAdapter.addData(it)
         }
-        recyclerview_address.adapter?.notifyDataSetChanged()
+        rv_address.adapter?.notifyDataSetChanged()
 
         address.run {
             this.setTextColor(
@@ -210,27 +194,38 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                     R.color.colorWhite
                 )
             )
-            this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22F)
+            this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, SELECT_FONT_SIZE)
             this.setTypeface(null, Typeface.BOLD)
         }
 
     }
 
     private fun unSelect(address: TextView) {
-        address.run {
-            this.setTextColor(
+        address.apply {
+            setTextColor(
                 ContextCompat.getColor(
                     this@HomeAddressActivity,
                     R.color.colorGrayBasic
                 )
             )
-            this.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20F)
-            this.setTypeface(null, Typeface.NORMAL)
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, UN_SELECT_FONT_SIZE)
+            setTypeface(null, Typeface.NORMAL)
         }
     }
 
-
     companion object {
+
+        private const val GUN_GU = "gunGu"
+        private const val DONG = "dong"
+        private const val SPAN_COUNT = 3
+
+        private const val SELECT_FONT_SIZE = 22F
+        private const val UN_SELECT_FONT_SIZE = 20F
+
+        private const val DECORATION_LEFT = 30
+        private const val DECORATION_RIGHT = 30
+        private const val DECORATION_TOP = 30
+        private const val DECORATION_BOTTOM = 30
 
         var address1 = false
         var address2 = false
@@ -239,8 +234,9 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         var si = ""
         var gunGu = ""
         var dong = ""
-        var selectAddress = ""
 
         const val ADDRESS = "address"
+
+
     }
 }

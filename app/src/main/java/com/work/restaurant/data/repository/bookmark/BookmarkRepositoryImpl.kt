@@ -1,73 +1,26 @@
 package com.work.restaurant.data.repository.bookmark
 
-import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSourceCallback
-import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSourceImpl
+import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSource
 import com.work.restaurant.network.room.entity.BookmarkEntity
 
 class BookmarkRepositoryImpl(
-    private val bookmarkLocalDataSourceImpl: BookmarkLocalDataSourceImpl
+    private val bookmarkLocalDataSource: BookmarkLocalDataSource
 ) : BookmarkRepository {
-    override fun addBookmark(
-        bookmarkEntity: BookmarkEntity,
-        callback: BookmarkRepositoryCallback.AddBookmarkCallback
-    ) {
-        bookmarkLocalDataSourceImpl.addBookmark(
-            bookmarkEntity,
-            object : BookmarkLocalDataSourceCallback.AddBookmarkCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            }
-
-        )
+    override fun getAllList(userId: String, callback: (getList: List<BookmarkEntity>?) -> Unit) {
+        bookmarkLocalDataSource.getAllList(userId, callback)
     }
 
-    override fun getAllList(callback: BookmarkRepositoryCallback.GetAllList) {
-        bookmarkLocalDataSourceImpl.getAllList(object : BookmarkLocalDataSourceCallback.GetAllList {
-            override fun onSuccess(list: List<BookmarkEntity>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
+    override fun addBookmark(
+        bookmarkEntity: BookmarkEntity,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        bookmarkLocalDataSource.addBookmark(bookmarkEntity, callback)
     }
 
     override fun deleteBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkRepositoryCallback.DeleteBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     ) {
-
-        bookmarkLocalDataSourceImpl.deleteBookmark(
-            bookmarkEntity,
-            object : BookmarkLocalDataSourceCallback.DeleteBookmarkCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
+        bookmarkLocalDataSource.deleteBookmark(bookmarkEntity, callback)
     }
-
-    companion object {
-
-        private var instance: BookmarkRepositoryImpl? = null
-
-        fun getInstance(
-            bookmarkLocalDataSourceImpl: BookmarkLocalDataSourceImpl
-        ): BookmarkRepository =
-            instance ?: BookmarkRepositoryImpl(bookmarkLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
-    }
-
 }

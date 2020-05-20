@@ -11,8 +11,8 @@ interface AddExerciseContract {
     }
 
     interface Presenter {
-
         fun addExercise(
+            userId: String,
             date: String,
             time: String,
             type: String,

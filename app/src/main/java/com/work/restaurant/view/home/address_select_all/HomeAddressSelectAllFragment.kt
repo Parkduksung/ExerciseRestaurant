@@ -32,30 +32,6 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         }
     }
 
-
-    override fun onClick(v: View?) {
-
-        when (v?.id) {
-            R.id.btn_address_change_no -> {
-                requireFragmentManager().beginTransaction().remove(this).commit()
-            }
-
-            R.id.btn_address_change_ok -> {
-
-                if (::addressAllDataListener.isInitialized) {
-                    val bundle = arguments
-                    bundle?.let {
-                        it.getString(ADDRESS)?.let { addressAll ->
-                            addressAllDataListener.sendData(addressAll)
-                            fragmentManager?.popBackStack()
-                            selectAll = tv_address_select.text.toString()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,10 +58,33 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
         showSelectAddress()
     }
 
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.btn_address_change_no -> {
+                requireFragmentManager().beginTransaction().remove(this).commit()
+            }
+
+            R.id.btn_address_change_ok -> {
+
+                if (::addressAllDataListener.isInitialized) {
+                    arguments?.let {
+                        it.getString(ADDRESS)?.let { addressAll ->
+                            addressAllDataListener.sendData(addressAll)
+                            fragmentManager?.popBackStack()
+                            selectAll = tv_address_select.text.toString()
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
     private fun showSelectAddress() {
-        val bundle = arguments
-        if (bundle != null) {
-            tv_address_select.text = bundle.getString(ADDRESS)
+
+        arguments?.let {
+            tv_address_select.text = it.getString(ADDRESS)
         }
     }
 

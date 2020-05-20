@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,79 +8,97 @@
     android:orientation="vertical"
     tools:ignore="NestedWeights ,DisableBaselineAlignment, ,UselessLeaf,UseCompoundDrawables, ContentDescription">
 
+
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calender_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:mcv_selectionColor="@color/transparentColorGreen"
         app:mcv_showOtherDates="other_months"
         app:mcv_tileHeight="40sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="13">
+    <ImageView
+        android:id="@+id/iv_dot_exercise"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/button_round"
+        android:backgroundTint="@color/colorYellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calender_view"
+        app:layout_constraintVertical_bias="0.05" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/calendar_exercise_context"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@id/iv_dot_exercise"
+        app:layout_constraintTop_toBottomOf="@id/calender_view"
+        app:layout_constraintVertical_bias="0.04" />
 
+    <ImageView
+        android:id="@+id/iv_dot_eat"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/button_round"
+        android:backgroundTint="@color/colorLowPurple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calender_view"
+        app:layout_constraintVertical_bias="0.05" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:ignore="NestedWeights,UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/button_round"
-                    android:backgroundTint="@color/colorYellow" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:text="@string/tv_calendar_main_exercise" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/button_round"
-                    android:backgroundTint="@color/colorLowPurple" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:text="@string/tv_calendar_main_eat" />
-
-            </LinearLayout>
+    <TextView
+        android:id="@+id/c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/calendar_eat_context"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toEndOf="@id/iv_dot_eat"
+        app:layout_constraintTop_toBottomOf="@id/calender_view"
+        app:layout_constraintVertical_bias="0.04" />
 
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/tv_calendar_main_context"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border1"
+        android:gravity="center"
+        android:text="@string/common_ok_login_state_but_not_have_data"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c"
+        app:layout_constraintWidth_percent="0.98" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="12"
-            android:overScrollMode="never" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_calendar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border1"
+        android:overScrollMode="never"
+        android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c"
+        app:layout_constraintWidth_percent="0.98" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

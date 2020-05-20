@@ -3,42 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     android:orientation="vertical"
     android:weightSum="37"
     tools:ignore="NestedWeights,SpUsage">
 
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="3"
         android:background="@drawable/border_only_round"
-        android:orientation="horizontal"
-        android:weightSum="20">
+        android:gravity="center"
+        android:text="@string/bookmark_main_context"
+        android:textColor="@color/colorBlack"
+        android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="나의 맛집 취향은?!"
-            android:textColor="@color/colorBlack"
-            android:textSize="20dp">
-
-        </TextView>
-
-
-    </LinearLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
-        android:id="@+id/recyclerview_bookmark"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="34" />
+        android:layout_marginTop="5dp"
+        android:layout_weight="34">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:id="@+id/tv_bookmark_message"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

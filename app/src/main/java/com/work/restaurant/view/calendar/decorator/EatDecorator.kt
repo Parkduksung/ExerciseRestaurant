@@ -52,7 +52,6 @@ class CustomEatSpan(private val radius: Float, private var color: Int) :
         lineNumber: Int
     ) {
 
-
         val leftMost = -12
         val oldColor = paint.color
         paint.color = color
@@ -63,7 +62,6 @@ class CustomEatSpan(private val radius: Float, private var color: Int) :
             radius,
             paint
         )
-
         paint.color = oldColor
 
     }

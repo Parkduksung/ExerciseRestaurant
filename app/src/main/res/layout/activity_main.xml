@@ -20,22 +20,20 @@
             android:id="@+id/vp_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9">
-
-        </com.work.restaurant.util.SwipeLockableViewPager>
+            android:layout_weight="9" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="0.1dp"
             android:layout_weight="1"
+            android:elevation="4dp"
             android:theme="@style/TapTheme"
             app:tabGravity="fill"
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
-            app:tabTextAppearance="@color/colorAccent">
-
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextAppearance="@color/colorAccent" />
 
     </LinearLayout>
 

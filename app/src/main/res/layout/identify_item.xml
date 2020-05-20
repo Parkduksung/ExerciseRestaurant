@@ -17,8 +17,9 @@
             android:id="@+id/tv_identify_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@string/identify_content"
-            android:textSize="15dp"
+            android:textSize="15sp"
             tools:ignore="SpUsage" />
     </LinearLayout>
 </ScrollView>

@@ -21,13 +21,13 @@ interface CalendarContract {
     interface Presenter {
 
 
-        fun getDataOfTheDayExerciseData(date: String)
+        fun getDataOfTheDayExerciseData(userId: String, date: String)
 
-        fun getDataOfTheDayEatData(date: String)
+        fun getDataOfTheDayEatData(userId: String, date: String)
 
-        fun getAllEatData()
+        fun getAllEatData(userId: String)
 
-        fun getAllExerciseData()
+        fun getAllExerciseData(userId: String)
 
     }
 

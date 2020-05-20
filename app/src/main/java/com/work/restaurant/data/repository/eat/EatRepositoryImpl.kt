@@ -1,94 +1,68 @@
 package com.work.restaurant.data.repository.eat
 
-import com.work.restaurant.data.source.local.eat.EatLocalDataSourceCallback
-import com.work.restaurant.data.source.local.eat.EatLocalDataSourceImpl
+import com.work.restaurant.data.source.local.eat.EatLocalDataSource
 import com.work.restaurant.network.room.entity.EatEntity
 
-class EatRepositoryImpl private constructor(
-    private val eatLocalDataSourceImpl: EatLocalDataSourceImpl
+class EatRepositoryImpl(
+    private val eatLocalDataSource: EatLocalDataSource
 ) : EatRepository {
-    override fun deleteEat(data: EatEntity, callback: EatRepositoryCallback.DeleteEatCallback) {
-        eatLocalDataSourceImpl.deleteEat(
+    override fun updateEat(
+        time: String,
+        type: Int,
+        memo: String,
+        data: EatEntity,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        eatLocalDataSource.updateEat(
+            time,
+            type,
+            memo,
             data,
-            object : EatLocalDataSourceCallback.DeleteEatCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            }
+            callback
         )
     }
 
-    override fun getDataOfTheDay(today: String, callback: EatRepositoryCallback.GetDataOfTheDay) {
-        eatLocalDataSourceImpl.getDataOfTheDay(
+    override fun deleteEat(data: EatEntity, callback: (isSuccess: Boolean) -> Unit) {
+        eatLocalDataSource.deleteEat(
+            data,
+            callback
+        )
+    }
+
+    override fun getDataOfTheDay(
+        userId: String,
+        today: String,
+        callback: (getList: List<EatEntity>) -> Unit
+    ) {
+        eatLocalDataSource.getDataOfTheDay(
+            userId,
             today,
-            object : EatLocalDataSourceCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<EatEntity>) {
-                    callback.onSuccess(list)
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
-
+            callback
+        )
     }
 
 
-    override fun getList(callback: EatRepositoryCallback.GetAllList) {
-        eatLocalDataSourceImpl.getAllList(object : EatLocalDataSourceCallback.GetAllList {
-            override fun onSuccess(list: List<EatEntity>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
-
+    override fun getList(userId: String, callback: (getList: List<EatEntity>) -> Unit) {
+        eatLocalDataSource.getAllList(userId, callback)
     }
 
 
     override fun addEat(
+        userId: String,
         date: String,
         time: String,
         type: Int,
         memo: String,
-        callback: EatRepositoryCallback.AddEatCallback
+        callback: (isSuccess: Boolean) -> Unit
     ) {
-        eatLocalDataSourceImpl.addEat(
+        eatLocalDataSource.addEat(
+            userId,
             date,
             time,
             type,
             memo,
-            object : EatLocalDataSourceCallback.AddEatCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-
-            })
+            callback
+        )
     }
-
-    companion object {
-
-        private var instance: EatRepositoryImpl? = null
-
-        fun getInstance(
-            eatLocalDataSourceImpl: EatLocalDataSourceImpl
-        ): EatRepository =
-            instance ?: EatRepositoryImpl(eatLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
-    }
-
 
 }

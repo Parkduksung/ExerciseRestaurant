@@ -5,25 +5,36 @@ import com.work.restaurant.network.room.entity.EatEntity
 interface EatRepository {
 
     fun addEat(
+        userId: String,
         date: String,
         time: String,
         type: Int,
         memo: String,
-        callback: EatRepositoryCallback.AddEatCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
 
-
     fun getList(
-        callback: EatRepositoryCallback.GetAllList
+        userId: String,
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun getDataOfTheDay(
+        userId: String,
         today: String,
-        callback: EatRepositoryCallback.GetDataOfTheDay
+        callback: (getList: List<EatEntity>) -> Unit
     )
 
     fun deleteEat(
         data: EatEntity,
-        callback: EatRepositoryCallback.DeleteEatCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
+
+    fun updateEat(
+        time: String,
+        type: Int,
+        memo: String,
+        data: EatEntity,
+        callback: (isSuccess: Boolean) -> Unit
+    )
+
 }

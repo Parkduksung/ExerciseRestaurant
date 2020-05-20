@@ -1,75 +1,27 @@
 package com.work.restaurant.data.repository.road
 
-import com.work.restaurant.data.source.local.road.RoadLocalDataCountCallback
-import com.work.restaurant.data.source.local.road.RoadLocalDataRegisterCallback
-import com.work.restaurant.data.source.local.road.RoadLocalDataSourceCallback
-import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
+import com.work.restaurant.data.source.local.road.RoadLocalDataSource
 import com.work.restaurant.network.room.entity.AddressEntity
 
-class RoadRepositoryImpl private constructor(private val roadRemoteDataSourceImpl: RoadLocalDataSourceImpl) :
-    RoadRepository {
-    override fun registerAddress(callback: Callback) {
-        roadRemoteDataSourceImpl.registerAddress(object :
-            RoadLocalDataRegisterCallback {
-            override fun onSuccess(list: List<AddressEntity>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onFailure(message: String) {
-                callback.onFailure(message)
-            }
-        })
-    }
-
-
-    override fun getAddressCount(callback: RoadRepositoryDataCountCallback) {
-        roadRemoteDataSourceImpl.getAddressCount(object :
-            RoadLocalDataCountCallback {
-            override fun onSuccess(state: Boolean) {
-                callback.onSuccess(state)
-            }
-
-            override fun onFailure(message: String) {
-                callback.onFailure(message)
-            }
-
-        })
-    }
-
+class RoadRepositoryImpl(
+    private val roadRemoteDataSource: RoadLocalDataSource
+) : RoadRepository {
 
     override fun getLocalData(
         zone: String,
         area: String,
         clickData: String,
-        callback: RoadRepositoryCallback
+        callback: (list: List<String>?) -> Unit
     ) {
-        roadRemoteDataSourceImpl.getLocalData(
-            zone,
-            area,
-            clickData,
-            object : RoadLocalDataSourceCallback {
-                override fun onSuccess(list: List<String>) {
-                    callback.onSuccess(list)
-                }
-
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-
-                }
-            })
+        roadRemoteDataSource.getLocalData(zone, area, clickData, callback)
     }
 
-    companion object {
+    override fun getAddressCount(callback: (isSuccess: Boolean) -> Unit) {
 
-        private var instance: RoadRepositoryImpl? = null
-
-        fun getInstance(
-            roadLocalDataSourceImpl: RoadLocalDataSourceImpl
-        ): RoadRepositoryImpl =
-            instance ?: RoadRepositoryImpl(roadLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
+        roadRemoteDataSource.getAddressCount(callback)
     }
 
+    override fun registerAddress(callback: (list: List<AddressEntity>?) -> Unit) {
+        roadRemoteDataSource.registerAddress(callback)
+    }
 }

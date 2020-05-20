@@ -2,30 +2,44 @@ package com.work.restaurant.data.repository.exercise
 
 import com.work.restaurant.data.model.ExerciseSet
 import com.work.restaurant.network.room.entity.ExerciseEntity
+import com.work.restaurant.network.room.entity.ExerciseSetResponse
 
 interface ExerciseRepository {
 
     fun addExercise(
+        userId: String,
         date: String,
         time: String,
         type: String,
         exerciseName: String,
         list: List<ExerciseSet>,
-        callback: ExerciseRepositoryCallback.AddExerciseCallback
+        callback: (isSuccess: Boolean) -> Unit
+    )
+
+    fun getAllList(
+        userId: String,
+        callback: (getList: List<ExerciseEntity>) -> Unit
+    )
+
+    fun getDataOfTheDay(
+        userId: String,
+        date: String,
+        callback: (getList: List<ExerciseEntity>) -> Unit
     )
 
     fun deleteEat(
         data: ExerciseEntity,
-        callback: ExerciseRepositoryCallback.DeleteExerciseCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
 
-    fun getList(
-        callback: ExerciseRepositoryCallback.GetAllList
-    )
-
-    fun getDataOfTheDay(
-        today: String,
-        callback: ExerciseRepositoryCallback.GetDataOfTheDay
+    fun updateExercise(
+        changeTime: String,
+        changeType: String,
+        changeExerciseName: String,
+        changeExerciseSet: List<ExerciseSetResponse>,
+        currentId: String,
+        currentExerciseNum: Int,
+        callback: (isSuccess: Boolean) -> Unit
     )
 
 }

@@ -1,68 +1,13 @@
 package com.work.restaurant.data.repository.login
 
-import com.work.restaurant.data.source.local.login.LoginLocalDataSourceCallback
-import com.work.restaurant.data.source.local.login.LoginLocalDataSourceImpl
+import com.work.restaurant.data.source.local.login.LoginLocalDataSource
 import com.work.restaurant.network.room.entity.LoginEntity
 
 class LoginRepositoryImpl(
-    private val loginLocalDataSourceImpl: LoginLocalDataSourceImpl
+    private val loginLocalDataSource: LoginLocalDataSource
 ) : LoginRepository {
-
-    override fun changeState(
-        id: String,
-        state: Boolean,
-        callback: LoginRepositoryCallback.ChangeState
-    ) {
-        loginLocalDataSourceImpl.changeState(
-            id,
-            state,
-            object : LoginLocalDataSourceCallback.ChangeState {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
-    }
-
-    override fun deleteLogin(
-        id: String,
-        nickname: String,
-        callback: LoginRepositoryCallback.DeleteCallback
-    ) {
-        loginLocalDataSourceImpl.deleteLogin(
-            id,
-            nickname,
-            object : LoginLocalDataSourceCallback.DeleteCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            })
-
-
-    }
-
-    override fun getLoginState(callback: LoginRepositoryCallback.LoginStateCallback) {
-
-
-        loginLocalDataSourceImpl.getLoginState(object :
-            LoginLocalDataSourceCallback.LoginStateCallback {
-            override fun onSuccess(list: LoginEntity) {
-                callback.onSuccess(list)
-            }
-
-            override fun onFailure() {
-                callback.onFailure()
-            }
-        })
-
-
+    override fun getLoginState(callback: (list: LoginEntity?) -> Unit) {
+        loginLocalDataSource.getLoginState(callback)
     }
 
     override fun getRegisterData(
@@ -70,42 +15,25 @@ class LoginRepositoryImpl(
         pw: String,
         nickname: String,
         state: Boolean,
-        callback: LoginRepositoryCallback.RegisterCallback
+        callback: (isSuccess: Boolean) -> Unit
     ) {
-        loginLocalDataSourceImpl.getRegisterData(
-            id,
-            pw,
-            nickname,
-            true,
-            object : LoginLocalDataSourceCallback.RegisterCallback {
-                override fun onSuccess() {
-                    callback.onSuccess()
-                }
-
-                override fun onFailure() {
-                    callback.onFailure()
-                }
-            }
-
-        )
-
-
+        loginLocalDataSource.getRegisterData(id, pw, nickname, state, callback)
     }
 
-
-    companion object {
-
-        private var instance: LoginRepositoryImpl? = null
-
-        fun getInstance(
-            loginLocalDataSourceImpl: LoginLocalDataSourceImpl
-        ): LoginRepositoryImpl =
-            instance ?: LoginRepositoryImpl(loginLocalDataSourceImpl)
-                .also {
-                    instance = it
-                }
-
+    override fun changeState(id: String, state: Boolean, callback: (isSuccess: Boolean) -> Unit) {
+        loginLocalDataSource.changeState(id, state, callback)
     }
 
+    override fun deleteLogin(id: String, nickname: String, callback: (isSuccess: Boolean) -> Unit) {
+        loginLocalDataSource.deleteLogin(id, nickname, callback)
+    }
 
+    override fun findUser(
+        id: String,
+        pw: String,
+        nickname: String,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        loginLocalDataSource.findUser(id, pw, nickname, callback)
+    }
 }

@@ -1,5 +1,6 @@
 package com.work.restaurant.view.home.daum_maps.presenter
 
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
 
 interface MapContract {
@@ -10,8 +11,14 @@ interface MapContract {
         )
 
         fun showMarkerData(
-            list: List<KakaoSearchModel>
+            list: List<DisplayBookmarkKakaoModel>
         )
+
+        fun showSearchData(
+            list: List<KakaoSearchModel>,
+            sort: Int
+        )
+
 
     }
 
@@ -24,7 +31,18 @@ interface MapContract {
         )
 
         fun getMarkerData(
+            x: Double,
+            y: Double,
             markerName: String
         )
+
+        fun getThisPositionData(
+            currentX: Double,
+            currentY: Double,
+            radius: Int,
+            itemCount: Int
+        )
+
+        fun resetData()
     }
 }

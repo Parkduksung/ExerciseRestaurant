@@ -10,14 +10,20 @@ import com.work.restaurant.data.model.BookmarkModel
 class BookmarkEntity(
     @PrimaryKey(autoGenerate = true)
     val bookmarkNum: Int = 0,
+    @ColumnInfo(name = "bookmarkUser")
+    val bookmarkUserId: String,
     @ColumnInfo(name = "bookmarkName")
     val bookmarkName: String,
     @ColumnInfo(name = "bookmarkUrl")
-    val bookmarkUrl: String
+    val bookmarkUrl: String,
+    @ColumnInfo(name = "bookmarkAddress")
+    val bookmarkAddress: String
 ) {
     fun toBookmarkModel(): BookmarkModel =
         BookmarkModel(
+            bookmarkUserId,
             bookmarkName,
-            bookmarkUrl
+            bookmarkUrl,
+            bookmarkAddress
         )
 }

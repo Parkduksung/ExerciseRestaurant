@@ -3,7 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mypage_register_container"
+    android:id="@+id/myPage_register_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,106 +13,93 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        tools:ignore="ContentDescription,SpUsage,NestedWeights">
-
+        tools:ignore="UnusedAttribute,ContentDescription,NestedWeights,SpUsage,UselessParent,Autofill,LabelFor,TextFields">
 
         <ProgressBar
             android:id="@+id/pb_register"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorBlue"
-            android:padding="150dp"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            android:orientation="vertical"
-            android:weightSum="40"
-            tools:ignore="ContentDescription,SpUsage,NestedWeights">
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/ib_register_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/register_title"
+                android:textColor="@color/colorBlue"
+                android:textSize="45dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.15" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="3">
-
-                <ImageButton
-                    android:id="@+id/ib_register_back"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/colorWhite"
-                    app:srcCompat="@drawable/ic_back" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="9">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center"
-                    android:text="@string/register_title"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="45dp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="5"
-                android:orientation="vertical"
-                android:weightSum="5">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line_2"
                     android:orientation="horizontal"
-                    android:weightSum="20"
-                    tools:ignore="UselessParent">
-
+                    android:weightSum="20">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
                         android:text="@string/register_nickname"
                         android:textSize="20dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_register_nickname"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="13"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
                         app:hintTextAppearance="@style/HintText">
 
                         <EditText
                             android:id="@+id/et_register_nickname"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:background="@android:color/transparent"
                             android:hint="@string/register_nickname_hint"
-                            android:imeActionLabel="다음"
+                            android:imeActionLabel="@string/common_next"
                             android:imeOptions="actionNext"
                             android:lines="1"
                             android:singleLine="true"
-                            tools:ignore="Autofill,LabelFor,TextFields" />
+                            android:textSize="15dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,60 +116,134 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="5"
                 android:orientation="vertical"
-                android:weightSum="5">
-
+                android:weightSum="5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.45">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line_2"
                     android:orientation="horizontal"
-                    android:weightSum="20"
-                    tools:ignore="UselessParent">
-
+                    android:weightSum="20">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
                         android:text="@string/register_email"
                         android:textSize="20dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_register_email"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="13"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
                         app:hintTextAppearance="@style/HintText">
 
                         <EditText
                             android:id="@+id/et_register_email"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:background="@android:color/transparent"
                             android:hint="@string/register_email_hint"
-                            android:imeActionLabel="다음"
-                            android:imeOptions="actionNext"
+                            android:imeActionLabel="@string/common_complete"
+                            android:imeOptions="actionDone"
+                            android:inputType="textEmailAddress"
                             android:lines="1"
                             android:singleLine="true"
-                            tools:ignore="Autofill,LabelFor,TextFields" />
+                            android:textSize="15dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-                    <ImageView
-                        android:id="@+id/iv_email_state"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="2" />
+                        android:layout_weight="2">
+
+                        <Button
+                            android:id="@+id/btn_email_verified_show"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:autoSizeMaxTextSize="15dp"
+                            android:autoSizeMinTextSize="3dp"
+                            android:autoSizeTextType="uniform"
+                            android:backgroundTint="@color/colorBlue"
+                            android:text="@string/register_email_verified"
+                            android:textColor="@color/colorWhite"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/iv_email_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_register_email_verified"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:weightSum="20">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        android:text="@string/register_email_verified_main" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_register_email_verified"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="13"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText2">
+
+                        <EditText
+                            android:id="@+id/et_register_email_verified"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/register_email_verified_hint"
+                            android:imeActionLabel="@string/common_complete"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:lines="1"
+                            android:singleLine="true"
+                            android:textSize="13dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btn_email_verified_check"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/button_round_style"
+                        android:text="@string/register_email_verified_ok"
+                        android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
 
@@ -191,28 +252,26 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="5"
-                android:orientation="vertical"
-                android:weightSum="5">
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.57">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line_2"
                     android:orientation="horizontal"
-                    android:weightSum="20"
-                    tools:ignore="UselessParent">
+                    android:weightSum="20">
 
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
                         android:text="@string/register_pass"
@@ -220,7 +279,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="13"
                         app:hintTextAppearance="@style/HintText"
                         app:passwordToggleEnabled="true">
@@ -229,15 +288,15 @@
                             android:id="@+id/et_register_pass"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:background="@android:color/transparent"
                             android:hint="@string/register_pass_hint"
-                            android:imeActionLabel="다음"
+                            android:imeActionLabel="@string/common_next"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:lines="1"
                             android:singleLine="true"
-                            tools:ignore="Autofill,LabelFor,TextFields" />
+                            android:textSize="15dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -247,7 +306,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2" />
 
-
                 </LinearLayout>
 
 
@@ -255,28 +313,25 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="5"
-                android:orientation="vertical"
-                android:weightSum="5">
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.72">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bottom_line_2"
                     android:orientation="horizontal"
-                    android:weightSum="20"
-                    tools:ignore="UselessParent">
-
+                    android:weightSum="20">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_weight="5"
                         android:gravity="center"
                         android:text="@string/register_pass_ok"
@@ -284,7 +339,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="13"
                         app:hintTextAppearance="@style/HintText"
                         app:passwordToggleEnabled="true">
@@ -293,15 +348,15 @@
                             android:id="@+id/et_register_pass_ok"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:background="@android:color/transparent"
                             android:hint="@string/register_pass_ok_hint"
-                            android:imeActionLabel="완료"
+                            android:imeActionLabel="@string/common_complete"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:lines="1"
                             android:singleLine="true"
-                            tools:ignore="Autofill,LabelFor,TextFields" />
+                            android:textSize="15dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -313,31 +368,23 @@
 
                 </LinearLayout>
 
-
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="@string/register_ok"
+                android:textColor="@color/colorWhite"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.9" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="8"
-                android:gravity="center">
-
-
-                <Button
-                    android:id="@+id/btn_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_background"
-                    android:text="@string/register_ok"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="30dp" />
-
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 

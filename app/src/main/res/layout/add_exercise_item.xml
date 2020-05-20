@@ -7,23 +7,6 @@
     android:weightSum="2"
     tools:ignore="NestedWeights, ContentDescription, SpUsage,Autofill">
 
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="9">-->
-
-    <!--        <EditText-->
-    <!--            android:id="@+id/et_add_exercise_name"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="50dp"-->
-    <!--            android:gravity="center"-->
-    <!--            android:hint="@string/hint_add_exercise_name"-->
-    <!--            android:inputType="text"-->
-    <!--            android:singleLine="true"-->
-    <!--            android:textSize="15dp" />-->
-    <!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -34,8 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:hint="@string/hint_add_exercise_kg"
+            android:hint="@string/add_exercise_hint_kg"
+            android:imeActionLabel="완료"
+            android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="4"
             android:singleLine="true"
             android:textSize="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,8 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:hint="@string/hint_add_exercise_count"
+            android:hint="@string/add_exercise_hint_count"
+            android:imeActionLabel="완료"
+            android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="4"
             android:singleLine="true"
             android:textSize="15dp" />
     </com.google.android.material.textfield.TextInputLayout>

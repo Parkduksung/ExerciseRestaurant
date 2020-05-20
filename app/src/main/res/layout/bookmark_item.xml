@@ -1,86 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
+    android:layout_margin="0.1dp"
+    android:background="?selectableItemBackground"
+    android:clipToPadding="true"
     android:orientation="vertical"
-    tools:ignore="NestedWeights, SpUsage">
+    tools:ignore="NestedWeights, SpUsage,UnusedAttribute,ContentDescription">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
+        android:orientation="horizontal"
+        android:weightSum="8">
+
+        <ImageView
+            android:id="@+id/iv_bookmark_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_gym2" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_weight="6"
             android:orientation="vertical"
-            android:weightSum="40">
+            android:weightSum="5">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_bookmark_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="39"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:layout_gravity="bottom"
+                android:layout_weight="3"
+                android:autoSizeMaxTextSize="20dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:textColor="@color/colorLeanBlack" />
 
-
-                <ImageView
-                    android:id="@+id/iv_bookmark_image"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:src="@drawable/dumbell"
-                    tools:ignore="ContentDescription" />
-
-
-                <TextView
-                    android:id="@+id/tv_bookmark_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="7"
-                    android:text=""
-                    android:textSize="20dp" />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-                    <ImageButton
-                        android:id="@+id/ib_bookmark_cancel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/colorWhite"
-                        android:gravity="center"
-                        android:src="@drawable/ic_cancel"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_bookmark_address"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:background="@color/colorGray" />
-
+                android:layout_weight="2"
+                android:autoSizeMaxTextSize="14dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorLeanBlack" />
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        <ImageButton
+            android:id="@+id/ib_bookmark_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/ic_cancel"
+            android:duplicateParentState="true"
+            android:gravity="center" />
+    </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>
+
 

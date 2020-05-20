@@ -3,12 +3,13 @@ package com.work.restaurant.view.base
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import com.crashlytics.android.Crashlytics
-import io.fabric.sdk.android.Fabric
+import com.work.restaurant.R
+import com.work.restaurant.ext.showToast
 
 
 abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
 
+    var mBackWait: Long = INIT_TIME
 
     override fun onBackPressed() {
 
@@ -25,7 +26,17 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         }
 
         if (!handled) {
-            super.onBackPressed()
+            if (layoutId == R.layout.activity_main) {
+                if (System.currentTimeMillis() - mBackWait >= LIMIT_TIME) {
+                    mBackWait = System.currentTimeMillis()
+                    showToast(getString(R.string.baseActivity_backPressed))
+                } else {
+                    finish()
+                }
+            } else {
+                super.onBackPressed()
+            }
+
         }
 
     }
@@ -34,6 +45,14 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
 
-        Fabric.with(this, Crashlytics())
     }
+
+    companion object {
+
+        private const val INIT_TIME = 0L
+        private const val LIMIT_TIME = 2000
+
+
+    }
+
 }

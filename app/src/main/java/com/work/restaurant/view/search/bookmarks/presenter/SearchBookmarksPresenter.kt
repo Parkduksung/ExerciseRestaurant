@@ -2,45 +2,55 @@ package com.work.restaurant.view.search.bookmarks.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
-import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
-import com.work.restaurant.network.room.entity.BookmarkEntity
 
 class SearchBookmarksPresenter(
     private val searchBookmarksView: SearchBookmarksContract.View,
     private val bookmarkRepository: BookmarkRepository
-
 ) : SearchBookmarksContract.Presenter {
 
     override fun deleteBookmark(bookmarkModel: BookmarkModel) {
 
-        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+        val toBookmarkEntity =
+            bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
-            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
-                override fun onSuccess() {
-                    searchBookmarksView.showBookmarkDeleteResult(true)
-                }
-
-                override fun onFailure() {
-                    searchBookmarksView.showBookmarkDeleteResult(false)
+            callback = { isSuccess ->
+                if (isSuccess) {
+                    searchBookmarksView.showBookmarkDeleteResult(RESULT_SUCCESS)
+                } else {
+                    searchBookmarksView.showBookmarkDeleteResult(RESULT_FAILURE)
                 }
             })
-
     }
 
-    override fun getBookmarksList() {
-        bookmarkRepository.getAllList(object : BookmarkRepositoryCallback.GetAllList {
-            override fun onSuccess(list: List<BookmarkEntity>) {
+    override fun getBookmarksList(userId: String) {
+        if (userId.isNotEmpty()) {
+            searchBookmarksView.showLoginState(true)
+            bookmarkRepository.getAllList(
+                userId,
+                callback = { getList ->
+                    if (getList != null) {
+                        if (getList.isNotEmpty()) {
+                            val toBookmarkModelList =
+                                getList.map { it.toBookmarkModel() }
+                            searchBookmarksView.showBookmarksList(toBookmarkModelList)
+                            searchBookmarksView.showBookmarkPresenceOrAbsence(true)
 
-                val toBookmarkModelList = list.map { it.toBookmarkModel() }
-                searchBookmarksView.showBookmarksList(toBookmarkModelList)
-            }
+                        } else {
+                            searchBookmarksView.showBookmarkPresenceOrAbsence(false)
+                        }
+                    }
+                })
+        } else {
+            searchBookmarksView.showLoginState(false)
+        }
+    }
 
-            override fun onFailure() {
+    companion object {
 
-            }
-        })
+        const val RESULT_SUCCESS = true
+        const val RESULT_FAILURE = false
 
     }
 

@@ -1,71 +1,98 @@
 package com.work.restaurant.view.mypage.main
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import com.work.restaurant.Injection
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.work.restaurant.R
-import com.work.restaurant.data.model.LoginModel
+import com.work.restaurant.ext.showToast
+import com.work.restaurant.util.App
+import com.work.restaurant.util.ShowAlertDialog
+import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.base.BaseFragment
-import com.work.restaurant.view.mypage.login.MyPageLoginFragment
+import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
 import com.work.restaurant.view.mypage.main.presenter.MyPageContract
 import com.work.restaurant.view.mypage.main.presenter.MyPagePresenter
 import com.work.restaurant.view.mypage.notification.MyPageNotificationFragment
 import com.work.restaurant.view.mypage.question.MyPageQuestionFragment
+import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
 import kotlinx.android.synthetic.main.mypage_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
     View.OnClickListener {
 
     private lateinit var presenter: MyPageContract.Presenter
 
-    override fun showFirebaseLogin(loginId: String, loginNickname: String) {
+    private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
 
-        userId = loginId
-        userNickname = loginNickname
 
-        loginState = true
-        loginState()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as? RenewBookmarkAndRankListener)?.let {
+            renewBookmarkAndRankListener = it
+        }
     }
 
-    override fun showInit() {
-        loginState()
+    override fun onStart() {
+        presenter.getLoginState()
+        super.onStart()
     }
 
-    override fun showLoginState(model: LoginModel) {
-
-        presenter.loginFirebase(model.loginId, model.loginPw, model.loginNickname)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        presenter = get { parametersOf(this) }
+        iv_login.setOnClickListener(this)
+        btn_logout.setOnClickListener(this)
+        tv_withdrawal.setOnClickListener(this)
+        btn_identity.setOnClickListener(this)
+        btn_notification.setOnClickListener(this)
+        btn_question.setOnClickListener(this)
+        tv_main_register.setOnClickListener(this)
+        tv_main_find.setOnClickListener(this)
+        btn_login.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-
-            R.id.iv_login -> {
-                val myPageLoginFragment = MyPageLoginFragment()
-                myPageLoginFragment.setTargetFragment(
-                    this,
-                    LOGIN
-                )
-
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(
-                        R.id.mypage_main_container,
-                        myPageLoginFragment
-                    )
-                    .addToBackStack(null)
-                    .commit()
+            R.id.tv_main_find -> {
+                requireFragmentManager().beginTransaction().replace(
+                    R.id.main_container,
+                    MyPageFindPassFragment()
+                ).addToBackStack(null).commit()
             }
 
-            R.id.ll_logout -> {
-                val myPageLogoutFragment = MyPageLogoutFragment()
+            R.id.tv_main_register -> {
+
+                val myPageRegisterFragment = MyPageRegisterFragment()
+
+                myPageRegisterFragment.setTargetFragment(
+                    this,
+                    REGISTER
+                )
+                requireFragmentManager().beginTransaction().replace(
+                    R.id.myPage_main_container,
+                    myPageRegisterFragment
+                ).addToBackStack(null).commit()
+            }
+
+            R.id.btn_login -> {
+
+                presenter.loginCheck(et_email.text.toString(), et_pass.text.toString())
+
+            }
+
+
+            R.id.btn_logout -> {
+                val myPageLogoutFragment =
+                    MyPageLogoutFragment.newInstance(tv_login_id.text.toString())
 
                 myPageLogoutFragment.setTargetFragment(
                     this,
@@ -81,13 +108,17 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     .commit()
             }
 
-            R.id.tv_page_withdrawal -> {
+            R.id.tv_withdrawal -> {
                 val myPageWithdrawalFragment =
-                    MyPageWithdrawalFragment()
+                    MyPageWithdrawalFragment.newInstance(
+                        tv_login_id.text.toString(),
+                        userNickname
+                    )
                 myPageWithdrawalFragment.setTargetFragment(
                     this,
                     WITHDRAW
                 )
+
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
@@ -98,161 +129,198 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
                     .commit()
             }
 
-            R.id.ll_identity -> {
+            R.id.btn_identity -> {
 
-                val alertDialog =
-                    AlertDialog.Builder(
-                        this.context
+
+                ShowAlertDialog(context).apply {
+                    alertDialog.setView(
+                        LayoutInflater.from(context).inflate(
+                            R.layout.identify_item,
+                            null
+                        )
                     )
+                    titleAndMessage(getString(R.string.myPage_identity), null)
+                    alertDialog.setPositiveButton(
+                        getString(R.string.common_ok)
+                    ) { _, _ -> }
+                    showDialog()
 
-                alertDialog.setView(
-                    LayoutInflater.from(context).inflate(
-                        R.layout.identify_item,
-                        null
-                    )
-                )
-                alertDialog.setTitle("개인정보 처리방침")
-                alertDialog.setPositiveButton(
-                    "확인"
-                ) { _, _ -> }
-                alertDialog.show()
-
+                }
             }
-
-            R.id.ll_notification -> {
+            R.id.btn_notification -> {
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
-                        R.id.mypage_main_container,
+                        R.id.myPage_main_container,
                         MyPageNotificationFragment()
                     )
                     .addToBackStack(null)
                     .commit()
             }
-            R.id.ll_question -> {
-
+            R.id.btn_question -> {
                 requireFragmentManager()
                     .beginTransaction()
                     .replace(
-                        R.id.mypage_main_container,
+                        R.id.myPage_main_container,
                         MyPageQuestionFragment()
                     )
                     .addToBackStack(null)
                     .commit()
             }
-
         }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        presenter = MyPagePresenter(
-            this,
-            Injection.provideLoginRepository(),
-            Injection.provideUserRepository()
-        )
-        iv_login.setOnClickListener(this)
-        ll_logout.setOnClickListener(this)
-        tv_page_withdrawal.setOnClickListener(this)
-        ll_identity.setOnClickListener(this)
-        ll_notification.setOnClickListener(this)
-        ll_question.setOnClickListener(this)
-
-
-        presenter.getLoginState()
-    }
-
-
-    private fun loginState() {
-        if (loginState) {
-            iv_login.setImageResource(R.drawable.user)
-            iv_login.isClickable = false
-            login_ok_ll.visibility = View.VISIBLE
-            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25F)
-            tv_login_id.text = "$userId 님 환영합니다"
-            tv_login_id.text = "$userNickname 님\n 환영합니다."
-        } else {
-            login_ok_ll.visibility = View.INVISIBLE
-            tv_login_id.text = "로그인"
-            iv_login.setImageResource(R.drawable.ic_login)
-            tv_login_id.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40F)
-            iv_login.isClickable = true
-        }
-    }
-
-    fun registerOk(registerId: String) {
-        presenter.getLoginState()
-        userId = registerId
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == LOGIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                val loginEmail =
-                    data?.extras?.getString(MyPageLoginFragment.LOGIN_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageLoginFragment.LOGIN_NICKNAME).orEmpty()
+        when (requestCode) {
 
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = true
-                loginState()
+            LOGOUT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    et_email.text.clear()
+                    et_pass.text.clear()
+                    showInit()
+                }
             }
-        }
 
-        if (requestCode == LOGOUT) {
-            if (resultCode == Activity.RESULT_OK) {
-
-                val loginEmail =
-                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageLogoutFragment.LOGOUT_NICKNAME).orEmpty()
-
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = false
-                loginState()
+            WITHDRAW -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    clearInputText()
+                    showInit()
+                }
             }
-        }
 
-        if (requestCode == WITHDRAW) {
-            if (resultCode == Activity.RESULT_OK) {
-                val loginEmail =
-                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_ID).orEmpty()
-                val loginNickname =
-                    data?.extras?.getString(MyPageWithdrawalFragment.WITHDRAW_NICKNAME).orEmpty()
-
-                userId = loginEmail
-                userNickname = loginNickname
-                loginState = false
-                loginState()
+            REGISTER -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val loginEmail =
+                        data?.extras?.getString(MyPageRegisterFragment.REGISTER_ID).orEmpty()
+                    val loginNickname =
+                        data?.extras?.getString(MyPageRegisterFragment.REGISTER_NICKNAME).orEmpty()
+                    showLoginOk(loginEmail, loginNickname)
+                }
             }
 
         }
+    }
 
+    override fun showInit() {
+        loginState(false)
+        userNickname = EMPTY_TEXT
+        tv_login_nickname.text = EMPTY_TEXT
+        tv_login_id.text = EMPTY_TEXT
+        App.prefs.loginStateId = EMPTY_TEXT
+        App.prefs.loginState = false
+        renewBookmarkAndRankListener.renewBookmarkAndRank()
+    }
 
+    override fun showProgressState(state: Boolean) {
+        pb_login.bringToFront()
+        pb_login.isVisible = state
+        btn_login.isClickable = !state
+        tv_main_register.isClickable = !state
+        tv_main_find.isClickable = !state
+    }
+
+    override fun showLoginOk(email: String, nickname: String) {
+        loginState(true)
+        tv_login_nickname.text =
+            getString(
+                R.string.myPage_login_state_nickname,
+                nickname
+            )
+        tv_login_id.text = email
+        userNickname = nickname
+        App.prefs.loginState = true
+        App.prefs.loginStateId = email
+        renewBookmarkAndRankListener.renewBookmarkAndRank()
+        showProgressState(false)
+    }
+
+    override fun showLoginNo() {
+        showToast(getString(R.string.myPage_login_fail))
+        showProgressState(false)
+    }
+
+    override fun showMaintainLogin(email: String, nickname: String) {
+        loginState(true)
+        tv_login_nickname.text =
+            getString(
+                R.string.myPage_login_state_nickname,
+                nickname
+            )
+        tv_login_id.text = email
+        userNickname = nickname
+    }
+
+    override fun showLoginCheck(kind: Int) {
+
+        when (kind) {
+            MyPagePresenter.LOGIN_OK -> {
+                showProgressState(true)
+                presenter.login(
+                    et_email.text.toString(),
+                    et_pass.text.toString()
+                )
+            }
+
+            MyPagePresenter.NOT_VALID_EMAIL -> {
+                showToast(getString(R.string.myPage_not_valid_email))
+            }
+
+            MyPagePresenter.HAVE_TRIM -> {
+                showToast(getString(R.string.common_have_trim))
+            }
+
+            MyPagePresenter.NOT_INPUT_PASS -> {
+                showToast(getString(R.string.myPage_not_input_pass))
+            }
+
+            MyPagePresenter.NOT_INPUT_EMAIL -> {
+                showToast(getString(R.string.myPage_not_input_email))
+            }
+
+            MyPagePresenter.NOT_INPUT_ALL -> {
+                showToast(getString(R.string.myPage_not_input_all))
+            }
+        }
+    }
+
+    private fun loginState(state: Boolean) {
+        ll_myPage_init?.let {
+            ll_myPage_init.isInvisible = state
+        }
+        ll_myPage_login?.let {
+            ll_myPage_login.isVisible = state
+        }
+    }
+
+    private fun clearInputText() {
+        et_email.text.clear()
+        et_pass.text.clear()
+    }
+
+    override fun onResume() {
+        clearInputText()
+        super.onResume()
     }
 
     override fun onDetach() {
         super.onDetach()
-        loginState = false
-
+        loginState(false)
     }
 
+
     companion object {
-        var loginState = false
-        var userId = ""
-        var userNickname = ""
+
+        private var userNickname = ""
 
         private const val TAG = "MyPageFragment"
 
-        private const val LOGIN = 1
+        private const val REGISTER = 1
         private const val LOGOUT = 2
         private const val WITHDRAW = 3
 
+        private const val EMPTY_TEXT = ""
 
     }
 

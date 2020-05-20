@@ -1,21 +1,23 @@
 package com.work.restaurant.view.search.rank.adpater
 
-import android.view.*
-import android.widget.ImageButton
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.util.App
+import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
 
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
 
-    private val kakaoList = mutableListOf<KakaoSearchModel>()
+    private val kakaoList = mutableListOf<DisplayBookmarkKakaoModel>()
 
-    private lateinit var adapterListener: AdapterDataListener.GetKakaoData
+    private lateinit var adapterListener: AdapterDataListener.GetDisplayBookmarkKakaoModel
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -26,7 +28,6 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
                 false
             )
         )
-
 
     override fun getItemCount(): Int =
         kakaoList.size
@@ -44,142 +45,154 @@ class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
         private val kakaoDistance: TextView = itemView.findViewById(R.id.kakao_distance_tv)
         private val kakaoName: TextView = itemView.findViewById(R.id.kakao_name_tv)
-        private val kakaoMoreVert: ImageButton = itemView.findViewById(R.id.ib_more_vert)
+        private val kakaoAddress: TextView = itemView.findViewById(R.id.kakao_address_tv)
+        private val kakaoBookmark: CheckBox = itemView.findViewById(R.id.cb_bookmark)
 
-        fun bind(item: KakaoSearchModel) {
+        fun bind(item: DisplayBookmarkKakaoModel) {
 
-            val kakaoItem: KakaoSearchModel = item
+            val kakaoItem: DisplayBookmarkKakaoModel = item
 
-            if (::adapterListener.isInitialized) {
+            kakaoBookmark.setButtonDrawable(R.drawable.selector_checkbox_bookmark1)
 
-                kakaoMoreVert.setOnClickListener {
+            kakaoBookmark.isChecked = kakaoItem.toggleBookmark
 
-                    val menuBuilder = MenuBuilder(itemView.context)
-                    val inflater = MenuInflater(itemView.context)
-                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
-
-                    if (kakaoItem.phone == "") {
-//                        menuBuilder.findItem(R.id.kakao_calling_item).isVisible = false
-                    }
-
-                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
-                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
-                    val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
-                    optionMenu.setForceShowIcon(true)
-//                    optionMenu.gravity = Gravity.LEFT
-                    menuBuilder.setCallback(object : MenuBuilder.Callback {
-                        override fun onMenuModeChange(menu: MenuBuilder?) {
-                        }
-
-                        override fun onMenuItemSelected(
-                            menu: MenuBuilder?,
-                            item: MenuItem?
-                        ): Boolean {
-
-                            when (item?.itemId) {
-
-                                R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem)
-                                }
-
-                            }
-                            return true
-                        }
-                    })
-
-                    optionMenu.show()
-
-                }
-
-
-                itemView.setOnClickListener {
-                    adapterListener.getKakaoData(1, kakaoItem)
-                }
-
-
-            } else {
-                adapterListener = object : AdapterDataListener.GetKakaoData {
-                    override fun getKakaoData(select: Int, data: KakaoSearchModel) {
-
-                    }
-
-                }
-                kakaoMoreVert.setOnClickListener {
-
-                    val menuBuilder = MenuBuilder(itemView.context)
-                    val inflater = MenuInflater(itemView.context)
-                    inflater.inflate(R.menu.kakao_item_menu, menuBuilder)
-
-
-                    menuBuilder.findItem(R.id.kakao_location_item).title = kakaoItem.addressName
-                    menuBuilder.findItem(R.id.kakao_bookmark_item).title = "즐겨찾기 항목에 추가"
-                    val optionMenu =
-                        MenuPopupHelper(itemView.context, menuBuilder, kakaoMoreVert)
-                    optionMenu.setForceShowIcon(true)
-//                    optionMenu.gravity = Gravity.LEFT
-                    menuBuilder.setCallback(object : MenuBuilder.Callback {
-                        override fun onMenuModeChange(menu: MenuBuilder?) {
-                        }
-
-                        override fun onMenuItemSelected(
-                            menu: MenuBuilder?,
-                            item: MenuItem?
-                        ): Boolean {
-
-                            when (item?.itemId) {
-                                R.id.kakao_bookmark_item -> {
-                                    adapterListener.getKakaoData(2, kakaoItem)
-                                }
-                            }
-                            return true
-                        }
-                    })
-                    optionMenu.show()
-                }
-
-                itemView.setOnClickListener {
-                    adapterListener.getKakaoData(1, kakaoItem)
-                }
-            }
-
-            if (kakaoItem.distance.toInt() >= 1000) {
-                val convertKm = kakaoItem.distance.toInt() / 1000
-                val convertM = (kakaoItem.distance.toInt() - (convertKm * 1000))
-
-                if (convertM / 100 > 0) {
-                    val decimalPoint = ((kakaoItem.distance.toInt() % 1000).toString())[0]
-                    kakaoDistance.text = "$convertKm" + "." + "${decimalPoint}Km"
+            itemView.setOnClickListener {
+                if (::adapterListener.isInitialized) {
+                    adapterListener.getDisplayBookmarkKakaoData(SELECT_URL, kakaoItem, NOT_SELECT)
                 } else {
-                    kakaoDistance.text = "$convertKm" + ".0Km"
+                    adapterListener =
+                        object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
+                            override fun getDisplayBookmarkKakaoData(
+                                select: Int,
+                                data: DisplayBookmarkKakaoModel,
+                                selectPosition: Int
+                            ) {
+                            }
+                        }
+                    adapterListener.getDisplayBookmarkKakaoData(SELECT_URL, kakaoItem, NOT_SELECT)
                 }
-            } else {
-                kakaoDistance.text = kakaoItem.distance + "M"
             }
 
-            kakaoName.text = kakaoItem.placeName
+
+            kakaoBookmark.setOnClickListener {
+                if (::adapterListener.isInitialized) {
+                    if (RelateLogin.loginState()) {
+                        if (kakaoBookmark.isChecked) {
+                            adapterListener.getDisplayBookmarkKakaoData(
+                                ADD_BOOKMARK,
+                                kakaoItem,
+                                adapterPosition
+                            )
+                        } else {
+                            adapterListener.getDisplayBookmarkKakaoData(
+                                DELETE_BOOKMARK,
+                                kakaoItem,
+                                adapterPosition
+                            )
+                        }
+                    } else {
+                        kakaoBookmark.isChecked = false
+                        adapterListener.getDisplayBookmarkKakaoData(
+                            NOT_LOGIN_STATE,
+                            item,
+                            NOT_SELECT
+                        )
+                    }
+                } else {
+                    adapterListener =
+                        object : AdapterDataListener.GetDisplayBookmarkKakaoModel {
+                            override fun getDisplayBookmarkKakaoData(
+                                select: Int,
+                                data: DisplayBookmarkKakaoModel,
+                                selectPosition: Int
+                            ) {
+
+                            }
+                        }
+                    if (RelateLogin.loginState()) {
+                        if (kakaoBookmark.isChecked) {
+                            adapterListener.getDisplayBookmarkKakaoData(
+                                ADD_BOOKMARK,
+                                kakaoItem,
+                                adapterPosition
+                            )
+                        } else {
+                            adapterListener.getDisplayBookmarkKakaoData(
+                                DELETE_BOOKMARK,
+                                kakaoItem,
+                                adapterPosition
+                            )
+                        }
+                    } else {
+                        kakaoBookmark.isChecked = false
+                        adapterListener.getDisplayBookmarkKakaoData(
+                            NOT_LOGIN_STATE,
+                            item,
+                            NOT_SELECT
+                        )
+                    }
+
+                }
+            }
+
+
+            kakaoDistance.text = convertDistance(kakaoItem.distance)
+
+            kakaoName.text = kakaoItem.displayName
+            kakaoAddress.text = kakaoItem.displayAddress
 
         }
+    }
 
+    fun stateChange(position: Int) {
+        kakaoList[position].toggleBookmark = !kakaoList[position].toggleBookmark
+        notifyItemChanged(position)
     }
 
 
-    fun addAllData(documents: List<KakaoSearchModel>) {
+    fun addAllData(documents: List<DisplayBookmarkKakaoModel>) {
         kakaoList.addAll(documents)
-        notifyItemInserted(kakaoList.lastIndex)
+        notifyDataSetChanged()
     }
-
 
     fun clearListData() {
         kakaoList.clear()
         notifyDataSetChanged()
     }
 
-
-    fun setItemClickListener(listener: AdapterDataListener.GetKakaoData) {
+    fun setItemClickListener(listener: AdapterDataListener.GetDisplayBookmarkKakaoModel) {
         adapterListener = listener
     }
 
 
+    private fun convertDistance(distance: String): String {
+
+        return if (distance.toInt() >= 1000) {
+            val convertKm = distance.toInt() / 1000
+            val convertM = (distance.toInt() - (convertKm * 1000))
+
+            if (convertM / 100 > 0) {
+                val decimalPoint = ((distance.toInt() % 1000).toString())[0]
+                "$convertKm" + "." + "${decimalPoint}km"
+            } else {
+                "$convertKm" + ".0km"
+            }
+        } else {
+            distance + "m"
+        }
+
+    }
+
+
+    companion object {
+
+        private const val NOT_SELECT = 0
+
+        const val SELECT_URL = 0
+        const val ADD_BOOKMARK = 1
+        const val DELETE_BOOKMARK = 2
+        const val NOT_LOGIN_STATE = 3
+
+    }
 }
 

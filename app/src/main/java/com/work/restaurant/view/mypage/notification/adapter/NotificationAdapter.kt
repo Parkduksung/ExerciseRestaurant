@@ -26,7 +26,6 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
             )
         )
 
-
     override fun getItemCount(): Int =
         notificationList.size
 
@@ -43,48 +42,39 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
 
         private val notificationSubject: TextView =
             itemView.findViewById(R.id.tv_notification_subject)
-        private val notificationDate: TextView = itemView.findViewById(R.id.tv_notification_date)
+        private val notificationDate: TextView =
+            itemView.findViewById(R.id.tv_notification_date)
 
         fun bind(item: NotificationModel) {
 
             if (::adapterListener.isInitialized) {
-
                 itemView.setOnClickListener {
-
                     adapterListener.getData(item)
                 }
-
             } else {
                 adapterListener = object : AdapterDataListener.GetNotificationList {
                     override fun getData(data: NotificationModel) {
-
                     }
-
                 }
-
                 itemView.setOnClickListener {
-
                     adapterListener.getData(item)
                 }
             }
-
             notificationSubject.text = item.notificationSubject
             notificationDate.text = item.notificationDate
-
         }
 
 
     }
 
 
-    fun addData(listt: List<NotificationModel>) =
-        notificationList.addAll(listt)
+    fun addData(list: List<NotificationModel>) =
+        notificationList.addAll(list)
 
     fun clearListData() {
         notificationList.clear()
         notifyDataSetChanged()
     }
-
 
     fun setItemClickListener(listener: AdapterDataListener.GetNotificationList) {
         adapterListener = listener

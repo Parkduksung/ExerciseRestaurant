@@ -1,6 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -17,28 +15,36 @@
     </style>
 
     <style name="TapTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
-        <!--        <item name="textInputStyle">@style/TextAppearance.MyApp.Headline1</item>-->
-
     </style>
 
     <style name="tab_text" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="colorPrimary">@color/colorBlue</item>
     </style>
-
-    <!--    <style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">-->
-    <!--        <item name="android:textStyle">normal</item>-->
-    <!--        <item name="android:textSize">1dp</item>-->
-    <!--    </style>-->
 
 
     <style name="HintText" parent="TextAppearance.Design.Hint">
         <item name="android:textColor">@color/colorBlue</item>
     </style>
 
+    <style name="HintText2" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorBlue</item>
+        <item name="android:textSize">8dp</item>
+    </style>
+
+    <style name="RefreshLayout" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@drawable/button_refresh_textcolor</item>
+        <item name="android:textSize">8dp</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
+
+    <style name="ErrorText" parent="TextAppearance.Design.Error">
+        <item name="android:textSize">8dp</item>
+    </style>
 
 </resources>

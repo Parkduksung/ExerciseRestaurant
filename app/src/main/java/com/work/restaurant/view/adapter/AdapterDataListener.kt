@@ -2,7 +2,7 @@ package com.work.restaurant.view.adapter
 
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.model.DiaryModel
-import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.NotificationModel
 
 interface AdapterDataListener {
@@ -12,10 +12,10 @@ interface AdapterDataListener {
         fun getData(data: DiaryModel)
     }
 
-    interface GetKakaoData {
-        fun getKakaoData(select: Int, data: KakaoSearchModel)
-
+    interface GetDisplayBookmarkKakaoModel {
+        fun getDisplayBookmarkKakaoData(select: Int, data: DisplayBookmarkKakaoModel, selectPosition : Int)
     }
+
 
     interface GetBookmarkData {
 

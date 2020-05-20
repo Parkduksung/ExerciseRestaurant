@@ -1,45 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_marginTop="40dp"
-    android:orientation="horizontal"
-    android:weightSum="10"
-    tools:ignore="ContentDescription, SpUsage">
+    android:layout_height="80dp"
+    android:layout_margin="0.1dp"
+    android:background="?selectableItemBackground"
+    android:clipToPadding="true"
+    android:orientation="vertical"
+    tools:ignore="SpUsage,UnusedAttribute,NestedWeights, ContentDescription,RtlHardcoded">
 
-
-    <ImageView
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_search_look_item"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:src="@drawable/dumbell" />
+        android:background="?android:selectableItemBackground"
+        android:orientation="horizontal"
+        android:weightSum="8">
+
+        <ImageView
+            android:id="@+id/iv_search_look_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_gym2"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5.8"
+            android:orientation="vertical"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/tv_search_look_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="3"
+                android:autoSizeMaxTextSize="20dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:textColor="@color/colorLeanBlack" />
+
+            <TextView
+                android:id="@+id/tv_search_look_address"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:autoSizeMaxTextSize="14dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorLeanBlack" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cb_search_add_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:button="@drawable/selector_checkbox_bookmark1"
+            android:gravity="center" />
+
+    </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/tv_search_look_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_weight="8"
-        android:gravity="center|left"
-        android:textSize="20dp"
-        tools:ignore="RtlHardcoded" />
-
-    <CheckBox
-        android:id="@+id/cb_search_add_bookmark"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.7"
-        android:button="@drawable/selector_checkbox_drawable"
-        android:gravity="center" />
-
-</LinearLayout>
-
-
-
+</androidx.cardview.widget.CardView>
 
 

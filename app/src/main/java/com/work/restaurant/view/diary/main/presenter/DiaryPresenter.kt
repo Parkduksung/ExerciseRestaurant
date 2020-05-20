@@ -1,91 +1,53 @@
 package com.work.restaurant.view.diary.main.presenter
 
-import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.repository.eat.EatRepository
-import com.work.restaurant.data.repository.eat.EatRepositoryCallback
 import com.work.restaurant.data.repository.exercise.ExerciseRepository
-import com.work.restaurant.data.repository.exercise.ExerciseRepositoryCallback
-import com.work.restaurant.network.room.entity.EatEntity
-import com.work.restaurant.network.room.entity.ExerciseEntity
 
 class DiaryPresenter(
     private val diaryView: DiaryContract.View,
     private val eatRepository: EatRepository,
     private val exerciseRepository: ExerciseRepository
 ) : DiaryContract.Presenter {
-    override fun deleteExercise(data: DiaryModel) {
 
-        val toExerciseEntity = data.toExerciseEntity()
+    override fun todayExerciseData(userId: String, today: String) {
 
-        exerciseRepository.deleteEat(
-            toExerciseEntity,
-            object : ExerciseRepositoryCallback.DeleteExerciseCallback {
-                override fun onSuccess() {
-                    diaryView.showResult(true)
-
-                }
-
-                override fun onFailure() {
-                    diaryView.showResult(false)
-                }
-            })
-    }
-
-    override fun deleteEat(data: DiaryModel) {
-
-        val toEatEntity = data.toEatEntity()
-
-        eatRepository.deleteEat(toEatEntity, object : EatRepositoryCallback.DeleteEatCallback {
-            override fun onSuccess() {
-                diaryView.showResult(true)
-            }
-
-            override fun onFailure() {
-                diaryView.showResult(false)
-            }
-        })
-    }
-
-    override fun todayExerciseData(today: String) {
+        diaryView.showLoadingState(true)
 
         exerciseRepository.getDataOfTheDay(
+            userId,
             today,
-            object : ExerciseRepositoryCallback.GetDataOfTheDay {
-                override fun onSuccess(list: List<ExerciseEntity>) {
-
-
-                    val getDataOfTheDayList = list.map {
-                        it.toExerciseModel()
-                    }
-
+            callback = { list ->
+                if (list.isNotEmpty()) {
+                    val getDataOfTheDayList =
+                        list.map {
+                            it.toExerciseModel()
+                        }
                     diaryView.showExerciseData(getDataOfTheDayList.sortedBy { it.time })
-
+                } else {
+                    diaryView.showExerciseData(emptyList())
                 }
-
-                override fun onFailure() {
-
-                }
-            })
+            }
+        )
     }
 
+    override fun todayEatData(userId: String, today: String) {
 
-    override fun todayEatData(today: String) {
+        diaryView.showLoadingState(true)
 
-        eatRepository.getDataOfTheDay(today, object : EatRepositoryCallback.GetDataOfTheDay {
-            override fun onSuccess(list: List<EatEntity>) {
-                val getDataOfTheDayList = list.map {
-                    it.toEatModel()
+        eatRepository.getDataOfTheDay(
+            userId,
+            today,
+            callback = { list ->
+                if (list.isNotEmpty()) {
+                    val getDataOfTheDayList =
+                        list.map {
+                            it.toEatModel()
+                        }
+                    diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
+                } else {
+                    diaryView.showEatData(emptyList())
                 }
-
-                diaryView.showEatData(getDataOfTheDayList.sortedBy { it.time })
-
-            }
-
-            override fun onFailure() {
-
-            }
-        })
-
+            })
 
     }
 

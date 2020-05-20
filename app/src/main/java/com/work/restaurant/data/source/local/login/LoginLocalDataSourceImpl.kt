@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.login
 
-import android.util.Log
 import com.work.restaurant.network.room.database.LoginDatabase
 import com.work.restaurant.network.room.entity.LoginEntity
 import com.work.restaurant.util.AppExecutors
@@ -9,50 +8,21 @@ class LoginLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val loginDatabase: LoginDatabase
 ) : LoginLocalDataSource {
-
-    override fun deleteLogin(
-        id: String,
-        nickname: String,
-        callback: LoginLocalDataSourceCallback.DeleteCallback
-    ) {
+    override fun getLoginState(callback: (list: LoginEntity?) -> Unit) {
         appExecutors.diskIO.execute {
-
-            val deleteLogin = loginDatabase.loginDao().deleteLogin(id, nickname)
+            val loginListOfTrue =
+                loginDatabase.loginDao().getLoginState(true)
 
             appExecutors.mainThread.execute {
-                if (deleteLogin >= 1) {
-                    callback.onSuccess()
 
+                if (loginListOfTrue.isNotEmpty() && loginListOfTrue.size == 1) {
+                    callback(loginListOfTrue[0])
                 } else {
-                    callback.onFailure()
+                    callback(null)
                 }
             }
 
         }
-    }
-
-
-    override fun changeState(
-        id: String,
-        state: Boolean,
-        callback: LoginLocalDataSourceCallback.ChangeState
-    ) {
-        appExecutors.diskIO.execute {
-
-            val changeState = loginDatabase.loginDao().stateChange(id = id, state = state)
-
-            appExecutors.mainThread.execute {
-
-                if (changeState == 1) {
-                    callback.onSuccess()
-                } else {
-                    callback.onFailure()
-                }
-
-            }
-
-        }
-
     }
 
     override fun getRegisterData(
@@ -60,89 +30,94 @@ class LoginLocalDataSourceImpl(
         pw: String,
         nickname: String,
         state: Boolean,
-        callback: LoginLocalDataSourceCallback.RegisterCallback
+        callback: (isSuccess: Boolean) -> Unit
     ) {
 
         appExecutors.diskIO.execute {
 
-            val loginEntity = LoginEntity(
-                loginId = id,
-                loginPw = pw,
-                loginNickname = nickname,
-                loginState = state
-            )
+            val loginEntity =
+                LoginEntity(
+                    loginId = id,
+                    loginPw = pw,
+                    loginNickname = nickname,
+                    loginState = state
+                )
 
-            val registerLogin = loginDatabase.loginDao().registerLogin(loginEntity)
+            val registerLogin =
+                loginDatabase.loginDao().registerLogin(loginEntity)
 
             appExecutors.mainThread.execute {
                 if (registerLogin >= 1) {
-                    callback.onSuccess()
+                    callback(true)
                 } else {
-                    callback.onFailure()
+                    callback(false)
                 }
             }
 
         }
-
-
     }
 
-
-    override fun getLoginState(callback: LoginLocalDataSourceCallback.LoginStateCallback) {
-
-
+    override fun changeState(
+        id: String,
+        state: Boolean,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
         appExecutors.diskIO.execute {
 
-
-            val loginListOfTrue = loginDatabase.loginDao().getLoginState(true)
-
-            val loginListOfTrue1 = loginDatabase.loginDao().getAllList()
-
-//            loginListOfTrue1.forEach {
-//                Log.d("결과가머더냐아이디들?", it.loginId)
-//
-//            }
-//
-////
-//            loginDatabase.loginDao().delete(loginListOfTrue1)
-//
-//            if (loginDatabase.loginDao().delete(loginListOfTrue) == 1) {
-//                Log.d("결과가머더냐?", loginListOfTrue.size.toString())
-//            }
-////
-            Log.d("결과가머더냐?", loginListOfTrue.size.toString())
-////
-            Log.d("결과가머더냐총갯수?", loginListOfTrue1.size.toString())
+            val changeState =
+                loginDatabase.loginDao().stateChange(id = id, state = state)
 
             appExecutors.mainThread.execute {
 
-                if (loginListOfTrue.isNotEmpty() && loginListOfTrue.size == 1) {
-                    callback.onSuccess(loginListOfTrue[0])
+                if (changeState == 1) {
+                    callback(true)
                 } else {
-                    callback.onFailure()
+                    callback(false)
+                }
+            }
+        }
+    }
+
+    override fun deleteLogin(
+        id: String,
+        nickname: String,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        appExecutors.diskIO.execute {
+
+            val deleteLogin =
+                loginDatabase.loginDao().deleteLogin(id, nickname)
+
+            appExecutors.mainThread.execute {
+                if (deleteLogin >= 1) {
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
 
         }
-
-
     }
 
+    override fun findUser(
+        id: String,
+        pw: String,
+        nickname: String,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        appExecutors.diskIO.execute {
 
-    companion object {
+            val findUser =
+                loginDatabase.loginDao().findUser(id, pw, nickname)
 
-        private var instance: LoginLocalDataSourceImpl? = null
+            appExecutors.mainThread.execute {
 
-        fun getInstance(
-            appExecutors: AppExecutors,
-            loginDatabase: LoginDatabase
-        ): LoginLocalDataSourceImpl =
-            instance ?: LoginLocalDataSourceImpl(
-                appExecutors,
-                loginDatabase
-            ).also {
-                instance = it
+                if (findUser < 1) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
             }
+        }
     }
-
 }

@@ -9,7 +9,6 @@
     android:weightSum="37"
     tools:ignore="NestedWeights,SpUsage,ContentDescription">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,7 +17,6 @@
         android:background="@drawable/border_only_round"
         android:orientation="horizontal"
         android:weightSum="20">
-
 
         <TextView
             android:id="@+id/tv_search_locate"
@@ -37,14 +35,12 @@
             android:layout_weight="2"
             app:srcCompat="@drawable/filter" />
 
-
         <ImageView
             android:id="@+id/iv_search_settings"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             app:srcCompat="@drawable/ic_settings" />
-
 
     </LinearLayout>
 
@@ -62,7 +58,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/button_background"
             android:gravity="center"
-            android:text="TOP 15"
+            android:text="@string/rank_main_context"
             android:textColor="@color/colorWhite"
             android:textSize="15dp" />
 
@@ -72,7 +68,6 @@
             android:gravity="end"
             android:text="@string/app_update"
             android:textSize="15dp" />
-
 
     </LinearLayout>
 
@@ -84,21 +79,18 @@
 
         <ProgressBar
             android:id="@+id/pb_search_rank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorBlue"
-            android:padding="150dp"
             android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_rank"
+            android:id="@+id/rv_rank"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
 
     </RelativeLayout>
 
 </LinearLayout>
-
-    <!--    android:overScrollMode="never"-->

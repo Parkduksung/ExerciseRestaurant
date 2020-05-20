@@ -4,13 +4,13 @@ interface MyPageRegisterContract {
 
     interface View {
 
-        fun showRegisterOk(nickName: String)
-
-        fun showRegisterState()
+        fun showRegisterOk()
 
         fun showRegisterNo(sort: Int)
 
-        fun showLoginState()
+        fun showEmailDuplicationCheck(check: Boolean)
+
+        fun showProgressState(state: Boolean)
 
     }
 
@@ -18,11 +18,8 @@ interface MyPageRegisterContract {
 
         fun register(nickName: String, email: String, pass: String)
 
-        fun isEmailValid(email: String): Boolean
+        fun emailDuplicationCheck(userId: String)
 
-        fun registerLogin(nickName: String, email: String, pass: String, state: Boolean)
-
-        fun loginForRegister(userId: String, userPass: String)
 
     }
 

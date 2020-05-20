@@ -8,81 +8,61 @@ class BookmarkLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val bookmarkDatabase: BookmarkDatabase
 ) : BookmarkLocalDataSource {
-
-    override fun addBookmark(
-        bookmarkEntity: BookmarkEntity,
-        callback: BookmarkLocalDataSourceCallback.AddBookmarkCallback
+    override fun getAllList(
+        userId: String,
+        callback: (getList: List<BookmarkEntity>?) -> Unit
     ) {
-        appExecutors.diskIO.execute {
-
-            val addBookmark = bookmarkDatabase.bookmarkDao().addBookmark(bookmarkEntity)
-
-
-            appExecutors.mainThread.execute {
-                if (addBookmark >= 1) {
-                    callback.onSuccess()
-                } else {
-                    callback.onFailure()
-                }
-            }
-
-        }
-
-    }
-
-    override fun getAllList(callback: BookmarkLocalDataSourceCallback.GetAllList) {
 
         appExecutors.diskIO.execute {
 
             val getAllList =
-                bookmarkDatabase.bookmarkDao().getAll()
-
+                bookmarkDatabase.bookmarkDao().getAll(userId)
 
             appExecutors.mainThread.execute {
-                getAllList.takeIf { true }
-                    .apply {
-                        callback.onSuccess(getAllList)
-                    } ?: callback.onFailure()
+                callback(getAllList)
             }
         }
+
     }
-
-
-    override fun deleteBookmark(
+    override fun addBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkLocalDataSourceCallback.DeleteBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     ) {
         appExecutors.diskIO.execute {
 
-            val deleteBookmark = bookmarkDatabase.bookmarkDao()
-                .deleteBookmark(bookmarkEntity.bookmarkName, bookmarkEntity.bookmarkUrl)
+            val addBookmark =
+                bookmarkDatabase.bookmarkDao().addBookmark(bookmarkEntity)
+
+            appExecutors.mainThread.execute {
+                if (addBookmark >= 1) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+        }
+    }
+    override fun deleteBookmark(
+        bookmarkEntity: BookmarkEntity,
+        callback: (isSuccess: Boolean) -> Unit
+    ) {
+        appExecutors.diskIO.execute {
+
+            val deleteBookmark =
+                bookmarkDatabase.bookmarkDao().deleteBookmark(
+                    bookmarkEntity.bookmarkUserId,
+                    bookmarkEntity.bookmarkName,
+                    bookmarkEntity.bookmarkUrl
+                )
 
             appExecutors.mainThread.execute {
                 if (deleteBookmark >= 1) {
-                    callback.onSuccess()
-
+                    callback(true)
                 } else {
-                    callback.onFailure()
+                    callback(false)
                 }
             }
 
         }
-    }
-
-
-    companion object {
-
-        private var instance: BookmarkLocalDataSourceImpl? = null
-
-        fun getInstance(
-            appExecutors: AppExecutors,
-            bookmarkDatabase: BookmarkDatabase
-        ): BookmarkLocalDataSourceImpl =
-            instance ?: BookmarkLocalDataSourceImpl(
-                appExecutors,
-                bookmarkDatabase
-            ).also {
-                instance = it
-            }
     }
 }

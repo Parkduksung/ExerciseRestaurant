@@ -1,99 +1,48 @@
 package com.work.restaurant.data.repository.user
 
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceCallback
-import com.work.restaurant.data.source.remote.user.UserRemoteDataSourceImpl
+import com.work.restaurant.data.source.remote.user.UserRemoteDataSource
 import com.work.restaurant.ext.isConnectedToNetwork
 import com.work.restaurant.util.App
 
-class UserRepositoryImpl private constructor(private val userRemoteDataSourceImpl: UserRemoteDataSourceImpl) :
+class UserRepositoryImpl(private val userRemoteDataSource: UserRemoteDataSource) :
     UserRepository {
 
-    override fun login(email: String, pass: String, callback: UserRepositoryCallback) {
-
+    override fun login(email: String, pass: String, callback: (resultNickname: String?) -> Unit) {
         if (App.instance.context().isConnectedToNetwork()) {
-            userRemoteDataSourceImpl.login(email, pass, object :
-                UserRemoteDataSourceCallback {
-                override fun onSuccess(resultNickname: String) {
-                    callback.onSuccess(resultNickname)
-                }
-
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-                }
-
-            })
+            userRemoteDataSource.login(email, pass, callback)
         }
-
     }
 
     override fun register(
         nickName: String,
         email: String,
         pass: String,
-        callback: UserRepositoryCallback
+        callback: (resultNickname: String?) -> Unit
     ) {
-
         if (App.instance.context().isConnectedToNetwork()) {
-            userRemoteDataSourceImpl.register(nickName, email, pass, object :
-                UserRemoteDataSourceCallback {
-                override fun onSuccess(resultNickname: String) {
-                    callback.onSuccess(resultNickname)
-                }
-
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-                }
-            })
-        }
-
-    }
-
-    override fun delete(userNickname: String, userEmail: String, callback: UserRepositoryCallback) {
-
-        if (App.instance.context().isConnectedToNetwork()) {
-            userRemoteDataSourceImpl.delete(userNickname, userEmail, object :
-                UserRemoteDataSourceCallback {
-                override fun onSuccess(resultNickname: String) {
-                    callback.onSuccess(resultNickname)
-                }
-
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-                }
-            })
+            userRemoteDataSource.register(nickName, email, pass, callback)
         }
     }
 
-    override fun resetPass(email: String, callback: UserRepositoryCallback) {
-
+    override fun delete(
+        userNickname: String,
+        userEmail: String,
+        callback: (resultNickname: String?) -> Unit
+    ) {
         if (App.instance.context().isConnectedToNetwork()) {
-
-            userRemoteDataSourceImpl.resetPass(email, object : UserRemoteDataSourceCallback {
-                override fun onSuccess(resultNickname: String) {
-                    callback.onSuccess(resultNickname)
-                }
-
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
-                }
-            })
+            userRemoteDataSource.delete(userNickname, userEmail, callback)
         }
-
-
     }
 
-
-    companion object {
-
-        private var instance: UserRepositoryImpl? = null
-        fun getInstance(
-            userRemoteDataSourceImpl: UserRemoteDataSourceImpl
-        ): UserRepositoryImpl =
-            instance ?: UserRepositoryImpl(userRemoteDataSourceImpl).also {
-                instance = it
-            }
-
-
+    override fun resetPass(email: String, callback: (resultNickname: String?) -> Unit) {
+        if (App.instance.context().isConnectedToNetwork()) {
+            userRemoteDataSource.resetPass(email, callback)
+        }
     }
 
+    override fun emailDuplicationCheck(email: String, callback: (isSuccess: Boolean) -> Unit) {
+        if (App.instance.context().isConnectedToNetwork()) {
+            userRemoteDataSource.emailDuplicationCheck(email, callback)
+        }
+    }
 }

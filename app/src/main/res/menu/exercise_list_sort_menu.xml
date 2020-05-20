@@ -2,7 +2,6 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item
         android:id="@+id/exercise_list_accuracy_sort"
         android:icon="@drawable/accuracy"
@@ -12,6 +11,5 @@
         android:id="@+id/exercise_list_distance_sort"
         android:icon="@drawable/ic_distance"
         android:title="@string/exercise_sort_distance" />
-
 
 </menu>

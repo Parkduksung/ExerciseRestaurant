@@ -16,16 +16,26 @@ interface KakaoApi {
         @Query("y") y: Double,
         @Query("page") page: Int,
         @Query("sort") sort: String,
-        @Query("radius") radius: Int = RADIUS,
+        @Query("radius") radius: Int,
         @Query("query") keyword: String = KEYWORD
+    ): Call<KakaoSearchResponse>
+
+    @Headers(HEADERS)
+    @GET("v2/local/search/keyword.json")
+    fun keywordLookForSearch(
+        @Query("query") keyword: String,
+        @Query("page") page: Int
     ): Call<KakaoSearchResponse>
 
 
     @Headers(HEADERS)
     @GET("v2/local/search/keyword.json")
     fun kakaoItemSearch(
+        @Query("x") x: Double,
+        @Query("y") y: Double,
         @Query("query") keyword: String
     ): Call<KakaoSearchResponse>
+
 
     @Headers(HEADERS)
     @GET("v2/local/search/address.json")
@@ -45,7 +55,6 @@ interface KakaoApi {
         const val HEADERS = "Authorization: KakaoAK 785b8c0fb5d7046009351ac6fe2fed8b"
         const val RADIUS = 20000
         const val KEYWORD = "헬스장"
-
     }
 
 

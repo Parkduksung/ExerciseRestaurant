@@ -11,6 +11,8 @@ import com.work.restaurant.network.room.converter.ExerciseSetConverter
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     val exerciseNum: Int = 0,
+    @ColumnInfo(name = "userId")
+    val userId: String,
     @ColumnInfo(name = "date")
     val date: String,
     @ColumnInfo(name = "time")
@@ -28,6 +30,7 @@ data class ExerciseEntity(
         }
         return ExerciseModel(
             exerciseNum,
+            userId,
             date,
             time,
             type,

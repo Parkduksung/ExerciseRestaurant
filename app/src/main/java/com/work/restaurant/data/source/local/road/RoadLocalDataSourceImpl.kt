@@ -1,6 +1,5 @@
 package com.work.restaurant.data.source.local.road
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
@@ -8,103 +7,19 @@ import com.work.restaurant.network.room.database.AddressDatabase
 import com.work.restaurant.network.room.entity.AddressEntity
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
-import com.work.restaurant.view.home.address.HomeAddressActivity.Companion.si
+import com.work.restaurant.view.home.address.HomeAddressActivity
 
-class RoadLocalDataSourceImpl private constructor(
+class RoadLocalDataSourceImpl(
     private val addressDatabase: AddressDatabase,
     private val appExecutors: AppExecutors
 ) : RoadLocalDataSource {
-    override fun registerAddress(roadLocalDataRegisterCallback: RoadLocalDataRegisterCallback) {
-
-        val thread = Thread {
-            val assetManager = App.instance.context().assets
-
-            val inputStream = assetManager.open("Address.json")
-
-            val string = inputStream.bufferedReader().use { it.readLine() }
-
-            val gson = Gson()
-
-            val result = gson.fromJson(string, JsonArray::class.java)
-
-            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
-
-            if (addressDatabase?.isOpen!!) {
-
-                result.forEach {
-                    val road = gson.fromJson(it, AddressEntity::class.java)
-                    addressDatabase.addressDao().registerAddress(road)
-                }
-
-                val addressList = addressDatabase.addressDao().getAll()
-                if (addressList.isNotEmpty()) {
-                    roadLocalDataRegisterCallback.onSuccess(addressList)
-                } else {
-                    roadLocalDataRegisterCallback.onFailure("error")
-                }
-            } else {
-                roadLocalDataRegisterCallback.onFailure("error")
-            }
-        }
-        thread.start()
-    }
-
-    override fun isContainAddress(callback: RoadLocalDataCountCallback) {
-
-        val thread = Thread {
-            val addressDatabase = AddressDatabase.getInstance(App.instance.context())
-
-            val getAddressCount = addressDatabase?.addressDao()?.getAllCount()
-
-            Log.d("결과결과", getAddressCount.toString())
-
-            if (addressDatabase?.isOpen!!) {
-                if (getAddressCount != null) {
-
-                    callback.onSuccess(true)
-                    Log.d("결과결과", "true가 나와야함.")
-                } else {
-                    callback.onSuccess(false)
-                    Log.d("결과결과", "false가 나와야함.")
-                }
-            } else {
-                callback.onFailure("error!")
-            }
-        }
-
-        thread.start()
-
-    }
-
-    override fun getAddressCount(callback: RoadLocalDataCountCallback) {
-
-
-        appExecutors.diskIO.execute {
-
-            val getAddressCount = addressDatabase.addressDao().getAllCount()
-
-            Log.d("결과결과", getAddressCount.toString())
-
-            if (addressDatabase.isOpen) {
-                Log.d("결과결과55", getAddressCount.toString())
-                appExecutors.mainThread.execute {
-                    callback.onSuccess(true)
-                }
-            } else {
-                callback.onFailure("error!")
-            }
-        }
-
-    }
 
     override fun getLocalData(
         zone: String,
         area: String,
         clickData: String,
-        callback: RoadLocalDataSourceCallback
+        callback: (list: List<String>?) -> Unit
     ) {
-
-
         if (zone == "dong") {
             val assetManager = App.instance.context().assets
 
@@ -120,15 +35,15 @@ class RoadLocalDataSourceImpl private constructor(
 
             result.forEach {
                 val road = gson.fromJson(it, RoadModel::class.java)
-                if (road.si.contains(si, false) && road.gunGu == clickData) {
+                if (road.si.contains(HomeAddressActivity.si, false) && road.gunGu == clickData) {
                     list.add(road)
                 }
             }
 
             if (list.isNotEmpty()) {
-                callback.onSuccess(list.map { it.dong }.distinct().sorted())
+                callback(list.map { it.dong }.distinct().sorted())
             } else {
-                callback.onFailure("error")
+                callback(null)
             }
         }
 
@@ -153,33 +68,81 @@ class RoadLocalDataSourceImpl private constructor(
             }
 
             if (list.isNotEmpty()) {
-                callback.onSuccess(list.map { it.gunGu }.distinct().sorted())
+                callback(list.map { it.gunGu }.distinct().sorted())
             } else {
-                callback.onFailure("error")
+                callback(null)
             }
         }
-
     }
 
+    override fun getAddressCount(callback: (isSuccess: Boolean) -> Unit) {
 
-    companion object {
+        appExecutors.diskIO.execute {
 
-        private var instance: RoadLocalDataSourceImpl? = null
+            val getAddressCount =
+                addressDatabase.addressDao().getAllCount()
 
-        fun getInstance(
-            addressDatabase: AddressDatabase,
-            appExecutors: AppExecutors
-        ): RoadLocalDataSourceImpl =
-            instance
-                ?: RoadLocalDataSourceImpl(
-                    addressDatabase,
-                    appExecutors
-                )
-                .also {
-                    instance = it
+            appExecutors.mainThread.execute {
+                if (getAddressCount != 0) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+        }
+    }
+
+    override fun isContainAddress(callback: (isSuccess: Boolean) -> Unit) {
+        val thread = Thread {
+            val getAddressCount =
+                addressDatabase.addressDao().getAllCount()
+            if (getAddressCount != 0) {
+                callback(true)
+            } else {
+                callback(false)
+            }
+        }
+        thread.start()
+    }
+
+    override fun registerAddress(callback: (list: List<AddressEntity>?) -> Unit) {
+
+        val thread = Thread {
+            val assetManager =
+                App.instance.context().assets
+
+            val inputStream =
+                assetManager.open("Address.json")
+
+            val string =
+                inputStream.bufferedReader().use { it.readLine() }
+
+            val gson = Gson()
+
+            val result =
+                gson.fromJson(string, JsonArray::class.java)
+
+
+            if (addressDatabase.isOpen) {
+
+                result.forEach {
+                    val road =
+                        gson.fromJson(it, AddressEntity::class.java)
+                    addressDatabase.addressDao().registerAddress(road)
                 }
 
+                val addressList =
+                    addressDatabase.addressDao().getAll()
+                if (addressList.isNotEmpty()) {
+                    callback(addressList)
+                } else {
+                    callback(null)
+                }
+            } else {
+                callback(null)
+            }
+        }
+        thread.start()
     }
-
 
 }

@@ -3,92 +3,77 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mypage_find_container"
+    android:id="@+id/myPage_find_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        tools:ignore="ContentDescription,SpUsage,NestedWeights">
-
+        tools:ignore="ContentDescription,NestedWeights,SpUsage,UselessParent,Autofill,TextFields">
 
         <ProgressBar
-            android:id="@+id/pb_find_email"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/pb_find"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorBlue"
-            android:padding="150dp"
-            android:visibility="visible" />
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/ib_find_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:backgroundTint="@color/colorWhite"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_find_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ib_find_back"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="@string/find_title"
+            android:textColor="@color/colorBlue"
+            android:textSize="50dp" />
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            android:orientation="vertical"
-            android:weightSum="40"
-            tools:ignore="ContentDescription,SpUsage.NestedWeights">
+            android:layout_below="@+id/tv_find_main">
 
             <LinearLayout
+                android:id="@+id/ll_find_email"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:layout_weight="3"
-                tools:ignore="RtlHardcoded">
-
-                <ImageButton
-                    android:id="@+id/ib_find_back"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/colorWhite"
-                    app:srcCompat="@drawable/ic_back" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
-
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/pass_find_title"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="50dp"
-                    tools:ignore="SpUsage" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_height="50dp"
                 android:background="@drawable/bottom_line_2"
                 android:orientation="horizontal"
-                android:weightSum="20">
+                android:weightSum="20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.15">
 
                 <TextView
+                    android:id="@+id/tv_find_email"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="5"
                     android:gravity="center"
-                    android:text="@string/pass_find_email"
-                    android:textSize="20dp"
-                    tools:ignore="NestedWeights,SpUsage" />
+                    android:text="@string/find_email"
+                    android:textSize="20dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
@@ -102,69 +87,57 @@
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:gravity="center"
-                        android:hint="@string/pass_find_hint"
+                        android:hint="@string/find_hint"
                         android:textColorHint="@color/colorBlack"
-                        android:textSize="19dp"
-                        tools:ignore="Autofill,SpUsage,TextFields" />
+                        android:textSize="19dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="4"
+            <TextView
+                android:id="@+id/tv_find_explain1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="@string/find_explain1"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ll_find_email"
+                app:layout_constraintVertical_bias="0.2" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/pass_find_explain1"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    tools:ignore="SpUsage" />
+            <TextView
+                android:id="@+id/tv_find_explain2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/find_explain2"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_find_explain1"
+                app:layout_constraintVertical_bias="0.1" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/pass_find_explain2"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    tools:ignore="SpUsage" />
+            <Button
+                android:id="@+id/btn_request_change_pass"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/button_round_style"
+                android:text="@string/find_ok"
+                android:textColor="@color/colorWhite"
+                android:textSize="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_find_explain2"
+                app:layout_constraintVertical_bias="0.3" />
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="8"
-                android:baselineAligned="false"
-                android:gravity="center">
-
-
-                <Button
-                    android:id="@+id/btn_request_change_pass"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/button_round_style"
-                    android:text="@string/pass_find_ok"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="40dp"
-                    tools:ignore="SpUsage" />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 

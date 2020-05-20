@@ -2,11 +2,12 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#4180b9</color>
     <color name="colorGray">#9E9E9E</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#4180b9</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorLeanBlack">#555555</color>
     <color name="colorMint">#00a000</color>
     <color name="colorGrayBasic">#E0E0E0</color>
     <color name="colorGrayDark">#949494</color>
@@ -16,5 +17,15 @@
     <color name="colorGreen">#92CFBF</color>
     <color name="colorLowPurple">#c12dff</color>
     <color name="transparentColorGreen">#9992CFBF</color>
+    <color name="defaultColor">#808080</color>
+    <color name="colorLeanYellow">#FDFD96</color>
     <color name="transparentColorPink">#99D81B60</color>
+    <color name="colorLeanBlue">#f0ffff</color>
+    <color name="colorMiddleBlue">#b4cde4</color>
+    <color name="colorLean1">#ffefd5</color>
+    <color name="colorLean2">#fffff0</color>
+    <color name="colorLean3">#f0fff0</color>
+    <color name="colorLean4">#fff5ee</color>
+
+
 </resources>

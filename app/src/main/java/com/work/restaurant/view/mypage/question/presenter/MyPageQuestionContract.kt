@@ -4,7 +4,9 @@ interface MyPageQuestionContract {
 
     interface View {
 
-        fun showResult(message: String)
+        fun showResult(resultState: Boolean)
+
+        fun showProgressState(state: Boolean)
     }
 
     interface Presenter {

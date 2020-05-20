@@ -9,19 +9,24 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
+import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.ext.isConnectedToGPS
+import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
+import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.base.BaseActivity
 import kotlinx.android.synthetic.main.loading_fragment.*
-import java.text.SimpleDateFormat
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 import java.util.*
 
 
 class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
+
 
     private lateinit var presenter: LoadingContract.Presenter
 
@@ -31,28 +36,54 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
         object : PermissionListener {
 
             override fun onPermissionGranted() {
-                saveCurrentLocation()
+
+                if (isConnectedToGPS()) {
+                    saveCurrentLocation()
+                } else {
+                    ShowAlertDialog(this@LoadingActivity).apply {
+                        titleAndMessage(
+                            getString(R.string.loading_gps_error_title),
+                            getString(R.string.loading_gps_error_message)
+                        )
+                        alertDialog.setPositiveButton(
+                            getString(R.string.common_change)
+                        ) { _, _ ->
+                            startActivity(
+                                Intent(ACTION_LOCATION_SOURCE_SETTINGS)
+                            )
+                            finish()
+                        }
+                        alertDialog.setNegativeButton(
+                            getString(R.string.common_no)
+                        ) { _, _ ->
+                            finish()
+                        }
+                        showDialog()
+                    }
+                }
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-                Toast.makeText(
-                    App.instance.context(),
-                    "권한이 거부되었습니다.\n\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                showToast(getString(R.string.common_no_denied))
                 finish()
             }
         }
     }
 
+    override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
+
+        App.prefs.apply {
+            loginState = result
+            loginStateId = userId
+            loginStateNickname = userNickname
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = LoadingPresenter(this)
+        presenter = get { parametersOf(this) }
         presenter.randomText(resources.getStringArray(R.array.load_string))
-
         checkPermission()
 
     }
@@ -65,8 +96,8 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
             override fun onLocationChanged(location: Location) {
 
                 if (location.longitude.isFinite() && location.latitude.isFinite()) {
-                    App.prefs.current_location_long = location.longitude.toString()
-                    App.prefs.current_location_lat = location.latitude.toString()
+                    App.prefs.currentLocationLong = location.longitude.toString()
+                    App.prefs.currentLocationLat = location.latitude.toString()
                     locationManager.removeUpdates(this)
                     start()
                 }
@@ -93,42 +124,19 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
     private fun checkPermission() {
         TedPermission.with(App.instance.context())
             .setPermissionListener(permissionListener)
-            .setRationaleMessage("앱의 기능을 사용하기 위해서는 권한이 필요합니다.")
-            .setDeniedMessage("만약 권한을 다시 얻으려면, \n\n[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+            .setRationaleMessage(getString(R.string.tedPermission_setRationaleMessage))
+            .setDeniedMessage(getString(R.string.tedPermission_setDeniedMessage))
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-//            .setPermissions(android.Manifest.permission.INTERNET,android.Manifest.permission.CALL_PHONE)
             .check()
     }
 
-
     private fun start() {
 
-        val currentTime = Calendar.getInstance().time
-
-        val dateTextAll =
-            SimpleDateFormat("yyyy-M-d-EE-a-h-mm", Locale.getDefault()).format(currentTime)
-
-        val dateArray = dateTextAll.split("-")
-
-        App.prefs.current_date =
-            getString(
-                R.string.current_date,
-                dateArray[0],
-                dateArray[1],
-                dateArray[2]
-            )
-
-        App.prefs.current_time =
-            getString(
-                R.string.current_time,
-                dateArray[4],
-                dateArray[5],
-                dateArray[6]
-            )
-
-        presenter.delayTime()
-        presenter.getAddressDataCount()
-
+        presenter.run {
+            getLoginState()
+            delayTime()
+            getAddressDataCount()
+        }
     }
 
 
@@ -140,18 +148,20 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
         Handler().postDelayed({
 
-            val nextIntent = Intent(this, ExerciseRestaurantActivity::class.java)
+            val nextIntent =
+                Intent(this, ExerciseRestaurantActivity::class.java)
 
             startActivity(nextIntent)
 
             this@LoadingActivity.finish()
 
-        }, 1000L)
+        }, DELAY_TIME)
     }
 
     companion object {
         private const val TAG = "LoadingActivity"
 
+        private const val DELAY_TIME = 100L
     }
 
 }

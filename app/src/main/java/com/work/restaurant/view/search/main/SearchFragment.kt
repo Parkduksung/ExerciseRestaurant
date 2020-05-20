@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,56 +10,96 @@ import com.work.restaurant.view.adapter.ViewPagerAdapter
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import com.work.restaurant.view.search.main.presenter.SearchContract
-import com.work.restaurant.view.search.main.presenter.SearchPresenter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_fragment.*
 
-class SearchFragment : BaseFragment(R.layout.search_fragment), View.OnClickListener,
-    SearchContract.View {
-
-    private lateinit var presenter: SearchPresenter
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.et_search_look -> {
-                presenter.search()
-            }
-        }
-    }
+class SearchFragment : BaseFragment(R.layout.search_fragment),
+    View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = SearchPresenter(this)
+        btn_search_look.setOnClickListener(this)
+        startView()
 
-        presenter.init()
-        et_search_look.setOnClickListener(this)
+    }
+
+    private fun startView() {
+
+        vp_search.adapter = object : ViewPagerAdapter(
+            requireFragmentManager(),
+            resources.getStringArray(R.array.tab_search).toList()
+        ) {
+            override fun getItem(position: Int): Fragment =
+                when (position) {
+                    0 -> {
+                        SearchRankFragment()
+                    }
+                    1 -> {
+                        SearchBookmarksFragment()
+                    }
+                    else -> throw RuntimeException()
+                }
+        }
+
+        tl_search.run {
+            setupWithViewPager(vp_search)
+            getTabAt(RANK)?.setIcon(R.drawable.ic_cooking)
+            getTabAt(BOOKMARK)?.setIcon(R.drawable.ic_favorite2)
+        }
     }
 
 
-    override fun showInit() {
-
-        val fragmentMap: Map<String, Fragment> = mapOf(
-            resources.getStringArray(R.array.tab_search)[0] to SearchRankFragment(),
-            resources.getStringArray(R.array.tab_search)[1] to SearchBookmarksFragment()
-        )
-
-        val adapter = ViewPagerAdapter(this.requireFragmentManager(), fragmentMap)
-        vp_search.adapter = adapter
-        tl_search.setupWithViewPager(vp_search)
-        tl_search.getTabAt(0)?.setIcon(R.drawable.ic_cooking)
-        tl_search.getTabAt(1)?.setIcon(R.drawable.ic_like)
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_search_look -> {
+                startSearchLook()
+            }
+        }
     }
 
-    override fun showSearch() {
-        val intent = Intent(this.context, SearchLookForActivity()::class.java)
-        startActivity(intent)
+
+    private fun startSearchLook() {
+        val searchLookForActivity =
+            Intent(this.context, SearchLookForActivity::class.java)
+        startActivityForResult(searchLookForActivity, RENEW_BOOKMARK_AND_RANK)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+
+            RENEW_BOOKMARK_AND_RANK -> {
+
+                if (resultCode == Activity.RESULT_OK) {
+
+                    val getBoolean =
+                        data?.getBooleanExtra(SearchLookForActivity.RENEW, false)
+
+                    getBoolean?.let {
+                        requireFragmentManager().fragments.forEach {
+
+                            when (it) {
+                                is SearchRankFragment -> {
+                                    it.renewRank()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
     companion object {
         private const val TAG = "SearchFragment"
+
+        private const val RANK = 0
+        private const val BOOKMARK = 1
+
+        private const val RENEW_BOOKMARK_AND_RANK = 1
 
     }
 }

@@ -18,5 +18,4 @@ interface AddressDao {
     @Query("SELECT * FROM address")
     fun getAll(): List<AddressEntity>
 
-
 }

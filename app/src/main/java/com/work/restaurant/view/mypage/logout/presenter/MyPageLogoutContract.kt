@@ -8,6 +8,7 @@ interface MyPageLogoutContract {
 
         fun showLogoutNo()
 
+        fun showProgressState(state: Boolean)
     }
 
     interface Presenter {
