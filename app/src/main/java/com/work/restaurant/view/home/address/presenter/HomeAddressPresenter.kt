@@ -11,14 +11,14 @@ class HomeAddressPresenter(
 
     override fun getRoadItem(address: TextView, clickData: String, area: String, zone: String) {
 
-        roadRepository.getLocalData(zone, area, clickData, object : RoadRepositoryCallback {
-            override fun onSuccess(list: List<String>) {
-                homeAddressView.showRoadItem(address, list)
-            }
-
-            override fun onFailure(message: String) {
-
-            }
-        })
+        roadRepository.getLocalData(
+            zone,
+            area,
+            clickData,
+            callback = { list ->
+                if (list != null) {
+                    homeAddressView.showRoadItem(address, list)
+                }
+            })
     }
 }

@@ -1,7 +1,23 @@
 package com.work.restaurant.di
 
+import com.work.restaurant.view.calendar.presenter.CalendarContract
+import com.work.restaurant.view.calendar.presenter.CalendarPresenter
+import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
+import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
+import com.work.restaurant.view.diary.add_exercise.presenter.AddExerciseContract
+import com.work.restaurant.view.diary.add_exercise.presenter.AddExercisePresenter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.main.presenter.DiaryPresenter
+import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatContract
+import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatPresenter
+import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
+import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
+import com.work.restaurant.view.home.address.presenter.HomeAddressContract
+import com.work.restaurant.view.home.address.presenter.HomeAddressPresenter
+import com.work.restaurant.view.home.daum_maps.presenter.MapContract
+import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
+import com.work.restaurant.view.home.main.presenter.HomeContract
+import com.work.restaurant.view.home.main.presenter.HomePresenter
 import com.work.restaurant.view.loading.LoadingContract
 import com.work.restaurant.view.loading.LoadingPresenter
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
@@ -27,13 +43,6 @@ import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
 import org.koin.dsl.module
 
 val presenterModule = module {
-    factory<DiaryContract.Presenter> { (view: DiaryContract.View) ->
-        DiaryPresenter(
-            view,
-            get(),
-            get()
-        )
-    }
     factory<SearchRankContract.Presenter> { (view: SearchRankContract.View) ->
         SearchRankPresenter(
             view,
@@ -116,4 +125,68 @@ val presenterModule = module {
             get()
         )
     }
+
+    factory<CalendarContract.Presenter> { (view: CalendarContract.View) ->
+        CalendarPresenter(
+            view,
+            get(),
+            get()
+        )
+    }
+
+    factory<HomeContract.Presenter> { (view: HomeContract.View) ->
+        HomePresenter(
+            view,
+            get()
+        )
+    }
+
+    factory<HomeAddressContract.Presenter> { (view: HomeAddressContract.View) ->
+        HomeAddressPresenter(
+            view,
+            get()
+        )
+    }
+
+    factory<MapContract.Presenter> { (view: MapContract.View) ->
+        MapPresenter(
+            view,
+            get(),
+            get()
+        )
+    }
+
+    factory<DiaryContract.Presenter> { (view: DiaryContract.View) ->
+        DiaryPresenter(
+            view,
+            get(),
+            get()
+        )
+    }
+    factory<AddExerciseContract.Presenter> { (view: AddExerciseContract.View) ->
+        AddExercisePresenter(
+            view,
+            get()
+        )
+    }
+
+    factory<AddEatContract.Presenter> { (view: AddEatContract.View) ->
+        AddEatPresenter(
+            view,
+            get()
+        )
+    }
+    factory<UpdateOrDeleteEatContract.Presenter> { (view: UpdateOrDeleteEatContract.View) ->
+        UpdateOrDeleteEatPresenter(
+            view,
+            get()
+        )
+    }
+    factory<UpdateOrDeleteExerciseContract.Presenter> { (view: UpdateOrDeleteExerciseContract.View) ->
+        UpdateOrDeleteExercisePresenter(
+            view,
+            get()
+        )
+    }
+
 }

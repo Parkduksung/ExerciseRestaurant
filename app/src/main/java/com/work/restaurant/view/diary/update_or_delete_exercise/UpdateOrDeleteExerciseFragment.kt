@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.TimePicker
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.data.model.ExerciseSet
@@ -25,13 +24,15 @@ import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
 import kotlinx.android.synthetic.main.diary_update_or_delete_exercise.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_or_delete_exercise),
     View.OnClickListener, UpdateOrDeleteExerciseContract.View {
 
     private lateinit var viewList: ArrayList<View>
 
-    private lateinit var presenter: UpdateOrDeleteExercisePresenter
+    private lateinit var presenter: UpdateOrDeleteExerciseContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +42,7 @@ class UpdateOrDeleteExerciseFragment : BaseDialogFragment(R.layout.diary_update_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            UpdateOrDeleteExercisePresenter(
-                this,
-                Injection.provideExerciseRepository()
-            )
+        presenter = get { parametersOf(this) }
         startView()
 
         iv_renew_add_exercise.setOnClickListener(this)

@@ -17,21 +17,16 @@ import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDel
 import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatPresenter
 import kotlinx.android.synthetic.main.diary_update_or_delete_eat.*
 import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 class UpdateOrDeleteEatFragment : BaseDialogFragment(R.layout.diary_update_or_delete_eat),
     View.OnClickListener, UpdateOrDeleteEatContract.View {
 
-    private lateinit var presenter: UpdateOrDeleteEatPresenter
+    private lateinit var presenter: UpdateOrDeleteEatContract.Presenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        presenter =
-            UpdateOrDeleteEatPresenter(
-                this,
-                get()
-            )
+        presenter = get { parametersOf(this) }
 
         startView()
 

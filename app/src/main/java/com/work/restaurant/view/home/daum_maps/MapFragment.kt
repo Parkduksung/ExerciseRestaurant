@@ -10,7 +10,6 @@ import android.view.View
 import androidx.core.view.contains
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
@@ -29,6 +28,8 @@ import kotlinx.android.synthetic.main.map.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 import java.util.*
 import kotlin.math.pow
 
@@ -48,7 +49,7 @@ class MapFragment : BaseFragment(R.layout.map),
 
     private lateinit var oldCenterPoint: MapPoint
 
-    private lateinit var presenter: MapPresenter
+    private lateinit var presenter: MapContract.Presenter
 
     private lateinit var mapInterface: MapInterface.CurrentLocationClickListener
 
@@ -94,12 +95,7 @@ class MapFragment : BaseFragment(R.layout.map),
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
 
-        presenter =
-            MapPresenter(
-                this,
-                Injection.provideKakaoRepository(),
-                Injection.provideBookmarkRepository()
-            )
+        presenter = get { parametersOf(this) }
     }
 
     private fun loadMap() {

@@ -9,20 +9,16 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
-import com.work.restaurant.data.repository.road.RoadRepositoryImpl
-import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
-import com.work.restaurant.network.room.database.AddressDatabase
-import com.work.restaurant.util.App
-import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
-import com.work.restaurant.view.home.address.presenter.HomeAddressPresenter
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import kotlinx.android.synthetic.main.address_main.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class HomeAddressActivity : BaseActivity(R.layout.address_main),
@@ -91,17 +87,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter =
-            HomeAddressPresenter(
-                this, RoadRepositoryImpl.getInstance(
-                    RoadLocalDataSourceImpl.getInstance(
-                        AddressDatabase.getInstance(
-                            App.instance.context()
-                        ),
-                        AppExecutors()
-                    )
-                )
-            )
+        presenter = get { parametersOf(this) }
         addressAdapter = AddressAdapter()
         addressAdapter.setItemClickListener(this)
         ib_home_address_back.setOnClickListener(this)

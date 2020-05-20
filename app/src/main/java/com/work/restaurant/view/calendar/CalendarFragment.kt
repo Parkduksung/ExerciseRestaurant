@@ -8,13 +8,11 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
 import com.work.restaurant.ext.showToast
-import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
@@ -24,10 +22,10 @@ import com.work.restaurant.view.calendar.decorator.ExerciseDecorator
 import com.work.restaurant.view.calendar.decorator.SaturdayDecorator
 import com.work.restaurant.view.calendar.decorator.SundayDecorator
 import com.work.restaurant.view.calendar.presenter.CalendarContract
-import com.work.restaurant.view.calendar.presenter.CalendarPresenter
 import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
 import kotlinx.android.synthetic.main.calendar_main.*
 import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
@@ -38,7 +36,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private lateinit var toHashSetCalendarDayEat: HashSet<CalendarDay>
     private lateinit var toHashSetCalendarDayExercise: HashSet<CalendarDay>
 
-    private lateinit var presenter: CalendarPresenter
+    private lateinit var presenter: CalendarContract.Presenter
     private val diaryDetailsAdapter: DiaryDetailsAdapter by lazy { DiaryDetailsAdapter() }
 
     private val eat = mutableSetOf<DiaryModel>()
@@ -48,12 +46,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         super.onViewCreated(view, savedInstanceState)
 
 
-        presenter =
-            CalendarPresenter(
-                this,
-                get(),
-                Injection.provideExerciseRepository()
-            )
+        presenter = get { parametersOf(this) }
 
         rv_calendar.run {
             this.adapter = diaryDetailsAdapter

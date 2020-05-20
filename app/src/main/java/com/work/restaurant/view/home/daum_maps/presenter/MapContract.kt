@@ -43,5 +43,6 @@ interface MapContract {
             itemCount: Int
         )
 
+        fun resetData()
     }
 }

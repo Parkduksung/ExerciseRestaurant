@@ -14,17 +14,13 @@ class HomePresenter(
 
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
-            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     homeView.showBookmarkResult(DELETE_BOOKMARK)
-                }
-
-                override fun onFailure() {
+                } else {
                     homeView.showBookmarkResult(FAIL_DELETE)
                 }
             })
-
-
     }
 
     override fun addBookmark(bookmarkModel: BookmarkModel) {
@@ -34,12 +30,10 @@ class HomePresenter(
 
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
-            object : BookmarkRepositoryCallback.AddBookmarkCallback {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     homeView.showBookmarkResult(ADD_BOOKMARK)
-                }
-
-                override fun onFailure() {
+                } else {
                     homeView.showBookmarkResult(FAIL_ADD)
                 }
             })

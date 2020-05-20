@@ -13,23 +13,19 @@ import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
-import com.work.restaurant.view.diary.add_eat.presenter.AddEatPresenter
 import kotlinx.android.synthetic.main.diary_add_eat.*
 import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class AddEatFragment : BaseDialogFragment(R.layout.diary_add_eat),
     View.OnClickListener, AddEatContract.View {
 
-    private lateinit var presenter: AddEatPresenter
+    private lateinit var presenter: AddEatContract.Presenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter =
-            AddEatPresenter(
-                this,
-                get()
-            )
+        presenter = get { parametersOf(this) }
         startView()
 
         tv_add_eat_time.setOnClickListener(this)

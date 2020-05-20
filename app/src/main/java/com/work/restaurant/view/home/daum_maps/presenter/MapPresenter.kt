@@ -4,9 +4,6 @@ import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.kakao.KakaoRepository
 import com.work.restaurant.network.api.KakaoApi
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
-import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
-import com.work.restaurant.network.room.entity.BookmarkEntity
 import com.work.restaurant.util.RelateLogin
 
 class MapPresenter(
@@ -41,37 +38,36 @@ class MapPresenter(
         if (!toggleLastPageCheck) {
             if (itemCount >= (page * 15)) {
                 ++page
-                kakaoRepository.getKakaoResult(
+                kakaoRepository.getData(
                     currentX,
                     currentY,
                     page,
                     sort,
                     radius,
-                    object : KakaoRepositoryCallback {
-                        override fun onSuccess(
-                            kakaoList: KakaoSearchResponse
-                        ) {
 
-                            if (kakaoList.documents.isEmpty()) {
+                    callback = { list ->
+
+                        if (list != null) {
+                            if (list.documents.isEmpty()) {
                                 val toKakaoSearchModelList =
-                                    kakaoList.documents.map { it.toKakaoModel() }
+                                    list.documents.map { it.toKakaoModel() }
                                 mapView.showSearchData(toKakaoSearchModelList, NO_NEW_RESULT)
                             } else {
                                 if (RelateLogin.loginState()) {
 
-                                    if (!kakaoList.kakaoSearchMeta.isEnd) {
+                                    if (!list.kakaoSearchMeta.isEnd) {
 
                                         val toKakaoSearchModelList =
-                                            kakaoList.documents.map { it.toKakaoModel() }
+                                            list.documents.map { it.toKakaoModel() }
 
                                         mapView.showSearchData(toKakaoSearchModelList, FINAL_RESULT)
 
                                     } else {
                                         val toKakaoSearchModelList =
-                                            kakaoList.documents.map { it.toKakaoModel() }
+                                            list.documents.map { it.toKakaoModel() }
 
                                         toggleLastPageCheck =
-                                            kakaoList.kakaoSearchMeta.isEnd
+                                            list.kakaoSearchMeta.isEnd
 
                                         mapView.showSearchData(
                                             toKakaoSearchModelList,
@@ -82,19 +78,19 @@ class MapPresenter(
                                     }
 
                                 } else {
-                                    if (!kakaoList.kakaoSearchMeta.isEnd) {
+                                    if (!list.kakaoSearchMeta.isEnd) {
 
                                         val toKakaoSearchModelList =
-                                            kakaoList.documents.map { it.toKakaoModel() }
+                                            list.documents.map { it.toKakaoModel() }
 
                                         mapView.showSearchData(toKakaoSearchModelList, FINAL_RESULT)
 
                                     } else {
                                         val toKakaoSearchModelList =
-                                            kakaoList.documents.map { it.toKakaoModel() }
+                                            list.documents.map { it.toKakaoModel() }
 
                                         toggleLastPageCheck =
-                                            kakaoList.kakaoSearchMeta.isEnd
+                                            list.kakaoSearchMeta.isEnd
 
                                         mapView.showSearchData(
                                             toKakaoSearchModelList,
@@ -105,9 +101,7 @@ class MapPresenter(
                                     }
                                 }
                             }
-                        }
-
-                        override fun onFailure(message: String) {
+                        } else {
                             mapView.showSearchData(emptyList(), NO_NEW_RESULT)
                         }
                     })
@@ -119,9 +113,12 @@ class MapPresenter(
 
 
     override fun getMarkerData(x: Double, y: Double, markerName: String) {
-        kakaoRepository.getKakaoItemInfo(x, y, markerName,
-            object : KakaoRepositoryCallback.KakaoItemInfoCallback {
-                override fun onSuccess(item: List<KakaoSearchDocuments>) {
+        kakaoRepository.getKakaoItemInfo(
+            x,
+            y,
+            markerName,
+            callback = { item ->
+                if (item != null) {
                     val toKakaoSearchModel =
                         item.map { it.toKakaoModel() }
 
@@ -137,23 +134,20 @@ class MapPresenter(
                         }
                     }
                 }
-
-                override fun onFailure(message: String) {
-                }
             })
     }
 
     override fun getKakaoData(currentX: Double, currentY: Double) {
-        kakaoRepository.getKakaoResult(
+        kakaoRepository.getData(
             currentX,
             currentY,
             PAGE_NUM,
             SORT_ACCURACY,
             KakaoApi.RADIUS,
-            object : KakaoRepositoryCallback {
-                override fun onSuccess(kakaoList: KakaoSearchResponse) {
+            callback = { list ->
+                if (list != null) {
                     val toKakaoModelList =
-                        kakaoList.documents.map { it.toKakaoModel() }
+                        list.documents.map { it.toKakaoModel() }
 
                     val toDistanceArrayList =
                         toKakaoModelList.sortedBy { it.distance.toInt() }
@@ -162,24 +156,19 @@ class MapPresenter(
                         toDistanceArrayList
                     )
                 }
-
-                override fun onFailure(message: String) {
-                }
-            }
-        )
+            })
     }
 
     private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
         bookmarkRepository.getAllList(
             RelateLogin.getLoginId(),
-            object : BookmarkRepositoryCallback.GetAllList {
-                override fun onSuccess(list: List<BookmarkEntity>) {
-
+            callback = { getList ->
+                if (getList != null) {
                     val convertFromKakaoListToBookmarkModel =
                         searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
 
                     val convertFromBookmarkEntityToBookmarkModel =
-                        list.map { it.toBookmarkModel() }
+                        getList.map { it.toBookmarkModel() }
 
                     val displayBookmarkKakaoList =
                         convertFromKakaoListToBookmarkModel.map { bookmarkModel ->
@@ -192,18 +181,12 @@ class MapPresenter(
                         }
 
                     mapView.showMarkerData(displayBookmarkKakaoList)
-
-                }
-
-                override fun onFailure() {
-
                 }
             })
-
     }
 
 
-    fun resetData() {
+    override fun resetData() {
         page = 0
         toggleLastPageCheck = false
     }

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.work.restaurant.Injection
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.ext.showToast
@@ -23,6 +22,8 @@ import com.work.restaurant.view.home.main.presenter.HomeContract
 import com.work.restaurant.view.home.main.presenter.HomePresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import kotlinx.android.synthetic.main.home_fragment.*
+import org.koin.android.ext.android.get
+import org.koin.core.parameter.parametersOf
 
 
 class HomeFragment : BaseFragment(R.layout.home_fragment),
@@ -30,7 +31,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
     MapInterface.SelectMarkerListener, MapInterface.CurrentLocationClickListener,
     MapInterface.SearchLocationListener {
 
-    private lateinit var presenter: HomePresenter
+    private lateinit var presenter: HomeContract.Presenter
 
     private lateinit var renewBookmarkAndRankListener: RenewBookmarkAndRankListener
 
@@ -44,8 +45,7 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter =
-            HomePresenter(this, Injection.provideBookmarkRepository())
+        presenter = get { parametersOf(this) }
 
         ll_marker_details.setOnClickListener(this)
         ib_marker_url.setOnClickListener(this)
