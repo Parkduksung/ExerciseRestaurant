@@ -3,21 +3,18 @@ package com.work.restaurant.data.source.local.bookmark
 import com.work.restaurant.network.room.entity.BookmarkEntity
 
 interface BookmarkLocalDataSource {
-
-
     fun getAllList(
         userId: String,
-        callback: BookmarkLocalDataSourceCallback.GetAllList
+        callback: (getList: List<BookmarkEntity>) -> Unit
     )
 
     fun addBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkLocalDataSourceCallback.AddBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun deleteBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkLocalDataSourceCallback.DeleteBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
-
 }

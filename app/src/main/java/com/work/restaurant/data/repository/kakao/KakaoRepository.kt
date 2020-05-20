@@ -1,39 +1,42 @@
 package com.work.restaurant.data.repository.kakao
 
+import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
+
 interface KakaoRepository {
-    fun getKakaoResult(
+    fun getData(
         currentX: Double,
         currentY: Double,
         page: Int,
         sort: String,
         radius: Int,
-        callback: KakaoRepositoryCallback
+        callback: (list: KakaoSearchResponse?) -> Unit
     )
 
     fun getKakaoItemInfo(
-        x: Double,
-        y: Double,
+        x: Double, y: Double,
         placeName: String,
-        callback: KakaoRepositoryCallback.KakaoItemInfoCallback
+        callback: (item: List<KakaoSearchDocuments>?) -> Unit
     )
 
     fun getKakaoAddressLocation(
         addressName: String,
-        callback: KakaoRepositoryCallback.KakaoAddressCallback
+        callback: (item: List<KakaoAddressDocument>?) -> Unit
+
     )
 
     fun getKakaoLocationToAddress(
         currentX: Double,
         currentY: Double,
-        callback: KakaoRepositoryCallback.KakaoLocationToAddress
+        callback: (item: List<KakaoLocationToAddressDocument>?) -> Unit
     )
 
 
     fun getSearchKakaoList(
         searchName: String,
         page: Int,
-        callback: KakaoRepositoryCallback
+        callback: (list: KakaoSearchResponse?) -> Unit
     )
-
-
 }

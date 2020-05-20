@@ -3,11 +3,8 @@ package com.work.restaurant.view.search.lookfor.presenter
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.model.KakaoSearchModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
-import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.data.repository.kakao.KakaoRepository
-import com.work.restaurant.data.repository.kakao.KakaoRepositoryCallback
 import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
-import com.work.restaurant.network.room.entity.BookmarkEntity
 import com.work.restaurant.util.RelateLogin
 
 class SearchLookForPresenter(
@@ -31,12 +28,10 @@ class SearchLookForPresenter(
 
         bookmarkRepository.addBookmark(
             toBookmarkEntity,
-            object : BookmarkRepositoryCallback.AddBookmarkCallback {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     searchLookForView.showBookmarkResult(ADD_BOOKMARK, selectPosition)
-                }
-
-                override fun onFailure() {
+                } else {
                     searchLookForView.showBookmarkResult(FAIL_ADD, NOT_SELECT)
                 }
             })
@@ -44,20 +39,19 @@ class SearchLookForPresenter(
 
     override fun deleteBookmark(bookmarkModel: BookmarkModel, selectPosition: Int) {
 
-        val toBookmarkEntity = bookmarkModel.toBookmarkEntity()
+        val toBookmarkEntity =
+            bookmarkModel.toBookmarkEntity()
 
         bookmarkRepository.deleteBookmark(
             toBookmarkEntity,
-            object : BookmarkRepositoryCallback.DeleteBookmarkCallback {
-                override fun onSuccess() {
+            callback = { isSuccess ->
+                if (isSuccess) {
                     searchLookForView.showBookmarkResult(DELETE_BOOKMARK, selectPosition)
-                }
-
-                override fun onFailure() {
+                } else {
                     searchLookForView.showBookmarkResult(FAIL_DELETE, NOT_SELECT)
                 }
-
             })
+
     }
 
     override fun searchLook(searchItem: String) {
@@ -122,33 +116,23 @@ class SearchLookForPresenter(
     private fun displayAlreadyBookmark(searchKakaoList: List<KakaoSearchModel>) {
         bookmarkRepository.getAllList(
             RelateLogin.getLoginId(),
-            object : BookmarkRepositoryCallback.GetAllList {
-                override fun onSuccess(list: List<BookmarkEntity>) {
+            callback = { getList ->
+                val convertFromKakaoListToBookmarkModel =
+                    searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
 
-                    val convertFromKakaoListToBookmarkModel =
-                        searchKakaoList.map { it.toBookmarkModel(RelateLogin.getLoginId()) }
+                val convertFromBookmarkEntityToBookmarkModel =
+                    getList.map { it.toBookmarkModel() }
 
-                    val convertFromBookmarkEntityToBookmarkModel =
-                        list.map { it.toBookmarkModel() }
-
-                    val displayBookmarkKakaoList =
-                        convertFromKakaoListToBookmarkModel.map {
-                            if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
-                                it.toDisplayBookmarkKakaoList(true)
-                            } else {
-                                it.toDisplayBookmarkKakaoList(false)
-                            }
+                val displayBookmarkKakaoList =
+                    convertFromKakaoListToBookmarkModel.map {
+                        if (convertFromBookmarkEntityToBookmarkModel.contains(it)) {
+                            it.toDisplayBookmarkKakaoList(true)
+                        } else {
+                            it.toDisplayBookmarkKakaoList(false)
                         }
-
-                    searchLookForView.showSearchLook(displayBookmarkKakaoList)
-
-                }
-
-                override fun onFailure() {
-                    searchLookForView.showSearchNoFind()
-                }
+                    }
+                searchLookForView.showSearchLook(displayBookmarkKakaoList)
             })
-
     }
 
     companion object {

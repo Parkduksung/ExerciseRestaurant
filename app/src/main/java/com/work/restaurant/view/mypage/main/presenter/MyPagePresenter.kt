@@ -1,7 +1,6 @@
 package com.work.restaurant.view.mypage.main.presenter
 
 import com.work.restaurant.data.repository.login.LoginRepository
-import com.work.restaurant.data.repository.login.LoginRepositoryCallback
 import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.data.repository.user.UserRepositoryCallback
 import com.work.restaurant.network.room.entity.LoginEntity

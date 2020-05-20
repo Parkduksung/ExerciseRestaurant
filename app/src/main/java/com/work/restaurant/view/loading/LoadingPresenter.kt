@@ -1,9 +1,6 @@
 package com.work.restaurant.view.loading
 
 import com.work.restaurant.data.repository.login.LoginRepository
-import com.work.restaurant.data.repository.login.LoginRepositoryCallback
-import com.work.restaurant.data.repository.road.Callback
-import com.work.restaurant.data.repository.road.RoadRepositoryDataCountCallback
 import com.work.restaurant.data.repository.road.RoadRepositoryImpl
 import com.work.restaurant.data.source.local.road.RoadLocalDataSourceImpl
 import com.work.restaurant.network.room.database.AddressDatabase

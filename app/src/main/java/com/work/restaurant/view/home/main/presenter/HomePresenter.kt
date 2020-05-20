@@ -2,7 +2,6 @@ package com.work.restaurant.view.home.main.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
-import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 
 class HomePresenter(
     private val homeView: HomeContract.View,

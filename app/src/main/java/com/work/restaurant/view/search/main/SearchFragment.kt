@@ -16,9 +16,6 @@ import kotlinx.android.synthetic.main.search_fragment.*
 class SearchFragment : BaseFragment(R.layout.search_fragment),
     View.OnClickListener {
 
-
-    private val searchTabList = resources.getStringArray(R.array.tab_search).toList()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -31,20 +28,19 @@ class SearchFragment : BaseFragment(R.layout.search_fragment),
 
         vp_search.adapter = object : ViewPagerAdapter(
             requireFragmentManager(),
-            searchTabList
+            resources.getStringArray(R.array.tab_search).toList()
         ) {
             override fun getItem(position: Int): Fragment =
-                when (searchTabList[position]) {
-                    "운동맛집" -> {
+                when (position) {
+                    0 -> {
                         SearchRankFragment()
                     }
-                    "관심맛집" -> {
+                    1 -> {
                         SearchBookmarksFragment()
                     }
                     else -> throw RuntimeException()
                 }
         }
-
 
         tl_search.run {
             setupWithViewPager(vp_search)

@@ -1,5 +1,10 @@
 package com.work.restaurant.data.source.remote.kakao
 
+import com.work.restaurant.network.model.kakaoAddress.KakaoAddressDocument
+import com.work.restaurant.network.model.kakaoLocationToAddress.KakaoLocationToAddressDocument
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchDocuments
+import com.work.restaurant.network.model.kakaoSearch.KakaoSearchResponse
+
 interface KakaoRemoteDataSource {
 
     fun getData(
@@ -8,32 +13,32 @@ interface KakaoRemoteDataSource {
         page: Int,
         sort: String,
         radius: Int,
-        callback: KakaoRemoteDataSourceCallback
+        callback: (list: KakaoSearchResponse?) -> Unit
     )
 
     fun getKakaoItemInfo(
         x: Double, y: Double,
         placeName: String,
-        callback: KakaoRemoteDataSourceCallback.KakaoItemInfoCallback
+        callback: (item: List<KakaoSearchDocuments>?) -> Unit
     )
 
     fun getKakaoAddressLocation(
         addressName: String,
-        callback: KakaoRemoteDataSourceCallback.KakaoAddressCallback
+        callback: (item: List<KakaoAddressDocument>?) -> Unit
 
     )
 
     fun getKakaoLocationToAddress(
         currentX: Double,
         currentY: Double,
-        callback: KakaoRemoteDataSourceCallback.KakaoLocationToAddress
+        callback: (item: List<KakaoLocationToAddressDocument>?) -> Unit
     )
 
 
     fun getSearchKakaoList(
         searchName: String,
         page: Int,
-        callback: KakaoRemoteDataSourceCallback
+        callback: (list: KakaoSearchResponse?) -> Unit
     )
 
 

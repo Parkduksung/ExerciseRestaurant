@@ -27,28 +27,26 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
     RenewBookmarkAndRankListener,
     SearchRankFragment.LoginListener {
 
-    private val mainTabList = resources.getStringArray(R.array.tab_main).toList()
-
     private val viewPagerAdapter by lazy {
         object : ViewPagerAdapter(
             supportFragmentManager,
-            mainTabList
+            resources.getStringArray(R.array.tab_main).toList()
         ) {
             override fun getItem(position: Int): Fragment =
-                when (mainTabList[position]) {
-                    "홈" -> {
+                when (position) {
+                    0 -> {
                         HomeFragment()
                     }
-                    "헬스장검색" -> {
+                    1 -> {
                         SearchFragment()
                     }
-                    "다이어리" -> {
+                    2 -> {
                         DiaryFragment()
                     }
-                    "켈린더" -> {
+                    3 -> {
                         CalendarFragment()
                     }
-                    "마이페이지" -> {
+                    4 -> {
                         MyPageFragment()
                     }
                     else -> throw RuntimeException()

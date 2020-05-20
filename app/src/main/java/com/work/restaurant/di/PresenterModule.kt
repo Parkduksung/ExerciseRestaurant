@@ -1,4 +1,4 @@
-package com.work.restaurant.view
+package com.work.restaurant.di
 
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.main.presenter.DiaryPresenter

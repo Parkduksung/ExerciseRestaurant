@@ -2,7 +2,6 @@ package com.work.restaurant.view.home.address.presenter
 
 import android.widget.TextView
 import com.work.restaurant.data.repository.road.RoadRepository
-import com.work.restaurant.data.repository.road.RoadRepositoryCallback
 
 class HomeAddressPresenter(
     private val homeAddressView: HomeAddressContract.View,

@@ -4,17 +4,17 @@ import com.work.restaurant.network.room.entity.BookmarkEntity
 
 interface BookmarkRepository {
     fun getAllList(
-        userId:String,
-        callback: BookmarkRepositoryCallback.GetAllList
+        userId: String,
+        callback: (getList: List<BookmarkEntity>) -> Unit
     )
 
     fun addBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkRepositoryCallback.AddBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
 
     fun deleteBookmark(
         bookmarkEntity: BookmarkEntity,
-        callback: BookmarkRepositoryCallback.DeleteBookmarkCallback
+        callback: (isSuccess: Boolean) -> Unit
     )
 }

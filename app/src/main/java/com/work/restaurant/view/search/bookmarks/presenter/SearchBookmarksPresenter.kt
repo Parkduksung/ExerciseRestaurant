@@ -2,7 +2,6 @@ package com.work.restaurant.view.search.bookmarks.presenter
 
 import com.work.restaurant.data.model.BookmarkModel
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
-import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryCallback
 import com.work.restaurant.network.room.entity.BookmarkEntity
 
 class SearchBookmarksPresenter(
