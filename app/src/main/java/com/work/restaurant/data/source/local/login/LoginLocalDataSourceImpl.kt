@@ -69,7 +69,7 @@ class LoginLocalDataSourceImpl(
 
             appExecutors.mainThread.execute {
 
-                if (changeState == 1) {
+                if (changeState >= 1) {
                     callback(true)
                 } else {
                     callback(false)

@@ -1,5 +1,6 @@
 package com.work.restaurant.view.mypage.main.presenter
 
+import android.util.Log
 import com.work.restaurant.data.repository.login.LoginRepository
 import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.util.RelateLogin
