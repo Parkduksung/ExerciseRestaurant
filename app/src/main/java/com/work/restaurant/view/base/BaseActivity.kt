@@ -7,7 +7,8 @@ import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 
 
-abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
+abstract class BaseActivity(@LayoutRes val layoutId: Int) :
+    AppCompatActivity() {
 
     var mBackWait: Long = INIT_TIME
 
@@ -43,6 +44,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(layoutId)
 
     }

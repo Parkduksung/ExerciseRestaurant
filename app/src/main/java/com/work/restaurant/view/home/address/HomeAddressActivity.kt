@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.work.restaurant.R
+import com.work.restaurant.databinding.AddressMainBinding
 import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener

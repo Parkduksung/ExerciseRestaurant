@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
+import com.work.restaurant.databinding.ActivityMainBinding
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
@@ -18,7 +19,6 @@ import com.work.restaurant.view.mypage.notification_detail.MyPageNotificationDet
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.SearchRankFragment
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
@@ -54,23 +54,27 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
         }
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startView()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        startView()
     }
 
     private fun startView() {
 
-        vp_main.run {
+        binding.vpMain.run {
             this.adapter = viewPagerAdapter
             offscreenPageLimit = SCREEN_LIMIT_COUNT
             setSwipePagingEnabled(false)
         }
 
-        tl_main.run {
-            setupWithViewPager(vp_main)
+        binding.tlMain.run {
+            setupWithViewPager(binding.vpMain)
             getTabAt(HOME)?.setIcon(R.drawable.ic_home)
             getTabAt(SEARCH)?.setIcon(R.drawable.ic_search)
             getTabAt(DIARY)?.setIcon(R.drawable.write)
@@ -109,7 +113,7 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
 
     override fun loginCallbackListener() {
-        tl_main.run {
+        binding.tlMain.run {
             getTabAt(MY_PAGE)?.select()
         }
     }
@@ -181,6 +185,7 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
 
         var selectAll = ""
     }
+
 
 }
 
