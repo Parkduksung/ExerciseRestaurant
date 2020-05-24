@@ -5,6 +5,7 @@ import com.work.restaurant.network.room.entity.LoginEntity
 interface LoginLocalDataSource {
 
     fun getLoginState(
+        state: Boolean,
         callback: (list: LoginEntity?) -> Unit
     )
 

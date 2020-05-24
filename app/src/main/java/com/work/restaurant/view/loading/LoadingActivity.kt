@@ -74,7 +74,6 @@ class LoadingActivity : BaseActivity<LoadingFragmentBinding>(
     }
 
     override fun showLoginState(result: Boolean, userId: String, userNickname: String) {
-
         App.prefs.apply {
             loginState = result
             loginStateId = userId

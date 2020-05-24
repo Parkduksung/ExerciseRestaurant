@@ -8,10 +8,13 @@ class LoginLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val loginDatabase: LoginDatabase
 ) : LoginLocalDataSource {
-    override fun getLoginState(callback: (list: LoginEntity?) -> Unit) {
+    override fun getLoginState(
+        state: Boolean,
+        callback: (list: LoginEntity?) -> Unit
+    ) {
         appExecutors.diskIO.execute {
             val loginListOfTrue =
-                loginDatabase.loginDao().getLoginState(true)
+                loginDatabase.loginDao().getLoginState(state)
 
             appExecutors.mainThread.execute {
 
@@ -112,7 +115,7 @@ class LoginLocalDataSourceImpl(
 
             appExecutors.mainThread.execute {
 
-                if (findUser < 1) {
+                if (findUser > 1) {
                     callback(true)
                 } else {
                     callback(false)

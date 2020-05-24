@@ -30,6 +30,7 @@ class LoadingPresenter(
 
     override fun getLoginState() {
         loginRepository.getLoginState(
+            state = true,
             callback = { list ->
                 if (list != null) {
                     val getUserId = list.toLoginModel().loginId

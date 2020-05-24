@@ -41,14 +41,12 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         }
     }
 
-    override fun onStart() {
-        presenter.getLoginState()
-        super.onStart()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = get { parametersOf(this) }
+        presenter.getLoginState()
+
         iv_login.setOnClickListener(this)
         btn_logout.setOnClickListener(this)
         tv_withdrawal.setOnClickListener(this)

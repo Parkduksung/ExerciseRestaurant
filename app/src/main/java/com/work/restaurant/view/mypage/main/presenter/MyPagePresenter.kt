@@ -1,6 +1,5 @@
 package com.work.restaurant.view.mypage.main.presenter
 
-import android.util.Log
 import com.work.restaurant.data.repository.login.LoginRepository
 import com.work.restaurant.data.repository.user.UserRepository
 import com.work.restaurant.util.RelateLogin
@@ -27,6 +26,7 @@ class MyPagePresenter(
 
     override fun getLoginState() {
         loginRepository.getLoginState(
+            state = true,
             callback = { list ->
                 if (list != null) {
                     val toLoginModel =
@@ -71,7 +71,6 @@ class MyPagePresenter(
 
 
     private fun autoLogin(userId: String, userPass: String) {
-
         userRepository.login(
             userId,
             userPass,
