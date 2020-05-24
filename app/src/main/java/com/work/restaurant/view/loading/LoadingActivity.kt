@@ -13,19 +13,22 @@ import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.databinding.LoadingFragmentBinding
 import com.work.restaurant.ext.isConnectedToGPS
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.base.BaseActivity
-import kotlinx.android.synthetic.main.loading_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
 
-class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract.View {
+class LoadingActivity : BaseActivity<LoadingFragmentBinding>(
+    LoadingFragmentBinding::inflate,
+    R.layout.loading_fragment
+), LoadingContract.View {
 
 
     private lateinit var presenter: LoadingContract.Presenter
@@ -141,7 +144,7 @@ class LoadingActivity : BaseActivity(R.layout.loading_fragment), LoadingContract
 
 
     override fun showStartText(text: String) {
-        loading_tv.text = text
+        binding.loadingTv.text = text
     }
 
     override fun showDelay() {

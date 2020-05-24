@@ -17,12 +17,12 @@ import com.work.restaurant.view.adapter.AddressAdapter
 import com.work.restaurant.view.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
-import kotlinx.android.synthetic.main.address_main.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 
-class HomeAddressActivity : BaseActivity(R.layout.address_main),
+class HomeAddressActivity :
+    BaseActivity<AddressMainBinding>(AddressMainBinding::inflate, R.layout.address_main),
     HomeAddressContract.View, View.OnClickListener,
     AdapterDataListener,
     HomeAddressSelectAllFragment.AddressAllDataListener {
@@ -42,13 +42,13 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
                 address2 = false
                 address3 = false
 
-                select(tv_address1, resources.getStringArray(R.array.select))
-                unSelect(tv_address2)
-                unSelect(tv_address3)
+                select(binding.tvAddress1, resources.getStringArray(R.array.select))
+                unSelect(binding.tvAddress2)
+                unSelect(binding.tvAddress3)
 
-                tv_address1.text = getString(R.string.address_select1)
-                tv_address2.text = getString(R.string.address_select2)
-                tv_address3.text = getString(R.string.address_select3)
+                binding.tvAddress1.text = getString(R.string.address_select1)
+                binding.tvAddress2.text = getString(R.string.address_select2)
+                binding.tvAddress3.text = getString(R.string.address_select3)
 
             }
 
@@ -56,17 +56,17 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
                 address3 = false
 
-                tv_address2.text = getString(R.string.address_select2)
-                tv_address3.text = getString(R.string.address_select3)
+                binding.tvAddress2.text = getString(R.string.address_select2)
+                binding.tvAddress3.text = getString(R.string.address_select3)
 
                 if (address2) {
                     presenter.getRoadItem(
-                        tv_address2,
+                        binding.tvAddress2,
                         si,
                         si, GUN_GU
                     )
-                    unSelect(tv_address1)
-                    unSelect(tv_address3)
+                    unSelect(binding.tvAddress1)
+                    unSelect(binding.tvAddress3)
                 }
 
             }
@@ -74,12 +74,12 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
             R.id.tv_address3 -> {
                 if (address3) {
                     presenter.getRoadItem(
-                        tv_address2,
+                        binding.tvAddress2,
                         dong,
                         si, GUN_GU
                     )
-                    unSelect(tv_address1)
-                    unSelect(tv_address2)
+                    unSelect(binding.tvAddress1)
+                    unSelect(binding.tvAddress2)
                 }
             }
         }
@@ -91,10 +91,10 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         presenter = get { parametersOf(this) }
         addressAdapter = AddressAdapter()
         addressAdapter.setItemClickListener(this)
-        ib_home_address_back.setOnClickListener(this)
-        tv_address1.setOnClickListener(this)
-        tv_address2.setOnClickListener(this)
-        tv_address3.setOnClickListener(this)
+        binding.ibHomeAddressBack.setOnClickListener(this)
+        binding.tvAddress1.setOnClickListener(this)
+        binding.tvAddress2.setOnClickListener(this)
+        binding.tvAddress3.setOnClickListener(this)
 
         startView()
 
@@ -102,20 +102,20 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
 
     private fun startView() {
 
-        tv_address1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, SELECT_FONT_SIZE)
+        binding.tvAddress1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, SELECT_FONT_SIZE)
         address1 = true
         address2 = false
         address3 = false
 
-        unSelect(tv_address2)
-        unSelect(tv_address3)
+        unSelect(binding.tvAddress2)
+        unSelect(binding.tvAddress3)
 
         val loadingTextArrayList =
             resources.getStringArray(R.array.select)
         val decoration =
             Decoration(DECORATION_LEFT, DECORATION_RIGHT, DECORATION_TOP, DECORATION_BOTTOM)
 
-        rv_address.run {
+        binding.rvAddress.run {
             this.adapter = addressAdapter
             this.addItemDecoration(decoration)
             loadingTextArrayList.forEach {
@@ -147,27 +147,27 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
     private fun getAreaItem(clickData: String) {
         if (address1 && !address2 && !address3) {
             si = clickData
-            tv_address1.text = clickData
+            binding.tvAddress1.text = clickData
             address2 = true
             presenter.getRoadItem(
-                tv_address2, clickData,
+                binding.tvAddress2, clickData,
                 si, GUN_GU
             )
-            unSelect(tv_address1)
-            unSelect(tv_address3)
+            unSelect(binding.tvAddress1)
+            unSelect(binding.tvAddress3)
         } else if (address1 && address2 && !address3) {
             gunGu = clickData
-            tv_address2.text = clickData
+            binding.tvAddress2.text = clickData
             address3 = true
             presenter.getRoadItem(
-                tv_address3, clickData,
+                binding.tvAddress3, clickData,
                 si, DONG
             )
-            unSelect(tv_address1)
-            unSelect(tv_address2)
+            unSelect(binding.tvAddress1)
+            unSelect(binding.tvAddress2)
         } else if (address1 && address2 && address3) {
             dong = clickData
-            tv_address3.text = clickData
+            binding.tvAddress3.text = clickData
 
             supportFragmentManager.beginTransaction()
                 .replace(
@@ -186,7 +186,7 @@ class HomeAddressActivity : BaseActivity(R.layout.address_main),
         loadingTextArrayList.forEach {
             addressAdapter.addData(it)
         }
-        rv_address.adapter?.notifyDataSetChanged()
+        binding.rvAddress.adapter?.notifyDataSetChanged()
 
         address.run {
             this.setTextColor(

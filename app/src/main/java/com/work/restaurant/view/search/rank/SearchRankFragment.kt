@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.rank
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -166,6 +167,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     }
 
+    @SuppressLint("RestrictedApi")
     private fun showSearchFilter(context: Context) {
 
         val menuBuilder = MenuBuilder(context)

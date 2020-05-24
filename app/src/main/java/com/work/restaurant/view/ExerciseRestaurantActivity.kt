@@ -21,7 +21,8 @@ import com.work.restaurant.view.search.main.SearchFragment
 import com.work.restaurant.view.search.rank.SearchRankFragment
 
 
-class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
+class ExerciseRestaurantActivity :
+    BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate, R.layout.activity_main),
     NotificationDataListener,
     DiaryFragment.RenewDataListener,
     RenewBookmarkAndRankListener,
@@ -54,13 +55,9 @@ class ExerciseRestaurantActivity : BaseActivity(R.layout.activity_main),
         }
     }
 
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         startView()
     }
