@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.databinding.HomeFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
@@ -21,12 +22,12 @@ import com.work.restaurant.view.home.daum_maps.MapFragment
 import com.work.restaurant.view.home.main.presenter.HomeContract
 import com.work.restaurant.view.home.main.presenter.HomePresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import kotlinx.android.synthetic.main.home_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 
-class HomeFragment : BaseFragment(R.layout.home_fragment),
+class HomeFragment :
+    BaseFragment<HomeFragmentBinding>(HomeFragmentBinding::bind, R.layout.home_fragment),
     HomeContract.View, View.OnClickListener,
     MapInterface.SelectMarkerListener, MapInterface.CurrentLocationClickListener,
     MapInterface.SearchLocationListener {
@@ -47,11 +48,11 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
         presenter = get { parametersOf(this) }
 
-        ll_marker_details.setOnClickListener(this)
-        ib_marker_url.setOnClickListener(this)
-        ll_marker_refresh.setOnClickListener(this)
-        ib_current_location.setOnClickListener(this)
-        btn_address_search.setOnClickListener(this)
+        binding.llMarkerDetails.setOnClickListener(this)
+        binding.ibMarkerUrl.setOnClickListener(this)
+        binding.llMarkerRefresh.setOnClickListener(this)
+        binding.ibCurrentLocation.setOnClickListener(this)
+        binding.btnAddressSearch.setOnClickListener(this)
 
         startMaps()
 
@@ -196,20 +197,20 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
         when (sort) {
             MapFragment.NO_NEW_RESULT -> {
-                ll_marker_refresh.visibility = View.GONE
+                binding.llMarkerRefresh.visibility = View.GONE
                 showToast(getString(R.string.home_no_result))
             }
 
             MapFragment.REMAIN_RESULT -> {
-                tv_refresh.text =
+                binding.tvRefresh.text =
                     getString(R.string.home_remain_result)
-                tv_refresh.setTextColor(
+                binding.tvRefresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorMiddleBlue
                     )
                 )
-                iv_refresh.setColorFilter(
+                binding.ivRefresh.setColorFilter(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorMiddleBlue
@@ -219,16 +220,16 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
 
             }
             MapFragment.FINAL_RESULT -> {
-                tv_refresh.text =
+                binding.tvRefresh.text =
                     getString(R.string.home_remain_result)
 
-                tv_refresh.setTextColor(
+                binding.tvRefresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorBlue
                     )
                 )
-                iv_refresh.setColorFilter(
+                binding.ivRefresh.setColorFilter(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorBlue
@@ -237,22 +238,22 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
             }
 
             MapFragment.RENEW_SEARCHABLE_STATE -> {
-                tv_refresh.text =
+                binding.tvRefresh.text =
                     getString(R.string.home_this_locate_research)
-                tv_refresh.setTextColor(
+                binding.tvRefresh.setTextColor(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorBlue
                     )
                 )
-                iv_refresh.setColorFilter(
+                binding.ivRefresh.setColorFilter(
                     ContextCompat.getColor(
                         this.requireContext(),
                         R.color.colorBlue
                     )
                 )
 
-                ll_marker_refresh.visibility = View.VISIBLE
+                binding.llMarkerRefresh.visibility = View.VISIBLE
                 toggleClickEffect = true
             }
         }
@@ -260,15 +261,18 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
     }
 
     override fun getMarkerData(data: DisplayBookmarkKakaoModel) {
-        tv_marker_place_address.text = data.displayAddress
-        tv_marker_place_name.text = data.displayName
+
+
+        binding.tvMarkerPlaceAddress.text = data.displayAddress
+        binding.tvMarkerPlaceName.text = data.displayName
         getMarkerUrl = data.displayUrl
 
-        cb_marker_bookmark.isChecked = data.toggleBookmark
-        cb_marker_bookmark.setOnClickListener {
+
+        binding.cbMarkerBookmark.isChecked = data.toggleBookmark
+        binding.cbMarkerBookmark.setOnClickListener {
 
             if (RelateLogin.loginState()) {
-                if (cb_marker_bookmark.isChecked) {
+                if (binding.cbMarkerBookmark.isChecked) {
                     val toBookmarkModel =
                         data.toBookmarkModel(RelateLogin.getLoginId())
 
@@ -281,34 +285,36 @@ class HomeFragment : BaseFragment(R.layout.home_fragment),
                 }
             } else {
                 showToast(getString(R.string.bookmark_state_no_login_message))
-                cb_marker_bookmark.isChecked = false
+                binding.cbMarkerBookmark.isChecked = false
             }
         }
     }
 
+
     override fun clickMap(clickData: Boolean) {
 
         if (clickData) {
-            ll_marker_content.isVisible = true
-            ll_marker_content.startAnimation(
+
+            binding.llMarkerContent.isVisible = true
+            binding.llMarkerContent.startAnimation(
                 AnimationUtils.loadAnimation(
                     this.context,
                     R.anim.slide_up
                 )
             )
         } else {
-            if (ll_marker_content.isVisible) {
-                ll_marker_content.isVisible = false
-                ll_marker_content.startAnimation(
+            if (binding.llMarkerContent.isVisible) {
+                binding.llMarkerContent.isVisible = false
+                binding.llMarkerContent.startAnimation(
                     AnimationUtils.loadAnimation(
                         this.context,
                         R.anim.slide_down
                     )
                 )
             } else {
-                ll_marker_content.isVisible = false
-                tv_marker_place_address.text = EMPTY_TEXT
-                tv_marker_place_name.text = EMPTY_TEXT
+                binding.llMarkerContent.isVisible = false
+                binding.tvMarkerPlaceAddress.text = EMPTY_TEXT
+                binding.tvMarkerPlaceName.text = EMPTY_TEXT
             }
         }
     }

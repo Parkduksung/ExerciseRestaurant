@@ -8,16 +8,19 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageWithdrawalFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
-import kotlinx.android.synthetic.main.mypage_withdrawal_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragment),
+class MyPageWithdrawalFragment : BaseFragment<MypageWithdrawalFragmentBinding>(
+    MypageWithdrawalFragmentBinding::bind,
+    R.layout.mypage_withdrawal_fragment
+),
     View.OnClickListener, MyPageWithdrawalContract.View {
 
     private lateinit var presenter: MyPageWithdrawalContract.Presenter
@@ -44,10 +47,9 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = get { parametersOf(this) }
-        btn_withdraw_cancel.setOnClickListener(this)
-        btn_withdraw_ok.setOnClickListener(this)
 
-
+        binding.btnWithdrawCancel.setOnClickListener(this)
+        binding.btnWithdrawOk.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -60,8 +62,10 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
             R.id.btn_withdraw_ok -> {
                 showProgressState(true)
 
-                val getUserId = arguments?.getString(WITHDRAW_ID).orEmpty()
-                val getUserNickname = arguments?.getString(WITHDRAW_NICKNAME).orEmpty()
+                val getUserId =
+                    arguments?.getString(WITHDRAW_ID).orEmpty()
+                val getUserNickname =
+                    arguments?.getString(WITHDRAW_NICKNAME).orEmpty()
 
                 if (getUserId.isNotEmpty() && getUserNickname.isNotEmpty()) {
                     presenter.run {
@@ -79,25 +83,18 @@ class MyPageWithdrawalFragment : BaseFragment(R.layout.mypage_withdrawal_fragmen
 
 
     override fun showProgressState(state: Boolean) {
-        pb_withdrawal?.let {
-            pb_withdrawal.bringToFront()
-            pb_withdrawal.isVisible = state
+        binding.pbWithdrawal.apply {
+            bringToFront()
+            isVisible = state
         }
-
-        btn_withdraw_ok?.let {
-            btn_withdraw_ok.isClickable = !state
-        }
-
-        btn_withdraw_cancel?.let {
-            btn_withdraw_cancel.isClickable = !state
-        }
+        binding.btnWithdrawOk.isClickable = !state
+        binding.btnWithdrawCancel.isClickable = !state
     }
 
 
     private fun withdrawOk(userNickname: String) {
 
         if (toggleWithdraw && toggleWithdrawLogin) {
-
             showProgressState(false)
             toggleWithdraw = false
             toggleWithdrawLogin = false

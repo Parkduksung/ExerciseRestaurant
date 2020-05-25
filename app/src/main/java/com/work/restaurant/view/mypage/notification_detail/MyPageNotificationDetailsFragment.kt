@@ -3,18 +3,21 @@ package com.work.restaurant.view.mypage.notification_detail
 import android.os.Bundle
 import android.view.View
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageNotificationDetailFragmentBinding
 import com.work.restaurant.view.base.BaseFragment
-import kotlinx.android.synthetic.main.mypage_notification_detail_fragment.*
+
 
 class MyPageNotificationDetailsFragment :
-    BaseFragment(R.layout.mypage_notification_detail_fragment),
+    BaseFragment<MypageNotificationDetailFragmentBinding>(
+        MypageNotificationDetailFragmentBinding::bind,
+        R.layout.mypage_notification_detail_fragment
+    ),
     View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ib_notification_detail_back.setOnClickListener(this)
-
+        binding.ibNotificationDetailBack.setOnClickListener(this)
         loadNotificationData()
     }
 
@@ -28,11 +31,15 @@ class MyPageNotificationDetailsFragment :
 
     private fun loadNotificationData() {
 
-        val getNotificationDate = arguments?.getString(DATE).orEmpty()
-        val getNotificationSubject = arguments?.getString(SUBJECT).orEmpty()
-        val getNotificationContent = arguments?.getString(CONTENT).orEmpty()
+        val getNotificationDate =
+            arguments?.getString(DATE).orEmpty()
+        val getNotificationSubject =
+            arguments?.getString(SUBJECT).orEmpty()
+        val getNotificationContent =
+            arguments?.getString(CONTENT).orEmpty()
 
-        val splitContent = getNotificationContent.split(SPLIT_CONTEXT)
+        val splitContent =
+            getNotificationContent.split(SPLIT_CONTEXT)
 
         var toConvertContent = ""
 
@@ -41,9 +48,11 @@ class MyPageNotificationDetailsFragment :
             toConvertContent += "\n"
         }
 
-        tv_notification_detail_date.text = getNotificationDate
-        tv_notification_detail_subject.text = getNotificationSubject
-        tv_notification_detail_content.text = toConvertContent
+        binding.apply {
+            tvNotificationDetailContent.text = toConvertContent
+            tvNotificationDetailDate.text = getNotificationDate
+            tvNotificationDetailSubject.text = getNotificationSubject
+        }
     }
 
     companion object {

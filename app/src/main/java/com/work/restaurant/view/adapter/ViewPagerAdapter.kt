@@ -13,10 +13,8 @@ abstract class ViewPagerAdapter(
 
     abstract override fun getItem(position: Int): Fragment
 
-
     override fun getCount(): Int =
         tabList.size
-
 
     override fun getPageTitle(position: Int): CharSequence =
         tabList[position]

@@ -3,15 +3,18 @@ package com.work.restaurant.view.mypage.find_ok
 import android.os.Bundle
 import android.view.View
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageFindOkFragmentBinding
 import com.work.restaurant.view.base.BaseFragment
-import kotlinx.android.synthetic.main.mypage_find_ok_fragment.*
 
-class MyPageFindOkFragment : BaseFragment(R.layout.mypage_find_ok_fragment), View.OnClickListener {
+class MyPageFindOkFragment : BaseFragment<MypageFindOkFragmentBinding>(
+    MypageFindOkFragmentBinding::bind,
+    R.layout.mypage_find_ok_fragment
+), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_send_change_pass.setOnClickListener(this)
+        binding.btnSendChangePass.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {

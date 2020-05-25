@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.BookmarkModel
+import com.work.restaurant.databinding.SearchBookmarksFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
@@ -18,11 +19,13 @@ import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
-import kotlinx.android.synthetic.main.search_bookmarks_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment),
+class SearchBookmarksFragment : BaseFragment<SearchBookmarksFragmentBinding>(
+    SearchBookmarksFragmentBinding::bind,
+    R.layout.search_bookmarks_fragment
+),
     AdapterDataListener.GetBookmarkData,
     SearchBookmarksContract.View {
 
@@ -44,8 +47,7 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
         super.onViewCreated(view, savedInstanceState)
 
         presenter = get { parametersOf(this) }
-
-        rv_bookmark.run {
+        binding.rvBookmark.run {
             this.adapter = bookMarkAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
@@ -100,20 +102,20 @@ class SearchBookmarksFragment : BaseFragment(R.layout.search_bookmarks_fragment)
 
     override fun showBookmarkPresenceOrAbsence(state: Boolean) {
         if (!state) {
-            tv_bookmark_message.text =
+            binding.tvBookmarkMessage.text =
                 getString(R.string.bookmark_no_item)
         }
-        rv_bookmark.isVisible = state
-        tv_bookmark_message.isInvisible = state
+        binding.rvBookmark.isVisible = state
+        binding.tvBookmarkMessage.isInvisible = state
     }
 
     override fun showLoginState(state: Boolean) {
         if (!state) {
-            tv_bookmark_message.text =
+            binding.tvBookmarkMessage.text =
                 getString(R.string.bookmark_no_login)
         }
-        rv_bookmark.isVisible = state
-        tv_bookmark_message.isInvisible = state
+        binding.rvBookmark.isVisible = state
+        binding.tvBookmarkMessage.isInvisible = state
     }
 
     fun renewBookmark() {

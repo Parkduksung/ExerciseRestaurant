@@ -118,9 +118,7 @@ class ExerciseRestaurantActivity :
     override fun onReceivedData(msg: Boolean) {
         if (msg) {
             supportFragmentManager.fragments.forEach {
-
                 when (it) {
-
                     is CalendarFragment -> {
                         it.renewDot()
                     }
@@ -132,7 +130,6 @@ class ExerciseRestaurantActivity :
 
     override fun renewBookmarkAndRank() {
         supportFragmentManager.fragments.forEach {
-
             when (it) {
                 is SearchBookmarksFragment -> {
                     it.renewBookmark()

@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
@@ -22,11 +23,12 @@ import com.work.restaurant.view.mypage.notification.MyPageNotificationFragment
 import com.work.restaurant.view.mypage.question.MyPageQuestionFragment
 import com.work.restaurant.view.mypage.register.MyPageRegisterFragment
 import com.work.restaurant.view.mypage.withdraw.MyPageWithdrawalFragment
-import kotlinx.android.synthetic.main.mypage_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.View,
+class MyPageFragment :
+    BaseFragment<MypageFragmentBinding>(MypageFragmentBinding::bind, R.layout.mypage_fragment),
+    MyPageContract.View,
     View.OnClickListener {
 
     private lateinit var presenter: MyPageContract.Presenter
@@ -47,15 +49,15 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
         presenter = get { parametersOf(this) }
         presenter.getLoginState()
 
-        iv_login.setOnClickListener(this)
-        btn_logout.setOnClickListener(this)
-        tv_withdrawal.setOnClickListener(this)
-        btn_identity.setOnClickListener(this)
-        btn_notification.setOnClickListener(this)
-        btn_question.setOnClickListener(this)
-        tv_main_register.setOnClickListener(this)
-        tv_main_find.setOnClickListener(this)
-        btn_login.setOnClickListener(this)
+        binding.ivLogin.setOnClickListener(this)
+        binding.btnLogout.setOnClickListener(this)
+        binding.tvWithdrawal.setOnClickListener(this)
+        binding.btnIdentity.setOnClickListener(this)
+        binding.btnNotification.setOnClickListener(this)
+        binding.btnQuestion.setOnClickListener(this)
+        binding.tvMainRegister.setOnClickListener(this)
+        binding.tvMainFind.setOnClickListener(this)
+        binding.btnLogin.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -83,14 +85,18 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
             R.id.btn_login -> {
 
-                presenter.loginCheck(et_email.text.toString(), et_pass.text.toString())
+                presenter.loginCheck(
+                    binding.etEmail.text.toString(),
+                    binding.etPass.text.toString()
+                )
 
             }
 
 
             R.id.btn_logout -> {
+
                 val myPageLogoutFragment =
-                    MyPageLogoutFragment.newInstance(tv_login_id.text.toString())
+                    MyPageLogoutFragment.newInstance(binding.tvLoginId.text.toString())
 
                 myPageLogoutFragment.setTargetFragment(
                     this,
@@ -109,7 +115,7 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             R.id.tv_withdrawal -> {
                 val myPageWithdrawalFragment =
                     MyPageWithdrawalFragment.newInstance(
-                        tv_login_id.text.toString(),
+                        binding.tvLoginId.text.toString(),
                         userNickname
                     )
                 myPageWithdrawalFragment.setTargetFragment(
@@ -175,8 +181,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
             LOGOUT -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    et_email.text.clear()
-                    et_pass.text.clear()
+                    binding.etEmail.text.clear()
+                    binding.etPass.text.clear()
                     showInit()
                 }
             }
@@ -204,29 +210,31 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     override fun showInit() {
         loginState(false)
         userNickname = EMPTY_TEXT
-        tv_login_nickname.text = EMPTY_TEXT
-        tv_login_id.text = EMPTY_TEXT
+        binding.tvLoginNickname.text = EMPTY_TEXT
+        binding.tvLoginId.text = EMPTY_TEXT
         App.prefs.loginStateId = EMPTY_TEXT
         App.prefs.loginState = false
         renewBookmarkAndRankListener.renewBookmarkAndRank()
     }
 
     override fun showProgressState(state: Boolean) {
-        pb_login.bringToFront()
-        pb_login.isVisible = state
-        btn_login.isClickable = !state
-        tv_main_register.isClickable = !state
-        tv_main_find.isClickable = !state
+        binding.pbLogin.apply {
+            bringToFront()
+            isVisible = state
+        }
+        binding.tvMainFind.isClickable = !state
+        binding.tvMainRegister.isClickable = !state
+        binding.btnLogin.isClickable = !state
     }
 
     override fun showLoginOk(email: String, nickname: String) {
         loginState(true)
-        tv_login_nickname.text =
+        binding.tvLoginNickname.text =
             getString(
                 R.string.myPage_login_state_nickname,
                 nickname
             )
-        tv_login_id.text = email
+        binding.tvLoginId.text = email
         userNickname = nickname
         App.prefs.loginState = true
         App.prefs.loginStateId = email
@@ -241,12 +249,12 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
 
     override fun showMaintainLogin(email: String, nickname: String) {
         loginState(true)
-        tv_login_nickname.text =
+        binding.tvLoginNickname.text =
             getString(
                 R.string.myPage_login_state_nickname,
                 nickname
             )
-        tv_login_id.text = email
+        binding.tvLoginId.text = email
         userNickname = nickname
     }
 
@@ -256,8 +264,8 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
             MyPagePresenter.LOGIN_OK -> {
                 showProgressState(true)
                 presenter.login(
-                    et_email.text.toString(),
-                    et_pass.text.toString()
+                    binding.etEmail.text.toString(),
+                    binding.etPass.text.toString()
                 )
             }
 
@@ -284,17 +292,16 @@ class MyPageFragment : BaseFragment(R.layout.mypage_fragment), MyPageContract.Vi
     }
 
     private fun loginState(state: Boolean) {
-        ll_myPage_init?.let {
-            ll_myPage_init.isInvisible = state
-        }
-        ll_myPage_login?.let {
-            ll_myPage_login.isVisible = state
-        }
+
+        binding.llMyPageInit.isInvisible = state
+
+        binding.llMyPageLogin.isVisible = state
+
     }
 
     private fun clearInputText() {
-        et_email.text.clear()
-        et_pass.text.clear()
+        binding.etEmail.text.clear()
+        binding.etPass.text.clear()
     }
 
     override fun onResume() {

@@ -11,38 +11,38 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import com.work.restaurant.R
+import com.work.restaurant.databinding.SearchItemDetailsFragmentBinding
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity.Companion.toggleWebPage
-import kotlinx.android.synthetic.main.search_item_details_fragment.*
 
 
-class SearchItemDetailsFragment : BaseFragment(R.layout.search_item_details_fragment) {
+class SearchItemDetailsFragment : BaseFragment<SearchItemDetailsFragmentBinding>(
+    SearchItemDetailsFragmentBinding::bind,
+    R.layout.search_item_details_fragment
+) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         showDetails()
-
     }
 
 
     private fun showDetails() {
 
-        pb_item_details.bringToFront()
+        binding.pbItemDetails.bringToFront()
 
         showStateProgressBar(true)
 
-        val getData = arguments?.getString(DATA).toString()
+        val getData =
+            arguments?.getString(DATA).toString()
 
-        showUrl(wb_search_item_detail, getData)
+        showUrl(binding.wbSearchItemDetail, getData)
 
     }
 
     private fun showStateProgressBar(state: Boolean) {
-        pb_item_details?.let {
-            pb_item_details.isVisible = state
-        }
+        binding.pbItemDetails.isVisible = state
     }
 
 

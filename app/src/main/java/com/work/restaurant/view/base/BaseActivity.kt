@@ -25,7 +25,7 @@ abstract class BaseActivity<T : ViewBinding>(
         var handled = false
 
         for (fragment in supportFragmentManager.fragments) {
-            if (fragment is BaseFragment) {
+            if (fragment is BaseFragment<*>) {
                 handled = fragment.onBackPressed()
                 if (handled) {
                     supportFragmentManager.popBackStack()
