@@ -239,7 +239,7 @@
     <string name="logout_explain">로그아웃시 즐겨찾기가 저장되지 않아요!</string>
     <string name="logout_cancel">취소</string>
     <string name="logout_ok">로그아웃</string>
-    <string name="logout_no">회원탈퇴를 실패하였습니다.</string>
+    <string name="logout_no">로그아웃을 실패하였습니다.</string>
 
 
     //*find

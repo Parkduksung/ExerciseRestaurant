@@ -13,6 +13,7 @@ import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.data.model.KakaoSearchModel
+import com.work.restaurant.databinding.MapBinding
 import com.work.restaurant.ext.isConnectedToGPS
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
@@ -24,7 +25,6 @@ import com.work.restaurant.view.home.MapInterface
 import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
 import com.work.restaurant.view.home.daum_maps.presenter.MapPresenter
-import kotlinx.android.synthetic.main.map.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -34,7 +34,7 @@ import java.util.*
 import kotlin.math.pow
 
 
-class MapFragment : BaseFragment(R.layout.map),
+class MapFragment : BaseFragment<MapBinding>(MapBinding::bind, R.layout.map),
     MapView.POIItemEventListener, MapView.MapViewEventListener,
     MapContract.View {
 
@@ -104,7 +104,7 @@ class MapFragment : BaseFragment(R.layout.map),
         mapView.setMapViewEventListener(this)
         mapView.setPOIItemEventListener(this)
 
-        map_view.addView(mapView)
+        binding.mapView.addView(mapView)
 
         showCurrentLocation()
 
@@ -117,7 +117,7 @@ class MapFragment : BaseFragment(R.layout.map),
                 if (isConnectedToGPS()) {
                     mapView =
                         MapView(requireContext())
-                    map_view.addView(mapView)
+                    binding.mapView.addView(mapView)
                     showToast(getString(R.string.map_gps_on))
                     return
                 }
@@ -498,10 +498,10 @@ class MapFragment : BaseFragment(R.layout.map),
 
         if (::mapView.isInitialized) {
             if (!isConnectedToGPS()) {
-                map_view.removeView(mapView)
+                binding.mapView.removeView(mapView)
                 showToast(getString(R.string.map_gps_off))
             } else {
-                if (!map_view.contains(mapView)) {
+                if (!binding.mapView.contains(mapView)) {
                     kakaoMarkerList.clear()
                     checkPermission()
                 } else {

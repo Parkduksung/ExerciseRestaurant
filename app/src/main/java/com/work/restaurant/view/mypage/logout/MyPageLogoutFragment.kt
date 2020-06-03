@@ -9,16 +9,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageLogoutFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
-import kotlinx.android.synthetic.main.mypage_fragment.*
-import kotlinx.android.synthetic.main.mypage_logout_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View.OnClickListener,
+class MyPageLogoutFragment : BaseFragment<MypageLogoutFragmentBinding>(
+    MypageLogoutFragmentBinding::bind,
+    R.layout.mypage_logout_fragment
+), View.OnClickListener,
     MyPageLogoutContract.View {
 
 
@@ -47,9 +49,8 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
         super.onViewCreated(view, savedInstanceState)
         presenter = get { parametersOf(this) }
 
-        btn_logout_cancel.setOnClickListener(this)
-        btn_logout_ok.setOnClickListener(this)
-
+        binding.btnLogoutCancel.setOnClickListener(this)
+        binding.btnLogoutOk.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -73,18 +74,12 @@ class MyPageLogoutFragment : BaseFragment(R.layout.mypage_logout_fragment), View
     }
 
     override fun showProgressState(state: Boolean) {
-
-        pb_logout?.let {
-            pb_logout.bringToFront()
-            pb_logout.isVisible = state
+        binding.pbLogout.apply {
+            bringToFront()
+            isVisible = state
         }
-        btn_logout_cancel?.let {
-            btn_logout_cancel.isClickable != state
-        }
-        btn_logout?.let {
-            btn_logout_ok.isClickable != state
-        }
-
+        binding.btnLogoutCancel.isClickable != state
+        binding.btnLogoutOk.isClickable != state
     }
 
     override fun showLogoutOk() {

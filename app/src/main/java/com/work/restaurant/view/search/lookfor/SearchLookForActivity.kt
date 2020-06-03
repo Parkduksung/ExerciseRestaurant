@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.databinding.SearchLookForMainBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.Keyboard
 import com.work.restaurant.util.RelateLogin
@@ -23,12 +24,14 @@ import com.work.restaurant.view.search.lookfor.presenter.SearchLookForContract
 import com.work.restaurant.view.search.lookfor.presenter.SearchLookForPresenter
 import com.work.restaurant.view.search.rank.SearchRankFragment
 import kotlinx.android.synthetic.main.search_item_details_fragment.*
-import kotlinx.android.synthetic.main.search_look_for_main.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 
-class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
+class SearchLookForActivity : BaseActivity<SearchLookForMainBinding>(
+    SearchLookForMainBinding::inflate,
+    R.layout.search_look_for_main
+),
     View.OnClickListener,
     AdapterDataListener,
     AdapterDataListener.GetDisplayBookmarkKakaoModel,
@@ -42,20 +45,20 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
 
         presenter = get { parametersOf(this) }
 
-        rv_look.run {
+        binding.rvLook.run {
             this.adapter = lookForAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
 
         lookForAdapter.setItemClickListener(this)
         lookForAdapter.setBookmarkListener(this)
-        ib_search_look_back.setOnClickListener(this)
+        binding.ibSearchLookBack.setOnClickListener(this)
 
         getRecyclerClickData()
         getBookmarkData()
         getMarkerData()
 
-        searchItem(et_search_look_for_item)
+        searchItem(binding.etSearchLookForItem)
 
     }
 
@@ -115,7 +118,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                     .addToBackStack(null)
                     .commit()
 
-                et_search_look_for_item.text.clear()
+                binding.etSearchLookForItem.text.clear()
             }
         }
 
@@ -138,7 +141,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                     )
                     .addToBackStack(null)
                     .commit()
-                et_search_look_for_item.text.clear()
+                binding.etSearchLookForItem.text.clear()
             }
         }
     }
@@ -160,7 +163,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
                     )
                     .addToBackStack(null)
                     .commit()
-                et_search_look_for_item.text.clear()
+                binding.etSearchLookForItem.text.clear()
             }
         }
 
@@ -259,7 +262,7 @@ class SearchLookForActivity : BaseActivity(R.layout.search_look_for_main),
             .replace(R.id.search_look_sub_container, SearchItemDetailsFragment.newInstance(data))
             .addToBackStack(null)
             .commit()
-        et_search_look_for_item.text.clear()
+        binding.etSearchLookForItem.text.clear()
     }
 
     override fun onDestroy() {

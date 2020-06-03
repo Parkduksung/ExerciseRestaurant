@@ -26,6 +26,7 @@ class MyPagePresenter(
 
     override fun getLoginState() {
         loginRepository.getLoginState(
+            state = true,
             callback = { list ->
                 if (list != null) {
                     val toLoginModel =
@@ -70,7 +71,6 @@ class MyPagePresenter(
 
 
     private fun autoLogin(userId: String, userPass: String) {
-
         userRepository.login(
             userId,
             userPass,

@@ -7,12 +7,20 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.work.restaurant.R
 import com.work.restaurant.util.App
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
 
 
-abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPressedListener {
+abstract class BaseFragment<T : ViewBinding>(
+    private val bind: (View) -> T,
+    @LayoutRes val layoutId: Int
+) : Fragment(layoutId), OnBackPressedListener {
+
+    private var _binding: T? = null
+
+    protected val binding get() = _binding!!
 
     override fun onBackPressed(): Boolean {
 
@@ -31,12 +39,14 @@ abstract class BaseFragment(@LayoutRes val layoutId: Int) : Fragment(), OnBackPr
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(layoutId, container, false)
-        view.setBackgroundColor(ContextCompat.getColor(App.instance.context(), R.color.colorWhite))
-        view.setOnTouchListener { _, _ ->
-            true
+        _binding = bind(super.onCreateView(inflater, container, savedInstanceState)!!)
+
+        return binding.root.apply {
+            setBackgroundColor(ContextCompat.getColor(App.instance.context(), R.color.colorWhite))
+            setOnTouchListener { _, _ ->
+                true
+            }
         }
-        return view
     }
 
 }

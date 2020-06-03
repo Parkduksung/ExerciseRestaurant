@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.work.restaurant.R
+import com.work.restaurant.databinding.MypageRegisterFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Keyboard
@@ -19,7 +20,6 @@ import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterContract
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterPresenter
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment
-import kotlinx.android.synthetic.main.mypage_register_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -30,9 +30,11 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 
-class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
+class MyPageRegisterFragment : BaseFragment<MypageRegisterFragmentBinding>(
+    MypageRegisterFragmentBinding::bind,
+    R.layout.mypage_register_fragment
+),
     View.OnClickListener, MyPageRegisterContract.View {
-
 
     private lateinit var presenter: MyPageRegisterContract.Presenter
 
@@ -41,16 +43,18 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
         presenter = get { parametersOf(this) }
 
-        ib_register_back.setOnClickListener(this)
-        btn_register.setOnClickListener(this)
-        btn_email_verified_show.setOnClickListener(this)
-        btn_email_verified_check.setOnClickListener(this)
+        binding.btnEmailVerifiedShow
 
-        et_register_nickname.requestFocus()
-        inputState(et_register_nickname, iv_nickname_state)
-        inputState(et_register_email, iv_email_state)
-        inputState(et_register_pass, iv_pass_state)
-        inputState(et_register_pass_ok, iv_pass_ok_state)
+        binding.ibRegisterBack.setOnClickListener(this)
+        binding.btnRegister.setOnClickListener(this)
+        binding.btnEmailVerifiedShow.setOnClickListener(this)
+        binding.btnEmailVerifiedCheck.setOnClickListener(this)
+
+        binding.etRegisterNickname.requestFocus()
+        inputState(binding.etRegisterNickname, binding.ivNicknameState)
+        inputState(binding.etRegisterEmail, binding.ivEmailState)
+        inputState(binding.etRegisterPass, binding.ivPassState)
+        inputState(binding.etRegisterPassOk, binding.ivPassOkState)
     }
 
     override fun onClick(v: View?) {
@@ -62,26 +66,26 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                 registerState()
             }
             R.id.btn_email_verified_show -> {
-                presenter.emailDuplicationCheck(et_register_email.text.toString().trim())
+                presenter.emailDuplicationCheck(binding.etRegisterEmail.text.toString().trim())
             }
 
             R.id.btn_email_verified_check -> {
-                verifiedCheck(et_register_email_verified.text.toString())
+                verifiedCheck(binding.etRegisterEmailVerified.text.toString())
             }
         }
     }
 
     override fun showEmailDuplicationCheck(check: Boolean) {
 
-        btn_email_verified_show.isClickable = false
+        binding.btnEmailVerifiedShow.isClickable = false
 
         if (check) {
-            sendAuthCodeToEmail(et_register_email.text.toString().trim())
+            sendAuthCodeToEmail(binding.etRegisterEmail.text.toString().trim())
         } else {
             showProgressState(false)
-            btn_email_verified_show.isVisible = false
+            binding.btnEmailVerifiedShow.isVisible = false
 
-            iv_email_state.apply {
+            binding.ivEmailState.apply {
                 isVisible = false
                 setImageResource(R.drawable.ic_no)
                 tag = R.drawable.ic_no
@@ -91,24 +95,19 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
     }
 
     override fun showProgressState(state: Boolean) {
-        pb_register?.let {
-            pb_register.bringToFront()
-            pb_register.isVisible = state
+        binding.pbRegister.apply {
+            bringToFront()
+            isVisible = state
         }
-        btn_register?.let {
-            btn_register.isClickable = !state
-        }
-        ib_register_back?.let {
-            ib_register_back.isClickable = !state
-        }
+        binding.btnRegister.isClickable = !state
+        binding.ibRegisterBack.isClickable = !state
     }
 
     override fun showRegisterOk() {
         showProgressState(false)
-
         val data = Intent().apply {
-            putExtra(REGISTER_ID, et_register_email.text.toString())
-            putExtra(REGISTER_NICKNAME, et_register_nickname.text.toString())
+            putExtra(REGISTER_ID, binding.etRegisterEmail.text.toString())
+            putExtra(REGISTER_NICKNAME, binding.etRegisterNickname.text.toString())
         }
         targetFragment?.onActivityResult(
             targetRequestCode,
@@ -120,7 +119,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
             .beginTransaction()
             .replace(
                 R.id.myPage_register_container,
-                MyPageRegisterOkFragment()
+                MyPageRegisterOkFragment(),
+                MyPageRegisterOkFragment.TAG
             ).commit()
     }
 
@@ -158,14 +158,11 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
     }
 
     private fun verifiedCheck(checkNum: String) {
-
-        btn_email_verified_show.isVisible = false
+        binding.btnEmailVerifiedShow.isVisible = false
 
         if (checkNum.isEmpty()) {
-
             showToast(getString(R.string.register_not_input_checkNum))
-
-            iv_email_state.apply {
+            binding.ivEmailState.apply {
                 isVisible = true
                 setImageResource(R.drawable.ic_no)
                 tag = R.drawable.ic_no
@@ -174,38 +171,34 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
         } else {
             if (checkNum.contains(EMPTY_TEXT)) {
                 showToast(getString(R.string.common_have_trim))
-
-                iv_email_state.apply {
+                binding.ivEmailState.apply {
                     isVisible = true
                     setImageResource(R.drawable.ic_no)
                     tag = R.drawable.ic_no
                 }
-
             } else {
 
                 if (checkNum.toInt() == randomVerifyNum) {
                     showToast(getString(R.string.register_checkNum_ok))
-
-                    iv_email_state.apply {
+                    binding.ivEmailState.apply {
                         isVisible = true
                         setImageResource(R.drawable.ic_ok)
                         tag = R.drawable.ic_ok
                     }
-
-                    ll_register_email_verified.isVisible = false
+                    binding.llRegisterEmailVerified.isVisible = false
 
                     showProgressState(false)
                     randomVerifyNum = 0
                     toggleVerifiedEmail = true
                     toggleDuplicationEmail = true
 
-                    et_register_email_verified.text.clear()
+                    binding.etRegisterEmailVerified.text.clear()
 
-                    Keyboard.hideEditText(context, et_register_email_verified)
+                    Keyboard.hideEditText(context, binding.etRegisterEmailVerified)
 
                 } else {
                     showToast(getString(R.string.register_not_same_checkNum))
-                    iv_email_state.apply {
+                    binding.ivEmailState.apply {
                         isVisible = true
                         setImageResource(R.drawable.ic_no)
                         tag = R.drawable.ic_no
@@ -217,45 +210,45 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
     }
 
     private fun registerState() {
-        if (iv_nickname_state.tag == R.drawable.ic_ok &&
-            iv_email_state.tag == R.drawable.ic_ok &&
-            iv_pass_state.tag == R.drawable.ic_ok &&
-            iv_pass_ok_state.tag == R.drawable.ic_ok &&
+        if (binding.ivNicknameState.tag == R.drawable.ic_ok &&
+            binding.ivEmailState.tag == R.drawable.ic_ok &&
+            binding.ivPassState.tag == R.drawable.ic_ok &&
+            binding.ivPassOkState.tag == R.drawable.ic_ok &&
             toggleVerifiedEmail
         ) {
 
             toggleVerifiedEmail = false
 
             presenter.register(
-                et_register_nickname.text.toString().trim(),
-                et_register_email.text.toString().trim(),
-                et_register_pass.text.toString().trim()
+                binding.etRegisterNickname.text.toString().trim(),
+                binding.etRegisterEmail.text.toString().trim(),
+                binding.etRegisterPass.text.toString().trim()
             )
         } else {
-            if (iv_nickname_state.tag == R.drawable.ic_no &&
-                iv_email_state.tag == R.drawable.ic_ok &&
-                iv_pass_state.tag == R.drawable.ic_ok &&
-                iv_pass_ok_state.tag == R.drawable.ic_ok
+            if (binding.ivNicknameState.tag == R.drawable.ic_no &&
+                binding.ivEmailState.tag == R.drawable.ic_ok &&
+                binding.ivPassState.tag == R.drawable.ic_ok &&
+                binding.ivPassOkState.tag == R.drawable.ic_ok
             ) {
                 showToast(getString(R.string.register_not_proper_nickname))
 
-            } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
-                iv_email_state.tag == R.drawable.ic_no &&
-                iv_pass_state.tag == R.drawable.ic_ok &&
-                iv_pass_ok_state.tag == R.drawable.ic_ok
+            } else if (binding.ivNicknameState.tag == R.drawable.ic_ok &&
+                binding.ivEmailState.tag == R.drawable.ic_no &&
+                binding.ivPassState.tag == R.drawable.ic_ok &&
+                binding.ivPassOkState.tag == R.drawable.ic_ok
             ) {
                 showToast(getString(R.string.register_not_proper_email))
-            } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
-                iv_email_state.tag == R.drawable.ic_ok &&
-                iv_pass_state.tag == R.drawable.ic_no &&
-                iv_pass_ok_state.tag == R.drawable.ic_ok
+            } else if (binding.ivNicknameState.tag == R.drawable.ic_ok &&
+                binding.ivEmailState.tag == R.drawable.ic_ok &&
+                binding.ivPassState.tag == R.drawable.ic_no &&
+                binding.ivPassOkState.tag == R.drawable.ic_ok
             ) {
                 showToast(getString(R.string.register_not_proper_pass))
 
-            } else if (iv_nickname_state.tag == R.drawable.ic_ok &&
-                iv_email_state.tag == R.drawable.ic_ok &&
-                iv_pass_state.tag == R.drawable.ic_ok &&
-                iv_pass_ok_state.tag == R.drawable.ic_no
+            } else if (binding.ivNicknameState.tag == R.drawable.ic_ok &&
+                binding.ivEmailState.tag == R.drawable.ic_ok &&
+                binding.ivPassState.tag == R.drawable.ic_ok &&
+                binding.ivPassOkState.tag == R.drawable.ic_no
             ) {
                 showToast(getString(R.string.register_not_proper_passOk))
 
@@ -277,7 +270,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                         override fun afterTextChanged(s: Editable?) {
                             imageView.setImageResource(0)
 
-                            if (editText == et_register_pass || editText == et_register_pass_ok) {
+                            if (editText == binding.etRegisterPass || editText == binding.etRegisterPassOk) {
                                 if (editText.length() < LIMIT_PASS_LENGTH) {
                                     imageView.apply {
                                         setImageResource(R.drawable.ic_no)
@@ -285,8 +278,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                     }
 
                                 } else {
-                                    if (editText == et_register_pass_ok) {
-                                        if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
+                                    if (editText == binding.etRegisterPassOk) {
+                                        if (binding.etRegisterPass.text.toString() == binding.etRegisterPassOk.text.toString()) {
                                             imageView.apply {
                                                 setImageResource(R.drawable.ic_ok)
                                                 tag = R.drawable.ic_ok
@@ -301,28 +294,28 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                 }
                             }
 
-                            if (editText == et_register_email) {
+                            if (editText == binding.etRegisterEmail) {
 
-                                if (RelateLogin.isValidEmail(et_register_email.text.toString())) {
-                                    if (et_register_email.text.toString().contains(
+                                if (RelateLogin.isValidEmail(binding.etRegisterEmail.text.toString())) {
+                                    if (binding.etRegisterEmail.text.toString().contains(
                                             CONTAIN_OR_SPLIT_EMAIL_TEXT
                                         )
                                     ) {
-                                        ll_register_email_verified.isVisible = false
+                                        binding.llRegisterEmailVerified.isVisible = false
                                         showProgressState(false)
 
                                         toggleDuplicationEmail = false
                                         toggleVerifiedEmail = false
 
-                                        if (getSplitEmailLastText(et_register_email.text.toString()).length in 2..3) {
+                                        if (getSplitEmailLastText(binding.etRegisterEmail.text.toString()).length in 2..3) {
 
-                                            btn_email_verified_show.apply {
+                                            binding.btnEmailVerifiedShow.apply {
                                                 isClickable = true
                                                 isVisible = true
                                             }
 
                                         } else {
-                                            btn_email_verified_show.isVisible = false
+                                            binding.btnEmailVerifiedShow.isVisible = false
 
                                             imageView.apply {
                                                 isVisible = true
@@ -333,7 +326,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         }
                                     }
                                 } else {
-                                    btn_email_verified_show.isVisible = false
+                                    binding.btnEmailVerifiedShow.isVisible = false
 
                                     imageView.apply {
                                         isVisible = true
@@ -341,7 +334,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         tag = R.drawable.ic_no
                                     }
 
-                                    ll_register_email_verified.visibility = View.GONE
+                                    binding.llRegisterEmailVerified.visibility = View.GONE
                                 }
 
                             }
@@ -354,28 +347,28 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                             after: Int
                         ) {
 
-                            if (editText == et_register_email) {
+                            if (editText == binding.etRegisterEmail) {
 
-                                if (RelateLogin.isValidEmail(et_register_email.text.toString())) {
-                                    if (et_register_email.text.toString().contains(
+                                if (RelateLogin.isValidEmail(binding.etRegisterEmail.text.toString())) {
+                                    if (binding.etRegisterEmail.text.toString().contains(
                                             CONTAIN_OR_SPLIT_EMAIL_TEXT
                                         )
                                     ) {
-                                        ll_register_email_verified.isVisible = false
+                                        binding.llRegisterEmailVerified.isVisible = false
                                         showProgressState(false)
 
                                         toggleDuplicationEmail = false
                                         toggleVerifiedEmail = false
 
-                                        if (getSplitEmailLastText(et_register_email.text.toString()).length in 2..3) {
+                                        if (getSplitEmailLastText(binding.etRegisterEmail.text.toString()).length in 2..3) {
 
-                                            btn_email_verified_show.apply {
+                                            binding.btnEmailVerifiedShow.apply {
                                                 isClickable = true
                                                 isVisible = true
                                             }
 
                                         } else {
-                                            btn_email_verified_show.isVisible = false
+                                            binding.btnEmailVerifiedShow.isVisible = false
 
                                             imageView.apply {
                                                 isVisible = true
@@ -386,14 +379,14 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         }
                                     }
                                 } else {
-                                    btn_email_verified_show.isVisible = false
+                                    binding.btnEmailVerifiedShow.isVisible = false
 
                                     imageView.apply {
                                         isVisible = true
                                         setImageResource(R.drawable.ic_no)
                                         tag = R.drawable.ic_no
                                     }
-                                    ll_register_email_verified.visibility = View.GONE
+                                    binding.llRegisterEmailVerified.visibility = View.GONE
                                 }
 
                             }
@@ -406,26 +399,26 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                             before: Int,
                             count: Int
                         ) {
-                            if (editText == et_register_email) {
+                            if (editText == binding.etRegisterEmail) {
 
-                                if (RelateLogin.isValidEmail(et_register_email.text.toString())) {
-                                    if (et_register_email.text.toString().contains(
+                                if (RelateLogin.isValidEmail(binding.etRegisterEmail.text.toString())) {
+                                    if (binding.etRegisterEmail.text.toString().contains(
                                             CONTAIN_OR_SPLIT_EMAIL_TEXT
                                         )
                                     ) {
-                                        ll_register_email_verified.isVisible = false
+                                        binding.llRegisterEmailVerified.isVisible = false
                                         showProgressState(false)
                                         toggleDuplicationEmail = false
                                         toggleVerifiedEmail = false
 
-                                        if (getSplitEmailLastText(et_register_email.text.toString()).length in 2..3) {
+                                        if (getSplitEmailLastText(binding.etRegisterEmail.text.toString()).length in 2..3) {
 
-                                            btn_email_verified_show.apply {
+                                            binding.btnEmailVerifiedShow.apply {
                                                 isClickable = true
                                                 isVisible = true
                                             }
                                         } else {
-                                            btn_email_verified_show.isVisible = false
+                                            binding.btnEmailVerifiedShow.isVisible = false
 
                                             imageView.apply {
                                                 isVisible = true
@@ -435,14 +428,14 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                                         }
                                     }
                                 } else {
-                                    btn_email_verified_show.isVisible = false
+                                    binding.btnEmailVerifiedShow.isVisible = false
 
                                     imageView.apply {
                                         isVisible = true
                                         setImageResource(R.drawable.ic_no)
                                         tag = R.drawable.ic_no
                                     }
-                                    ll_register_email_verified.visibility = View.GONE
+                                    binding.llRegisterEmailVerified.visibility = View.GONE
                                 }
                             }
                             imageView.setImageResource(0)
@@ -451,7 +444,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                 } else {
                     if (editText.text.toString().isNotEmpty()) {
 
-                        if (editText == et_register_pass || editText == et_register_pass_ok) {
+                        if (editText == binding.etRegisterPass || editText == binding.etRegisterPassOk) {
                             if (editText.length() < LIMIT_PASS_LENGTH) {
                                 imageView.apply {
                                     setImageResource(R.drawable.ic_no)
@@ -470,14 +463,14 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                             }
                         }
 
-                        if (et_register_pass_ok.text.toString().isNotEmpty()) {
-                            if (et_register_pass.text.toString() == et_register_pass_ok.text.toString()) {
-                                iv_pass_ok_state.apply {
+                        if (binding.etRegisterPassOk.text.toString().isNotEmpty()) {
+                            if (binding.etRegisterPass.text.toString() == binding.etRegisterPassOk.text.toString()) {
+                                binding.ivPassOkState.apply {
                                     setImageResource(R.drawable.ic_ok)
                                     tag = R.drawable.ic_ok
                                 }
                             } else {
-                                iv_pass_ok_state.apply {
+                                binding.ivPassOkState.apply {
                                     setImageResource(R.drawable.ic_no)
                                     tag = R.drawable.ic_no
                                 }
@@ -485,7 +478,7 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
                         }
                     }
                     if (!toggleDuplicationEmail) {
-                        iv_email_state.apply {
+                        binding.ivEmailState.apply {
                             setImageResource(R.drawable.ic_no)
                             tag = R.drawable.ic_no
                         }
@@ -554,8 +547,8 @@ class MyPageRegisterFragment : BaseFragment(R.layout.mypage_register_fragment),
 
                 AppExecutors().mainThread.execute {
                     showProgressState(false)
-                    ll_register_email_verified.isVisible = true
-                    et_register_email_verified.requestFocus()
+                    binding.llRegisterEmailVerified.isVisible = true
+                    binding.etRegisterEmailVerified.requestFocus()
                     showToast(getString(R.string.register_send_checkNum))
                 }
 

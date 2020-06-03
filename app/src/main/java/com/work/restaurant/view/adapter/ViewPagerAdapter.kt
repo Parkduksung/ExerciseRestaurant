@@ -12,29 +12,9 @@ abstract class ViewPagerAdapter(
     FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     abstract override fun getItem(position: Int): Fragment
-//            =
-//        when (tabList[position]) {
-//            "홈" -> {
-//                HomeFragment()
-//            }
-//            "헬스장검색" -> {
-//                SearchFragment()
-//            }
-//            "다이어리" -> {
-//                DiaryFragment()
-//            }
-//            "켈린더" -> {
-//                CalendarFragment()
-//            }
-//            "마이페이지" -> {
-//                MyPageFragment()
-//            }
-//            else -> throw RuntimeException()
-//        }
 
     override fun getCount(): Int =
         tabList.size
-
 
     override fun getPageTitle(position: Int): CharSequence =
         tabList[position]

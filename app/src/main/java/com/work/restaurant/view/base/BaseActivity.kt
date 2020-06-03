@@ -1,13 +1,22 @@
 package com.work.restaurant.view.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.work.restaurant.R
 import com.work.restaurant.ext.showToast
 
 
-abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() {
+abstract class BaseActivity<T : ViewBinding>(
+    private val inflate: (LayoutInflater) -> T,
+    @LayoutRes val layoutId: Int
+) :
+    AppCompatActivity() {
+
+    protected lateinit var binding: T
+        private set
 
     var mBackWait: Long = INIT_TIME
 
@@ -16,7 +25,7 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
         var handled = false
 
         for (fragment in supportFragmentManager.fragments) {
-            if (fragment is BaseFragment) {
+            if (fragment is BaseFragment<*>) {
                 handled = fragment.onBackPressed()
                 if (handled) {
                     supportFragmentManager.popBackStack()
@@ -43,7 +52,10 @@ abstract class BaseActivity(@LayoutRes val layoutId: Int) : AppCompatActivity() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId)
+
+        binding = inflate(layoutInflater)
+
+        setContentView(binding.root)
 
     }
 

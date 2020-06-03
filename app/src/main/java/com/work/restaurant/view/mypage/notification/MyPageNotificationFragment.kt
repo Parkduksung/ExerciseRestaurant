@@ -6,15 +6,18 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
+import com.work.restaurant.databinding.MypageNotificationFragmentBinding
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.base.BaseFragment
 import com.work.restaurant.view.mypage.notification.adapter.NotificationAdapter
 import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationContract
-import kotlinx.android.synthetic.main.mypage_notification_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fragment),
+class MyPageNotificationFragment : BaseFragment<MypageNotificationFragmentBinding>(
+    MypageNotificationFragmentBinding::bind,
+    R.layout.mypage_notification_fragment
+),
     MyPageNotificationContract.View, AdapterDataListener.GetNotificationList, View.OnClickListener {
 
     private lateinit var presenter: MyPageNotificationContract.Presenter
@@ -35,10 +38,11 @@ class MyPageNotificationFragment : BaseFragment(R.layout.mypage_notification_fra
         super.onViewCreated(view, savedInstanceState)
 
         presenter = get { parametersOf(this) }
-        notificationAdapter.setItemClickListener(this)
-        ib_notification_back.setOnClickListener(this)
 
-        rv_notification.run {
+        notificationAdapter.setItemClickListener(this)
+        binding.ibNotificationBack.setOnClickListener(this)
+
+        binding.rvNotification.run {
             this.adapter = notificationAdapter
             layoutManager = LinearLayoutManager(this.context)
         }

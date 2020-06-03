@@ -7,18 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.work.restaurant.R
+import com.work.restaurant.databinding.HomeAddressSelcetAllFragmentBinding
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.view.base.BaseFragment
-import kotlinx.android.synthetic.main.home_address_selcet_all_fragment.*
 
-
-class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_all_fragment),
+class HomeAddressSelectAllFragment : BaseFragment<HomeAddressSelcetAllFragmentBinding>(
+    HomeAddressSelcetAllFragmentBinding::bind,
+    R.layout.home_address_selcet_all_fragment
+),
     View.OnClickListener {
 
 
     private lateinit var addressAllDataListener: AddressAllDataListener
-
 
     interface AddressAllDataListener {
         fun sendData(data: String)
@@ -53,8 +54,8 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_address_change_no.setOnClickListener(this)
-        btn_address_change_ok.setOnClickListener(this)
+        binding.btnAddressChangeNo.setOnClickListener(this)
+        binding.btnAddressChangeOk.setOnClickListener(this)
         showSelectAddress()
     }
 
@@ -72,7 +73,7 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
                         it.getString(ADDRESS)?.let { addressAll ->
                             addressAllDataListener.sendData(addressAll)
                             fragmentManager?.popBackStack()
-                            selectAll = tv_address_select.text.toString()
+                            selectAll = binding.tvAddressSelect.text.toString()
                         }
                     }
 
@@ -82,9 +83,8 @@ class HomeAddressSelectAllFragment : BaseFragment(R.layout.home_address_selcet_a
     }
 
     private fun showSelectAddress() {
-
         arguments?.let {
-            tv_address_select.text = it.getString(ADDRESS)
+            binding.tvAddressSelect.text = it.getString(ADDRESS)
         }
     }
 

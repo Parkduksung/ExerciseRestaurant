@@ -15,6 +15,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.databinding.DiaryMainBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
@@ -27,12 +28,11 @@ import com.work.restaurant.view.diary.main.adapter.DiaryMainAdapter
 import com.work.restaurant.view.diary.main.presenter.DiaryContract
 import com.work.restaurant.view.diary.update_or_delete_eat.UpdateOrDeleteEatFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.UpdateOrDeleteExerciseFragment
-import kotlinx.android.synthetic.main.diary_main.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 
-class DiaryFragment : BaseFragment(R.layout.diary_main),
+class DiaryFragment : BaseFragment<DiaryMainBinding>(DiaryMainBinding::bind, R.layout.diary_main),
     View.OnClickListener,
     View.OnLongClickListener,
     DiaryContract.View,
@@ -62,17 +62,16 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         presenter = get { parametersOf(this) }
 
         startView()
 
-        btn_add_eat.setOnClickListener(this)
-        btn_add_exercise.setOnClickListener(this)
-        ib_diary_left_button.setOnClickListener(this)
-        ib_diary_right_button.setOnClickListener(this)
-        ib_diary_left_button.setOnLongClickListener(this)
-        ib_diary_right_button.setOnLongClickListener(this)
+        binding.btnAddEat.setOnClickListener(this)
+        binding.btnAddExercise.setOnClickListener(this)
+        binding.ibDiaryLeftButton.setOnClickListener(this)
+        binding.ibDiaryRightButton.setOnClickListener(this)
+        binding.ibDiaryLeftButton.setOnLongClickListener(this)
+        binding.ibDiaryRightButton.setOnLongClickListener(this)
         diaryDetailsAdapter.setItemClickListener(this)
         diaryMainAdapter.setItemClickListener(this)
     }
@@ -80,9 +79,9 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
     private fun startView() {
 
         oldTodayDate = DateAndTime.currentDate()
-        tv_diary_day.text = DateAndTime.currentDate()
+        binding.tvDiaryDay.text = DateAndTime.currentDate()
 
-        rv_diary_main.run {
+        binding.rvDiaryMain.run {
             adapter = diaryMainAdapter
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             scrollToPosition(startPosition)
@@ -101,17 +100,17 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
                         if (recyclerView.scrollState == 2 || recyclerView.scrollState == 0)
 
                             if (oldPosition > lastVisible) {
-                                tv_diary_day.text =
+                                binding.tvDiaryDay.text =
                                     DateAndTime.beforeDate(
-                                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                                     )
                                 oldPosition = lastVisible
                                 load()
 
                             } else if (oldPosition < lastVisible) {
-                                tv_diary_day.text =
+                                binding.tvDiaryDay.text =
                                     DateAndTime.afterDate(
-                                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                                     )
                                 oldPosition = lastVisible
                                 load()
@@ -129,10 +128,10 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.ib_diary_left_button -> {
                 diaryMainAdapter.clearListData()
                 oldPosition -= 7
-                rv_diary_main.scrollToPosition(oldPosition)
-                tv_diary_day.text =
+                binding.rvDiaryMain.scrollToPosition(oldPosition)
+                binding.tvDiaryDay.text =
                     DateAndTime.beforeWeek(
-                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                     )
                 load()
             }
@@ -140,10 +139,10 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.ib_diary_right_button -> {
                 diaryMainAdapter.clearListData()
                 oldPosition += 7
-                rv_diary_main.scrollToPosition(oldPosition)
-                tv_diary_day.text =
+                binding.rvDiaryMain.scrollToPosition(oldPosition)
+                binding.tvDiaryDay.text =
                     DateAndTime.afterWeek(
-                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                     )
                 load()
             }
@@ -158,7 +157,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.btn_add_eat -> {
                 if (RelateLogin.loginState()) {
                     val addEatFragment =
-                        AddEatFragment.newInstance(tv_diary_day.text.toString())
+                        AddEatFragment.newInstance(binding.tvDiaryDay.text.toString())
                     addEatFragment.setTargetFragment(
                         this,
                         REGISTER_EAT
@@ -174,7 +173,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.btn_add_exercise -> {
                 if (RelateLogin.loginState()) {
                     val addExerciseFragment =
-                        AddExerciseFragment.newInstance(tv_diary_day.text.toString())
+                        AddExerciseFragment.newInstance(binding.tvDiaryDay.text.toString())
                     addExerciseFragment.setTargetFragment(
                         this,
                         REGISTER_EXERCISE
@@ -191,10 +190,10 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.ib_diary_left_button -> {
                 diaryMainAdapter.clearListData()
                 oldPosition--
-                rv_diary_main.scrollToPosition(oldPosition)
-                tv_diary_day.text =
+                binding.rvDiaryMain.scrollToPosition(oldPosition)
+                binding.tvDiaryDay.text =
                     DateAndTime.beforeDate(
-                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                     )
                 load()
             }
@@ -202,10 +201,10 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             R.id.ib_diary_right_button -> {
                 diaryMainAdapter.clearListData()
                 oldPosition++
-                rv_diary_main.scrollToPosition(oldPosition)
-                tv_diary_day.text =
+                binding.rvDiaryMain.scrollToPosition(oldPosition)
+                binding.tvDiaryDay.text =
                     DateAndTime.afterDate(
-                        DateAndTime.convertDate(tv_diary_day.text.toString())
+                        DateAndTime.convertDate(binding.tvDiaryDay.text.toString())
                     )
                 load()
             }
@@ -355,16 +354,16 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     private fun getDayOfWeek(textView: TextView) {
         textView.text =
-            DateAndTime.convertDayOfWeek(tv_diary_day.text.toString())
+            DateAndTime.convertDayOfWeek(binding.tvDiaryDay.text.toString())
     }
 
     override fun showLoadingState(state: Boolean) {
-        pb_diary_details.isVisible = state
+        binding.pbDiaryDetails.isVisible = state
     }
 
     override fun showLoginState(state: Boolean) {
-        rv_diary_main.isVisible = state
-        tv_diary_message.isInvisible = state
+        binding.rvDiaryMain.isVisible = state
+        binding.tvDiaryMessage.isInvisible = state
     }
 
     private fun renewDot() {
@@ -375,7 +374,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     fun load() {
         diaryModel.clear()
-        getDayOfWeek(tv_diary_day_of_week)
+        getDayOfWeek(binding.tvDiaryDayOfWeek)
         toggleExerciseData = false
         toggleEatData = false
 
@@ -383,11 +382,11 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
             showLoginState(true)
             presenter.todayEatData(
                 RelateLogin.getLoginId(),
-                tv_diary_day.text.toString()
+                binding.tvDiaryDay.text.toString()
             )
             presenter.todayExerciseData(
                 RelateLogin.getLoginId(),
-                tv_diary_day.text.toString()
+                binding.tvDiaryDay.text.toString()
             )
         } else {
             showLoadingState(false)
@@ -397,7 +396,7 @@ class DiaryFragment : BaseFragment(R.layout.diary_main),
 
     override fun onResume() {
         if (oldTodayDate != DateAndTime.currentDate()) {
-            tv_diary_day.text = DateAndTime.currentDate()
+            binding.tvDiaryDay.text = DateAndTime.currentDate()
             load()
         }
         super.onResume()

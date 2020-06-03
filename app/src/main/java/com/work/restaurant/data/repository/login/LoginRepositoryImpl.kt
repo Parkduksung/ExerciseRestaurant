@@ -6,8 +6,11 @@ import com.work.restaurant.network.room.entity.LoginEntity
 class LoginRepositoryImpl(
     private val loginLocalDataSource: LoginLocalDataSource
 ) : LoginRepository {
-    override fun getLoginState(callback: (list: LoginEntity?) -> Unit) {
-        loginLocalDataSource.getLoginState(callback)
+    override fun getLoginState(
+        state: Boolean,
+        callback: (list: LoginEntity?) -> Unit
+    ) {
+        loginLocalDataSource.getLoginState(state, callback)
     }
 
     override fun getRegisterData(

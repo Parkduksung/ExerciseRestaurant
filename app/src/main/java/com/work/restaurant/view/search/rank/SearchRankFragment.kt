@@ -1,5 +1,6 @@
 package com.work.restaurant.view.search.rank
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
+import com.work.restaurant.databinding.SearchRankFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
@@ -27,12 +29,14 @@ import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.rank.adpater.SearchRankAdapter
 import com.work.restaurant.view.search.rank.presenter.SearchRankContract
 import com.work.restaurant.view.search.rank.presenter.SearchRankPresenter
-import kotlinx.android.synthetic.main.search_rank_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 
-class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnClickListener,
+class SearchRankFragment : BaseFragment<SearchRankFragmentBinding>(
+    SearchRankFragmentBinding::bind,
+    R.layout.search_rank_fragment
+), View.OnClickListener,
     SearchRankContract.View,
     AdapterDataListener.GetDisplayBookmarkKakaoModel {
 
@@ -57,8 +61,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
         presenter = get { parametersOf(this) }
 
-        iv_search_settings.setOnClickListener(this)
-        iv_search_filter.setOnClickListener(this)
+        binding.ivSearchSettings.setOnClickListener(this)
+        binding.ivSearchFilter.setOnClickListener(this)
         searchRankAdapter.setItemClickListener(this)
 
         startRankView()
@@ -72,7 +76,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             }
         }
 
-        rv_rank.run {
+        binding.rvRank.run {
             this.itemAnimator = itemAnimator
             this.adapter = searchRankAdapter
             layoutManager = LinearLayoutManager(this.context)
@@ -87,16 +91,16 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                     val totalItemCount = searchRankAdapter.itemCount
 
                     if (lastVisible >= totalItemCount - 1) {
-                        if (tv_search_locate.text.toString().isNotEmpty()) {
+                        if (binding.tvSearchLocate.text.toString().isNotEmpty()) {
                             if (!toggleSort) {
                                 presenter.getCurrentLocation(
-                                    tv_search_locate.text.toString(),
+                                    binding.tvSearchLocate.text.toString(),
                                     totalItemCount,
                                     SORT_ACCURACY
                                 )
                             } else {
                                 presenter.getCurrentLocation(
-                                    tv_search_locate.text.toString(),
+                                    binding.tvSearchLocate.text.toString(),
                                     totalItemCount,
                                     SORT_DISTANCE
                                 )
@@ -107,7 +111,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
             })
         }
 
-        if (tv_search_locate.text.toString().isEmpty()) {
+        if (binding.tvSearchLocate.text.toString().isEmpty()) {
             presenter.getCurrentAddress(
                 App.prefs.currentLocationLong.toDouble(),
                 App.prefs.currentLocationLat.toDouble()
@@ -146,14 +150,14 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
                 getAddressData?.let {
 
-                    tv_search_locate.text = getAddressData
+                    binding.tvSearchLocate.text = getAddressData
 
                     initData()
 
                     toggleSort = false
 
                     presenter.getCurrentLocation(
-                        tv_search_locate.text.toString(),
+                        binding.tvSearchLocate.text.toString(),
                         searchRankAdapter.itemCount,
                         SORT_ACCURACY
                     )
@@ -166,14 +170,16 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     }
 
+    @SuppressLint("RestrictedApi")
     private fun showSearchFilter(context: Context) {
 
         val menuBuilder = MenuBuilder(context)
         val inflater = MenuInflater(context)
         inflater.inflate(R.menu.exercise_list_sort_menu, menuBuilder)
 
+
         val optionMenu =
-            MenuPopupHelper(context, menuBuilder, iv_search_filter)
+            MenuPopupHelper(context, menuBuilder, binding.ivSearchFilter)
         optionMenu.setForceShowIcon(true)
         optionMenu.gravity = Gravity.CENTER
 
@@ -191,7 +197,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                         toggleSort = false
 
                         presenter.getCurrentLocation(
-                            tv_search_locate.text.toString(),
+                            binding.tvSearchLocate.text.toString(),
                             searchRankAdapter.itemCount,
                             SORT_ACCURACY
                         )
@@ -201,7 +207,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
                         toggleSort = true
 
                         presenter.getCurrentLocation(
-                            tv_search_locate.text.toString(),
+                            binding.tvSearchLocate.text.toString(),
                             searchRankAdapter.itemCount,
                             SORT_DISTANCE
                         )
@@ -215,7 +221,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     }
 
     override fun showCurrentLocation(addressName: String) {
-        tv_search_locate.text = convertAddressName(addressName)
+        binding.tvSearchLocate.text = convertAddressName(addressName)
         presenter.getCurrentLocation(addressName, INIT_COUNT, SORT_ACCURACY)
     }
 
@@ -281,14 +287,8 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     }
 
     override fun showKakaoList(kakaoList: List<DisplayBookmarkKakaoModel>) {
-
         showLoadingState(false)
-
-        AppExecutors().mainThread.execute {
-            rv_rank.run {
-                searchRankAdapter.addAllData(kakaoList)
-            }
-        }
+        searchRankAdapter.addAllData(kakaoList)
     }
 
     override fun getDisplayBookmarkKakaoData(
@@ -327,10 +327,10 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
     }
 
     override fun showLoadingState(state: Boolean) {
-        pb_search_rank?.let {
-            pb_search_rank.bringToFront()
-            pb_search_rank.isVisible = state
-            pb_search_rank.isIndeterminate = state
+        binding.pbSearchRank.apply {
+            bringToFront()
+            isVisible = state
+            isIndeterminate = state
         }
     }
 
@@ -338,13 +338,13 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
         initData()
         if (!toggleSort) {
             presenter.getCurrentLocation(
-                tv_search_locate.text.toString(),
+                binding.tvSearchLocate.text.toString(),
                 searchRankAdapter.itemCount,
                 SORT_ACCURACY
             )
         } else {
             presenter.getCurrentLocation(
-                tv_search_locate.text.toString(),
+                binding.tvSearchLocate.text.toString(),
                 searchRankAdapter.itemCount,
                 SORT_DISTANCE
             )
@@ -353,9 +353,7 @@ class SearchRankFragment : BaseFragment(R.layout.search_rank_fragment), View.OnC
 
     private fun initData() {
         presenter.resetData()
-        AppExecutors().mainThread.execute {
-            searchRankAdapter.clearListData()
-        }
+        searchRankAdapter.clearListData()
     }
 
     companion object {

@@ -12,6 +12,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.DiaryModel
 import com.work.restaurant.data.model.EatModel
 import com.work.restaurant.data.model.ExerciseModel
+import com.work.restaurant.databinding.CalendarMainBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.DateAndTime
@@ -23,14 +24,14 @@ import com.work.restaurant.view.calendar.decorator.SaturdayDecorator
 import com.work.restaurant.view.calendar.decorator.SundayDecorator
 import com.work.restaurant.view.calendar.presenter.CalendarContract
 import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter
-import kotlinx.android.synthetic.main.calendar_main.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
-class CalendarFragment : BaseFragment(R.layout.calendar_main),
+class CalendarFragment :
+    BaseFragment<CalendarMainBinding>(CalendarMainBinding::bind, R.layout.calendar_main),
     CalendarContract.View {
 
     private lateinit var toHashSetCalendarDayEat: HashSet<CalendarDay>
@@ -44,19 +45,15 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         presenter = get { parametersOf(this) }
 
-        rv_calendar.run {
+        binding.rvCalendar.run {
             this.adapter = diaryDetailsAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
 
         startCalendar()
-
-        clickDate(calender_view)
-
+        clickDate(binding.calenderView)
     }
 
     private fun startCalendar() {
@@ -67,7 +64,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
         val dateArray =
             getYearAndMonth.split(SPLIT_YEAR_MONTH_TEXT)
 
-        calender_view.apply {
+        binding.calenderView.apply {
             selectedDate = CalendarDay.today()
             state().edit()
                 .isCacheCalendarPositionEnabled(true)
@@ -184,7 +181,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     private fun showDotAndWeekend() {
 
         if (dotEat && dotExercise) {
-            calender_view.removeDecorators()
+            binding.calenderView.removeDecorators()
 
             AppExecutors().diskIO.execute {
                 val decoratorList = mutableListOf<DayViewDecorator>()
@@ -202,7 +199,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 }
 
                 AppExecutors().mainThread.execute {
-                    calender_view.addDecorators(decoratorList)
+                    binding.calenderView.addDecorators(decoratorList)
                 }
             }
             dotExercise = false
@@ -221,14 +218,14 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             workExercise = false
 
             if (dayOfSet.size == 0) {
-                tv_calendar_main_context.text =
+                binding.tvCalendarMainContext.text =
                     getString(R.string.common_ok_login_state_but_not_have_data)
                 if (!toggleExplain) {
                     toggleExplain = true
                     showExplain()
                 }
             } else {
-                rv_calendar.run {
+                binding.rvCalendar.run {
                     diaryDetailsAdapter.clearListData()
                     if (dayOfSet.size != 0)
                         diaryDetailsAdapter.addAllData(dayOfSet.toList().sortedBy { it.time })
@@ -240,8 +237,8 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
     }
 
     private fun showExplain() {
-        tv_calendar_main_context.isVisible = toggleExplain
-        rv_calendar.isVisible = !toggleExplain
+        binding.tvCalendarMainContext.isVisible = toggleExplain
+        binding.rvCalendar.isVisible = !toggleExplain
     }
 
     fun renewDot() {
@@ -250,7 +247,7 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
             loginStateId = RelateLogin.getLoginId()
             loginState = RelateLogin.getLoginState()
 
-            tv_calendar_main_context.text =
+            binding.tvCalendarMainContext.text =
                 getString(R.string.common_ok_login_state_but_not_have_data)
 
             presenter.run {
@@ -260,15 +257,15 @@ class CalendarFragment : BaseFragment(R.layout.calendar_main),
                 getDataOfTheDayExerciseData(loginStateId, DateAndTime.currentDate())
             }
 
-            calender_view.selectedDate = CalendarDay.today()
+            binding.calenderView.selectedDate = CalendarDay.today()
             toggleMessage = true
 
         } else {
             loginStateId = RelateLogin.getLoginId()
             loginState = RelateLogin.getLoginState()
-            tv_calendar_main_context.text =
+            binding.tvCalendarMainContext.text =
                 getString(R.string.calendar_no_login_state)
-            calender_view.removeDecorators()
+            binding.calenderView.removeDecorators()
             toggleExplain = true
             showExplain()
         }
