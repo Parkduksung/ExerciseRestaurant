@@ -13,7 +13,6 @@ open class AppExecutors constructor(
     val networkIO: Executor = Executors.newFixedThreadPool(THREAD_COUNT),
     val mainThread: Executor = MainThreadExecutor()
 ) {
-
     private class MainThreadExecutor : Executor {
 
         private val mainThreadHandler = Handler(Looper.getMainLooper())
@@ -22,6 +21,7 @@ open class AppExecutors constructor(
             mainThreadHandler.post(command)
         }
     }
+
 }
 
 val appExecutorsModule = module {

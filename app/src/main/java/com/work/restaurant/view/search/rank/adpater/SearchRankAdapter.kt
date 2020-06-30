@@ -13,7 +13,6 @@ import com.work.restaurant.view.adapter.AdapterDataListener
 
 class SearchRankAdapter : RecyclerView.Adapter<SearchRankAdapter.ViewHolder>() {
 
-
     private val kakaoList = mutableListOf<DisplayBookmarkKakaoModel>()
 
     private lateinit var adapterListener: AdapterDataListener.GetDisplayBookmarkKakaoModel

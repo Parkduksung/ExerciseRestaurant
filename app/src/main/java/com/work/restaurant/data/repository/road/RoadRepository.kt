@@ -1,6 +1,6 @@
 package com.work.restaurant.data.repository.road
 
-import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.db.room.entity.AddressEntity
 
 interface RoadRepository {
 

@@ -8,7 +8,6 @@ class MySharedPreferences(context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
 
-
     var currentLocationLong: String
         get() = prefs.getString(PREF_KEY_CURRENT_LOCATION_LONG, EMPTY_TEXT)!!
         set(value) = prefs.edit().putString(PREF_KEY_CURRENT_LOCATION_LONG, value).apply()

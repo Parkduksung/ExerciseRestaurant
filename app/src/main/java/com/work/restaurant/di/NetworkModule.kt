@@ -1,4 +1,4 @@
-package com.work.restaurant.network.di
+package com.work.restaurant.di
 
 import androidx.room.Room
 import com.work.restaurant.network.RetrofitInstance
@@ -6,7 +6,7 @@ import com.work.restaurant.network.api.KakaoApi
 import com.work.restaurant.network.api.NotificationApi
 import com.work.restaurant.network.api.QuestionApi
 import com.work.restaurant.network.api.UserApi
-import com.work.restaurant.network.room.database.*
+import com.work.restaurant.db.room.database.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

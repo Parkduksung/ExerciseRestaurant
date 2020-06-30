@@ -11,7 +11,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseDialogFragment
+import com.work.restaurant.base.BaseDialogFragment
 import com.work.restaurant.view.diary.add_eat.presenter.AddEatContract
 import kotlinx.android.synthetic.main.diary_add_eat.*
 import org.koin.android.ext.android.get

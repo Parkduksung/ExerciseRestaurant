@@ -1,4 +1,4 @@
-package com.work.restaurant.view.base
+package com.work.restaurant.base
 
 interface OnBackPressedListener {
     fun onBackPressed(): Boolean

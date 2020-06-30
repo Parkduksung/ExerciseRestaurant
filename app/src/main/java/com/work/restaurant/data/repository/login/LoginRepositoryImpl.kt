@@ -1,7 +1,7 @@
 package com.work.restaurant.data.repository.login
 
 import com.work.restaurant.data.source.local.login.LoginLocalDataSource
-import com.work.restaurant.network.room.entity.LoginEntity
+import com.work.restaurant.db.room.entity.LoginEntity
 
 class LoginRepositoryImpl(
     private val loginLocalDataSource: LoginLocalDataSource

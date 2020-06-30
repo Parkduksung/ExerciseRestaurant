@@ -1,7 +1,7 @@
 package com.work.restaurant.data.repository.bookmark
 
 import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSource
-import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.db.room.entity.BookmarkEntity
 
 class BookmarkRepositoryImpl(
     private val bookmarkLocalDataSource: BookmarkLocalDataSource

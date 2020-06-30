@@ -20,7 +20,7 @@ import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.Keyboard
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseDialogFragment
+import com.work.restaurant.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExerciseContract
 import com.work.restaurant.view.diary.update_or_delete_exercise.presenter.UpdateOrDeleteExercisePresenter
 import kotlinx.android.synthetic.main.diary_update_or_delete_exercise.*

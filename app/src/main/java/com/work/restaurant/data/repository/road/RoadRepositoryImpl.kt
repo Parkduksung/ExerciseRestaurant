@@ -1,7 +1,7 @@
 package com.work.restaurant.data.repository.road
 
 import com.work.restaurant.data.source.local.road.RoadLocalDataSource
-import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.db.room.entity.AddressEntity
 
 class RoadRepositoryImpl(
     private val roadRemoteDataSource: RoadLocalDataSource

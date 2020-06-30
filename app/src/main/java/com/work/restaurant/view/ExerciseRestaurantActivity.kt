@@ -9,7 +9,7 @@ import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
 import com.work.restaurant.view.adapter.ViewPagerAdapter
-import com.work.restaurant.view.base.BaseActivity
+import com.work.restaurant.base.BaseActivity
 import com.work.restaurant.view.calendar.CalendarFragment
 import com.work.restaurant.view.diary.main.DiaryFragment
 import com.work.restaurant.view.home.main.HomeFragment

@@ -20,7 +20,7 @@ import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.home.MapInterface
 import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.daum_maps.presenter.MapContract
@@ -513,7 +513,6 @@ class MapFragment : BaseFragment<MapBinding>(MapBinding::bind, R.layout.map),
                         mapView.removePOIItem(selectPOIItem)
                         getLocation(selectAll)
                     }
-
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.work.restaurant.data.source.local.login
 
-import com.work.restaurant.network.room.database.LoginDatabase
-import com.work.restaurant.network.room.entity.LoginEntity
+import com.work.restaurant.db.room.database.LoginDatabase
+import com.work.restaurant.db.room.entity.LoginEntity
 import com.work.restaurant.util.AppExecutors
 
 class LoginLocalDataSourceImpl(

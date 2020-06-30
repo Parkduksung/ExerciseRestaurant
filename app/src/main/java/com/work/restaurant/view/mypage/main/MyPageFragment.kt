@@ -14,7 +14,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.find.MyPageFindPassFragment
 import com.work.restaurant.view.mypage.logout.MyPageLogoutFragment
 import com.work.restaurant.view.mypage.main.presenter.MyPageContract

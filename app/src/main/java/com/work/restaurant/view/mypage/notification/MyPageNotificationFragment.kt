@@ -8,7 +8,7 @@ import com.work.restaurant.R
 import com.work.restaurant.data.model.NotificationModel
 import com.work.restaurant.databinding.MypageNotificationFragmentBinding
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.notification.adapter.NotificationAdapter
 import com.work.restaurant.view.mypage.notification.presenter.MyPageNotificationContract
 import org.koin.android.ext.android.get

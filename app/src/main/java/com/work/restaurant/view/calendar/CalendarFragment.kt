@@ -17,7 +17,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.calendar.decorator.EatDecorator
 import com.work.restaurant.view.calendar.decorator.ExerciseDecorator
 import com.work.restaurant.view.calendar.decorator.SaturdayDecorator

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.work.restaurant.R
 import com.work.restaurant.databinding.SearchFragmentBinding
 import com.work.restaurant.view.adapter.ViewPagerAdapter
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
 import com.work.restaurant.view.search.rank.SearchRankFragment

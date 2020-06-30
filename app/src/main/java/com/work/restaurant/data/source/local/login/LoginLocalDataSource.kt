@@ -1,6 +1,6 @@
 package com.work.restaurant.data.source.local.login
 
-import com.work.restaurant.network.room.entity.LoginEntity
+import com.work.restaurant.db.room.entity.LoginEntity
 
 interface LoginLocalDataSource {
 

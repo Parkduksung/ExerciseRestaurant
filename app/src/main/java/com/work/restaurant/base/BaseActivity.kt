@@ -1,4 +1,4 @@
-package com.work.restaurant.view.base
+package com.work.restaurant.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,8 @@ abstract class BaseActivity<T : ViewBinding>(
     protected lateinit var binding: T
         private set
 
-    var mBackWait: Long = INIT_TIME
+    var mBackWait: Long =
+        INIT_TIME
 
     override fun onBackPressed() {
 
@@ -52,11 +53,8 @@ abstract class BaseActivity<T : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = inflate(layoutInflater)
-
         setContentView(binding.root)
-
     }
 
     companion object {

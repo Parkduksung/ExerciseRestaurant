@@ -1,7 +1,7 @@
 package com.work.restaurant.data.repository.eat
 
 import com.work.restaurant.data.source.local.eat.EatLocalDataSource
-import com.work.restaurant.network.room.entity.EatEntity
+import com.work.restaurant.db.room.entity.EatEntity
 
 class EatRepositoryImpl(
     private val eatLocalDataSource: EatLocalDataSource

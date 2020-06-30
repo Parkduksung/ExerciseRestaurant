@@ -15,7 +15,7 @@ import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.base.BaseActivity
+import com.work.restaurant.base.BaseActivity
 import com.work.restaurant.view.home.main.HomeFragment
 import com.work.restaurant.view.search.bookmarks.SearchBookmarksFragment
 import com.work.restaurant.view.search.itemdetails.SearchItemDetailsFragment

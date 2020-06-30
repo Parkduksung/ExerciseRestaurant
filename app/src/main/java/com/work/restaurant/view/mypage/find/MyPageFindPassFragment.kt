@@ -7,7 +7,7 @@ import com.work.restaurant.R
 import com.work.restaurant.databinding.MypageFindFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.find.presenter.MyPageFindPassContract
 import com.work.restaurant.view.mypage.find_ok.MyPageFindOkFragment
 import org.koin.android.ext.android.get

@@ -3,8 +3,8 @@ package com.work.restaurant.data.source.local.road
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.work.restaurant.data.model.RoadModel
-import com.work.restaurant.network.room.database.AddressDatabase
-import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.db.room.database.AddressDatabase
+import com.work.restaurant.db.room.entity.AddressEntity
 import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.view.home.address.HomeAddressActivity

@@ -16,7 +16,6 @@ class CalendarPresenter(
             callback = { list ->
 
                 if (list.isNotEmpty()) {
-
                     val toEatModel =
                         list.map { it.toEatModel() }
 

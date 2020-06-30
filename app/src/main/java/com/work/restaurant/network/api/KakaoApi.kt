@@ -50,12 +50,10 @@ interface KakaoApi {
         @Query("y") y: Double
     ): Call<KakaoLocationToAddressResponse>
 
-
     companion object {
         const val HEADERS = "Authorization: KakaoAK 785b8c0fb5d7046009351ac6fe2fed8b"
         const val RADIUS = 20000
         const val KEYWORD = "헬스장"
     }
-
 
 }

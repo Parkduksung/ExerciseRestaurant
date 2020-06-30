@@ -12,7 +12,7 @@ import com.work.restaurant.R
 import com.work.restaurant.databinding.MypageLogoutFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.logout.presenter.MyPageLogoutContract
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf

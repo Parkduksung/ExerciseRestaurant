@@ -12,7 +12,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import com.work.restaurant.R
 import com.work.restaurant.databinding.SearchItemDetailsFragmentBinding
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity.Companion.toggleWebPage
 
 

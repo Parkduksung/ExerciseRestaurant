@@ -16,7 +16,7 @@ import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.Keyboard
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterContract
 import com.work.restaurant.view.mypage.register.presenter.MyPageRegisterPresenter
 import com.work.restaurant.view.mypage.register_ok.MyPageRegisterOkFragment

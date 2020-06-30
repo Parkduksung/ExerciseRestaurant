@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.work.restaurant.R
 import com.work.restaurant.databinding.MypageRegisterokFragmentBinding
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 
 
 class MyPageRegisterOkFragment : BaseFragment<MypageRegisterokFragmentBinding>(

@@ -1,8 +1,8 @@
-package com.work.restaurant.network.room.converter
+package com.work.restaurant.db.room.converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.work.restaurant.network.room.entity.ExerciseSetResponse
+import com.work.restaurant.db.room.entity.ExerciseSetResponse
 
 class ExerciseSetConverter {
     @TypeConverter

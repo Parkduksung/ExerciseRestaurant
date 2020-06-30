@@ -1,4 +1,4 @@
-package com.work.restaurant.network.room.entity
+package com.work.restaurant.db.room.entity
 
 import androidx.room.ColumnInfo
 import com.work.restaurant.data.model.ExerciseSet

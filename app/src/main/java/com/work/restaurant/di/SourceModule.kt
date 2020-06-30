@@ -1,4 +1,4 @@
-package com.work.restaurant.data.di
+package com.work.restaurant.di
 
 import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSource
 import com.work.restaurant.data.source.local.bookmark.BookmarkLocalDataSourceImpl

@@ -1,7 +1,7 @@
 package com.work.restaurant.data.source.local.eat
 
-import com.work.restaurant.network.room.database.EatDatabase
-import com.work.restaurant.network.room.entity.EatEntity
+import com.work.restaurant.db.room.database.EatDatabase
+import com.work.restaurant.db.room.entity.EatEntity
 import com.work.restaurant.util.AppExecutors
 
 class EatLocalDataSourceImpl(

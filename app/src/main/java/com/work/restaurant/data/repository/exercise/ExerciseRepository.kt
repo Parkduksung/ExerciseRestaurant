@@ -1,8 +1,8 @@
 package com.work.restaurant.data.repository.exercise
 
 import com.work.restaurant.data.model.ExerciseSet
-import com.work.restaurant.network.room.entity.ExerciseEntity
-import com.work.restaurant.network.room.entity.ExerciseSetResponse
+import com.work.restaurant.db.room.entity.ExerciseEntity
+import com.work.restaurant.db.room.entity.ExerciseSetResponse
 
 interface ExerciseRepository {
 

@@ -1,6 +1,6 @@
 package com.work.restaurant.data.repository.bookmark
 
-import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.db.room.entity.BookmarkEntity
 
 interface BookmarkRepository {
     fun getAllList(

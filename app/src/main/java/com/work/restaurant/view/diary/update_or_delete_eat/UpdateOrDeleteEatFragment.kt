@@ -12,7 +12,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseDialogFragment
+import com.work.restaurant.base.BaseDialogFragment
 import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatContract
 import com.work.restaurant.view.diary.update_or_delete_eat.presenter.UpdateOrDeleteEatPresenter
 import kotlinx.android.synthetic.main.diary_update_or_delete_eat.*

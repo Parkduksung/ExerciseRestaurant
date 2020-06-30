@@ -1,7 +1,7 @@
 package com.work.restaurant.data.model
 
 import android.os.Parcelable
-import com.work.restaurant.network.room.entity.EatEntity
+import com.work.restaurant.db.room.entity.EatEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

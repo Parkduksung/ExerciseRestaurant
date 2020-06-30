@@ -12,7 +12,7 @@ import com.work.restaurant.databinding.MypageWithdrawalFragmentBinding
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.mypage.withdraw.presenter.MyPageWithdrawalContract
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf

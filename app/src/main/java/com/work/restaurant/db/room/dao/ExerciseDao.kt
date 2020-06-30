@@ -1,8 +1,8 @@
-package com.work.restaurant.network.room.dao
+package com.work.restaurant.db.room.dao
 
 import androidx.room.*
-import com.work.restaurant.network.room.entity.ExerciseEntity
-import com.work.restaurant.network.room.entity.ExerciseSetResponse
+import com.work.restaurant.db.room.entity.ExerciseEntity
+import com.work.restaurant.db.room.entity.ExerciseSetResponse
 
 @Dao
 interface ExerciseDao {

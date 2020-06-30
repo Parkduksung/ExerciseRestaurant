@@ -3,10 +3,10 @@ package com.work.restaurant.util
 import android.app.Application
 import android.content.Context
 import com.crashlytics.android.Crashlytics
-import com.work.restaurant.data.di.repositoryModule
-import com.work.restaurant.data.di.sourceModule
+import com.work.restaurant.di.repositoryModule
+import com.work.restaurant.di.sourceModule
 import com.work.restaurant.di.presenterModule
-import com.work.restaurant.network.di.networkModule
+import com.work.restaurant.di.networkModule
 import io.fabric.sdk.android.Fabric
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

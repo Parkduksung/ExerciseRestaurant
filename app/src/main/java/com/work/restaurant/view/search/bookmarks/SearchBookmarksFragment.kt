@@ -14,7 +14,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.RenewBookmarkAndRankListener
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.search.bookmarks.adapter.BookMarkAdapter
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksContract
 import com.work.restaurant.view.search.bookmarks.presenter.SearchBookmarksPresenter

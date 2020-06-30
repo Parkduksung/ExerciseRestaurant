@@ -1,7 +1,7 @@
 package com.work.restaurant.data.source.local.bookmark
 
-import com.work.restaurant.network.room.database.BookmarkDatabase
-import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.db.room.database.BookmarkDatabase
+import com.work.restaurant.db.room.entity.BookmarkEntity
 import com.work.restaurant.util.AppExecutors
 
 class BookmarkLocalDataSourceImpl(

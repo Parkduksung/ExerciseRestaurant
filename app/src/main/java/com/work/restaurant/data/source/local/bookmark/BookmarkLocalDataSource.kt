@@ -1,6 +1,6 @@
 package com.work.restaurant.data.source.local.bookmark
 
-import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.db.room.entity.BookmarkEntity
 
 interface BookmarkLocalDataSource {
     fun getAllList(

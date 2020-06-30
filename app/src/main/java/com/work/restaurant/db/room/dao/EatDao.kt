@@ -1,7 +1,7 @@
-package com.work.restaurant.network.room.dao
+package com.work.restaurant.db.room.dao
 
 import androidx.room.*
-import com.work.restaurant.network.room.entity.EatEntity
+import com.work.restaurant.db.room.entity.EatEntity
 
 @Dao
 interface EatDao {

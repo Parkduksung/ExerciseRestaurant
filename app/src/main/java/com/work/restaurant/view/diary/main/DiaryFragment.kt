@@ -20,7 +20,7 @@ import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.DateAndTime
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.diary.add_eat.AddEatFragment
 import com.work.restaurant.view.diary.add_exercise.AddExerciseFragment
 import com.work.restaurant.view.diary.main.adapter.DiaryDetailsAdapter

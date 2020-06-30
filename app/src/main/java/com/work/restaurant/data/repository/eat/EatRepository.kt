@@ -1,6 +1,6 @@
 package com.work.restaurant.data.repository.eat
 
-import com.work.restaurant.network.room.entity.EatEntity
+import com.work.restaurant.db.room.entity.EatEntity
 
 interface EatRepository {
 

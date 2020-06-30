@@ -10,7 +10,7 @@ import com.work.restaurant.R
 import com.work.restaurant.databinding.HomeAddressSelcetAllFragmentBinding
 import com.work.restaurant.util.App
 import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 
 class HomeAddressSelectAllFragment : BaseFragment<HomeAddressSelcetAllFragmentBinding>(
     HomeAddressSelcetAllFragmentBinding::bind,

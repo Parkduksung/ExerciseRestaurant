@@ -1,4 +1,4 @@
-package com.work.restaurant.view.base
+package com.work.restaurant.base
 
 import android.content.Context
 import android.graphics.Color
@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.DialogFragment
 
-abstract class BaseDialogFragment(@LayoutRes val layoutId: Int) : DialogFragment() {
+abstract class BaseDialogFragment(@LayoutRes val layoutId: Int) :
+    androidx.fragment.app.DialogFragment() {
 
     override fun onResume() {
         val windowManager =

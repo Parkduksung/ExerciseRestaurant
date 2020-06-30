@@ -22,7 +22,7 @@ import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.view.base.BaseFragment
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity
@@ -281,6 +281,7 @@ class SearchRankFragment : BaseFragment<SearchRankFragmentBinding>(
                 SearchRankPresenter.NOT_REMAIN_DATA -> {
                     showToast(getString(R.string.rank_unRemain_result))
                 }
+
             }
         }
 

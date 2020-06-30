@@ -1,4 +1,4 @@
-package com.work.restaurant.data.di
+package com.work.restaurant.di
 
 import com.work.restaurant.data.repository.bookmark.BookmarkRepository
 import com.work.restaurant.data.repository.bookmark.BookmarkRepositoryImpl

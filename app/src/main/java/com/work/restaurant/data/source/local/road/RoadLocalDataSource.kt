@@ -1,6 +1,6 @@
 package com.work.restaurant.data.source.local.road
 
-import com.work.restaurant.network.room.entity.AddressEntity
+import com.work.restaurant.db.room.entity.AddressEntity
 
 interface RoadLocalDataSource {
     fun getLocalData(

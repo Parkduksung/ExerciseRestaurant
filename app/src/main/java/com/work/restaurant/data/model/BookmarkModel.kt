@@ -1,6 +1,6 @@
 package com.work.restaurant.data.model
 
-import com.work.restaurant.network.room.entity.BookmarkEntity
+import com.work.restaurant.db.room.entity.BookmarkEntity
 
 data class BookmarkModel(
     val bookmarkUserId: String,

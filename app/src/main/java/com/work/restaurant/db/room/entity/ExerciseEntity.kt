@@ -1,11 +1,11 @@
-package com.work.restaurant.network.room.entity
+package com.work.restaurant.db.room.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.work.restaurant.data.model.ExerciseModel
-import com.work.restaurant.network.room.converter.ExerciseSetConverter
+import com.work.restaurant.db.room.converter.ExerciseSetConverter
 
 @Entity(tableName = "exercise")
 data class ExerciseEntity(

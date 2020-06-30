@@ -14,7 +14,7 @@ import com.work.restaurant.util.Decoration
 import com.work.restaurant.view.ExerciseRestaurantActivity
 import com.work.restaurant.view.adapter.AdapterDataListener
 import com.work.restaurant.view.adapter.AddressAdapter
-import com.work.restaurant.view.base.BaseActivity
+import com.work.restaurant.base.BaseActivity
 import com.work.restaurant.view.home.address.presenter.HomeAddressContract
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import org.koin.android.ext.android.get
