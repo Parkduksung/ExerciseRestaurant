@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.work.restaurant.R
+import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.data.model.DisplayBookmarkKakaoModel
 import com.work.restaurant.databinding.SearchRankFragmentBinding
 import com.work.restaurant.ext.showToast
@@ -22,7 +23,6 @@ import com.work.restaurant.util.App
 import com.work.restaurant.util.AppExecutors
 import com.work.restaurant.util.RelateLogin
 import com.work.restaurant.view.adapter.AdapterDataListener
-import com.work.restaurant.base.BaseFragment
 import com.work.restaurant.view.home.address.HomeAddressActivity
 import com.work.restaurant.view.home.address_select_all.HomeAddressSelectAllFragment
 import com.work.restaurant.view.search.lookfor.SearchLookForActivity

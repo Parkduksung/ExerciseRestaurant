@@ -13,13 +13,13 @@ import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.work.restaurant.R
+import com.work.restaurant.base.BaseActivity
 import com.work.restaurant.databinding.LoadingFragmentBinding
 import com.work.restaurant.ext.isConnectedToGPS
 import com.work.restaurant.ext.showToast
 import com.work.restaurant.util.App
 import com.work.restaurant.util.ShowAlertDialog
 import com.work.restaurant.view.ExerciseRestaurantActivity
-import com.work.restaurant.base.BaseActivity
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -37,9 +37,7 @@ class LoadingActivity : BaseActivity<LoadingFragmentBinding>(
 
     private val permissionListener: PermissionListener by lazy {
         object : PermissionListener {
-
             override fun onPermissionGranted() {
-
                 if (isConnectedToGPS()) {
                     saveCurrentLocation()
                 } else {

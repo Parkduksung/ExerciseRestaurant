@@ -2,15 +2,11 @@ package com.work.restaurant.view.home.address_select_all
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.work.restaurant.R
-import com.work.restaurant.databinding.HomeAddressSelcetAllFragmentBinding
-import com.work.restaurant.util.App
-import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 import com.work.restaurant.base.BaseFragment
+import com.work.restaurant.databinding.HomeAddressSelcetAllFragmentBinding
+import com.work.restaurant.view.ExerciseRestaurantActivity.Companion.selectAll
 
 class HomeAddressSelectAllFragment : BaseFragment<HomeAddressSelcetAllFragmentBinding>(
     HomeAddressSelcetAllFragmentBinding::bind,
@@ -30,24 +26,6 @@ class HomeAddressSelectAllFragment : BaseFragment<HomeAddressSelcetAllFragmentBi
 
         (activity as? AddressAllDataListener)?.let {
             addressAllDataListener = it
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.home_address_selcet_all_fragment, container, false).also {
-            it?.setBackgroundColor(
-                ContextCompat.getColor(
-                    App.instance.context(),
-                    R.color.transparent
-                )
-            )
-            it?.setOnTouchListener { _, _ ->
-                true
-            }
         }
     }
 

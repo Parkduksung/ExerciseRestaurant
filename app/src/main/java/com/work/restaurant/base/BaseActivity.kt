@@ -46,9 +46,7 @@ abstract class BaseActivity<T : ViewBinding>(
             } else {
                 super.onBackPressed()
             }
-
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

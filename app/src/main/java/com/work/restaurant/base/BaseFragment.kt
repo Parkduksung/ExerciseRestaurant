@@ -23,14 +23,12 @@ abstract class BaseFragment<T : ViewBinding>(
     protected val binding get() = _binding!!
 
     override fun onBackPressed(): Boolean {
-
         requireFragmentManager().fragments.forEach {
             if (it is MyPageRegisterOkFragment) {
                 fragmentManager?.popBackStack()
             }
         }
         return fragmentManager?.backStackEntryCount != 0
-
     }
 
     override fun onCreateView(
@@ -42,7 +40,22 @@ abstract class BaseFragment<T : ViewBinding>(
         _binding = bind(super.onCreateView(inflater, container, savedInstanceState)!!)
 
         return binding.root.apply {
-            setBackgroundColor(ContextCompat.getColor(App.instance.context(), R.color.colorWhite))
+            when (layoutId) {
+                R.layout.home_address_selcet_all_fragment -> {
+                    setBackgroundColor(
+                        ContextCompat.getColor(
+                            App.instance.context(),
+                            R.color.transparent
+                        )
+                    )
+                }
+                else -> setBackgroundColor(
+                    ContextCompat.getColor(
+                        App.instance.context(),
+                        R.color.colorWhite
+                    )
+                )
+            }
             setOnTouchListener { _, _ ->
                 true
             }
